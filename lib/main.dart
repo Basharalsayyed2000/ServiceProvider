@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Screens/HomeScreen.dart';
+import 'package:service_provider/Screens/Login.dart';
+import 'package:service_provider/Screens/SignUp.dart';
+
 main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -7,9 +9,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Home.route,
+      initialRoute: LoginScreen.id,
        routes: {
-        Home.route: (context) => Home(),
+        LoginScreen.id: (context) => LoginScreen(),
+        SignUpScreen.id:(context)=>SignUpScreen(),
       },
     );
   }
