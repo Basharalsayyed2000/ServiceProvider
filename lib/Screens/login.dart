@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget{
+class LoginScreen extends StatefulWidget{
+  static String id='';
   @override
   State<StatefulWidget> createState(){
-    return _Login();
+    return _LoginScreen();
   }
 }
 
-class _Login extends State<Login>{
+class _LoginScreen extends State<LoginScreen>{
 
   var currencies = {'Lebanese Pounds', 'Ghana Cedis', 'Dollars', 'Pounds'};
   var _selectedcurrency = 'Lebanese Pounds';
@@ -119,6 +120,7 @@ class _Login extends State<Login>{
                 children: <Widget>[
 
                   Expanded(
+                    // ignore: deprecated_member_use
                     child: RaisedButton(
                         child: Text("Calculate", textScaleFactor: 1.5,),
                         color: Theme.of(context).accentColor,
@@ -128,6 +130,7 @@ class _Login extends State<Login>{
                   ),
 
                   Expanded(
+                    // ignore: deprecated_member_use
                     child: RaisedButton(
                         color: Theme.of(context).primaryColorDark,
                         textColor: Theme.of(context).primaryColorLight,
