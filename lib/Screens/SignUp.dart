@@ -13,30 +13,35 @@ class SignUpScreen extends StatefulWidget{
 
 class _SignUpScreen extends State<SignUpScreen>{
 
+  final _minimumpadding = 5.0;
   final _height = 75.0;
 
-  Color _colorFN, _prefixColorFN = primaryColorDark;
-  Color _colorEPN, _prefixColorEPN = primaryColorDark;
-  Color _colorPW, _prefixColorPW = primaryColorDark;
-  Color _colorCPW, _prefixColorCPW = primaryColorDark;
+  // ignore: non_constant_identifier_names
+  Color _ColorFN, _prefixColorFN = primaryColorDark;
+  // ignore: non_constant_identifier_names
+  Color _ColorEPN, _prefixColorEPN = primaryColorDark;
+  // ignore: non_constant_identifier_names
+  Color _ColorPW, _prefixColorPW = primaryColorDark;
+  // ignore: non_constant_identifier_names
+  Color _ColorCPW, _prefixColorCPW = primaryColorDark;
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: minimumpadding * 2, bottom: minimumpadding * 2, left: minimumpadding * 4.5, right: minimumpadding * 4.5),
+        padding: EdgeInsets.only(top: _minimumpadding*2, bottom: _minimumpadding*2, left: _minimumpadding*4.5, right: _minimumpadding*4.5),
         child: ListView(
           children: <Widget>[
-            //getImage(),
+            getImage(),
 
             Container(
               height: _height,
-              padding: EdgeInsets.only(top: minimumpadding * 2, bottom: minimumpadding * 2),
+              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
               child: Focus(
                 onFocusChange: (hasFocus){
                   setState(() {
-                    _colorFN = hasFocus ? focusColor : null;
+                    _ColorFN = hasFocus ? focusColor : null;
                     _prefixColorFN = hasFocus ? focusColor : primaryColorDark;
                   });
                 },
@@ -45,7 +50,7 @@ class _SignUpScreen extends State<SignUpScreen>{
                   decoration: InputDecoration(
                     labelText: "Full Name",
                     labelStyle: TextStyle(
-                      color: _colorFN,
+                      color: _ColorFN,
                     ),
                     hintText: "e.g Sam Wilson",
                     prefixIcon: Icon(Icons.person, color: _prefixColorFN),
@@ -67,11 +72,11 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Container(
               height: _height,
-              padding: EdgeInsets.only(top: minimumpadding * 2, bottom: minimumpadding * 2),
+              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
               child: Focus(
                 onFocusChange: (hasFocus){
                   setState(() {
-                    _colorEPN = hasFocus ? focusColor : null;
+                    _ColorEPN = hasFocus ? focusColor : null;
                     _prefixColorEPN = hasFocus ? focusColor : primaryColorDark;
                   });
                 },
@@ -80,7 +85,7 @@ class _SignUpScreen extends State<SignUpScreen>{
                   decoration: InputDecoration(
                     labelText: "Email / Phone Number",
                     labelStyle: TextStyle(
-                        color: _colorEPN
+                        color: _ColorEPN
                     ),
                     hintText: "example@yourmail.com / +XXX 123456789",
                     prefixIcon: Icon(Icons.mail, color: _prefixColorEPN),
@@ -102,11 +107,11 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Container(
               height: _height,
-              padding: EdgeInsets.only(top: minimumpadding * 2, bottom: minimumpadding * 2),
+              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
               child: Focus(
                 onFocusChange: (hasFocus){
                   setState(() {
-                    _colorPW = hasFocus ? focusColor : null;
+                    _ColorPW = hasFocus ? focusColor : null;
                     _prefixColorPW = hasFocus ? focusColor : primaryColorDark;
                   });
                 },
@@ -114,7 +119,7 @@ class _SignUpScreen extends State<SignUpScreen>{
                   decoration: InputDecoration(
                     labelText: "Password",
                     labelStyle: TextStyle(
-                        color: _colorPW
+                        color: _ColorPW
                     ),
                     hintText: "e.g Password",
                     prefixIcon: Icon(Icons.vpn_key, color: _prefixColorPW),
@@ -136,11 +141,11 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Container(
               height: _height,
-              padding: EdgeInsets.only(top: minimumpadding * 2, bottom: minimumpadding * 2),
+              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
               child: Focus(
                 onFocusChange: (hasFocus){
                   setState(() {
-                    _colorCPW = hasFocus ? focusColor : null;
+                    _ColorCPW = hasFocus ? focusColor : null;
                     _prefixColorCPW = hasFocus ? focusColor : primaryColorDark;
                   });
                 },
@@ -149,7 +154,7 @@ class _SignUpScreen extends State<SignUpScreen>{
                   decoration: InputDecoration(
                     labelText: "Confirm Password",
                     labelStyle: TextStyle(
-                        color: _colorCPW
+                        color: _ColorCPW
                     ),
                     hintText: "Confirm Password",
                     prefixIcon: Icon(Icons.vpn_key, color: _prefixColorCPW),
@@ -170,9 +175,10 @@ class _SignUpScreen extends State<SignUpScreen>{
             ),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 3),
+              padding: EdgeInsets.only(top: _minimumpadding * 3),
+              // ignore: deprecated_member_use
               child: RaisedButton(
-                  padding: EdgeInsets.all(minimumpadding*1.5),
+                  padding: EdgeInsets.all(_minimumpadding*1.5),
                   elevation: 4.0,
                   color: Color.fromRGBO(157, 215, 211, 1),
 
@@ -196,7 +202,7 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Center(
               child: Container(
-                padding: EdgeInsets.only(top: minimumpadding*6),
+                padding: EdgeInsets.only(top: _minimumpadding*6),
                 child: Text(
                   "Already have an account? Sign in",
                   style: TextStyle(
@@ -231,9 +237,9 @@ class _SignUpScreen extends State<SignUpScreen>{
     AssetImage assetImage = new AssetImage("lib/images/Logo.png");
     Image image = new Image(image: assetImage);
     return Padding(
-      padding: EdgeInsets.all(minimumpadding),
+      padding: EdgeInsets.all(_minimumpadding),
       child: Container(
-        padding: EdgeInsets.all(minimumpadding),
+        padding: EdgeInsets.all(_minimumpadding),
         width: 200.0,
         height: 200.0,
         child: image,
