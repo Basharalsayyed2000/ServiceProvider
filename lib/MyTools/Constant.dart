@@ -9,3 +9,5 @@ const focusColor = primaryColor;
 const disabledColor  = accentColor;
 
 const primaryColorDark  = Color.fromRGBO(24, 48, 48, 1);
+
+const minimumpadding = 5.0;
