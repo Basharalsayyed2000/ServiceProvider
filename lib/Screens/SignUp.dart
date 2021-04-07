@@ -16,9 +16,13 @@ class _SignUpScreen extends State<SignUpScreen>{
   final _minimumpadding = 5.0;
   final _height = 75.0;
 
+  // ignore: non_constant_identifier_names
   Color _ColorFN, _prefixColorFN = primaryColorDark;
+  // ignore: non_constant_identifier_names
   Color _ColorEPN, _prefixColorEPN = primaryColorDark;
+  // ignore: non_constant_identifier_names
   Color _ColorPW, _prefixColorPW = primaryColorDark;
+  // ignore: non_constant_identifier_names
   Color _ColorCPW, _prefixColorCPW = primaryColorDark;
 
   @override
@@ -172,6 +176,7 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Container(
               padding: EdgeInsets.only(top: _minimumpadding * 3),
+              // ignore: deprecated_member_use
               child: RaisedButton(
                   padding: EdgeInsets.all(_minimumpadding*1.5),
                   elevation: 4.0,
