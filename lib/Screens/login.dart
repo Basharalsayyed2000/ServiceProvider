@@ -25,7 +25,7 @@ child: Container(
 padding:EdgeInsets.all(2),
 width: 250.0,
 height: 250.0,
-child:Image.asset("assets/service6.png"),
+child:Image.asset("Assets/images/Logo.png"),
 ),
          ),
         ),
@@ -124,7 +124,7 @@ child:Image.asset("assets/service6.png"),
                      borderRadius: BorderRadius.circular(10),
                      child:Padding(
                        padding: const EdgeInsets.all(4.0),
-                       child:Image.asset("assets/google-symbol.png",height: 25,) ,
+                       child:Image.asset("Assets/images/google-symbol.png",height: 25,) ,
                      )
                      
                    ),
@@ -135,14 +135,14 @@ child:Image.asset("assets/service6.png"),
                      
                      child:Padding(
                        padding: const EdgeInsets.all(4.0),
-                       child:Image.asset("assets/fblogo5.png",height: 25,) ,
+                       child:Image.asset("Assets/images/fblogo5.png",height: 25,) ,
                      ) ,),
                      Material(
                      elevation:10,
                      borderRadius: BorderRadius.circular(10),
                      child:Padding(
                        padding: const EdgeInsets.all(4.0),
-                       child:Image.asset("assets/twitter-4.png",height: 25,) ,
+                       child:Image.asset("Assets/images/twitter-4.png",height: 25,) ,
                      )
                      
                    )
