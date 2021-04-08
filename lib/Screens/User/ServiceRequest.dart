@@ -1,6 +1,8 @@
+// ignore: unused_import
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:intl/intl.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
@@ -18,9 +20,13 @@ class _ServiceRequest extends State<ServiceRequest>{
   Color color3 = Color.fromRGBO(24, 154, 180, 1);
   Color color4 = Color.fromRGBO(4, 68, 95, 1);
 
+  // ignore: avoid_init_to_null
   Color _colorP = null;
+  // ignore: avoid_init_to_null
   FontWeight _weightP = null;
+  // ignore: avoid_init_to_null
   Color _colorD = null;
+  // ignore: avoid_init_to_null
   FontWeight _weightD = null;
 
   DateTime date1;
@@ -42,7 +48,7 @@ class _ServiceRequest extends State<ServiceRequest>{
               child: Container(
                 padding: EdgeInsets.all(minimumpadding * 5),
                 child: Image(
-                  image: AssetImage("lib/Screens/serviceRequestLogo.png"),
+                  image: AssetImage("Assets/images/serviceRequestLogo.png"),
                   width: minimumpadding*40,
                 ),
               ),
