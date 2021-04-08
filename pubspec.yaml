@@ -51,6 +51,7 @@ flutter:
     - Assets/images/google-symbol.png
     - Assets/images/fblogo5.png
     - Assets/images/twitter-4.png
+    - Assets/images/Logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
