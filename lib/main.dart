@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/SignUp.dart';
 import 'package:service_provider/Screens/Login.dart';
 import 'package:service_provider/Screens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/Admin/AddServices.dart';
+import 'package:service_provider/Screens/Admin/ManageServices.dart';
 
 main() => runApp(MyApp());
 
@@ -17,6 +20,9 @@ class MyApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id:(context)=>SignUpScreen(),
         ServiceRequest.id:(context)=>ServiceRequest(),
+        AddService.id:(context)=>AddService(),
+        AdminHome.id:(context)=>AdminHome(),
+        ManageService.id:(context)=>ManageService(),
       },
     );
   }
