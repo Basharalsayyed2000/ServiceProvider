@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
-class MyCustomTextField extends StatefulWidget{
+class CustomTextField extends StatefulWidget{
 
 
   /// Text that describes the input field.
@@ -32,11 +32,11 @@ class MyCustomTextField extends StatefulWidget{
 
   final bool iconBlank;
 
-  MyCustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
+  CustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
 
   @override
   State<StatefulWidget> createState() {
-    return _MyCustomTextField(
+    return _CustomTextField(
       onClicked: this.onClicked,
       labelText: this.labelText,
       hintText: this.hintText,
@@ -48,7 +48,7 @@ class MyCustomTextField extends StatefulWidget{
 
 }
 
-class _MyCustomTextField extends State<MyCustomTextField>{
+class _CustomTextField extends State<CustomTextField>{
   final String prefixText;
   final String labelText;
   final String hintText;
@@ -60,7 +60,7 @@ class _MyCustomTextField extends State<MyCustomTextField>{
   Color _iconColor = primaryColorDark;
   FontWeight _weight;
 
-  _MyCustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
+  _CustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
 
   @override
   Widget build(BuildContext context) {

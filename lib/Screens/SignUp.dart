@@ -15,15 +15,6 @@ class SignUpScreen extends StatefulWidget{
 
 class _SignUpScreen extends State<SignUpScreen>{
 
-  // ignore: non_constant_identifier_names
-  Color _ColorFN, _prefixColorFN = primaryColorDark;
-  // ignore: non_constant_identifier_names
-  Color _ColorEPN, _prefixColorEPN = primaryColorDark;
-  // ignore: non_constant_identifier_names
-  Color _ColorPW, _prefixColorPW = primaryColorDark;
-  // ignore: non_constant_identifier_names
-  Color _ColorCPW, _prefixColorCPW = primaryColorDark;
-
   @override
   Widget build(BuildContext context) {
 
@@ -37,7 +28,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                child: MyCustomTextField(
+                child: CustomTextField(
                     labelText: "Full Name",
                     hintText: "e.g Sam Wilson",
                     prefixIcon: Icons.person,
@@ -48,7 +39,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                child: MyCustomTextField(
+                child: CustomTextField(
                   labelText: "Email / Phone Number",
                   hintText: "example@yourmail.com / +XXX 123456789",
                   prefixIcon: Icons.mail,
@@ -59,7 +50,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                child: MyCustomTextField(
+                child: CustomTextField(
                   labelText: "Password",
                   hintText: "e.g Password",
                   prefixIcon: Icons.vpn_key,
@@ -70,7 +61,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                child: MyCustomTextField(
+                child: CustomTextField(
                   labelText: "Confirm Password",
                   hintText: "Confirm Password",
                   prefixIcon: Icons.vpn_key,
@@ -83,7 +74,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 3),
               // ignore: deprecated_member_use
-              child: MyCustomButton(
+              child: CustomButton(
                   textValue: "Sign Up",
                   onPressed: (){
 

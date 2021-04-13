@@ -17,48 +17,48 @@ class AddService extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CustomTextFied(
+            CustomTextField(
                 onClicked: (value) {
                   _name = value;
                 },
-                hint: 'Name',
-                icon: Icons.insert_emoticon),
+                hintText: 'Name',
+                prefixIcon: Icons.insert_emoticon),
             SizedBox(
               height: 10,
             ),
-            CustomTextFied(
+            CustomTextField(
                 onClicked: (value) {
                   _price = value;
                 },
-                hint: 'Price',
-                icon: Icons.money),
+                hintText: 'Price',
+                prefixIcon: Icons.money),
             SizedBox(
               height: 10,
             ),
-            CustomTextFied(
+            CustomTextField(
                 onClicked: (value) {
                   _desc = value;
                 },
-                hint: 'Description',
-                icon: Icons.text_fields),
+                hintText: 'Description',
+                prefixIcon: Icons.text_fields),
             SizedBox(
               height: 10,
             ),
-            CustomTextFied(
+            CustomTextField(
                 onClicked: (value) {
                   _catagory = value;
                 },
-                hint: 'Catagory',
-                icon: Icons.card_travel),
+                hintText: 'Catagory',
+                prefixIcon: Icons.card_travel),
             SizedBox(
               height: 10,
             ),
-            CustomTextFied(
+            CustomTextField(
                 onClicked: (value) {
                   _imageLoc = value;
                 },
-                hint: 'image Location',
-                icon: Icons.image),
+                hintText: 'image Location',
+                prefixIcon: Icons.image),
             SizedBox(
               height: 20,
             ),

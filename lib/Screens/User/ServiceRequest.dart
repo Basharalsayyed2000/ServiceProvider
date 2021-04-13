@@ -1,5 +1,4 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-//import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -43,39 +42,31 @@ class _ServiceRequest extends State<ServiceRequest>{
           children: <Widget>[
 
             Center(
-              child: Container(
-                padding: EdgeInsets.all(minimumpadding * 5),
-                child: Image(
-                  image: AssetImage("Assets/images/serviceRequestLogo.png"),
-                  width: 160.0,
-                  height: 160.0,
-                ),
+              child: Image(
+                image: AssetImage("Assets/images/serviceRequestLogo.png"),
+                width: 160.0,
+                height: 160.0,
               ),
             ),
 
             Container(
-
-              child: MyCustomTextField(
+              child: CustomTextField(
                 labelText: "Problem",
                 hintText: "Describe your current situation.",
               ),
             ),
 
             Container(
-              child: Container(
-                padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
-                height: 70,
-                child: getDateFormPicker(),
-              ),
+              padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
+              height: 70,
+              child: getDateFormPicker(),
             ),
 
             Container(
-              child: Container(
-                  height: height,
-                  padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
-                  margin: EdgeInsets.symmetric(vertical: minimumpadding*1.35),
-                  child: getTimeFormPicker()
-              ),
+                height: height,
+                padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
+                margin: EdgeInsets.symmetric(vertical: minimumpadding*1.35),
+                child: getTimeFormPicker()
             ),
 
 
@@ -127,7 +118,7 @@ class _ServiceRequest extends State<ServiceRequest>{
 
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 2),
-              child: MyCustomButton(
+              child: CustomButton(
                 textValue: "Continue",
                 onPressed: (){},
               ),
@@ -229,16 +220,3 @@ class _ServiceRequest extends State<ServiceRequest>{
   }
 
 }
-
-
-/*
-DatePickerWidget(
-                firstDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-                lastDate: DateTime(2030, 12, 31),
-                pickerTheme: DateTimePickerTheme(
-                  itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-                  dividerColor: primaryColor,
-                  backgroundColor: null
-                ),
-              ),
- */

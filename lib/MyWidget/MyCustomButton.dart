@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
-class MyCustomButton extends StatefulWidget{
+class CustomButton extends StatefulWidget{
   final String textValue;
   final double elevation;
   final Function onPressed;
-  
-  MyCustomButton({@required this.onPressed, @required this.textValue, this.elevation});
+
+  CustomButton({@required this.onPressed, @required this.textValue, this.elevation});
   
   State<StatefulWidget> createState(){
-    return _MyCustomButton(onPressed: onPressed, textValue: textValue, elevation: elevation);
+    return _CustomButton(onPressed: onPressed, textValue: textValue, elevation: elevation);
   }
 }
 
-class _MyCustomButton extends State<MyCustomButton>{
+class _CustomButton extends State<CustomButton>{
   final String textValue;
   final double elevation;
   final Function onPressed;
 
-  _MyCustomButton({@required this.onPressed, @required this.textValue, this.elevation});
+  _CustomButton({@required this.onPressed, @required this.textValue, this.elevation});
   
   Widget build(BuildContext context){
     return RaisedButton(
