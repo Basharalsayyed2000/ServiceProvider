@@ -77,7 +77,7 @@ class _CustomTextField extends State<CustomTextField>{
             //updates when the state changes
             setState(() {
               _color = hasFocus ? KprimaryColorDark : null;
-              _iconColor = hasFocus ? disabledColor : KprimaryColorDark;
+              _iconColor = hasFocus ? KdisabledColor : KprimaryColorDark;
               _weight = hasFocus ? FontWeight.bold : null;
             });
           },
@@ -114,13 +114,13 @@ class _CustomTextField extends State<CustomTextField>{
               //idle border Design
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20.0),
-                borderSide: BorderSide(color: disabledColor, width: 1.5),
+                borderSide: BorderSide(color: KdisabledColor, width: 1.5),
               ),
 
               //when textField is focused Design
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15.0),
-                borderSide: BorderSide(color: focusColor, width: 2.5),
+                borderSide: BorderSide(color: KfocusColor, width: 2.5),
               ),
 
             ),
@@ -131,7 +131,7 @@ class _CustomTextField extends State<CustomTextField>{
       if(this.prefixText == null){
         return Container(
           padding: EdgeInsets.only(top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
-          height: height,
+          height: Kheight,
           child: Focus(
 
             //function comes with Focus Widget
@@ -171,13 +171,13 @@ class _CustomTextField extends State<CustomTextField>{
                 //idle border Design
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
-                  borderSide: BorderSide(color: disabledColor, width: 1.5),
+                  borderSide: BorderSide(color: KdisabledColor, width: 1.5),
                 ),
 
                 //when textField is focused Design
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
-                  borderSide: BorderSide(color: focusColor, width: 2.5),
+                  borderSide: BorderSide(color: KfocusColor, width: 2.5),
                 ),
 
               ),
@@ -232,13 +232,13 @@ class _CustomTextField extends State<CustomTextField>{
                 //idle border Design
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
-                  borderSide: BorderSide(color: disabledColor, width: 1.5),
+                  borderSide: BorderSide(color: KdisabledColor, width: 1.5),
                 ),
 
                 //when textField is focused Design
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(color: focusColor, width: 2.5),
+                  borderSide: BorderSide(color: KfocusColor, width: 2.5),
                 ),
 
               ),

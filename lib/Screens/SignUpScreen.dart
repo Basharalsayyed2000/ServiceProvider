@@ -108,7 +108,7 @@ class _SignUpScreen extends State<SignUpScreen>{
       focusNode.addListener(() {
         if(focusNode.hasFocus){
           print("is focused");
-          color = focusColor;
+          color = KfocusColor;
         }else
           color = Colors.yellowAccent;
       });

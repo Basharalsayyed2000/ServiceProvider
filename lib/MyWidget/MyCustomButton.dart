@@ -24,11 +24,11 @@ class _CustomButton extends State<CustomButton>{
     // ignore: deprecated_member_use
     return RaisedButton(
       elevation: (elevation == null)? 4 : elevation,
-      color: KaccentColor,
+      color: KfocusColor,
       padding: EdgeInsets.all(Kminimumpadding * 1.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(color: KaccentColor)
+        side: BorderSide(color: KdisabledColor, width: 2)
       ),
       
       child: Text(

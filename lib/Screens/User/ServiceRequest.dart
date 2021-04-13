@@ -63,7 +63,7 @@ class _ServiceRequest extends State<ServiceRequest>{
             ),
 
             Container(
-                height: height,
+                height: Kheight,
                 padding: EdgeInsets.only(top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
                 margin: EdgeInsets.symmetric(vertical: Kminimumpadding*1.35),
                 child: getTimeFormPicker()
@@ -102,12 +102,12 @@ class _ServiceRequest extends State<ServiceRequest>{
 
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: disabledColor, width: 1.5),
+                      borderSide: BorderSide(color: KdisabledColor, width: 1.5),
                     ),
 
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: focusColor, width: 2.5),
+                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
                     ),
 
                   ),
@@ -145,12 +145,12 @@ class _ServiceRequest extends State<ServiceRequest>{
 
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(color: disabledColor, width: 1.5)
+              borderSide: BorderSide(color: KdisabledColor, width: 1.5)
           ),
 
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: focusColor, width: 2.5)
+              borderSide: BorderSide(color: KfocusColor, width: 2.5)
           )
 
       ),

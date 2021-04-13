@@ -21,8 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  firebase_auth: 
-  cloud_firestore:  
+  firebase_auth:
+  cloud_firestore: ^0.13.7
   datetime_picker_formfield: ^0.1.8
   flutter:
     sdk: flutter
@@ -49,7 +49,7 @@ flutter:
 
   assets:
     - Assets/images/
-   
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
