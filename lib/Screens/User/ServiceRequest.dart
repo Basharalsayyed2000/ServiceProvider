@@ -32,29 +32,63 @@ class _ServiceRequest extends State<ServiceRequest>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Service Provider"),
-        backgroundColor: primaryColor,
+        backgroundColor: KprimaryColor,
         centerTitle: true,
       ),
 
       body: Container(
-        margin: EdgeInsets.only(left: minimumpadding * 2, right: minimumpadding * 2),
+        margin: EdgeInsets.only(left: Kminimumpadding * 2, right: Kminimumpadding * 2),
         child: ListView(
           children: <Widget>[
 
             Center(
+<<<<<<< Updated upstream
               child: Image(
                 image: AssetImage("Assets/images/serviceRequestLogo.png"),
                 width: 160.0,
                 height: 160.0,
+=======
+              child: Container(
+                padding: EdgeInsets.all(Kminimumpadding * 5),
+                child: Image(
+                  image: AssetImage("Assets/images/serviceRequestLogo.png"),
+                  width: Kminimumpadding*40,
+                ),
+>>>>>>> Stashed changes
               ),
             ),
 
             Container(
+<<<<<<< Updated upstream
               child: CustomTextField(
                 labelText: "Problem",
                 hintText: "Describe your current situation.",
               ),
             ),
+=======
+              padding: EdgeInsets.only(bottom: Kminimumpadding * 3),
+              child: Focus(
+
+                onFocusChange: (hasFocus){
+                  setState(() {
+                    _colorP = hasFocus ? KprimaryColorDark : null;
+                    _weightP = hasFocus ? FontWeight.bold : null;
+                  });
+                },
+
+                child: TextField(
+
+                  autofocus: false,
+
+                  decoration: InputDecoration(
+                    labelText: "Problem",
+                    labelStyle: TextStyle(
+                      color: _colorP,
+                      fontWeight: _weightP
+                    ),
+                    hintText: "Describe your current situation.",
+                    // prefixIcon: Icon(Icons.title),
+>>>>>>> Stashed changes
 
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
@@ -72,13 +106,17 @@ class _ServiceRequest extends State<ServiceRequest>{
 
 
             Container(
+<<<<<<< Updated upstream
               padding: EdgeInsets.only(top: minimumpadding * 1.8),
               //height: 70,
+=======
+              padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
+>>>>>>> Stashed changes
               child: Focus(
 
                 onFocusChange: (hasFocus){
                   setState(() {
-                    _colorD = hasFocus ? primaryColorDark : null;
+                    _colorD = hasFocus ? KprimaryColorDark : null;
                     _weightD = hasFocus ? FontWeight.bold : null;
                   });
                 },
@@ -117,10 +155,22 @@ class _ServiceRequest extends State<ServiceRequest>{
             ),
 
             Container(
+<<<<<<< Updated upstream
               padding: EdgeInsets.only(top: minimumpadding * 2),
               child: CustomButton(
                 textValue: "Continue",
                 onPressed: (){},
+=======
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: DatePickerWidget(
+                firstDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+                lastDate: DateTime(2030, 12, DateTime.now().day),
+                pickerTheme: DateTimePickerTheme(
+                  itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
+                  dividerColor: KprimaryColor,
+                  backgroundColor: null
+                ),
+>>>>>>> Stashed changes
               ),
             )
 

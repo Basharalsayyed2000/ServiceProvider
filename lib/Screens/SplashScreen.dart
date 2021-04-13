@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:service_provider/Screens/SignUp.dart';
+import 'package:service_provider/Screens/LoginScreen.dart';
 
 class SplashScreen extends StatefulWidget{
   static String id = 'splashScreen';
@@ -17,7 +17,7 @@ class _SplashScreen extends State<SplashScreen>{
     Timer(Duration(seconds: 4),
         ()=>Navigator.push(context,
           MaterialPageRoute(
-              builder: (context) => SignUpScreen()
+              builder: (context) => LoginScreen(),
           )
         )
     );
@@ -28,16 +28,15 @@ class _SplashScreen extends State<SplashScreen>{
       backgroundColor: Colors.blueGrey,
       body: Center(
         child: Container(
-         child: Text("Hello World"),
-         // child: getLogo(),
+         child: getLogo(),
         ),
       ),
     );
   }
 
-  /*Widget getLogo(){
-    AssetImage assetImage = new AssetImage("lib/MyTools/images/Logo.png");
+  Widget getLogo(){
+    AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     return Image(image: assetImage);
-  }*/
+  }
 
 }
