@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:service_provider/MyWidget/MyCustomTextField.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
 class SignUpScreen extends StatefulWidget{
@@ -12,9 +14,6 @@ class SignUpScreen extends StatefulWidget{
 }
 
 class _SignUpScreen extends State<SignUpScreen>{
-
-  final _minimumpadding = 5.0;
-  final _height = 75.0;
 
   // ignore: non_constant_identifier_names
   Color _ColorFN, _prefixColorFN = primaryColorDark;
@@ -30,170 +29,62 @@ class _SignUpScreen extends State<SignUpScreen>{
 
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: _minimumpadding*2, bottom: _minimumpadding*2, left: _minimumpadding*4.5, right: _minimumpadding*4.5),
+        padding: EdgeInsets.only(top: minimumpadding*2, bottom: minimumpadding*2, left: minimumpadding*4.5, right: minimumpadding*4.5),
         child: ListView(
           children: <Widget>[
             getImage(),
 
             Container(
-              height: _height,
-              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
+              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                onFocusChange: (hasFocus){
-                  setState(() {
-                    _ColorFN = hasFocus ? focusColor : null;
-                    _prefixColorFN = hasFocus ? focusColor : primaryColorDark;
-                  });
-                },
-                child: TextField(
-                  autofocus: false,
-                  decoration: InputDecoration(
+                child: MyCustomTextField(
                     labelText: "Full Name",
-                    labelStyle: TextStyle(
-                      color: _ColorFN,
-                    ),
                     hintText: "e.g Sam Wilson",
-                    prefixIcon: Icon(Icons.person, color: _prefixColorFN),
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: accentColor, width: 1.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: focusColor, width: 2.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                  ),
+                    prefixIcon: Icons.person,
                 ),
               ),
             ),
 
             Container(
-              height: _height,
-              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
+              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                onFocusChange: (hasFocus){
-                  setState(() {
-                    _ColorEPN = hasFocus ? focusColor : null;
-                    _prefixColorEPN = hasFocus ? focusColor : primaryColorDark;
-                  });
-                },
-                child: TextField(
-                  autofocus: false,
-                  decoration: InputDecoration(
-                    labelText: "Email / Phone Number",
-                    labelStyle: TextStyle(
-                        color: _ColorEPN
-                    ),
-                    hintText: "example@yourmail.com / +XXX 123456789",
-                    prefixIcon: Icon(Icons.mail, color: _prefixColorEPN),
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: disabledColor, width: 1.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: primaryColor, width: 2.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                  ),
+                child: MyCustomTextField(
+                  labelText: "Email / Phone Number",
+                  hintText: "example@yourmail.com / +XXX 123456789",
+                  prefixIcon: Icons.mail,
                 ),
               ),
             ),
 
             Container(
-              height: _height,
-              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
+              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                onFocusChange: (hasFocus){
-                  setState(() {
-                    _ColorPW = hasFocus ? focusColor : null;
-                    _prefixColorPW = hasFocus ? focusColor : primaryColorDark;
-                  });
-                },
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    labelStyle: TextStyle(
-                        color: _ColorPW
-                    ),
-                    hintText: "e.g Password",
-                    prefixIcon: Icon(Icons.vpn_key, color: _prefixColorPW),
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: disabledColor, width: 1.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: focusColor, width: 2.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                  ),
+                child: MyCustomTextField(
+                  labelText: "Password",
+                  hintText: "e.g Password",
+                  prefixIcon: Icons.vpn_key,
                 ),
               ),
             ),
 
             Container(
-              height: _height,
-              padding: EdgeInsets.only(top: _minimumpadding * 2, bottom: _minimumpadding * 2),
+              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
               child: Focus(
-                onFocusChange: (hasFocus){
-                  setState(() {
-                    _ColorCPW = hasFocus ? focusColor : null;
-                    _prefixColorCPW = hasFocus ? focusColor : primaryColorDark;
-                  });
-                },
-                child: TextField(
-
-                  decoration: InputDecoration(
-                    labelText: "Confirm Password",
-                    labelStyle: TextStyle(
-                        color: _ColorCPW
-                    ),
-                    hintText: "Confirm Password",
-                    prefixIcon: Icon(Icons.vpn_key, color: _prefixColorCPW),
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: disabledColor, width: 1.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: focusColor, width: 2.5),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-
-                  ),
+                child: MyCustomTextField(
+                  labelText: "Confirm Password",
+                  hintText: "Confirm Password",
+                  prefixIcon: Icons.vpn_key,
                 ),
               ),
             ),
 
+
+
             Container(
-              padding: EdgeInsets.only(top: _minimumpadding * 3),
+              padding: EdgeInsets.only(top: minimumpadding * 3),
               // ignore: deprecated_member_use
-              child: RaisedButton(
-                  padding: EdgeInsets.all(_minimumpadding*1.5),
-                  elevation: 4.0,
-                  color: Color.fromRGBO(157, 215, 211, 1),
-
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: accentColor,)
-                  ),
-
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                    ),
-                  ),
+              child: MyCustomButton(
+                  textValue: "Sign Up",
                   onPressed: (){
 
                   }
@@ -202,7 +93,7 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Center(
               child: Container(
-                padding: EdgeInsets.only(top: _minimumpadding*6),
+                padding: EdgeInsets.only(top: minimumpadding*6),
                 child: Text(
                   "Already have an account? Sign in",
                   style: TextStyle(
@@ -234,12 +125,12 @@ class _SignUpScreen extends State<SignUpScreen>{
   }
 
   Widget getImage(){
-    AssetImage assetImage = new AssetImage("lib/images/Logo.png");
+    AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     Image image = new Image(image: assetImage);
     return Padding(
-      padding: EdgeInsets.all(_minimumpadding),
+      padding: EdgeInsets.all(minimumpadding),
       child: Container(
-        padding: EdgeInsets.all(_minimumpadding),
+        padding: EdgeInsets.all(minimumpadding),
         width: 200.0,
         height: 200.0,
         child: image,

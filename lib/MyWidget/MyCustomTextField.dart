@@ -1,44 +1,253 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
+class MyCustomTextField extends StatefulWidget{
 
-class CustomTextFied extends StatelessWidget {
-  final String hint;
-  final IconData icon;
+
+  /// Text that describes the input field.
+  ///
+  /// When the input field is empty and unfocused, the label is displayed on top of the input field (i.e., at the same
+  /// location on the screen where text may be entered in the input field). When the input field receives focus (or if
+  /// the field is non-empty), the label moves above (i.e., vertically adjacent to) the input field.
+  final String labelText;
+
+
+  /// Text that suggests what sort of input the field accepts.
+  ///
+  /// Displayed on top of the [InputDecorator.child] (i.e., at the same location
+  /// on the screen where text may be entered in the [InputDecorator.child])
+  /// when the input [isEmpty] and either (a) [labelText] is null or (b) the
+  /// input has the focus.
+  final String hintText;
+
+
+  final IconData prefixIcon;
+
+
+  final String prefixText;
+
+
   final Function onClicked;
-  final Widget child;
-  CustomTextFied({@required this.onClicked,@required this.hint,@required this.icon,this.child});
+
+
+  final bool iconBlank;
+
+  MyCustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _MyCustomTextField(
+      onClicked: this.onClicked,
+      labelText: this.labelText,
+      hintText: this.hintText,
+      prefixIcon: this.prefixIcon,
+      prefixText: this.prefixText,
+      iconBlank: this.iconBlank,
+    );
+  }
+
+}
+
+class _MyCustomTextField extends State<MyCustomTextField>{
+  final String prefixText;
+  final String labelText;
+  final String hintText;
+  final IconData prefixIcon;
+  final Function onClicked;
+  final bool iconBlank;
+
+  Color _color;
+  Color _iconColor = primaryColorDark;
+  FontWeight _weight;
+
+  _MyCustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+
+    if(this.prefixIcon != null || this.iconBlank == true){
+      return Container(
+        height: 55.0,
+        child: Focus(
+
+          //function comes with Focus Widget
+          //gives a bool hasFocus variable used to track textField focus state
+          onFocusChange: (hasFocus){
+
+            //updates when the state changes
+            setState(() {
+              _color = hasFocus ? primaryColorDark : null;
+              _iconColor = hasFocus ? disabledColor : primaryColorDark;
+              _weight = hasFocus ? FontWeight.bold : null;
+            });
+          },
+
+          child: TextFormField(
+            autofocus: false,
+
+            // ignore: missing_return
+            validator: (value){
+              if(value.isEmpty)
+                return 'value cant be empty';
+
+            },
+
+            onSaved: onClicked,
+
+            decoration: InputDecoration(
+              //textLabel and hintText values
+              labelText: this.labelText,
+              hintText: this.hintText,
+
+              //PrefixIcon with Design
+              prefixIcon: Icon(
+                this.prefixIcon,
+                color: _iconColor,
+              ),
+
+              //textLabel Design
+              labelStyle: TextStyle(
+                color: _color,
+                fontWeight: _weight,
+              ),
+
+              //idle border Design
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide(color: disabledColor, width: 1.5),
+              ),
+
+              //when textField is focused Design
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: BorderSide(color: focusColor, width: 2.5),
+              ),
+
+            ),
+          ),
+        ),
+      );
+    }else{
+      if(this.prefixText == null){
+        return Container(
+          padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
+          height: height,
+          child: Focus(
+
+            //function comes with Focus Widget
+            //gives a bool hasFocus variable used to track textField focus state
+            onFocusChange: (hasFocus){
+
+              //updates when the state changes
+              setState(() {
+                _color = hasFocus ? primaryColorDark : null;
+                _weight = hasFocus ? FontWeight.bold : null;
+              });
+            },
+
             child: TextFormField(
+              autofocus: false,
+
               // ignore: missing_return
               validator: (value){
-                 if(value.isEmpty)
-                 return 'value cant be empty';
+                if(value.isEmpty)
+                  return 'value cant be empty';
 
               },
+
               onSaved: onClicked,
-              cursorColor: primaryColor,
+
               decoration: InputDecoration(
-                hintText: "$hint",
-                prefixIcon: Icon(
-                  this.icon,
-                  color: primaryColor,
+                //textLabel and hintText values
+                labelText: this.labelText,
+                hintText: this.hintText,
+
+                //textLabel Design
+                labelStyle: TextStyle(
+                  color: _color,
+                  fontWeight: _weight,
                 ),
-                fillColor: primaryColor,
-                filled: true,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Colors.white),
-                ),
+
+                //idle border Design
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: disabledColor, width: 1.5),
                 ),
+
+                //when textField is focused Design
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: focusColor, width: 2.5),
+                ),
+
               ),
             ),
-          );
+          ),
+        );
+      }else{
+        return Container(
+          height: 55.0,
+          child: Focus(
+
+            //function comes with Focus Widget
+            //gives a bool hasFocus variable used to track textField focus state
+            onFocusChange: (hasFocus){
+
+              //updates when the state changes
+              setState(() {
+                _color = hasFocus ? primaryColorDark : null;
+                //_weight = hasFocus ? FontWeight.bold : null;
+              });
+            },
+
+            child: TextFormField(
+              autofocus: false,
+
+              // ignore: missing_return
+              validator: (value){
+                if(value.isEmpty)
+                  return 'value cant be empty';
+
+              },
+
+              onSaved: onClicked,
+
+              decoration: InputDecoration(
+                //textLabel and hintText values
+                labelText: this.labelText,
+                hintText: this.hintText,
+                //prefixText: this.prefixText,
+
+                //textLabel Design
+                labelStyle: TextStyle(
+                  color: _color,
+                  fontWeight: _weight,
+                ),
+
+                prefixStyle: TextStyle(
+                  fontWeight: _weight,
+                  color: _color,
+                ),
+
+                //idle border Design
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: disabledColor, width: 1.5),
+                ),
+
+                //when textField is focused Design
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(color: focusColor, width: 2.5),
+                ),
+
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
   }
+
 }

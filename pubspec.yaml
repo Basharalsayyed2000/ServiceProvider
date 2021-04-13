@@ -22,7 +22,6 @@ environment:
 
 dependencies:
   datetime_picker_formfield: ^0.1.8
-  flutter_holo_date_picker:
   flutter:
     sdk: flutter
 
