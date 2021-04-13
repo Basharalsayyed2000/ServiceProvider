@@ -57,7 +57,7 @@ class _CustomTextField extends State<CustomTextField>{
   final bool iconBlank;
 
   Color _color;
-  Color _iconColor = primaryColorDark;
+  Color _iconColor = KprimaryColorDark;
   FontWeight _weight;
 
   _CustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
@@ -76,8 +76,8 @@ class _CustomTextField extends State<CustomTextField>{
 
             //updates when the state changes
             setState(() {
-              _color = hasFocus ? primaryColorDark : null;
-              _iconColor = hasFocus ? disabledColor : primaryColorDark;
+              _color = hasFocus ? KprimaryColorDark : null;
+              _iconColor = hasFocus ? disabledColor : KprimaryColorDark;
               _weight = hasFocus ? FontWeight.bold : null;
             });
           },
@@ -140,7 +140,7 @@ class _CustomTextField extends State<CustomTextField>{
 
               //updates when the state changes
               setState(() {
-                _color = hasFocus ? primaryColorDark : null;
+                _color = hasFocus ? KprimaryColorDark : null;
                 _weight = hasFocus ? FontWeight.bold : null;
               });
             },
@@ -156,7 +156,6 @@ class _CustomTextField extends State<CustomTextField>{
               },
 
               onSaved: onClicked,
-<<<<<<< Updated upstream
 
               decoration: InputDecoration(
                 //textLabel and hintText values
@@ -176,17 +175,6 @@ class _CustomTextField extends State<CustomTextField>{
                 ),
 
                 //when textField is focused Design
-=======
-              cursorColor: KprimaryColor,
-              decoration: InputDecoration(
-                hintText: "$hint",
-                prefixIcon: Icon(
-                  this.icon,
-                  color: KprimaryColor,
-                ),
-                fillColor: KprimaryColor,
-                filled: true,
->>>>>>> Stashed changes
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                   borderSide: BorderSide(color: focusColor, width: 2.5),
@@ -207,7 +195,7 @@ class _CustomTextField extends State<CustomTextField>{
 
               //updates when the state changes
               setState(() {
-                _color = hasFocus ? primaryColorDark : null;
+                _color = hasFocus ? KprimaryColorDark : null;
                 //_weight = hasFocus ? FontWeight.bold : null;
               });
             },

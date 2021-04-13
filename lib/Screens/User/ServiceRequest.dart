@@ -42,53 +42,19 @@ class _ServiceRequest extends State<ServiceRequest>{
           children: <Widget>[
 
             Center(
-<<<<<<< Updated upstream
               child: Image(
                 image: AssetImage("Assets/images/serviceRequestLogo.png"),
                 width: 160.0,
                 height: 160.0,
-=======
-              child: Container(
-                padding: EdgeInsets.all(Kminimumpadding * 5),
-                child: Image(
-                  image: AssetImage("Assets/images/serviceRequestLogo.png"),
-                  width: Kminimumpadding*40,
-                ),
->>>>>>> Stashed changes
               ),
             ),
 
             Container(
-<<<<<<< Updated upstream
               child: CustomTextField(
                 labelText: "Problem",
-                hintText: "Describe your current situation.",
+                hintText: "Describe your current situation.", onClicked: null,
               ),
             ),
-=======
-              padding: EdgeInsets.only(bottom: Kminimumpadding * 3),
-              child: Focus(
-
-                onFocusChange: (hasFocus){
-                  setState(() {
-                    _colorP = hasFocus ? KprimaryColorDark : null;
-                    _weightP = hasFocus ? FontWeight.bold : null;
-                  });
-                },
-
-                child: TextField(
-
-                  autofocus: false,
-
-                  decoration: InputDecoration(
-                    labelText: "Problem",
-                    labelStyle: TextStyle(
-                      color: _colorP,
-                      fontWeight: _weightP
-                    ),
-                    hintText: "Describe your current situation.",
-                    // prefixIcon: Icon(Icons.title),
->>>>>>> Stashed changes
 
             Container(
               padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
@@ -106,12 +72,8 @@ class _ServiceRequest extends State<ServiceRequest>{
 
 
             Container(
-<<<<<<< Updated upstream
               padding: EdgeInsets.only(top: minimumpadding * 1.8),
               //height: 70,
-=======
-              padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
->>>>>>> Stashed changes
               child: Focus(
 
                 onFocusChange: (hasFocus){
@@ -155,22 +117,10 @@ class _ServiceRequest extends State<ServiceRequest>{
             ),
 
             Container(
-<<<<<<< Updated upstream
               padding: EdgeInsets.only(top: minimumpadding * 2),
               child: CustomButton(
                 textValue: "Continue",
                 onPressed: (){},
-=======
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: DatePickerWidget(
-                firstDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-                lastDate: DateTime(2030, 12, DateTime.now().day),
-                pickerTheme: DateTimePickerTheme(
-                  itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-                  dividerColor: KprimaryColor,
-                  backgroundColor: null
-                ),
->>>>>>> Stashed changes
               ),
             )
 
@@ -211,7 +161,7 @@ class _ServiceRequest extends State<ServiceRequest>{
         setState(() {
           if(selectedDate != null){
             _date = selectedDate;
-            _colorDt =  primaryColorDark;
+            _colorDt =  KprimaryColorDark;
             _weightDt = FontWeight.bold;
           }else{
             _colorDt =  null;
@@ -242,12 +192,12 @@ class _ServiceRequest extends State<ServiceRequest>{
 
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: accentColor, width: 1.5)
+            borderSide: BorderSide(color: KaccentColor, width: 1.5)
         ),
 
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: accentColor, width: 2.5)
+            borderSide: BorderSide(color: KaccentColor, width: 2.5)
         ),
 
       ),
@@ -256,7 +206,7 @@ class _ServiceRequest extends State<ServiceRequest>{
         setState(() {
           if(selectedTime != null){
             _time = selectedTime;
-            _colorT =  primaryColorDark;
+            _colorT =  KprimaryColorDark;
             _weightT = FontWeight.bold;
           }else{
             _colorT =  null;

@@ -23,56 +23,27 @@ class AddService extends StatelessWidget {
                 onClicked: (value) {
                   _name = value;
                 },
-<<<<<<< Updated upstream
                 hintText: 'Name',
-                prefixIcon: Icons.insert_emoticon),
+                prefixIcon: Icons.insert_emoticon, labelText: '',),
             SizedBox(
               height: 10,
             ),
-            CustomTextField(
-                onClicked: (value) {
-                  _price = value;
-                },
-                hintText: 'Price',
-                prefixIcon: Icons.money),
-=======
-                hint: 'Service Name',
-                icon: Icons.insert_emoticon),
-
->>>>>>> Stashed changes
-            SizedBox(
-              height: 10,
-            ),
+          
             CustomTextField(
                 onClicked: (value) {
                   _desc = value;
                 },
-<<<<<<< Updated upstream
                 hintText: 'Description',
-                prefixIcon: Icons.text_fields),
+                prefixIcon: Icons.text_fields, labelText: '',),
             SizedBox(
               height: 10,
             ),
             CustomTextField(
-=======
-                hint: 'Service Description',
-                icon: Icons.text_fields),
-            SizedBox(
-              height: 10,
-            ),
-
-            CustomTextFied(
->>>>>>> Stashed changes
                 onClicked: (value) {
                   _imageLocation = value;
                 },
-<<<<<<< Updated upstream
-                hintText: 'Catagory',
-                prefixIcon: Icons.card_travel),
-=======
-                hint: 'Added Date',
-                icon: Icons.schedule),
->>>>>>> Stashed changes
+                hintText: 'ImageLocation',
+                prefixIcon: Icons.card_travel, labelText: '',),
             SizedBox(
               height: 20,
             ),
@@ -81,7 +52,7 @@ class AddService extends StatelessWidget {
                   _imageLocation = value;
                 },
                 hintText: 'image Location',
-                prefixIcon: Icons.image),
+                prefixIcon: Icons.image, labelText: '',),
             SizedBox(
               height: 20,
             ),

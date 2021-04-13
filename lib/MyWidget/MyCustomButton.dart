@@ -21,13 +21,14 @@ class _CustomButton extends State<CustomButton>{
   _CustomButton({@required this.onPressed, @required this.textValue, this.elevation});
   
   Widget build(BuildContext context){
+    // ignore: deprecated_member_use
     return RaisedButton(
       elevation: (elevation == null)? 4 : elevation,
-      color: accentColor,
+      color: KaccentColor,
       padding: EdgeInsets.all(minimumpadding * 1.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(color: accentColor)
+        side: BorderSide(color: KaccentColor)
       ),
       
       child: Text(
