@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
+import 'package:service_provider/MyWidget/MyCustomTextField.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+// ignore: unused_import
+
 
 class LoginScreen extends StatefulWidget {
   static String id = 'LoginScreen';
@@ -13,8 +16,8 @@ class _LoginScreen extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+       
         children: <Widget>[
           SizedBox(
             height: 25.0,
@@ -34,41 +37,29 @@ class _LoginScreen extends State<LoginScreen> {
             padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
             child: Column(
               children: <Widget>[
-                TextField(
-                    decoration: InputDecoration(
-                  labelText: "Username",
-                  labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
-                  prefixIcon:
-                      Icon(Icons.person, color: Color.fromRGBO(24, 48, 48, 1)),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromRGBO(157, 215, 211, 1),
-                      ),
-                      borderRadius: BorderRadius.circular(20.0)),
-                )),
+                Container(
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
+              child: Focus(
+                child: CustomTextField(
+                    labelText: "Name",
+                    hintText: "e.g Sam Wilson",
+                    prefixIcon: Icons.person, onClicked: null,
+                ),
+              ),
+            ),
                 SizedBox(
                   height: 30.0,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                      labelText: "Password",
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      prefixIcon: Icon(
-                        Icons.vpn_key,
-                        color: Color.fromRGBO(24, 48, 48, 1),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromRGBO(157, 215, 211, 1)),
-                          borderRadius: BorderRadius.circular(20.0))),
-                  obscureText: true,
+               Container(
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
+              child: Focus(
+                child: CustomTextField(
+                  labelText: "Password",
+                  hintText: "e.g Password",
+                  prefixIcon: Icons.vpn_key, onClicked: null,
                 ),
+              ),
+            ),
 
                 SizedBox(
                   height: 2.0,
