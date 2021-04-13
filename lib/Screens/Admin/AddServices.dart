@@ -20,44 +20,39 @@ class AddService extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CustomTextField(
-              labelText: "",
                 onClicked: (value) {
                   _name = value;
                 },
                 hintText: 'Name',
-                prefixIcon: Icons.insert_emoticon),
+                prefixIcon: Icons.insert_emoticon, labelText: '',),
             SizedBox(
               height: 10,
             ),
-            
-            
+          
             CustomTextField(
-              labelText: "",
                 onClicked: (value) {
                   _desc = value;
                 },
                 hintText: 'Description',
-                prefixIcon: Icons.text_fields),
+                prefixIcon: Icons.text_fields, labelText: '',),
             SizedBox(
               height: 10,
             ),
             CustomTextField(
-              labelText: "",
                 onClicked: (value) {
                   _imageLocation = value;
                 },
-                hintText: 'Catagory',
-                prefixIcon: Icons.card_travel),
+                hintText: 'ImageLocation',
+                prefixIcon: Icons.card_travel, labelText: '',),
             SizedBox(
               height: 20,
             ),
             CustomTextField(
-              labelText: "",
                 onClicked: (value) {
                   _imageLocation = value;
                 },
                 hintText: 'image Location',
-                prefixIcon: Icons.image),
+                prefixIcon: Icons.image, labelText: '',),
             SizedBox(
               height: 20,
             ),
