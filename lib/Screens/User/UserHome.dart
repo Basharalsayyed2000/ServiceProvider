@@ -33,7 +33,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/plumber.webp",height: 130,),
+             Image.asset("Assets/images/plumber.webp",height: 130,),
              Text("Plumber",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -46,7 +46,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/electrician.png",height: 130,),
+             Image.asset("Assets/images/electrician.png",height: 130,),
              Text("Electrician",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -59,7 +59,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/carpenter.webp",height: 130,),
+             Image.asset("Assets/images/carpenter.webp",height: 130,),
              Text("Carpenter",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -72,7 +72,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/painter.png",height: 130,),
+             Image.asset("Assets/images/painter.png",height: 130,),
              Text("Painter",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -85,7 +85,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/blacksmith.png",height: 130,),
+             Image.asset("Assets/images/blacksmith.png",height: 130,),
              Text("Smith",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -98,7 +98,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/conditioning.webp",height: 130,),
+             Image.asset("Assets/images/conditioning.webp",height: 130,),
              Text("Conditioning",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -111,7 +111,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/parquet.png",height: 130,),
+             Image.asset("Assets/images/parquet.png",height: 130,),
              Text("Parquet",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -124,7 +124,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/marble.webp",height: 130,),
+             Image.asset("Assets/images/marble.webp",height: 130,),
              Text("Marble",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
@@ -137,7 +137,7 @@ class _ProviderscreenState extends State<Providerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-             Image.asset("assets/images/ceramictiles.png",height: 130,),
+             Image.asset("Assets/images/ceramictiles.png",height: 130,),
              Text("Ceramic tiles",
              style: TextStyle(fontWeight: FontWeight.bold),)
             ],),
