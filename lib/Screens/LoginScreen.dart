@@ -94,7 +94,7 @@ class _LoginScreen extends State<LoginScreen> {
                   height: 40.0,
                   child: Material(
                     borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.blueAccent,
+                    shadowColor: Colors.black,
                     color: Color.fromRGBO(157, 215, 211, 1),
                     elevation: 7.0,
                     child: GestureDetector(
