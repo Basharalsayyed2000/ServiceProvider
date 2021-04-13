@@ -21,8 +21,15 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+<<<<<<< Updated upstream
   firebase_auth:
   cloud_firestore: ^0.13.7
+=======
+  provider:
+  modal_progress_hud:
+  firebase_auth: 
+  cloud_firestore:  
+>>>>>>> Stashed changes
   datetime_picker_formfield: ^0.1.8
   flutter:
     sdk: flutter
