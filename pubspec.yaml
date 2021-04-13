@@ -51,7 +51,15 @@ flutter:
     - Assets/images/fblogo5.png
     - Assets/images/twitter-4.png
     - Assets/images/Logo.png
-
+    - Assets/images/plumber.webp
+    - Assets/images/electrician.png
+    - Assets/images/carpenter.webp
+    - Assets/images/ceramictiles.png
+    - Assets/images/painter.png
+    - Assets/images/blacksmith.png
+    - Assets/images/parquet.png
+    - Assets/images/conditioning.webp
+    - Assets/images/marble.webp
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
