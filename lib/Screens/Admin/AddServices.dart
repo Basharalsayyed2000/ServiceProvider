@@ -20,63 +20,39 @@ class AddService extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CustomTextField(
+              labelText: "",
                 onClicked: (value) {
                   _name = value;
                 },
-<<<<<<< Updated upstream
                 hintText: 'Name',
                 prefixIcon: Icons.insert_emoticon),
             SizedBox(
               height: 10,
             ),
+            
+            
             CustomTextField(
-                onClicked: (value) {
-                  _price = value;
-                },
-                hintText: 'Price',
-                prefixIcon: Icons.money),
-=======
-                hint: 'Service Name',
-                icon: Icons.insert_emoticon),
-
->>>>>>> Stashed changes
-            SizedBox(
-              height: 10,
-            ),
-            CustomTextField(
+              labelText: "",
                 onClicked: (value) {
                   _desc = value;
                 },
-<<<<<<< Updated upstream
                 hintText: 'Description',
                 prefixIcon: Icons.text_fields),
             SizedBox(
               height: 10,
             ),
             CustomTextField(
-=======
-                hint: 'Service Description',
-                icon: Icons.text_fields),
-            SizedBox(
-              height: 10,
-            ),
-
-            CustomTextFied(
->>>>>>> Stashed changes
+              labelText: "",
                 onClicked: (value) {
                   _imageLocation = value;
                 },
-<<<<<<< Updated upstream
                 hintText: 'Catagory',
                 prefixIcon: Icons.card_travel),
-=======
-                hint: 'Added Date',
-                icon: Icons.schedule),
->>>>>>> Stashed changes
             SizedBox(
               height: 20,
             ),
             CustomTextField(
+              labelText: "",
                 onClicked: (value) {
                   _imageLocation = value;
                 },
