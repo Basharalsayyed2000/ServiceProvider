@@ -156,6 +156,7 @@ class _CustomTextField extends State<CustomTextField>{
               },
 
               onSaved: onClicked,
+<<<<<<< Updated upstream
 
               decoration: InputDecoration(
                 //textLabel and hintText values
@@ -175,6 +176,17 @@ class _CustomTextField extends State<CustomTextField>{
                 ),
 
                 //when textField is focused Design
+=======
+              cursorColor: KprimaryColor,
+              decoration: InputDecoration(
+                hintText: "$hint",
+                prefixIcon: Icon(
+                  this.icon,
+                  color: KprimaryColor,
+                ),
+                fillColor: KprimaryColor,
+                filled: true,
+>>>>>>> Stashed changes
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                   borderSide: BorderSide(color: focusColor, width: 2.5),

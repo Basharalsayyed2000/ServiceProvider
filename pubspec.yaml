@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   firebase_auth: 
+  cloud_firestore:  
   datetime_picker_formfield: ^0.1.8
   flutter:
     sdk: flutter
@@ -47,10 +48,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - Assets/images/google-symbol.png
-    - Assets/images/fblogo5.png
-    - Assets/images/twitter-4.png
-    - Assets/images/Logo.png
+    - Assets/images/
+   
 
   # To add assets to your application, add an assets section, like this:
   # assets:

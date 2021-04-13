@@ -10,7 +10,7 @@ class AdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: KprimaryColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,20 +23,20 @@ class AdminHome extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, AddService.id);
             },
-            child: Text("Add Product"),
+            child: Text("Add services"),
           ),
           // ignore: deprecated_member_use
           RaisedButton(
             onPressed: () {
               Navigator.pushNamed(context, ManageService.id);
             },
-            child: Text("Manage Product"),
+            child: Text("Manage Services"),
           ),
           // ignore: deprecated_member_use
           RaisedButton(
             onPressed: () {
             },
-            child: Text("Veiw orders"),
+            child: Text("Veiw Requise"),
           ),
         ],
       ),
