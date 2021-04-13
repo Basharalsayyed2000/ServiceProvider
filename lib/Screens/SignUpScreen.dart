@@ -20,13 +20,13 @@ class _SignUpScreen extends State<SignUpScreen>{
 
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: minimumpadding*2, bottom: minimumpadding*2, left: minimumpadding*4.5, right: minimumpadding*4.5),
+        padding: EdgeInsets.only(top: Kminimumpadding*2, bottom: Kminimumpadding*2, left: Kminimumpadding*4.5, right: Kminimumpadding*4.5),
         child: ListView(
           children: <Widget>[
             getImage(),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
               child: Focus(
                 child: CustomTextField(
                     labelText: "Full Name",
@@ -37,9 +37,10 @@ class _SignUpScreen extends State<SignUpScreen>{
             ),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
               child: Focus(
                 child: CustomTextField(
+                  
                   labelText: "Email / Phone Number",
                   hintText: "example@yourmail.com / +XXX 123456789",
                   prefixIcon: Icons.mail, onClicked: null,
@@ -48,7 +49,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             ),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
               child: Focus(
                 child: CustomTextField(
                   labelText: "Password",
@@ -59,7 +60,7 @@ class _SignUpScreen extends State<SignUpScreen>{
             ),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 1.5, bottom: minimumpadding * 1.5),
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
               child: Focus(
                 child: CustomTextField(
                   labelText: "Confirm Password",
@@ -72,7 +73,7 @@ class _SignUpScreen extends State<SignUpScreen>{
 
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 3),
+              padding: EdgeInsets.only(top: Kminimumpadding * 3),
               // ignore: deprecated_member_use
               child: CustomButton(
                   textValue: "Sign Up",
@@ -84,7 +85,7 @@ class _SignUpScreen extends State<SignUpScreen>{
 
             Center(
               child: Container(
-                padding: EdgeInsets.only(top: minimumpadding*6),
+                padding: EdgeInsets.only(top: Kminimumpadding*6),
                 child: Text(
                   "Already have an account? Sign in",
                   style: TextStyle(
@@ -119,9 +120,9 @@ class _SignUpScreen extends State<SignUpScreen>{
     AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     Image image = new Image(image: assetImage);
     return Padding(
-      padding: EdgeInsets.all(minimumpadding),
+      padding: EdgeInsets.all(Kminimumpadding),
       child: Container(
-        padding: EdgeInsets.all(minimumpadding),
+        padding: EdgeInsets.all(Kminimumpadding),
         width: 200.0,
         height: 200.0,
         child: image,

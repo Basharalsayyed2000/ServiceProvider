@@ -25,7 +25,7 @@ class _CustomButton extends State<CustomButton>{
     return RaisedButton(
       elevation: (elevation == null)? 4 : elevation,
       color: KaccentColor,
-      padding: EdgeInsets.all(minimumpadding * 1.5),
+      padding: EdgeInsets.all(Kminimumpadding * 1.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
         side: BorderSide(color: KaccentColor)

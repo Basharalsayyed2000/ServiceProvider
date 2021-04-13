@@ -6,6 +6,7 @@ import 'package:service_provider/Screens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
 
 main() => runApp(MyApp());
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
        routes: {
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
+        Providerscreen.id: (context) => Providerscreen(),
         SignUpScreen.id:(context)=>SignUpScreen(),
         ServiceRequest.id:(context)=>ServiceRequest(),
         AddService.id:(context)=>AddService(),

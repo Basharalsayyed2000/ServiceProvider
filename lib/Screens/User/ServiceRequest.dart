@@ -57,22 +57,22 @@ class _ServiceRequest extends State<ServiceRequest>{
             ),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
               height: 70,
               child: getDateFormPicker(),
             ),
 
             Container(
                 height: height,
-                padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
-                margin: EdgeInsets.symmetric(vertical: minimumpadding*1.35),
+                padding: EdgeInsets.only(top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
+                margin: EdgeInsets.symmetric(vertical: Kminimumpadding*1.35),
                 child: getTimeFormPicker()
             ),
 
 
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 1.8),
+              padding: EdgeInsets.only(top: Kminimumpadding * 1.8),
               //height: 70,
               child: Focus(
 
@@ -117,7 +117,7 @@ class _ServiceRequest extends State<ServiceRequest>{
             ),
 
             Container(
-              padding: EdgeInsets.only(top: minimumpadding * 2),
+              padding: EdgeInsets.only(top: Kminimumpadding * 2),
               child: CustomButton(
                 textValue: "Continue",
                 onPressed: (){},

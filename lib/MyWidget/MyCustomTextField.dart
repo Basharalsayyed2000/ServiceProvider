@@ -130,7 +130,7 @@ class _CustomTextField extends State<CustomTextField>{
     }else{
       if(this.prefixText == null){
         return Container(
-          padding: EdgeInsets.only(top: minimumpadding * 1.35, bottom: minimumpadding * 1.35),
+          padding: EdgeInsets.only(top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
           height: height,
           child: Focus(
 
