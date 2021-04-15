@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
-class CustomTextField extends StatefulWidget{
-
-
+class CustomTextField extends StatefulWidget {
   /// Text that describes the input field.
   ///
   /// When the input field is empty and unfocused, the label is displayed on top of the input field (i.e., at the same
   /// location on the screen where text may be entered in the input field). When the input field receives focus (or if
   /// the field is non-empty), the label moves above (i.e., vertically adjacent to) the input field.
   final String labelText;
-
 
   /// Text that suggests what sort of input the field accepts.
   ///
@@ -20,19 +17,21 @@ class CustomTextField extends StatefulWidget{
   /// input has the focus.
   final String hintText;
 
-
   final IconData prefixIcon;
-
 
   final String prefixText;
 
-
   final Function onClicked;
-
 
   final bool iconBlank;
 
-  CustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
+  CustomTextField(
+      {@required this.onClicked,
+      @required this.labelText,
+      this.hintText,
+      this.prefixIcon,
+      this.prefixText,
+      this.iconBlank});
 
   @override
   State<StatefulWidget> createState() {
@@ -45,10 +44,9 @@ class CustomTextField extends StatefulWidget{
       iconBlank: this.iconBlank,
     );
   }
-
 }
 
-class _CustomTextField extends State<CustomTextField>{
+class _CustomTextField extends State<CustomTextField> {
   final String prefixText;
   final String labelText;
   final String hintText;
@@ -60,20 +58,39 @@ class _CustomTextField extends State<CustomTextField>{
   Color _iconColor = KprimaryColorDark;
   FontWeight _weight;
 
-  _CustomTextField({@required this.onClicked, @required this.labelText, this.hintText, this.prefixIcon, this.prefixText, this.iconBlank});
+  _CustomTextField(
+      {@required this.onClicked,
+      @required this.labelText,
+      this.hintText,
+      this.prefixIcon,
+      this.prefixText,
+      this.iconBlank});
+
+  // ignore: missing_return
+  String _errorMessage(String str) {
+    switch (labelText) {
+      case "Full Name":
+        return "Name is empty !";
+      case "Password":
+        return "Password is empty !";
+      case "Name":
+        return "Name is empty !";
+      case "Email / Phone Number":
+        return "Email / Phone Number is empty !";
+      case "Confirm Password":
+        return "Confirm Password is empty !";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    if(this.prefixIcon != null || this.iconBlank == true){
+    if (this.prefixIcon != null || this.iconBlank == true) {
       return Container(
         height: 55.0,
         child: Focus(
-
           //function comes with Focus Widget
           //gives a bool hasFocus variable used to track textField focus state
-          onFocusChange: (hasFocus){
-
+          onFocusChange: (hasFocus) {
             //updates when the state changes
             setState(() {
               _color = hasFocus ? KprimaryColorDark : null;
@@ -86,9 +103,8 @@ class _CustomTextField extends State<CustomTextField>{
             autofocus: false,
 
             // ignore: missing_return
-            validator: (value){
-              if(value.isEmpty)
-                return 'value cant be empty';
+            validator: (value) {
+              if (value.isEmpty) return _errorMessage(labelText);
             },
 
             onSaved: onClicked,
@@ -125,17 +141,16 @@ class _CustomTextField extends State<CustomTextField>{
           ),
         ),
       );
-    }else{
-      if(this.prefixText == null){
+    } else {
+      if (this.prefixText == null) {
         return Container(
-          padding: EdgeInsets.only(top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
+          padding: EdgeInsets.only(
+              top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
           height: Kheight,
           child: Focus(
-
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
-            onFocusChange: (hasFocus){
-
+            onFocusChange: (hasFocus) {
               //updates when the state changes
               setState(() {
                 _color = hasFocus ? KprimaryColorDark : null;
@@ -147,10 +162,8 @@ class _CustomTextField extends State<CustomTextField>{
               autofocus: false,
 
               // ignore: missing_return
-              validator: (value){
-                if(value.isEmpty)
-                  return 'value cant be empty';
-
+              validator: (value) {
+                if (value.isEmpty) return 'value cant be empty';
               },
 
               onSaved: onClicked,
@@ -177,20 +190,17 @@ class _CustomTextField extends State<CustomTextField>{
                   borderRadius: BorderRadius.circular(20.0),
                   borderSide: BorderSide(color: KfocusColor, width: 2.5),
                 ),
-
               ),
             ),
           ),
         );
-      }else{
+      } else {
         return Container(
           height: 55.0,
           child: Focus(
-
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
-            onFocusChange: (hasFocus){
-
+            onFocusChange: (hasFocus) {
               //updates when the state changes
               setState(() {
                 _color = hasFocus ? KprimaryColorDark : null;
@@ -202,10 +212,8 @@ class _CustomTextField extends State<CustomTextField>{
               autofocus: false,
 
               // ignore: missing_return
-              validator: (value){
-                if(value.isEmpty)
-                  return 'value cant be empty';
-
+              validator: (value) {
+                if (value.isEmpty) return 'value cant be empty';
               },
 
               onSaved: onClicked,
@@ -238,14 +246,11 @@ class _CustomTextField extends State<CustomTextField>{
                   borderRadius: BorderRadius.circular(15.0),
                   borderSide: BorderSide(color: KfocusColor, width: 2.5),
                 ),
-
               ),
             ),
           ),
         );
       }
     }
-
   }
-
 }

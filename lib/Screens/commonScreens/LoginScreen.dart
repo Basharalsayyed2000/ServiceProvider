@@ -45,8 +45,8 @@ class _LoginScreen extends State<LoginScreen> {
                         bottom: Kminimumpadding * 1.5),
                     child: Focus(
                       child: CustomTextField(
-                        labelText: "Name",
-                        hintText: "e.g Sam Wilson",
+                        labelText: "Email",
+                        hintText: "example@gmail.com",
                         prefixIcon: Icons.person,
                         onClicked: null,
                       ),
@@ -97,9 +97,7 @@ class _LoginScreen extends State<LoginScreen> {
                       elevation: 7.0,
                       child: GestureDetector(
                         onTap: () {
-                          if(_globalKey.currentState.validate()){
-                            
-                          }
+                          if (_globalKey.currentState.validate()) {}
                         },
                         child: Center(
                           child: Text(

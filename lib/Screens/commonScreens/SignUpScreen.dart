@@ -14,7 +14,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreen extends State<SignUpScreen> {
-  final GlobalKey<FormState> _globalKey= GlobalKey<FormState>();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +25,8 @@ class _SignUpScreen extends State<SignUpScreen> {
             left: Kminimumpadding * 4.5,
             right: Kminimumpadding * 4.5),
         child: Form(
-            key: _globalKey,
-            child: ListView(
+          key: _globalKey,
+          child: ListView(
             children: <Widget>[
               getImage(),
               Container(
@@ -81,16 +81,16 @@ class _SignUpScreen extends State<SignUpScreen> {
                 padding: EdgeInsets.only(top: Kminimumpadding * 3),
                 // ignore: deprecated_member_use
                 child: CustomButton(
-                  textValue: "Sign Up",
-                  onPressed: () {
-                    _globalKey.currentState.validate();
-                  }),
+                    textValue: "Sign Up",
+                    onPressed: () {
+                      _globalKey.currentState.validate();
+                    }),
               ),
               Center(
                 child: Container(
                   padding: EdgeInsets.only(top: Kminimumpadding * 6),
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pushNamed(context, LoginScreen.id);
                     },
                     child: Text(
