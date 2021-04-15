@@ -139,98 +139,10 @@ class _LoginScreen extends State<LoginScreen> {
                             height: 25,
                           ),
                         ))
-                    //  ImageIcon(AssetImage("assets/fblogo4.png")),
-                    //  ImageIcon(AssetImage("assets/fblogo4.png")),
-                    //  ImageIcon(AssetImage("assets/fblogo4.png"))
-                    // Container(
-                    //   height: 40,
-                    //   color: Colors.transparent,
-                    //   child: Container(
-                    //      height: 100,
-                    //     width: 100,
-                    //     decoration: BoxDecoration(
-                    //       border: Border.all(
-                    //         color: Colors.black,
-                    //         style: BorderStyle.solid,
-                    //         width: 1.0
-                    //       ),
-                    //       color: Colors.transparent,
-                    //       shape: BoxShape.circle
-                    //     ),
-                    //     child:ImageIcon(AssetImage("assets/fblogo4.png")) ,
-                    //   ),
-                    // ),
-                    // Container(
-                    //   height: 40,
-                    //   color: Colors.transparent,
-                    //   child: Container(
-                    //      height: 100,
-                    //     width: 100,
-                    //     decoration: BoxDecoration(
-                    //       border: Border.all(
-                    //         color: Colors.black,
-                    //         style: BorderStyle.solid,
-                    //         width: 1.0
-                    //       ),
-                    //       color: Colors.transparent,
-                    //       shape: BoxShape.circle
-                    //     ),
-                    //     child:ImageIcon(AssetImage("assets/google.png")) ,
-                    //   ),
-                    // ),
-                    // Container(
-                    //   height: 40,
-                    //   color: Colors.transparent,
-                    //   child: Container(
-                    //     height: 100,
-                    //     width: 100,
-                    //     decoration: BoxDecoration(
-                    //       border: Border.all(
-                    //         color: Colors.black,
-                    //         style: BorderStyle.solid,
-                    //         width: 1.0,
-
-                    //       ),
-                    //       color: Colors.transparent,
-                    //       //borderRadius: BorderRadius.circular(40)
-                    //       shape: BoxShape.circle
-                    //     ),
-                    //     child:ImageIcon(AssetImage("assets/fblogo4.png")) ,
-                    //   ),
-                    // )
+                  
                   ],
                 ),
-                // Container(
-                //   height: 40.0,
-                //   color: Colors.transparent,
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //         color:Colors.black,
-                //         style:BorderStyle.solid,
-                //         width: 1.0,
-                //       ),
-                //       color: Colors.transparent,
-                //       borderRadius: BorderRadius.circular(20.0)
-                //     ),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children:<Widget> [
-                //       Center(
-                //         child: ImageIcon(AssetImage("assets/fblogo4.png")),
-                //       ),
-                //       SizedBox(height: 10.0,),
-                //       Center(
-                //        child: Text("Log in with facebook",
-                //        style: TextStyle(
-                //          fontWeight: FontWeight.bold,
-                //          fontFamily: "Montserrat"
-                //        ),),
-                //       )
-                //       ],
-                //     ),
-                //   ),
-                // )
+             
               ],
             ),
           ),

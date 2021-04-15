@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
-import 'package:service_provider/Screens/SignUpScreen.dart';
-import 'package:service_provider/Screens/LoginScreen.dart';
-import 'package:service_provider/Screens/SplashScreen.dart';
+import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
+import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
+import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginScreen.id,
+      initialRoute: SplashScreen.id,
        routes: {
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
