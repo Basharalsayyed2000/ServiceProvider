@@ -101,7 +101,7 @@ class _CustomTextField extends State<CustomTextField> {
 
           child: TextFormField(
             autofocus: false,
-
+            obscureText: labelText=='Password'?true :false,
             // ignore: missing_return
             validator: (value) {
               if (value.isEmpty) return _errorMessage(labelText);

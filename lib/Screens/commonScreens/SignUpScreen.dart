@@ -3,6 +3,7 @@ import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
+import 'package:service_provider/Services/auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   static String id = 'signUpScreen';
@@ -14,6 +15,10 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreen extends State<SignUpScreen> {
+  // ignore: unused_field
+  String _email, _password, _name;
+  // ignore: unused_field
+  final _auth = Auth();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,9 @@ class _SignUpScreen extends State<SignUpScreen> {
                     labelText: "Full Name",
                     hintText: "e.g Sam Wilson",
                     prefixIcon: Icons.person,
-                    onClicked: null,
+                    onClicked: (value) {
+                      _name = value;
+                    },
                   ),
                 ),
               ),
@@ -49,7 +56,9 @@ class _SignUpScreen extends State<SignUpScreen> {
                     labelText: "Email / Phone Number",
                     hintText: "example@yourmail.com / +XXX 123456789",
                     prefixIcon: Icons.mail,
-                    onClicked: null,
+                    onClicked: (value) {
+                      _email = value;
+                    },
                   ),
                 ),
               ),
@@ -61,7 +70,9 @@ class _SignUpScreen extends State<SignUpScreen> {
                     labelText: "Password",
                     hintText: "e.g Password",
                     prefixIcon: Icons.vpn_key,
-                    onClicked: null,
+                    onClicked: (value) {
+                      _password = value;
+                    },
                   ),
                 ),
               ),
@@ -73,7 +84,9 @@ class _SignUpScreen extends State<SignUpScreen> {
                     labelText: "Confirm Password",
                     hintText: "Confirm Password",
                     prefixIcon: Icons.vpn_key,
-                    onClicked: null,
+                    onClicked: (value) {
+                      _password = value;
+                    },
                   ),
                 ),
               ),
@@ -81,10 +94,22 @@ class _SignUpScreen extends State<SignUpScreen> {
                 padding: EdgeInsets.only(top: Kminimumpadding * 3),
                 // ignore: deprecated_member_use
                 child: CustomButton(
-                    textValue: "Sign Up",
-                    onPressed: () {
-                      _globalKey.currentState.validate();
-                    }),
+                  textValue: "Sign Up",
+                  onPressed: () async {
+                    if (_globalKey.currentState.validate()) {
+                      _globalKey.currentState.save();
+                      print(_email);
+                      print(_password);
+                     try{
+                        await _auth.signUp(_email.trim(), _password.trim());
+                        Navigator.pushNamed(context, LoginScreen.id);
+                     }catch(e){
+                         print(e);
+                     }
+
+                    }
+                  },
+                ),
               ),
               Center(
                 child: Container(

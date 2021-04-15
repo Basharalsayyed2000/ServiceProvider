@@ -24,7 +24,7 @@ dependencies:
   firebase_auth:
   cloud_firestore: 
   provider:
-  modal_progress_hud:
+  flutter_progress_hud: ^2.0.0
   datetime_picker_formfield: ^0.1.8
   flutter:
     sdk: flutter

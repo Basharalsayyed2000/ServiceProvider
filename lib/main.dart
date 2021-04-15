@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
 import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
 import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
+<<<<<<< Updated upstream
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
+=======
+>>>>>>> Stashed changes
 
 main() => runApp(MyApp());
 
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
-        Providerscreen.id: (context) => Providerscreen(),
+        UserHome.id: (context) => UserHome(),
         SignUpScreen.id: (context) => SignUpScreen(),
         ServiceRequest.id: (context) => ServiceRequest(),
         AddService.id: (context) => AddService(),

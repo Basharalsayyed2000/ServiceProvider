@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+// ignore: unused_import
+import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
+import 'package:service_provider/Services/auth.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
 // ignore: unused_import
 
+// ignore: must_be_immutable
 class LoginScreen extends StatefulWidget {
   static String id = 'LoginScreen';
+
   @override
   _LoginScreen createState() => _LoginScreen();
 }
 
 class _LoginScreen extends State<LoginScreen> {
+  // ignore: unused_field
+  String _email, _password;
+  // ignore: unused_field
+  final _auth = Auth();
+  bool isAdmin = false;
+  final adminpass = 'admin1234';
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
   @override
@@ -48,7 +60,9 @@ class _LoginScreen extends State<LoginScreen> {
                         labelText: "Email",
                         hintText: "example@gmail.com",
                         prefixIcon: Icons.person,
-                        onClicked: null,
+                        onClicked: (value) {
+                          _email = value;
+                        },
                       ),
                     ),
                   ),
@@ -64,7 +78,9 @@ class _LoginScreen extends State<LoginScreen> {
                         labelText: "Password",
                         hintText: "e.g Password",
                         prefixIcon: Icons.vpn_key,
-                        onClicked: null,
+                        onClicked: (value) {
+                          _password = value;
+                        },
                       ),
                     ),
                   ),
@@ -96,8 +112,17 @@ class _LoginScreen extends State<LoginScreen> {
                       color: Color.fromRGBO(157, 215, 211, 1),
                       elevation: 7.0,
                       child: GestureDetector(
-                        onTap: () {
-                          if (_globalKey.currentState.validate()) {}
+                        onTap: () async {
+                          if (_globalKey.currentState.validate()) {
+                            _globalKey.currentState.save();
+                            try {
+                              await _auth.signIn(
+                                  _email.trim(), _password.trim());
+                              Navigator.pushNamed(context, UserHome.id);
+                            } catch (e) {
+                               print(e);
+                            }
+                          }
                         },
                         child: Center(
                           child: Text(

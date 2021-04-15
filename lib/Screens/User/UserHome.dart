@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 
-class Providerscreen extends StatefulWidget {
+class UserHome extends StatefulWidget {
    static String id = 'Providerscreen';
   @override
-  _ProviderscreenState createState() => _ProviderscreenState();
+  _UserHomeState createState() => _UserHomeState();
 }
 
-class _ProviderscreenState extends State<Providerscreen> {
+class _UserHomeState extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
