@@ -89,7 +89,6 @@ class _CustomTextField extends State<CustomTextField>{
             validator: (value){
               if(value.isEmpty)
                 return 'value cant be empty';
-
             },
 
             onSaved: onClicked,
@@ -122,7 +121,6 @@ class _CustomTextField extends State<CustomTextField>{
                 borderRadius: BorderRadius.circular(15.0),
                 borderSide: BorderSide(color: KfocusColor, width: 2.5),
               ),
-
             ),
           ),
         ),
