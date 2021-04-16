@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,7 +20,9 @@ class _ProfilescreenState extends State<Profilescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Profile"),
+        backgroundColor:KprimaryColor ,
       ),
       body: Column(
         children: [

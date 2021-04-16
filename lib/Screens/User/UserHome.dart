@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/User/ProfilePage.dart';
+import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
+import 'package:service_provider/Screens/User/ProvidersList.dart';
 
 class UserHome extends StatefulWidget {
    static String id = 'Providerscreen';
@@ -8,153 +12,41 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
+    
   @override
   Widget build(BuildContext context) {
+    PageController _pageController=PageController();
+    List<Widget> _screen=[
+    ProvidersList(),ServiceRequest(),Profilescreen(),
+    ];
+    int _selectedIndex=0;
+    void _onPageChanged(int index){
+    setState(() {
+      _selectedIndex=index;
+    });
+    }
+    void _onItemTapped(int selectedIndex){
+      _pageController.jumpToPage(selectedIndex);
+      _onPageChanged(selectedIndex);
+    }
+    
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Providers"),
-        backgroundColor: KprimaryColor,
-      ),
-      body: Column(
-        children: [
-            Expanded(child: 
-       GridView.count(
-        crossAxisCount: 2,
-         mainAxisSpacing: 10,
-         crossAxisSpacing: 10,
-         primary: false,
-         children: [
-           Card(
-             
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-               
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/plumber.webp",height: 130,),
-             Text("Plumber",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-           Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/electrician.png",height: 130,),
-             Text("Electrician",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-           Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/carpenter.webp",height: 130,),
-             Text("Carpenter",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-            Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/painter.png",height: 130,),
-             Text("Painter",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-           Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/blacksmith.png",height: 130,),
-             Text("Smith",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-           Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/conditioning.webp",height: 130,),
-             Text("Conditioning",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-           Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/parquet.png",height: 130,),
-             Text("Parquet",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-            Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/marble.webp",height: 130,),
-             Text("Marble",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           ),
-           Card(
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8)
-             ),
-             elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-             Image.asset("Assets/images/ceramictiles.png",height: 130,),
-             Text("Ceramic tiles",
-             style: TextStyle(fontWeight: FontWeight.bold),)
-            ],),
-           )
-         ],
-
-         )),
-         
-        ],
-      ),
+     body: PageView(
+       controller: _pageController,
+       children:_screen,
+       onPageChanged: _onPageChanged,
+       physics: NeverScrollableScrollPhysics(),
+     ),
      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: KprimaryColor,
+        
+       onTap:_onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
+            
             label: 'Home',
+            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.build),
@@ -165,9 +57,8 @@ class _UserHomeState extends State<UserHome> {
             label: 'My Profile',
           ),
         ],
-        // currentIndex: _selectedIndex,
-        selectedItemColor: KprimaryColor,
-        // onTap: _onItemTapped,
+       
+        
       ),
     );
   }
