@@ -8,6 +8,7 @@ import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
+import 'package:service_provider/Screens/User/ProfilePage.dart';
 
 main() => runApp(MyApp());
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginScreen.id,
+      initialRoute: UserHome.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
@@ -24,9 +25,11 @@ class MyApp extends StatelessWidget {
         SignUpScreen.id: (context) => SignUpScreen(),
         ServiceRequest.id: (context) => ServiceRequest(),
         AddService.id: (context) => AddService(),
-        AdminHome.id: (context) => AdminHome(),
-        WelcomeScreen.id: (context)=>WelcomeScreen(),
+        AdminHome.id: (context) => AdminHome(),    
+        WelcomeScreen.id: (context)=>WelcomeScreen(), 
         ManageService.id: (context) => ManageService(),
+        Profilescreen.id: (context) => Profilescreen(),
+        
          
       },
     );
