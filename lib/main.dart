@@ -7,11 +7,7 @@ import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
-<<<<<<< Updated upstream
-import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
-=======
->>>>>>> Stashed changes
 
 main() => runApp(MyApp());
 
@@ -20,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: WelcomeScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
