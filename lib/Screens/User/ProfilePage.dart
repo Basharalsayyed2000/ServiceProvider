@@ -1,6 +1,3 @@
-import 'dart:async';
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,6 +13,7 @@ class Profilescreen extends StatefulWidget {
 
 class _ProfilescreenState extends State<Profilescreen> {
   PickedFile _imageFile;
+  // ignore: unused_field
   dynamic _pickImageError;
   final ImagePicker _picker = ImagePicker();
   @override
@@ -147,6 +145,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // ignore: deprecated_member_use
               FlatButton.icon(
                 icon: Icon(Icons.camera),
                 onPressed: () {
@@ -154,6 +153,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                 },
                 label: Text("Camera"),
               ),
+              // ignore: deprecated_member_use
               FlatButton.icon(
                 icon: Icon(Icons.image),
                 onPressed: () {

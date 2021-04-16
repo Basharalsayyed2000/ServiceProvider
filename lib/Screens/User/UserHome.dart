@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:service_provider/MyTools/Constant.dart';
 
 
 class UserHome extends StatefulWidget {
@@ -164,7 +165,7 @@ class _UserHomeState extends State<UserHome> {
           ),
         ],
         // currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: KprimaryColor,
         // onTap: _onItemTapped,
       ),
     );
