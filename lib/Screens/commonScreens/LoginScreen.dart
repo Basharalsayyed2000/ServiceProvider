@@ -120,7 +120,7 @@ class _LoginScreen extends State<LoginScreen> {
                             try {
                               await _auth.signIn(
                                   _email.trim(), _password.trim());
-                              Navigator.pushNamed(context, UserHome.id);
+                              Navigator.pushReplacementNamed(context, UserHome.id);
                             } catch (e) {
                                print(e);
                             }
