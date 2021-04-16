@@ -69,7 +69,7 @@ class _LoginScreen extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.0,
+                    height: 20.0,
                   ),
                   Container(
                     padding: EdgeInsets.only(
@@ -112,7 +112,7 @@ class _LoginScreen extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.black,
                       color: Color.fromRGBO(157, 215, 211, 1),
-                      elevation: 7.0,
+                      elevation: 2.0,
                       child: GestureDetector(
                         onTap: () async {
                           if (_globalKey.currentState.validate()) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:service_provider/MyTools/Constant.dart';
 
 class UserHome extends StatefulWidget {
    static String id = 'Providerscreen';
@@ -12,7 +12,9 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Providers"),
+        backgroundColor: KprimaryColor,
       ),
       body: Column(
         children: [
@@ -164,7 +166,7 @@ class _UserHomeState extends State<UserHome> {
           ),
         ],
         // currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: KprimaryColor,
         // onTap: _onItemTapped,
       ),
     );
