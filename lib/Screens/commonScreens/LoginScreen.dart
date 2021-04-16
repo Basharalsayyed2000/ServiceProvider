@@ -27,6 +27,8 @@ class _LoginScreen extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    bool _userlog= ModalRoute.of(context).settings.arguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Form(

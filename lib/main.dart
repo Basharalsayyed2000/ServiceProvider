@@ -16,7 +16,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+<<<<<<< Updated upstream
       initialRoute: LoginScreen.id,
+=======
+      initialRoute: SplashScreen.id,
+>>>>>>> Stashed changes
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),

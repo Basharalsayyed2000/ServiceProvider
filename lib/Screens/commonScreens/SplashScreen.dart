@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
+import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 
 class SplashScreen extends StatefulWidget{
   static String id = 'splashScreen';
@@ -17,7 +17,7 @@ class _SplashScreen extends State<SplashScreen>{
     Timer(Duration(seconds: 4),
         ()=>Navigator.pushReplacement(context,
           MaterialPageRoute(
-              builder: (context) => LoginScreen(),
+              builder: (context) => WelcomeScreen(),
           )
         )
     );
