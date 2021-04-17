@@ -27,11 +27,11 @@ class CustomTextField extends StatefulWidget {
 
   CustomTextField(
       {@required this.onClicked,
-      @required this.labelText,
-      this.hintText,
-      this.prefixIcon,
-      this.prefixText,
-      this.iconBlank});
+        @required this.labelText,
+        this.hintText,
+        this.prefixIcon,
+        this.prefixText,
+        this.iconBlank});
 
   @override
   State<StatefulWidget> createState() {
@@ -60,11 +60,11 @@ class _CustomTextField extends State<CustomTextField> {
 
   _CustomTextField(
       {@required this.onClicked,
-      @required this.labelText,
-      this.hintText,
-      this.prefixIcon,
-      this.prefixText,
-      this.iconBlank});
+        @required this.labelText,
+        this.hintText,
+        this.prefixIcon,
+        this.prefixText,
+        this.iconBlank});
 
   // ignore: missing_return
   String _errorMessage(String str) {
@@ -84,9 +84,10 @@ class _CustomTextField extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    double _height = 55.0;
     if (this.prefixIcon != null || this.iconBlank == true) {
-      return Container(
-        height: 55.0,
+      return SizedBox(
+        height: 73,
         child: Focus(
           //function comes with Focus Widget
           //gives a bool hasFocus variable used to track textField focus state
@@ -101,10 +102,20 @@ class _CustomTextField extends State<CustomTextField> {
 
           child: TextFormField(
             autofocus: false,
-            obscureText: labelText=='Password'?true :false,
+
             // ignore: missing_return
             validator: (value) {
-              if (value.isEmpty) return _errorMessage(labelText);
+              print(this.context.size.height);
+              if (value.isEmpty) {
+                setState(() {
+                  _height = 73;
+                });
+                return _errorMessage(labelText);
+              }else{
+                setState(() {
+                  _height = 55.0;
+                });
+              }
             },
 
             onSaved: onClicked,
@@ -113,7 +124,7 @@ class _CustomTextField extends State<CustomTextField> {
               //textLabel and hintText values
               labelText: this.labelText,
               hintText: this.hintText,
-
+              isDense: true,
               //PrefixIcon with Design
               prefixIcon: Icon(
                 this.prefixIcon,
@@ -132,6 +143,11 @@ class _CustomTextField extends State<CustomTextField> {
                 borderSide: BorderSide(color: KdisabledColor, width: 1.5),
               ),
 
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+              ),
+
               //when textField is focused Design
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15.0),
@@ -144,9 +160,7 @@ class _CustomTextField extends State<CustomTextField> {
     } else {
       if (this.prefixText == null) {
         return Container(
-          padding: EdgeInsets.only(
-              top: Kminimumpadding * 1.35, bottom: Kminimumpadding * 1.35),
-          height: Kheight,
+          height: _height,
           child: Focus(
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
@@ -163,7 +177,16 @@ class _CustomTextField extends State<CustomTextField> {
 
               // ignore: missing_return
               validator: (value) {
-                if (value.isEmpty) return 'value cant be empty';
+                if (value.isEmpty) {
+                  setState(() {
+                    _height = 75.0;
+                  });
+                  return _errorMessage(labelText);
+                }else{
+                  setState(() {
+                    _height = 55.0;
+                  });
+                }
               },
 
               onSaved: onClicked,
@@ -185,6 +208,11 @@ class _CustomTextField extends State<CustomTextField> {
                   borderSide: BorderSide(color: KdisabledColor, width: 1.5),
                 ),
 
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+                ),
+
                 //when textField is focused Design
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
@@ -196,7 +224,7 @@ class _CustomTextField extends State<CustomTextField> {
         );
       } else {
         return Container(
-          height: 55.0,
+          height: _height,
           child: Focus(
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
@@ -213,7 +241,16 @@ class _CustomTextField extends State<CustomTextField> {
 
               // ignore: missing_return
               validator: (value) {
-                if (value.isEmpty) return 'value cant be empty';
+                if (value.isEmpty) {
+                  setState(() {
+                    _height = 75.0;
+                  });
+                  return _errorMessage(labelText);
+                }else{
+                  setState(() {
+                    _height = 55.0;
+                  });
+                }
               },
 
               onSaved: onClicked,
@@ -240,7 +277,10 @@ class _CustomTextField extends State<CustomTextField> {
                   borderRadius: BorderRadius.circular(20.0),
                   borderSide: BorderSide(color: KdisabledColor, width: 1.5),
                 ),
-
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+                ),
                 //when textField is focused Design
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),

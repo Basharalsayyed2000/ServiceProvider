@@ -28,7 +28,7 @@ class _CustomButton extends State<CustomButton>{
       padding: EdgeInsets.all(Kminimumpadding * 1.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(color: KdisabledColor, width: 2)
+        side: BorderSide(color: KfocusColor, width: 2)
       ),
       
       child: Text(

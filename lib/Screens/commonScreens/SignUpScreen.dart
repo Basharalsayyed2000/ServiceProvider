@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
@@ -24,6 +25,8 @@ class _SignUpScreen extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(
             top: Kminimumpadding * 2,
             bottom: Kminimumpadding * 2,
@@ -34,9 +37,9 @@ class _SignUpScreen extends State<SignUpScreen> {
           child: ListView(
             children: <Widget>[
               getImage(),
+              SizedBox(height: 15,),
               Container(
-                padding: EdgeInsets.only(
-                    top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
+                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
                 child: Focus(
                   child: CustomTextField(
                     labelText: "Full Name",
@@ -49,8 +52,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(
-                    top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
+                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
                 child: Focus(
                   child: CustomTextField(
                     labelText: "Email / Phone Number",
@@ -63,8 +65,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(
-                    top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
+                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
                 child: Focus(
                   child: CustomTextField(
                     labelText: "Password",
@@ -77,8 +78,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(
-                    top: Kminimumpadding * 1.5, bottom: Kminimumpadding * 1.5),
+                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
                 child: Focus(
                   child: CustomTextField(
                     labelText: "Confirm Password",
@@ -100,33 +100,38 @@ class _SignUpScreen extends State<SignUpScreen> {
                       _globalKey.currentState.save();
                       print(_email);
                       print(_password);
-                     try{
+                      try{
                         await _auth.signUp(_email.trim(), _password.trim());
                         Navigator.pushNamed(context, LoginScreen.id);
-                     }catch(e){
-                         print(e);
-                     }
-
+                      }catch(e){
+                        print(e);
+                      }
                     }
                   },
                 ),
               ),
-              Center(
-                child: Container(
-                  padding: EdgeInsets.only(top: Kminimumpadding * 6),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, LoginScreen.id);
-                    },
-                    child: Text(
-                      "Already have an account? Sign in",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
+              SizedBox(height: 15,),
+              Container(
+                padding: EdgeInsets.only(top: Kminimumpadding * 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Already have an account? "),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, LoginScreen.id);
+                      },
+                      child: Text(
+                        "Sign in",
+                        style: TextStyle(
                           color: KprimaryColorDark,
-                          decoration: TextDecoration.underline),
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  ]
+                )
               )
             ],
           ),
@@ -135,27 +140,14 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
-  void updateOnFocus(FocusNode focusNode, Color color) {
-    setState(() {
-      focusNode.addListener(() {
-        if (focusNode.hasFocus) {
-          print("is focused");
-          color = KfocusColor;
-        } else
-          color = Colors.yellowAccent;
-      });
-    });
-  }
-
   Widget getImage() {
     AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     Image image = new Image(image: assetImage);
     return Padding(
-      padding: EdgeInsets.all(Kminimumpadding),
+      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.02),
       child: Container(
-        padding: EdgeInsets.all(Kminimumpadding),
-        width: 200.0,
-        height: 200.0,
+        width: MediaQuery.of(context).size.height * 0.40,
+        height: MediaQuery.of(context).size.width * 0.55,
         child: image,
       ),
     );
