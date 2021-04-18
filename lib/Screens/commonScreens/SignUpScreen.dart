@@ -1,3 +1,4 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -27,6 +28,12 @@ class _SignUpScreen extends State<SignUpScreen> {
   final _auth = Auth();
   final _user = User();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+
+  Color _colorDt;
+  FontWeight _weightDt;
+
+  DateTime _date;
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -41,110 +48,7 @@ class _SignUpScreen extends State<SignUpScreen> {
             bottom: Kminimumpadding * 2,
             left: Kminimumpadding * 4.5,
             right: Kminimumpadding * 4.5),
-<<<<<<< Updated upstream
-        child: Form(
-          key: _globalKey,
-          child: ListView(
-            children: <Widget>[
-              getImage(),
-              SizedBox(height: 15,),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
-                child: Focus(
-                  child: CustomTextField(
-                    labelText: "Full Name",
-                    hintText: "e.g Sam Wilson",
-                    prefixIcon: Icons.person,
-                    onClicked: (value) {
-                      _name = value;
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
-                child: Focus(
-                  child: CustomTextField(
-                    labelText: "Email / Phone Number",
-                    hintText: "example@yourmail.com / +XXX 123456789",
-                    prefixIcon: Icons.mail,
-                    onClicked: (value) {
-                      _email = value;
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
-                child: Focus(
-                  child: CustomTextField(
-                    labelText: "Password",
-                    hintText: "e.g Password",
-                    prefixIcon: Icons.vpn_key,
-                    onClicked: (value) {
-                      _password = value;
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.005),
-                child: Focus(
-                  child: CustomTextField(
-                    labelText: "Confirm Password",
-                    hintText: "Confirm Password",
-                    prefixIcon: Icons.vpn_key,
-                    onClicked: (value) {
-                      _password = value;
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: Kminimumpadding * 3),
-                // ignore: deprecated_member_use
-                child: CustomButton(
-                  textValue: "Sign Up",
-                  onPressed: () async {
-                    if (_globalKey.currentState.validate()) {
-                      _globalKey.currentState.save();
-                      print(_email);
-                      print(_password);
-                      try{
-                        await _auth.signUp(_email.trim(), _password.trim());
-                        Navigator.pushNamed(context, LoginScreen.id);
-                      }catch(e){
-                        print(e);
-                      }
-                    }
-                  },
-                ),
-              ),
-              SizedBox(height: 15,),
-              Container(
-                padding: EdgeInsets.only(top: Kminimumpadding * 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Already have an account? "),
-                    InkWell(
-                      onTap: (){
-                        Navigator.pushNamed(context, LoginScreen.id);
-                      },
-                      child: Text(
-                        "Sign in",
-                        style: TextStyle(
-                          color: KprimaryColorDark,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline
-                        ),
-                      ),
-                    ),
-                  ]
-                )
-              )
-            ],
-=======
+
         child: ProgressHUD(
           child: Form(
             key: _globalKey,
@@ -152,9 +56,7 @@ class _SignUpScreen extends State<SignUpScreen> {
               children: <Widget>[
                 getImage(),
                 Container(
-                  padding: EdgeInsets.only(
-                      top: Kminimumpadding * 1.5,
-                      bottom: Kminimumpadding * 1.5),
+                  padding: EdgeInsets.symmetric(vertical: 0.325),
                   child: Focus(
                     child: CustomTextField(
                       labelText: "Full Name",
@@ -167,26 +69,23 @@ class _SignUpScreen extends State<SignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(
-                      top: Kminimumpadding * 1.5,
-                      bottom: Kminimumpadding * 1.5),
-                  child: Focus(
-                    child: CustomTextField(
-                      labelText: "Email / Phone Number",
-                      hintText: "example@yourmail.com / +XXX 123456789",
-                      prefixIcon: Icons.mail,
-                      onClicked: (value) {
-                        _email = value;
-                      },
-                    ),
+                  padding: EdgeInsets.symmetric(vertical: 0.325),
+                  child: CustomTextField(
+                    labelText: "Email",
+                    hintText: "example@yourmail.com",
+                    keyboardType: TextInputType.emailAddress,
+                    validator: null,
+                    prefixIcon: Icons.mail,
+                    onClicked: (value) {
+                      _email = value;
+                    },
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(
-                      top: Kminimumpadding * 1.5,
-                      bottom: Kminimumpadding * 1.5),
+                  padding: EdgeInsets.symmetric(vertical: 0.325),
                   child: Focus(
                     child: CustomTextField(
+                      obscureText: true,
                       labelText: "Password",
                       hintText: "e.g Password",
                       prefixIcon: Icons.vpn_key,
@@ -197,22 +96,25 @@ class _SignUpScreen extends State<SignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(
-                      top: Kminimumpadding * 1.5,
-                      bottom: Kminimumpadding * 1.5),
+                  padding: EdgeInsets.symmetric(vertical: 0.325),
+                  child: getDateFormPicker(),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 0.325),
                   child: Focus(
                     child: CustomTextField(
-                      labelText: "Confirm Password",
-                      hintText: "Confirm Password",
-                      prefixIcon: Icons.vpn_key,
+                      labelText: "Phone Number",
+                      hintText: "+XXX 123456789",
+                      keyboardType: TextInputType.number,
+                      prefixIcon: Icons.phone_iphone,
                       onClicked: (value) {
-                        _password = value;
+                        _email = value;
                       },
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: Kminimumpadding * 3),
+                  padding: EdgeInsets.only(top: 4),
                   // ignore: deprecated_member_use
                   child: Builder(
                     builder: (context) => CustomButton(
@@ -254,7 +156,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 ),
                 Center(
                   child: Container(
-                    padding: EdgeInsets.only(top: Kminimumpadding * 6),
+                    padding: EdgeInsets.only(top: Kminimumpadding * 2.5),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, LoginScreen.id);
@@ -271,7 +173,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 )
               ],
             ),
->>>>>>> Stashed changes
+
           ),
         ),
       ),
@@ -282,11 +184,60 @@ class _SignUpScreen extends State<SignUpScreen> {
     AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     Image image = new Image(image: assetImage);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.02),
+      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.0085),
       child: Container(
         width: MediaQuery.of(context).size.height * 0.40,
         height: MediaQuery.of(context).size.width * 0.55,
         child: image,
+      ),
+    );
+  }
+
+  Widget getDateFormPicker(){
+    return SizedBox(
+      height: 73.0,
+      child: DateTimePickerFormField(
+        autofocus: false,
+        decoration: InputDecoration(
+            labelText: "Date",
+            isDense: true,
+            labelStyle: TextStyle(
+              color: _colorDt,
+              fontWeight: _weightDt
+            ),
+
+            prefixIcon: Icon(Icons.date_range, color: KprimaryColorDark,),
+
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide(color: KdisabledColor, width: 1.5)
+            ),
+
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: KfocusColor, width: 2.5)
+            )
+
+        ),
+        validator: null,
+        format: DateFormat("MMMM d yyyy"),
+        inputType: InputType.date,
+        initialDate: DateTime(1970, 1, 1),
+        onChanged: (selectedDate) {
+          setState(() {
+            if(selectedDate != null){
+              _date = selectedDate;
+              _colorDt =  KprimaryColorDark;
+              _weightDt = FontWeight.bold;
+            }else{
+              _colorDt =  null;
+              _weightDt = null;
+            }
+          }
+          );
+          print('Selected date: $_date');
+        },
+
       ),
     );
   }

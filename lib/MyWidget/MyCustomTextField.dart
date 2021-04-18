@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
 class CustomTextField extends StatefulWidget {
-  /// Text that describes the input field.
-  ///
-  /// When the input field is empty and unfocused, the label is displayed on top of the input field (i.e., at the same
-  /// location on the screen where text may be entered in the input field). When the input field receives focus (or if
-  /// the field is non-empty), the label moves above (i.e., vertically adjacent to) the input field.
+
   final String labelText;
 
-  /// Text that suggests what sort of input the field accepts.
-  ///
-  /// Displayed on top of the [InputDecorator.child] (i.e., at the same location
-  /// on the screen where text may be entered in the [InputDecorator.child])
-  /// when the input [isEmpty] and either (a) [labelText] is null or (b) the
-  /// input has the focus.
   final String hintText;
 
   final IconData prefixIcon;
 
   final String prefixText;
+
+  final TextInputType keyboardType;
+
+  final Function(String) validator;
+
+  final bool obscureText;
 
   final Function onClicked;
 
@@ -28,6 +24,9 @@ class CustomTextField extends StatefulWidget {
   CustomTextField(
       {@required this.onClicked,
         @required this.labelText,
+        this.obscureText,
+        this.validator,
+        this.keyboardType,
         this.hintText,
         this.prefixIcon,
         this.prefixText,
@@ -35,10 +34,14 @@ class CustomTextField extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
+
     return _CustomTextField(
       onClicked: this.onClicked,
       labelText: this.labelText,
+      validator: this.validator,
       hintText: this.hintText,
+      obscureText: (this.obscureText == null) ? false : this.obscureText,
+      keyboardType: (this.keyboardType == null) ? TextInputType.text : this.keyboardType,
       prefixIcon: this.prefixIcon,
       prefixText: this.prefixText,
       iconBlank: this.iconBlank,
@@ -49,10 +52,13 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextField extends State<CustomTextField> {
   final String prefixText;
   final String labelText;
+  final Function(String) validator;
+  final TextInputType keyboardType;
   final String hintText;
   final IconData prefixIcon;
   final Function onClicked;
   final bool iconBlank;
+  final bool obscureText;
 
   Color _color;
   Color _iconColor = KprimaryColorDark;
@@ -61,6 +67,9 @@ class _CustomTextField extends State<CustomTextField> {
   _CustomTextField(
       {@required this.onClicked,
         @required this.labelText,
+        @required this.keyboardType,
+        this.obscureText,
+        this.validator,
         this.hintText,
         this.prefixIcon,
         this.prefixText,
@@ -84,7 +93,6 @@ class _CustomTextField extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    double _height = 55.0;
     if (this.prefixIcon != null || this.iconBlank == true) {
       return SizedBox(
         height: 73,
@@ -102,20 +110,11 @@ class _CustomTextField extends State<CustomTextField> {
 
           child: TextFormField(
             autofocus: false,
+            obscureText: this.obscureText,
 
             // ignore: missing_return
             validator: (value) {
-              print(this.context.size.height);
-              if (value.isEmpty) {
-                setState(() {
-                  _height = 73;
-                });
-                return _errorMessage(labelText);
-              }else{
-                setState(() {
-                  _height = 55.0;
-                });
-              }
+              return value.isEmpty ? _errorMessage(labelText) : null;
             },
 
             onSaved: onClicked,
@@ -160,7 +159,6 @@ class _CustomTextField extends State<CustomTextField> {
     } else {
       if (this.prefixText == null) {
         return Container(
-          height: _height,
           child: Focus(
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
@@ -178,15 +176,10 @@ class _CustomTextField extends State<CustomTextField> {
               // ignore: missing_return
               validator: (value) {
                 if (value.isEmpty) {
-                  setState(() {
-                    _height = 75.0;
-                  });
+
                   return _errorMessage(labelText);
-                }else{
-                  setState(() {
-                    _height = 55.0;
-                  });
                 }
+
               },
 
               onSaved: onClicked,
@@ -224,7 +217,7 @@ class _CustomTextField extends State<CustomTextField> {
         );
       } else {
         return Container(
-          height: _height,
+
           child: Focus(
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
@@ -237,19 +230,15 @@ class _CustomTextField extends State<CustomTextField> {
             },
 
             child: TextFormField(
+              keyboardType: this.keyboardType,
+
               autofocus: false,
 
               // ignore: missing_return
               validator: (value) {
                 if (value.isEmpty) {
-                  setState(() {
-                    _height = 75.0;
-                  });
+
                   return _errorMessage(labelText);
-                }else{
-                  setState(() {
-                    _height = 55.0;
-                  });
                 }
               },
 
