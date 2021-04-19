@@ -23,12 +23,33 @@ class _ProfilescreenState extends State<Profilescreen> {
         centerTitle: true,
         title: Text("Profile"),
         backgroundColor:KprimaryColor ,
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return {'Logout', 'Settings'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
-      body: Column(
+      
+    
+      body: 
+      GestureDetector(
+        onTap: (){
+          FocusScope.of(context).unfocus();
+        },
+        child:
+      ListView(
         children: [
          
           SizedBox(
-            height: 20,
+            height: MediaQuery.of(context).size.height*0.0185,
           ),
           Center(
               child: Stack(
@@ -57,73 +78,94 @@ class _ProfilescreenState extends State<Profilescreen> {
               )
             ],
           )),
+          Center(child:
           Text(
             "Said Asfour",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
+          ),),
           SizedBox(
-            height: 35,
+            height: MediaQuery.of(context).size.height*0.0385,
           ),
           TextField(
             decoration: InputDecoration(
+                 focusedBorder: UnderlineInputBorder(
+                
+                borderSide: BorderSide(color: KfocusColor, width: 2.5),
+              ),
                 contentPadding: EdgeInsets.only(bottom: 3),
-                labelText: "Email",
+                labelText: "E-mail",
+                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
                 hintText: "saidasfour@gmail.com",
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  //fontWeight: FontWeight.bold,
                   color: Colors.black,
                 )),
           ),
           SizedBox(
-            height: 30,
+            height: MediaQuery.of(context).size.height*0.0485,
           ),
           TextField(
             decoration: InputDecoration(
+               focusedBorder: UnderlineInputBorder(
+                
+                borderSide: BorderSide(color: KfocusColor, width: 2.5),
+              ),
                 contentPadding: EdgeInsets.only(bottom: 3),
                 labelText: "Phone Number",
+                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
                 hintText: "81/748400",
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  //fontWeight: FontWeight.bold,
                   color: Colors.black,
                 )),
           ),
           SizedBox(
-            height: 30,
+            height: MediaQuery.of(context).size.height*0.0485,
           ),
           TextField(
             decoration: InputDecoration(
+               focusedBorder: UnderlineInputBorder(
+                
+                borderSide: BorderSide(color: KfocusColor, width: 2.5),
+              ),
                 contentPadding: EdgeInsets.only(bottom: 3),
                 labelText: "Age",
+                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
                 hintText: "21",
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  //fontWeight: FontWeight.bold,
                   color: Colors.black,
                 )),
           ),
           SizedBox(
-            height: 30,
+            height: MediaQuery.of(context).size.height*0.0485,
           ),
           TextField(
             decoration: InputDecoration(
+               focusedBorder: UnderlineInputBorder(
+                
+                borderSide: BorderSide(color: KfocusColor, width: 2.5),
+              ),
                 contentPadding: EdgeInsets.only(bottom: 3),
                 labelText: "Accout Type",
+                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
                 hintText: "User",
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  //fontWeight: FontWeight.bold,
                   color: Colors.black,
                 )),
           ),
           
         ],
-      ),
+      )),
     );
   }
 
@@ -184,4 +226,12 @@ class _ProfilescreenState extends State<Profilescreen> {
       });
     }
   }
+  void handleClick(String value) {
+    switch (value) {
+      case 'Logout':
+        break;
+      case 'Settings':
+        break;
+    }
+}
 }

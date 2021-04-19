@@ -35,10 +35,11 @@ class _LoginScreen extends State<LoginScreen> {
       body: ProgressHUD(
               child: Form(
           key: _globalKey,
+          
           child: ListView(
             children: <Widget>[
               SizedBox(
-                height: 25.0,
+                height: MediaQuery.of(context).size.height*0.0185,
               ),
               Center(
                 child: Padding(
@@ -71,7 +72,7 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 7.0,
+                      height: MediaQuery.of(context).size.height*0.0015,
                     ),
                     Container(
                       padding: EdgeInsets.only(
@@ -89,7 +90,7 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 2.0,
+                      height: 0,
                     ),
                     Container(
                       alignment: Alignment(0.8, 0.0),
@@ -106,7 +107,7 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: MediaQuery.of(context).size.height*0.0305,
                     ),
                     Container(
                       height: 40.0,
@@ -160,13 +161,13 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 40.0,
+                      height:MediaQuery.of(context).size.height*0.0485,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Material(
-                            elevation: 10,
+                            elevation: 5,
                             borderRadius: BorderRadius.circular(10),
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
@@ -176,7 +177,7 @@ class _LoginScreen extends State<LoginScreen> {
                               ),
                             )),
                         Material(
-                          elevation: 10,
+                          elevation: 5,
                           borderRadius: BorderRadius.circular(10),
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
@@ -187,7 +188,7 @@ class _LoginScreen extends State<LoginScreen> {
                           ),
                         ),
                         Material(
-                            elevation: 10,
+                            elevation: 5,
                             borderRadius: BorderRadius.circular(10),
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
@@ -202,7 +203,7 @@ class _LoginScreen extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: 45.0,
+                height: MediaQuery.of(context).size.height*0.0485,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
