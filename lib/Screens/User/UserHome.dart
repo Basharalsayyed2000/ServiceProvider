@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Screens/User/ProvidersList.dart';
 
 
@@ -17,7 +17,7 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     PageController _pageController=PageController();
     List<Widget> _screen=[
-    ProvidersList(),ServiceRequest(),Profilescreen(),
+    ProvidersList(),Recommended(),Profilescreen(),
     ];
     // ignore: unused_local_variable
     int _selectedIndex=0;

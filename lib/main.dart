@@ -9,6 +9,7 @@ import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
+import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 
 main() => runApp(MyApp());
 
@@ -32,6 +33,10 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context)=>WelcomeScreen(), 
         ManageService.id: (context) => ManageService(),
         Profilescreen.id: (context) => Profilescreen(),
+        Recommended.id: (context) => Recommended(),
+        
+        
+        
         
          
       },
