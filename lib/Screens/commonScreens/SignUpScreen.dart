@@ -23,7 +23,10 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreen extends State<SignUpScreen> {
   // ignore: unused_field
-  String _email, _password, _name, _id;
+  String _email, _password, _name,_birthDate,_addedDate,_phone;
+  
+  // ignore: unused_field
+  bool _isAdmin=false,_rank;
   // ignore: unused_field
   final _auth = Auth();
   final _user = User();
@@ -31,14 +34,12 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   Color _colorDt;
   FontWeight _weightDt;
-
   DateTime _date;
 
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-    bool _usertype = ModalRoute.of(context).settings.arguments;
-
+    bool _rank = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -48,7 +49,6 @@ class _SignUpScreen extends State<SignUpScreen> {
             bottom: Kminimumpadding * 2,
             left: Kminimumpadding * 4.5,
             right: Kminimumpadding * 4.5),
-
         child: ProgressHUD(
           child: Form(
             key: _globalKey,
@@ -108,7 +108,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                       keyboardType: TextInputType.number,
                       prefixIcon: Icons.phone_iphone,
                       onClicked: (value) {
-                        _email = value;
+                        _phone = value;
                       },
                     ),
                   ),
@@ -124,17 +124,19 @@ class _SignUpScreen extends State<SignUpScreen> {
                           _globalKey.currentState.save();
 
                           try {
-                            _id = _user.getUserId().toString();
-                            print(_id);
-                            print(getDateNow());
-                            await _auth.signUp(_email.trim(), _password.trim());
-                            _user.addUser(UserData(
-                              uName: _name,
-                              uId:'good' ,//_id,
-                              uAddDate: 'good',//getDateNow(),
-                              uImageLoc: null,
-                              urank: _usertype == false ? 2 : 1,
-                            ));
+                            final authResult = await _auth.signUp(
+                                _email.trim(), _password.trim());
+                                _addedDate=getDateNow();
+                            _user.addUser(
+                                UserData(
+                                  uName: _name,
+                                  uAddDate: _addedDate,
+                                  uImageLoc: 'null',
+                                  urank: _rank,
+                                  ubirthDate: _birthDate,
+                                  uphoneNumber: _phone,
+                                ),
+                                authResult.user.uid);
                             Navigator.pushNamed(context, LoginScreen.id);
                           } catch (e) {
                             final progress = ProgressHUD.of(context);
@@ -146,8 +148,6 @@ class _SignUpScreen extends State<SignUpScreen> {
                             Scaffold.of(context).showSnackBar(SnackBar(
                               content: Text(e.toString()),
                             ));
-                            
-                            print(e.message);
                           }
                         }
                       },
@@ -159,7 +159,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                     padding: EdgeInsets.only(top: Kminimumpadding * 2.5),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, LoginScreen.id);
+                        Navigator.pushReplacementNamed(context, LoginScreen.id);
                       },
                       child: Text(
                         "Already have an account? Sign in",
@@ -173,7 +173,6 @@ class _SignUpScreen extends State<SignUpScreen> {
                 )
               ],
             ),
-
           ),
         ),
       ),
@@ -184,7 +183,8 @@ class _SignUpScreen extends State<SignUpScreen> {
     AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     Image image = new Image(image: assetImage);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.0085),
+      padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height * 0.0085),
       child: Container(
         width: MediaQuery.of(context).size.height * 0.40,
         height: MediaQuery.of(context).size.width * 0.55,
@@ -193,7 +193,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
-  Widget getDateFormPicker(){
+  Widget getDateFormPicker() {
     return SizedBox(
       height: 73.0,
       child: DateTimePickerFormField(
@@ -201,43 +201,35 @@ class _SignUpScreen extends State<SignUpScreen> {
         decoration: InputDecoration(
             labelText: "Date",
             isDense: true,
-            labelStyle: TextStyle(
-              color: _colorDt,
-              fontWeight: _weightDt
+            labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
+            prefixIcon: Icon(
+              Icons.date_range,
+              color: KprimaryColorDark,
             ),
-
-            prefixIcon: Icon(Icons.date_range, color: KprimaryColorDark,),
-
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20.0),
-                borderSide: BorderSide(color: KdisabledColor, width: 1.5)
-            ),
-
+                borderSide: BorderSide(color: KdisabledColor, width: 1.5)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(color: KfocusColor, width: 2.5)
-            )
-
-        ),
+                borderSide: BorderSide(color: KfocusColor, width: 2.5))),
         validator: null,
         format: DateFormat("MMMM d yyyy"),
         inputType: InputType.date,
         initialDate: DateTime(1970, 1, 1),
         onChanged: (selectedDate) {
           setState(() {
-            if(selectedDate != null){
+            _birthDate=selectedDate.toString();
+            if (selectedDate != null) {
               _date = selectedDate;
-              _colorDt =  KprimaryColorDark;
+              _colorDt = KprimaryColorDark;
               _weightDt = FontWeight.bold;
-            }else{
-              _colorDt =  null;
+            } else {
+              _colorDt = null;
               _weightDt = null;
             }
-          }
-          );
+          });
           print('Selected date: $_date');
         },
-
       ),
     );
   }
@@ -248,7 +240,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     DateTime now = DateTime.now();
 // ignore: unused_local_variable
     var dateString = DateFormat('dd-MM-yyyy').format(now);
-    final String configFileName = 'lastConfig.$dateString.json';
+    final String configFileName = dateString;
     return configFileName;
   }
 }

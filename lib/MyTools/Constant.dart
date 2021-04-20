@@ -22,10 +22,10 @@ const KServicesImageLocation = 'servicesImageLocation';
 
 
 //user Data
-const KUserCollection = 'Services';
+const KUserCollection = 'Users';
 const KUserName = 'UserName';
 const KUserRank = 'UserRank';
 const KUserAddDate = 'UserAddDate';
 const KUserImageLocation = 'UserImageLocation';
-const KUserId = 'UserId';
-
+const KUserBirthDate='userBirthDate';
+const KUserPhoneNumber='UserPhoneNumber';

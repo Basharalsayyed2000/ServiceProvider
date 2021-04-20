@@ -7,6 +7,7 @@ import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
+import 'package:service_provider/Services/user.dart';
 // ignore: unused_import
 
 // ignore: must_be_immutable
@@ -22,6 +23,7 @@ class _LoginScreen extends State<LoginScreen> {
   String _email, _password;
   // ignore: unused_field
   final _auth = Auth();
+  final _user = User();
   bool isAdmin = false;
   final adminpass = 'admin1234';
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
@@ -29,17 +31,16 @@ class _LoginScreen extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-    bool _usertype= ModalRoute.of(context).settings.arguments;
+    bool _usertype = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: ProgressHUD(
-              child: Form(
+        child: Form(
           key: _globalKey,
-          
           child: ListView(
             children: <Widget>[
               SizedBox(
-                height: MediaQuery.of(context).size.height*0.0185,
+                height: MediaQuery.of(context).size.height * 0.0185,
               ),
               Center(
                 child: Padding(
@@ -72,7 +73,7 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height*0.0015,
+                      height: MediaQuery.of(context).size.height * 0.0015,
                     ),
                     Container(
                       padding: EdgeInsets.only(
@@ -107,12 +108,12 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height*0.0305,
+                      height: MediaQuery.of(context).size.height * 0.0305,
                     ),
                     Container(
                       height: 40.0,
                       child: Builder(
-                          builder:(context)=> Material(
+                        builder: (context) => Material(
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.black,
                           color: Color.fromRGBO(157, 215, 211, 1),
@@ -121,30 +122,31 @@ class _LoginScreen extends State<LoginScreen> {
                             onTap: () async {
                               if (_globalKey.currentState.validate()) {
                                 _globalKey.currentState.save();
+                                // ignore: unused_local_variable
+                                String message = '';
                                 try {
-                                  await _auth.signIn(
+                                  final progress = ProgressHUD.of(context);
+                                  progress.showWithText('Loading...');
+                                  Future.delayed(Duration(seconds: 1), () {
+                                    progress.dismiss();
+                                  });
+                                  final _authresult = await _auth.signIn(
                                       _email.trim(), _password.trim());
-                                  Navigator.pushReplacementNamed(context, UserHome.id);
-                                  }catch(e){
-                                     final progress = ProgressHUD.of(context);
-                          progress.showWithText('Loading...');
-                          Future.delayed(Duration(seconds: 1), () {
-                            progress.dismiss();
-                          });
-                            // ignore: unused_local_variable
-                            String message='';
-                            if(e.code=='weak-password'){
-                                message='The password provided is too weak!';
-                            }
-                            else if(e.code=='email-already-in-use'){
-                                  message='The account already exists for that email!';
-                            }
-                               // ignore: deprecated_member_use
-                               Scaffold.of(context).showSnackBar(SnackBar(
-                                 content: Text(e.toString()),
-                               ));
-                               print(e.message);
-                           }
+                                      print(_authresult.user.uid);
+                                  if ((_user.getUserById(
+                                          _authresult.user.uid)[KUserRank]) ==
+                                      _usertype) {
+                                    Navigator.pushReplacementNamed(
+                                        context, UserHome.id);
+                                  }
+                                  
+                                } catch (e) {
+                                  // ignore: deprecated_member_use
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                  ));
+                                  print(e.message);
+                                }
                               }
                             },
                             child: Center(
@@ -161,7 +163,7 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height:MediaQuery.of(context).size.height*0.0485,
+                      height: MediaQuery.of(context).size.height * 0.0485,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -203,7 +205,7 @@ class _LoginScreen extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height*0.0485,
+                height: MediaQuery.of(context).size.height * 0.0485,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -215,7 +217,8 @@ class _LoginScreen extends State<LoginScreen> {
                   SizedBox(width: 5.0),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, SignUpScreen.id,arguments: _usertype);
+                      Navigator.pushReplacementNamed(context, SignUpScreen.id,
+                          arguments: _usertype);
                     },
                     child: Text(
                       "Register",

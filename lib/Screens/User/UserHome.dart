@@ -32,6 +32,7 @@ class _UserHomeState extends State<UserHome> {
     }
     
     return Scaffold(
+     
      body: PageView(
        controller: _pageController,
        children:_screen,

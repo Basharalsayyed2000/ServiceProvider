@@ -33,12 +33,7 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context)=>WelcomeScreen(), 
         ManageService.id: (context) => ManageService(),
         Profilescreen.id: (context) => Profilescreen(),
-        Recommended.id: (context) => Recommended(),
-        
-        
-        
-        
-         
+        Recommended.id: (context) => Recommended(),       
       },
     );
   }
