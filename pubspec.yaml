@@ -21,12 +21,14 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  permission_handler:
   intl: 
-  image_picker: 
   firebase_auth:
   cloud_firestore: 
   provider:
   flutter_progress_hud: ^2.0.0
+  firebase_storage:
+  image_picker:  
   datetime_picker_formfield: ^0.1.8
   flutter:
     sdk: flutter

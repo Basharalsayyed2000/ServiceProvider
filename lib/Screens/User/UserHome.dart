@@ -15,6 +15,8 @@ class _UserHomeState extends State<UserHome> {
     
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    String _useId = ModalRoute.of(context).settings.arguments;
     PageController _pageController=PageController();
     List<Widget> _screen=[
     ProvidersList(),Recommended(),Profilescreen(),

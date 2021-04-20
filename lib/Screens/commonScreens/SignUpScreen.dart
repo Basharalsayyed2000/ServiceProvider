@@ -23,15 +23,14 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreen extends State<SignUpScreen> {
   // ignore: unused_field
-  String _email, _password, _name,_birthDate,_addedDate,_phone;
-  
+  String _email, _password, _name, _birthDate, _addedDate, _phone;
+
   // ignore: unused_field
-  bool _isAdmin=false,_rank;
+  bool _isAdmin = false, _rank;
   // ignore: unused_field
   final _auth = Auth();
   final _user = User();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-
   Color _colorDt;
   FontWeight _weightDt;
   DateTime _date;
@@ -120,13 +119,15 @@ class _SignUpScreen extends State<SignUpScreen> {
                     builder: (context) => CustomButton(
                       textValue: "Sign Up",
                       onPressed: () async {
+                        final progress = ProgressHUD.of(context);
+                        toggleProgressHUD(true, progress);
                         if (_globalKey.currentState.validate()) {
                           _globalKey.currentState.save();
 
                           try {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
-                                _addedDate=getDateNow();
+                            _addedDate = getDateNow();
                             _user.addUser(
                                 UserData(
                                   uName: _name,
@@ -137,19 +138,18 @@ class _SignUpScreen extends State<SignUpScreen> {
                                   uphoneNumber: _phone,
                                 ),
                                 authResult.user.uid);
+                            toggleProgressHUD(false, progress);
                             Navigator.pushNamed(context, LoginScreen.id);
                           } catch (e) {
-                            final progress = ProgressHUD.of(context);
-                            progress.showWithText('Loading...');
-                            Future.delayed(Duration(seconds: 1), () {
-                              progress.dismiss();
-                            });
+                            toggleProgressHUD(false, progress);
+
                             // ignore: deprecated_member_use
                             Scaffold.of(context).showSnackBar(SnackBar(
                               content: Text(e.toString()),
                             ));
                           }
                         }
+                        toggleProgressHUD(false, progress);
                       },
                     ),
                   ),
@@ -218,7 +218,7 @@ class _SignUpScreen extends State<SignUpScreen> {
         initialDate: DateTime(1970, 1, 1),
         onChanged: (selectedDate) {
           setState(() {
-            _birthDate=selectedDate.toString();
+            _birthDate = selectedDate.toString();
             if (selectedDate != null) {
               _date = selectedDate;
               _colorDt = KprimaryColorDark;
@@ -242,5 +242,15 @@ class _SignUpScreen extends State<SignUpScreen> {
     var dateString = DateFormat('dd-MM-yyyy').format(now);
     final String configFileName = dateString;
     return configFileName;
+  }
+
+  void toggleProgressHUD(_loading, _progressHUD) {
+    setState(() {
+      if (_loading) {
+        _progressHUD.dismiss();
+      } else {
+        _progressHUD.show();
+      }
+    });
   }
 }

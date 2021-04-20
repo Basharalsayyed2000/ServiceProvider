@@ -23,6 +23,7 @@ class _LoginScreen extends State<LoginScreen> {
   String _email, _password;
   // ignore: unused_field
   final _auth = Auth();
+  // ignore: unused_field
   final _user = User();
   bool isAdmin = false;
   final adminpass = 'admin1234';
@@ -120,27 +121,22 @@ class _LoginScreen extends State<LoginScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () async {
+                              final progress = ProgressHUD.of(context);
+                              toggleProgressHUD(true, progress);
                               if (_globalKey.currentState.validate()) {
                                 _globalKey.currentState.save();
                                 // ignore: unused_local_variable
                                 String message = '';
                                 try {
-                                  final progress = ProgressHUD.of(context);
-                                  progress.showWithText('Loading...');
-                                  Future.delayed(Duration(seconds: 1), () {
-                                    progress.dismiss();
-                                  });
+                                  // ignore: unused_local_variable
                                   final _authresult = await _auth.signIn(
                                       _email.trim(), _password.trim());
-                                      print(_authresult.user.uid);
-                                  if ((_user.getUserById(
-                                          _authresult.user.uid)[KUserRank]) ==
-                                      _usertype) {
-                                    Navigator.pushReplacementNamed(
-                                        context, UserHome.id);
-                                  }
-                                  
-                                } catch (e) {
+
+                                  toggleProgressHUD(false, progress);
+                                  Navigator.pushReplacementNamed(
+                                      context, UserHome.id,arguments: _authresult.user.uid);                                } catch (e) {
+                                  toggleProgressHUD(false, progress);
+
                                   // ignore: deprecated_member_use
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                     content: Text(e.toString()),
@@ -148,6 +144,7 @@ class _LoginScreen extends State<LoginScreen> {
                                   print(e.message);
                                 }
                               }
+                              toggleProgressHUD(false, progress);
                             },
                             child: Center(
                               child: Text(
@@ -235,5 +232,15 @@ class _LoginScreen extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void toggleProgressHUD(_loading, _progressHUD) {
+    setState(() {
+      if (_loading) {
+        _progressHUD.show();
+      } else {
+        _progressHUD.dismiss();
+      }
+    });
   }
 }

@@ -16,6 +16,6 @@ class User {
     });
   }
   getUserById(docId)async{
-      return _firestore.collection(KUserCollection).document(docId).snapshots();
+      return  _firestore.collection(KUserCollection).document(docId).snapshots();
   }
 }
