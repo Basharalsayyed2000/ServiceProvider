@@ -74,7 +74,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                 onTap: () {
                   setState(() {
                     _userlogin=true;
-                    Navigator.of(context).pushReplacementNamed(LoginScreen.id,arguments: _userlogin);
+                    Navigator.of(context).pushNamed(LoginScreen.id,arguments: _userlogin);
                   });
                 },
                 child: Card(
@@ -100,7 +100,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                 onTap: () {
                    setState(() {
                     _userlogin=false;
-                    Navigator.of(context).pushReplacementNamed(LoginScreen.id,arguments: _userlogin);
+                    Navigator.of(context).pushNamed(LoginScreen.id,arguments: _userlogin);
                   });
                 },
                 child: Card(

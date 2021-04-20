@@ -11,6 +11,8 @@ import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 
+import 'Screens/User/ServiceRequestLocation.dart';
+
 main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -19,8 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-
-      initialRoute: SplashScreen.id,
+      initialRoute: ServiceRequest.id,
 
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         UserHome.id: (context) => UserHome(),
         SignUpScreen.id: (context) => SignUpScreen(),
         ServiceRequest.id: (context) => ServiceRequest(),
+        ServiceRequestLocation.id: (context) => ServiceRequestLocation(),
         AddService.id: (context) => AddService(),
         AdminHome.id: (context) => AdminHome(),    
         WelcomeScreen.id: (context)=>WelcomeScreen(), 
