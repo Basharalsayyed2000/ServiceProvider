@@ -45,19 +45,22 @@ class _UserHomeState extends State<UserHome> {
         selectedItemColor: KprimaryColor,
         
        onTap:_onItemTapped,
-        items: const <BottomNavigationBarItem>[
+        items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home,
+             color: _selectedIndex==0 ? KprimaryColor : Colors.grey ,),
             
             label: 'Home',
             
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.build),
+            icon: Icon(Icons.build,
+            color: _selectedIndex==1 ? KprimaryColor : Colors.grey ,),
             label: 'Services',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person,
+             color: _selectedIndex==2 ? KprimaryColor : Colors.grey ,),
             label: 'My Profile',
           ),
         ],
