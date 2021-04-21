@@ -50,7 +50,6 @@ uploadImage(folderName,imageName)async{
   final _storage=FirebaseStorage.instance;
   final _picker = ImagePicker();
   PickedFile _image;
-  File _imageFile;
  //check permission 
 await Permission.photos.request();
 var _permessionStatus=await Permission.photos.status;
@@ -65,7 +64,7 @@ if(_permessionStatus.isGranted){
   
   var _snapshot =await _storage.ref().child('$folderName/$imageName').putFile(_image);
 
-  var downloadurl= await _snapshot.ref.getDownloadURL();
+  var downloadurl= await _snapshot.reference.getDownloadURL();
 
   setState(() {
     _imageUrl=downloadurl;
