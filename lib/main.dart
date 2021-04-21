@@ -22,7 +22,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
 
+<<<<<<< Updated upstream
       initialRoute: LoginScreen.id,
+=======
+      initialRoute:AdminHome.id,
+>>>>>>> Stashed changes
 
       routes: {
         SplashScreen.id: (context) => SplashScreen(),

@@ -1,84 +1,81 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 import 'package:flutter/material.dart';
-import 'package:service_provider/Models/Services.dart';
-import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Services/store.dart';
+import 'package:service_provider/MyTools/Constant.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+class AddService extends StatefulWidget {
+    static String id = 'addService';
 
-// ignore: must_be_immutable
-class AddService extends StatelessWidget {
-  static String id = 'addService';
-  // ignore: unused_field
-  String _name, _desc, _imageLocation, _addedDate;
-  // ignore: unused_field
-  final Store _store = Store();
-  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  @override
+  _AddServiceState createState() => _AddServiceState();
+}
+
+class _AddServiceState extends State<AddService> {
+  String _imageUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _globalKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CustomTextField(
-                onClicked: (value) {
-                  _name = value;
-                },
-                hintText: 'Name',
-                prefixIcon: Icons.insert_emoticon, labelText: '',),
-            SizedBox(
-              height: 10,
-            ),
-          
-            CustomTextField(
-                onClicked: (value) {
-                  _desc = value;
-                },
-                hintText: 'Description',
-                prefixIcon: Icons.text_fields, labelText: '',),
-            SizedBox(
-              height: 10,
-            ),
-            CustomTextField(
-                onClicked: (value) {
-                  _imageLocation = value;
-                },
-                hintText: 'ImageLocation',
-                prefixIcon: Icons.card_travel, labelText: '',),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextField(
-                onClicked: (value) {
-                  _imageLocation = value;
-                },
-                hintText: 'image Location',
-                prefixIcon: Icons.image, labelText: '',),
-            SizedBox(
-              height: 20,
-            ),
-            // ignore: deprecated_member_use
-            RaisedButton(
-              onPressed: () {
-                if (_globalKey.currentState.validate()) {
-                  _store.addservice(Services(
-                    sName: _name,
-                    sDesc: _desc,
-                    sAddDate: _addedDate,
-                    sImageLoc: _imageLocation,
-                  ));
-                }
-              },
-              child: Text(
-                'Add Service',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: Text('Upload Image'),
+      ),
+      body: Column(
+        children: <Widget>[
+          (_imageUrl!=null)
+          ?Image.network(_imageUrl):
+          Placeholder(
+            fallbackHeight:200 ,
+            fallbackWidth: 200,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          // ignore: deprecated_member_use
+          RaisedButton(
+            child: Text('Upload Image'),
+            color: KprimaryColor,
+            onPressed: (){
+              uploadImage('imageServices','Electrictian');
+            }
+          ),
+        ],
       ),
     );
   }
+  
+
+
+uploadImage(folderName,imageName)async{
+  final _storage=FirebaseStorage.instance;
+  final _picker = ImagePicker();
+  PickedFile _image;
+  File _imageFile;
+ //check permission 
+await Permission.photos.request();
+var _permessionStatus=await Permission.photos.status;
+if(_permessionStatus.isGranted){
+  //select image
+  _image =await _picker.getImage(source: ImageSource.gallery);
+  final bytes = await _image.readAsBytes();
+  var _file= File(bytes,_image.path);
+     
+  
+  if(_image!=null){
+  
+  var _snapshot =await _storage.ref().child('$folderName/$imageName').putFile(_image);
+
+  var downloadurl= await _snapshot.ref.getDownloadURL();
+
+  setState(() {
+    _imageUrl=downloadurl;
+  });
+  }else{
+    print('no Path Recieved');
+  }
+}else{
+  print('Grent permession and try again');
+}
+}
+
 }

@@ -21,18 +21,24 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  permission_handler:
-  intl: 
-  firebase_auth:
-  cloud_firestore: 
-  provider:
+  permission_handler: ^6.1.3
+  intl: ^0.17.0 
+  firebase_auth: ^1.1.1
+  cloud_firestore: ^1.0.6 
+  provider: ^5.0.0
   flutter_progress_hud: ^2.0.0
+<<<<<<< Updated upstream
   firebase_storage:
   image_picker:  
   datetime_picker_formfield: ^0.1.8
   google_maps_flutter: ^1.2.0
   geolocator: ^6.1.1
   geocoding:
+=======
+  firebase_storage: ^8.0.4
+  image_picker: ^0.7.4  
+  datetime_picker_formfield: ^2.0.0
+>>>>>>> Stashed changes
   flutter:
     sdk: flutter
 

@@ -3,7 +3,7 @@ import 'package:service_provider/Models/Services.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
 class Store {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   addservice(Services service) {
     _firestore.collection(KServicesCollection).add({

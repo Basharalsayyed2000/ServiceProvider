@@ -3,10 +3,10 @@ import 'package:service_provider/Models/userData.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
 class User {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   addUser(UserData user, String uid) async {
-    await _firestore.collection(KUserCollection).document(uid).setData({
+    await _firestore.collection(KUserCollection).doc(uid).set({
       KUserName: user.uName,
       KUserAddDate: user.uAddDate,
       KUserImageLocation: user.uImageLoc,
@@ -16,6 +16,6 @@ class User {
     });
   }
   getUserById(docId)async{
-      return  _firestore.collection(KUserCollection).document(docId).snapshots();
+      return  _firestore.collection(KUserCollection).doc(docId).snapshots();
   }
 }
