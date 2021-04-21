@@ -1,80 +1,170 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-import 'package:flutter/material.dart';
-import 'package:service_provider/MyTools/Constant.dart';
+import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_downloader/image_downloader.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-class AddService extends StatefulWidget {
-    static String id = 'addService';
+import 'package:service_provider/Models/Services.dart';
+import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/MyWidget/MyCustomTextField.dart';
+import 'package:service_provider/Services/store.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
+class AddService extends StatefulWidget {
+  static String id = 'addService';
   @override
   _AddServiceState createState() => _AddServiceState();
 }
 
 class _AddServiceState extends State<AddService> {
+  File _image;
   String _imageUrl;
+  String _name, _desc, _addedDate;
+  bool status;
+  // ignore: unused_field
+  final Store _store = Store();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Image'),
-      ),
-      body: Column(
-        children: <Widget>[
-          (_imageUrl!=null)
-          ?Image.network(_imageUrl):
-          Placeholder(
-            fallbackHeight:200 ,
-            fallbackWidth: 200,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          // ignore: deprecated_member_use
-          RaisedButton(
-            child: Text('Upload Image'),
-            color: KprimaryColor,
-            onPressed: (){
-              uploadImage('imageServices','Electrictian');
-            }
-          ),
-        ],
+      body: Form(
+        key: _globalKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundImage: _image == null ?null : FileImage(_image),
+                  radius: 80,
+                ),
+                GestureDetector(
+                    onTap: pickImage,
+                    child: Icon(
+                      Icons.folder,
+                      color: KprimaryColor,
+                      size: 30,
+                    ))
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+
+            SizedBox(
+              height: 30,
+            ),
+            CustomTextField(
+              onClicked: (value) {
+                _name = value;
+              },
+              hintText: 'Name',
+              prefixIcon: Icons.insert_emoticon,
+              labelText: 'Service Name',
+            ),
+            SizedBox(
+              height: 10,
+            ),
+
+            CustomTextField(
+              onClicked: (value) {
+                _desc = value;
+              },
+              hintText: 'Description',
+              prefixIcon: Icons.text_fields,
+              labelText: 'Description',
+            ),
+            SizedBox(
+              height: 100,
+            ),
+
+            // ignore: deprecated_member_use
+            Builder(
+              builder: (context) => CustomButton(
+                onPressed: () {
+                  if (_globalKey.currentState.validate()) {
+                    uploadImage(context);
+                    // loadImage();
+                     _addedDate=getDateNow();
+                    _globalKey.currentState.save();
+
+                    _store.addservice(Services(
+                        sName: _name,
+                        sDesc: _desc,
+                        sAddDate: _addedDate,
+                        sImageUrl: _imageUrl));
+                    // ignore: deprecated_member_use
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('success'),
+                    ));
+                    reset();
+                  }
+                },
+                textValue: 'Add Service',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-  
 
-
-uploadImage(folderName,imageName)async{
-  final _storage=FirebaseStorage.instance;
-  final _picker = ImagePicker();
-  PickedFile _image;
- //check permission 
-await Permission.photos.request();
-var _permessionStatus=await Permission.photos.status;
-if(_permessionStatus.isGranted){
-  //select image
-  _image =await _picker.getImage(source: ImageSource.gallery);
-  final bytes = await _image.readAsBytes();
-  var _file= File(bytes,_image.path);
-     
-  
-  if(_image!=null){
-  
-  var _snapshot =await _storage.ref().child('$folderName/$imageName').putFile(_image);
-
-  var downloadurl= await _snapshot.reference.getDownloadURL();
-
-  setState(() {
-    _imageUrl=downloadurl;
-  });
-  }else{
-    print('no Path Recieved');
+  void reset() {
+    _globalKey.currentState.reset();
+    setState(() {
+      _image = null;
+    });
   }
-}else{
-  print('Grent permession and try again');
-}
-}
 
+  void pickImage() async {
+    await Permission.photos.request();
+    var _permessionStatus = await Permission.photos.status;
+    if (_permessionStatus.isGranted) {
+      // ignore: deprecated_member_use
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _image = image;
+      });
+    }
+  }
+
+  void uploadImage(context) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage(
+          storageBucket: 'gs://service-provider-ef677.appspot.com');
+      StorageReference ref = storage.ref().child(_image.path);
+      StorageUploadTask storageUploadTask = ref.putFile(_image);
+      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+
+      String url = await taskSnapshot.ref.getDownloadURL();
+      setState(() {
+        _imageUrl = url;
+      });
+    } catch (ex) {
+      // ignore: deprecated_member_use
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(ex.message),
+      ));
+    }
+  }
+
+  String getDateNow() {
+    initializeDateFormatting();
+    DateTime now = DateTime.now();
+// ignore: unused_local_variable
+    var dateString = DateFormat('dd-MM-yyyy').format(now);
+    final String configFileName = dateString;
+    return configFileName;
+  }
+
+  void loadImage() async {
+    var imageId = await ImageDownloader.downloadImage(_imageUrl);
+    var path = await ImageDownloader.findPath(imageId);
+    File image = File(path);
+    setState(() {
+      _image = image;
+    });
+  }
 }

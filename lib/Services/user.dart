@@ -15,7 +15,16 @@ class User {
       KUserPhoneNumber: user.uphoneNumber,
     });
   }
-  getUserById(docId)async{
-      return  _firestore.collection(KUserCollection).document(docId).snapshots();
-  }
+  // getUserById(docId)async{
+  //     return  _firestore.collection(KUserCollection).document(docId).snapshots();
+  // }
+   Future getCurrentUser(uid) async{
+    try{
+      // ignore: unused_local_variable
+      DocumentSnapshot ds =await _firestore.collection(KUserCollection).document(uid).get();
+    }catch(e){
+        print(e); 
+    }
+   }
+
 }

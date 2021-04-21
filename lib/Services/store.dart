@@ -10,7 +10,7 @@ class Store {
       KServiceName: service.sName,
       KServiceDesc: service.sDesc,
       KServiceAddDate: service.sAddDate,
-      KServicesImageLocation: service.sImageLoc,
+      KServicesImageUrl: service.sImageUrl,
     });
   }
 }

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/User/ServiceRequestLocation.dart';
 
 class ServiceRequest extends StatefulWidget{
   static String id = "serviceRequestScreen";
@@ -121,9 +120,7 @@ class _ServiceRequest extends State<ServiceRequest>{
               padding: EdgeInsets.only(top: Kminimumpadding * 2),
               child: CustomButton(
                 textValue: "Continue",
-                onPressed: (){
-                  Navigator.of(context).pushNamed(ServiceRequestLocation.id);
-                },
+                onPressed: (){},
               ),
             )
 

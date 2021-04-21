@@ -1,5 +1,5 @@
 class Services {
-  String sName, sDesc, sImageLoc, sId, sAddDate;
+  String sName, sDesc, sImageUrl, sId, sAddDate;
 
-  Services({this.sName, this.sDesc, this.sAddDate, this.sImageLoc});
+  Services({this.sName, this.sDesc, this.sAddDate, this.sImageUrl});
 }

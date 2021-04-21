@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  image_downloader:
   permission_handler: 
   intl: 
   firebase_auth: 
@@ -30,8 +31,8 @@ dependencies:
   google_maps_flutter: 
   geolocator: 
   geocoding:
-  firebase_storage: 
-  image_picker:   
+  firebase_storage: ^3.1.6
+  image_picker: ^0.6.7+4
   datetime_picker_formfield: 
   flutter:
     sdk: flutter

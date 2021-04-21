@@ -18,7 +18,7 @@ const KServicesCollection = 'Services';
 const KServiceName = 'serviceName';
 const KServiceDesc = 'serviceDesc';
 const KServiceAddDate = 'serviceAddDate';
-const KServicesImageLocation = 'servicesImageLocation';
+const KServicesImageUrl = 'servicesImageUrl';
 
 
 //user Data
