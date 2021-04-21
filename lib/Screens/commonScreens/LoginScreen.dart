@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 // ignore: unused_import
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
@@ -112,16 +113,10 @@ class _LoginScreen extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * 0.0305,
                     ),
                     Container(
-                      height: 40.0,
-                      child: Builder(
-                        builder: (context) => Material(
-                          borderRadius: BorderRadius.circular(20.0),
-                          shadowColor: Colors.black,
-                          color: Color.fromRGBO(157, 215, 211, 1),
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () async {
-                              final progress = ProgressHUD.of(context);
+                      width:MediaQuery.of(context).size.height * 0.4505,
+                      child:
+                    CustomButton(onPressed:() async{
+                       final progress = ProgressHUD.of(context);
                               toggleProgressHUD(true, progress);
                               if (_globalKey.currentState.validate()) {
                                 _globalKey.currentState.save();
@@ -145,19 +140,7 @@ class _LoginScreen extends State<LoginScreen> {
                                 }
                               }
                               toggleProgressHUD(false, progress);
-                            },
-                            child: Center(
-                              child: Text(
-                                "LOGIN",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Montserrat"),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                    }, textValue: "LOGIN"),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.0485,

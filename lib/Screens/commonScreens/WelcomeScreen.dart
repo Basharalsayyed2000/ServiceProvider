@@ -29,6 +29,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               ),
             ),
           ),
+          SizedBox(height: 65,),
           Container(
             child: Column(
               children: [
@@ -53,24 +54,18 @@ class _WelcomeScreen extends State<WelcomeScreen> {
           SizedBox(
             height: 70,
           ),
-          Center(
-            child: Text(
-              "Select Please:",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                  decoration: TextDecoration.underline,
-                  color: Color.fromRGBO(79, 194, 185, 1)),
-            ),
-          ),
+         
           Expanded(
+            
               child: GridView.count(
+              
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             primary: false,
             children: [
               GestureDetector(
+                
                 onTap: () {
                   setState(() {
                     _userlogin=true;
@@ -78,6 +73,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                   });
                 },
                 child: Card(
+                  margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                   elevation: 4,
@@ -104,6 +100,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                   });
                 },
                 child: Card(
+                  margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                   elevation: 4,
