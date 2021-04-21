@@ -30,6 +30,9 @@ dependencies:
   firebase_storage:
   image_picker:  
   datetime_picker_formfield: ^0.1.8
+  google_maps_flutter: ^1.2.0
+  geolocator: ^6.1.1
+  geocoding:
   flutter:
     sdk: flutter
 
