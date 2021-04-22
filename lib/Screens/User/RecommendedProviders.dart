@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/User/ServiceRequest.dart';
 
 class Recommended extends StatefulWidget {
   static String id = 'Recommended';
@@ -36,27 +37,30 @@ class _RecommendedState extends State<Recommended> {
 
   Card buildCard(String title, String subtitle) {
     return Card(
-      child: ListTile(
-          title: Text(title),
-          subtitle: Text(subtitle),
-          leading: Image.asset("Assets/images/noprofile.png"),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.phone),
-              PopupMenuButton<String>(
-                onSelected: handleClick2,
-                itemBuilder: (BuildContext context) {
-                  return {'Edit', 'Settings'}.map((String choice) {
-                    return PopupMenuItem<String>(
-                      value: choice,
-                      child: Text(choice),
-                    );
-                  }).toList();
-                },
-              ),
-            ],
-          )),
+      child: GestureDetector(
+            onTap: () => Navigator.pushNamed(context, ServiceRequest.id),
+              child: ListTile(
+            title: Text(title),
+            subtitle: Text(subtitle),
+            leading: Image.asset("Assets/images/noprofile.png"),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.phone),
+                PopupMenuButton<String>(
+                  onSelected: handleClick2,
+                  itemBuilder: (BuildContext context) {
+                    return {'Edit', 'Settings'}.map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      );
+                    }).toList();
+                  },
+                ),
+              ],
+            )),
+      ),
     );
   }
 

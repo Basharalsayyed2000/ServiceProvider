@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/User/MyRequests.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
-import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Screens/User/ProvidersList.dart';
 
 
@@ -29,7 +29,7 @@ class _UserHomeState extends State<UserHome> {
     String _useId = ModalRoute.of(context).settings.arguments;
     PageController _pageController=PageController();
     List<Widget> _screen=[
-    ProvidersList(),Recommended(),Profilescreen(),
+    ProvidersList(),MyRequests(),Profilescreen(),
     ];
 
     void _onPageChanged(int index){

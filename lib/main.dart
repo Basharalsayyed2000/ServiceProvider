@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
+import 'package:service_provider/Screens/User/MyRequests.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
 import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context)=>WelcomeScreen(), 
         ManageService.id: (context) => ManageService(),
         Profilescreen.id: (context) => Profilescreen(),
-        Recommended.id: (context) => Recommended(),       
+        Recommended.id: (context) => Recommended(),    
+        MyRequests.id: (context) => MyRequests(),          
       },
     );
   }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Services.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Services/store.dart';
 
 class ProvidersList extends StatefulWidget {
@@ -59,7 +59,7 @@ class _ProvidersListState extends State<ProvidersList> {
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, ServiceRequest.id),
+                    onTap: () => Navigator.pushNamed(context, Recommended.id),
                     child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
