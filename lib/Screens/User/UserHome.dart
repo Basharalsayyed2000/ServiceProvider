@@ -12,7 +12,17 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-    
+
+  Color _colorH = KprimaryColor, _colorS, _colorP;
+
+  int _selectedIndex;
+
+  @override
+  void initState() {
+    _selectedIndex = 0;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -21,11 +31,13 @@ class _UserHomeState extends State<UserHome> {
     List<Widget> _screen=[
     ProvidersList(),Recommended(),Profilescreen(),
     ];
-    // ignore: unused_local_variable
-    int _selectedIndex=0;
+
     void _onPageChanged(int index){
     setState(() {
       _selectedIndex=index;
+      _colorH = _selectedIndex==0 ? KprimaryColor : null;
+      _colorS = _selectedIndex==1 ? KprimaryColor : null;
+      _colorP = _selectedIndex==2 ? KprimaryColor : null;
     });
     }
     void _onItemTapped(int selectedIndex){
@@ -42,25 +54,28 @@ class _UserHomeState extends State<UserHome> {
        physics: NeverScrollableScrollPhysics(),
      ),
      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: KprimaryColor,
+        selectedItemColor: Colors.grey,
         
        onTap:_onItemTapped,
         items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home,
-             color: _selectedIndex==0 ? KprimaryColor : Colors.grey ,),
+             color: _colorH,
+            ),
             
             label: 'Home',
             
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.build,
-            color: _selectedIndex==1 ? KprimaryColor : Colors.grey ,),
+            color: _colorS,
+            ),
             label: 'Services',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person,
-             color: _selectedIndex==2 ? KprimaryColor : Colors.grey ,),
+             color: _colorP,
+            ),
             label: 'My Profile',
           ),
         ],

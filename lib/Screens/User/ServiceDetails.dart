@@ -30,8 +30,11 @@ class _ServiceDetails extends State<ServiceDetails>{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  GalleryImages(
-                    assetImage: "Assets/images/electrician.png",
+                  Container(
+                    margin: EdgeInsets.only(top: Kminimumpadding * 5),
+                    child: GalleryImages(
+                      assetImage: "Assets/images/electrician.png",
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width/2.4,
