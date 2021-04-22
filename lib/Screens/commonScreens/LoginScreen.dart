@@ -81,6 +81,7 @@ class _LoginScreen extends State<LoginScreen> {
                             labelText: "Password",
                             hintText: "e.g Password",
                             prefixIcon: Icons.vpn_key,
+                            obscureText: true,
                             onClicked: (value) {
                               _password = value;
                             },
