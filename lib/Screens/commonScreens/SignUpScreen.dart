@@ -246,7 +246,7 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   void toggleProgressHUD(_loading, _progressHUD) {
     setState(() {
-      if (_loading) {
+      if (!_loading) {
         _progressHUD.dismiss();
       } else {
         _progressHUD.show();
