@@ -61,26 +61,32 @@ class _ProvidersListState extends State<ProvidersList> {
                   GestureDetector(
                     onTap: () => Navigator.pushNamed(context, ServiceRequest.id),
                     child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      elevation: 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.network(
-                            _services[index].sImageUrl,
-                            fit: BoxFit.fill,
-                            height: 150,
-                            width: 200,
-                          ),
-                          Text(
-                            _services[index].sName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        elevation: 4,
+                        child:  Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.network(
+                                  _services[index].sImageUrl,
+                                  fit: BoxFit.fill,
+                                  height: 135,
+                                  width: 200,
+                                ),
+                                Text(
+                                  _services[index].sName,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                        ),
+                          
+                        ),
                     ),
-                  ),
+                    
+                  
                 ],
               ),
               itemCount: _services.length,
