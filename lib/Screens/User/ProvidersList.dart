@@ -50,8 +50,11 @@ class _ProvidersListState extends State<ProvidersList> {
             }
             return GridView.builder(
               primary: false,
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+              ),
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
                   Card(
@@ -63,7 +66,9 @@ class _ProvidersListState extends State<ProvidersList> {
                       children: [
                         Image.network(
                           _services[index].sImageUrl,
-                          height: 130,
+                          fit: BoxFit.fill,
+                          height: 150,
+                          width: 200,
                         ),
                         Text(
                           _services[index].sName,

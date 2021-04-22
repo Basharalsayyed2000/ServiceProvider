@@ -8,7 +8,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreen extends State<WelcomeScreen> {
-   bool _userlogin= false;
+   bool _isUser= false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,8 +68,8 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                 
                 onTap: () {
                   setState(() {
-                    _userlogin=true;
-                    Navigator.of(context).pushNamed(LoginScreen.id,arguments: _userlogin);
+                    _isUser=true;
+                    Navigator.of(context).pushReplacementNamed(LoginScreen.id,arguments: _isUser);
                   });
                 },
                 child: Card(
@@ -95,8 +95,8 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               GestureDetector(
                 onTap: () {
                    setState(() {
-                    _userlogin=false;
-                    Navigator.of(context).pushNamed(LoginScreen.id,arguments: _userlogin);
+                    _isUser=false;
+                    Navigator.of(context).pushReplacementNamed(LoginScreen.id,arguments: _isUser);
                   });
                 },
                 child: Card(
@@ -109,7 +109,8 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                     children: [
                       Image.asset(
                         "Assets/images/provider.jpg",
-                        height: 130,
+                        height: 150,
+                        width: 100,
                       ),
                       Text(
                         "Provider",

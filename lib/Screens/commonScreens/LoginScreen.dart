@@ -24,7 +24,6 @@ class _LoginScreen extends State<LoginScreen> {
   // ignore: unused_field
   final _user = User();
   bool isAdmin = false;
-  final adminpass = 'admin1234';
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
   @override
