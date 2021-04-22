@@ -32,9 +32,10 @@ class _AddServiceState extends State<AddService> {
     return Scaffold(
       body: Form(
         key: _globalKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+         // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height:MediaQuery.of(context).size.height * 0.1305 ,),
             Row(
               children: <Widget>[
                 CircleAvatar(
