@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'ImageDialog.dart';
 
+// ignore: must_be_immutable
 class GalleryImages extends StatelessWidget{
   final String assetImage;
   bool isOnline;

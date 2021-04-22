@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:service_provider/Models/Services.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Services/store.dart';
 
 class ProvidersList extends StatefulWidget {
   @override
@@ -7,6 +10,7 @@ class ProvidersList extends StatefulWidget {
 }
 
 class _ProvidersListState extends State<ProvidersList> {
+  final _store = Store();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,180 +32,58 @@ class _ProvidersListState extends State<ProvidersList> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: GridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            primary: false,
-            children: [
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/plumber.webp",
-                      height: 130,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _store.loadService(),
+        // ignore: missing_return
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Services> _services = [];
+            for (var doc in snapshot.data.documents) {
+              print(_services.length);
+              var data = doc.data;
+              print(data[KServiceName]);
+              print(data[KServiceDesc]);
+              _services.add(Services(
+                sName: data[KServiceName],
+                sDesc: data[KServiceDesc],
+                sImageUrl: data[KServicesImageUrl],
+                sAddDate: data[KServiceAddDate],
+              ));
+            }
+            return GridView.builder(
+              primary: false,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemBuilder: (context, index) => Stack(
+                children: <Widget>[
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    elevation: 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(
+                          _services[index].sImageUrl,
+                          height: 130,
+                        ),
+                        Text(
+                          _services[index].sName,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      ],
                     ),
-                    Text(
-                      "Plumber",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/electrician.png",
-                      height: 130,
-                    ),
-                    Text(
-                      "Electrician",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/carpenter.webp",
-                      height: 130,
-                    ),
-                    Text(
-                      "Carpenter",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/painter.png",
-                      height: 130,
-                    ),
-                    Text(
-                      "Painter",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/blacksmith.png",
-                      height: 130,
-                    ),
-                    Text(
-                      "Smith",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/conditioning.webp",
-                      height: 130,
-                    ),
-                    Text(
-                      "Conditioning",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/parquet.png",
-                      height: 130,
-                    ),
-                    Text(
-                      "Parquet",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/marble.webp",
-                      height: 130,
-                    ),
-                    Text(
-                      "Marble",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "Assets/images/ceramictiles.png",
-                      height: 130,
-                    ),
-                    Text(
-                      "Ceramic tiles",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              )
-            ],
-          )),
-        ],
+              itemCount: _services.length,
+            );
+          } else {
+            return Center(
+              child: Text('Loading'),
+            );
+          }
+        },
       ),
     );
   }

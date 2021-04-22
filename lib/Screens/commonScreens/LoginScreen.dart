@@ -113,34 +113,38 @@ class _LoginScreen extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * 0.0305,
                     ),
                     Container(
-                      width:MediaQuery.of(context).size.height * 0.4505,
-                      child:
-                    CustomButton(onPressed:() async{
-                       final progress = ProgressHUD.of(context);
-                              toggleProgressHUD(true, progress);
-                              if (_globalKey.currentState.validate()) {
-                                _globalKey.currentState.save();
-                                // ignore: unused_local_variable
-                                String message = '';
-                                try {
-                                  // ignore: unused_local_variable
-                                  final _authresult = await _auth.signIn(
-                                      _email.trim(), _password.trim());
+                      width: MediaQuery.of(context).size.height * 0.4505,
+                      child: CustomButton(
+                        textValue: "LOGIN",
+                        onPressed: () async {
+                          final progress = ProgressHUD.of(context);
+                          toggleProgressHUD(true, progress);
+                          if (_globalKey.currentState.validate()) {
+                            _globalKey.currentState.save();
+                            // ignore: unused_local_variable
+                            String message = '';
+                            try {
+                              // ignore: unused_local_variable
+                              final _authresult = await _auth.signIn(
+                                  _email.trim(), _password.trim());
 
-                                  toggleProgressHUD(false, progress);
-                                  Navigator.pushReplacementNamed(
-                                      context, UserHome.id,arguments: _authresult.user.uid);                                } catch (e) {
-                                  toggleProgressHUD(false, progress);
-
-                                  // ignore: deprecated_member_use
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text(e.toString()),
-                                  ));
-                                  print(e.message);
-                                }
-                              }
                               toggleProgressHUD(false, progress);
-                    }, textValue: "LOGIN"),
+                              Navigator.pushReplacementNamed(
+                                  context, UserHome.id,
+                                  arguments: _authresult.user.uid);
+                            } catch (e) {
+                              toggleProgressHUD(false, progress);
+
+                              // ignore: deprecated_member_use
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(e.toString()),
+                              ));
+                              print(e.message);
+                            }
+                          }
+                          toggleProgressHUD(false, progress);
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.0485,

@@ -163,6 +163,7 @@ class _ServiceDetails extends State<ServiceDetails>{
     );
   }
 
+  // ignore: unused_element
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(

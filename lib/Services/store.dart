@@ -13,4 +13,7 @@ class Store {
       KServicesImageUrl: service.sImageUrl,
     });
   }
+  Stream<QuerySnapshot> loadService(){
+     return _firestore.collection(KServicesCollection).snapshots();
+  }
 }
