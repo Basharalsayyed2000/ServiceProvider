@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
+import 'package:service_provider/Screens/User/ServiceRequestLocation.dart';
 
 class ServiceRequest extends StatefulWidget{
   static String id = "serviceRequestScreen";
@@ -42,10 +43,13 @@ class _ServiceRequest extends State<ServiceRequest>{
           children: <Widget>[
 
             Center(
-              child: Image(
-                image: AssetImage("Assets/images/serviceRequestLogo.png"),
-                width: 160.0,
-                height: 160.0,
+              child: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Image(
+                  image: AssetImage("Assets/images/serviceRequestLogo.png"),
+                  width: 160.0,
+                  height: 160.0,
+                ),
               ),
             ),
 
@@ -120,7 +124,9 @@ class _ServiceRequest extends State<ServiceRequest>{
               padding: EdgeInsets.only(top: Kminimumpadding * 2),
               child: CustomButton(
                 textValue: "Continue",
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pushNamed(context, ServiceRequestLocation.id);
+                },
               ),
             )
 

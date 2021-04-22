@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Services.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Services/store.dart';
 
 class ProvidersList extends StatefulWidget {
@@ -57,24 +58,27 @@ class _ProvidersListState extends State<ProvidersList> {
               ),
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
-                  Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    elevation: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(
-                          _services[index].sImageUrl,
-                          fit: BoxFit.fill,
-                          height: 150,
-                          width: 200,
-                        ),
-                        Text(
-                          _services[index].sName,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, ServiceRequest.id),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      elevation: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(
+                            _services[index].sImageUrl,
+                            fit: BoxFit.fill,
+                            height: 150,
+                            width: 200,
+                          ),
+                          Text(
+                            _services[index].sName,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

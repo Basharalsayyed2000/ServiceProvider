@@ -109,7 +109,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                     children: [
                       Image.asset(
                         "Assets/images/provider.jpg",
-                        height: 150,
+                        height: 130,
                         width: 100,
                       ),
                       Text(
