@@ -39,10 +39,8 @@ class _ProvidersListState extends State<ProvidersList> {
           if (snapshot.hasData) {
             List<Services> _services = [];
             for (var doc in snapshot.data.documents) {
-              print(_services.length);
               var data = doc.data;
-              print(data[KServiceName]);
-              print(data[KServiceDesc]);
+
               _services.add(Services(
                 sName: data[KServiceName],
                 sDesc: data[KServiceDesc],

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
 
-      initialRoute: UserHome.id,
+      initialRoute: AdminHome.id,
 
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
