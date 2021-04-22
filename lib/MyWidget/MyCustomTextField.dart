@@ -84,10 +84,10 @@ class _CustomTextField extends State<CustomTextField> {
         return "Password is empty !";
       case "Name":
         return "Name is empty !";
-      case "Email / Phone Number":
-        return "Email / Phone Number is empty !";
-      case "Confirm Password":
-        return "Confirm Password is empty !";
+      case "Email":
+        return "Email is empty !";
+      case "Phone Number":
+        return "Phone Number is empty !";
     }
   }
 
@@ -113,9 +113,7 @@ class _CustomTextField extends State<CustomTextField> {
             obscureText: this.obscureText,
 
             // ignore: missing_return
-            validator: (value) {
-              return value.isEmpty ? _errorMessage(labelText) : null;
-            },
+            validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
 
             onSaved: onClicked,
 
@@ -174,13 +172,7 @@ class _CustomTextField extends State<CustomTextField> {
               autofocus: false,
 
               // ignore: missing_return
-              validator: (value) {
-                if (value.isEmpty) {
-
-                  return _errorMessage(labelText);
-                }
-
-              },
+              validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
 
               onSaved: onClicked,
 
@@ -235,12 +227,7 @@ class _CustomTextField extends State<CustomTextField> {
               autofocus: false,
 
               // ignore: missing_return
-              validator: (value) {
-                if (value.isEmpty) {
-
-                  return _errorMessage(labelText);
-                }
-              },
+              validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
 
               onSaved: onClicked,
 

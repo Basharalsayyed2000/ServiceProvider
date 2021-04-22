@@ -23,7 +23,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreen extends State<SignUpScreen> {
   // ignore: unused_field
-  String _email, _password, _name, _birthDate, _addedDate, _phone;
+  String _email, _password, _name, _birthDate, _addedDate, _phone, _errorMessage;
 
   // ignore: unused_field
   bool _isAdmin = false, _rank;
@@ -154,21 +154,31 @@ class _SignUpScreen extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.only(top: Kminimumpadding * 2.5),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(context, LoginScreen.id);
-                      },
-                      child: Text(
-                        "Already have an account? Sign in",
+                Container(
+                  padding: EdgeInsets.only(top: Kminimumpadding * 2.5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account? ",
                         style: TextStyle(
+                          color: KprimaryColorDark,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, LoginScreen.id);
+                        },
+                        child: Text(
+                          "Sign in",
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: KprimaryColorDark,
-                            decoration: TextDecoration.underline),
+                            decoration: TextDecoration.underline
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 )
               ],
@@ -199,20 +209,28 @@ class _SignUpScreen extends State<SignUpScreen> {
       child: DateTimePickerFormField(
         autofocus: false,
         decoration: InputDecoration(
-            labelText: "Date",
-            isDense: true,
-            labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
-            prefixIcon: Icon(
-              Icons.date_range,
-              color: KprimaryColorDark,
-            ),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                borderSide: BorderSide(color: KdisabledColor, width: 1.5)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(color: KfocusColor, width: 2.5))),
-        validator: null,
+          labelText: "Date Of Birth",
+          isDense: true,
+          labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
+          prefixIcon: Icon(
+            Icons.date_range,
+            color: KprimaryColorDark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: KfocusColor, width: 2.5),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+          ),
+        ),
+
+        validator: (value) => "Date Of Birth is Empty !",
         format: DateFormat("MMMM d yyyy"),
         inputType: InputType.date,
         initialDate: DateTime(1970, 1, 1),
@@ -223,9 +241,11 @@ class _SignUpScreen extends State<SignUpScreen> {
               _date = selectedDate;
               _colorDt = KprimaryColorDark;
               _weightDt = FontWeight.bold;
+              _errorMessage = "Date Of Birth is Empty !";
             } else {
               _colorDt = null;
               _weightDt = null;
+              _errorMessage = null;
             }
           });
           print('Selected date: $_date');
