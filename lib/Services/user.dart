@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:service_provider/Models/userData.dart';
+import 'package:service_provider/Models/provider.dart';
+import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
-class User {
+class UserStore{
   final Firestore _firestore = Firestore.instance;
 
-  addUser(UserData user, String uid) async {
+  addUser(User user, String uid) async {
     await _firestore.collection(KUserCollection).document(uid).setData({
       KUserName: user.uName,
       KUserAddDate: user.uAddDate,
-      KUserImageLocation: user.uImageLoc,
-      KUserRank: user.urank,
+      KUserImageUrl: user.uImageUrl,
       KUserBirthDate: user.ubirthDate,
       KUserPhoneNumber: user.uphoneNumber,
+      KUserIsAdmin:user.isAdmin,
     });
   }
 
@@ -24,5 +25,19 @@ class User {
     } catch (e) {
       print(e);
     }
+  }
+  addProvider(Provider provider, String pid) async {
+    await _firestore.collection(KProviderCollection).document(pid).setData({
+      KProviderName: provider.pName,
+      KProviderAddDate: provider.pAddDate,
+      KProviderImageUrl: provider.pImageUrl,
+      KProviderBirthDate: provider.pbirthDate,
+      KProviderPhoneNumber: provider.pphoneNumber,
+      KProviderIsAdmin:provider.isAdmin,
+      KProviderAddress:provider.pAddress,
+      KProviderDescription:provider.pProviderDescription,
+      KProviderService:provider.pProvideService
+
+    });
   }
 }

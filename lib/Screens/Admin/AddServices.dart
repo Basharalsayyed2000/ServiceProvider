@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:service_provider/Models/Services.dart';
+import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
@@ -90,7 +90,7 @@ class _AddServiceState extends State<AddService> {
                      _addedDate=getDateNow();
                     _globalKey.currentState.save();
 
-                    _store.addservice(Services(
+                    _store.addservice(Service(
                         sName: _name,
                         sDesc: _desc,
                         sAddDate: _addedDate,

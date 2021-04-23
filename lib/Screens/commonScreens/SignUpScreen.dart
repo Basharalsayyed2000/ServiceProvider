@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:intl/intl.dart';
-import 'package:service_provider/Models/userData.dart';
+import 'package:service_provider/Models/provider.dart';
+import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -26,10 +27,10 @@ class _SignUpScreen extends State<SignUpScreen> {
   String _email, _password, _name, _birthDate, _addedDate, _phone, _errorMessage;
 
   // ignore: unused_field
-  bool _isAdmin = false, _rank;
+  bool _isAdmin = false;
   // ignore: unused_field
   final _auth = Auth();
-  final _user = User();
+  final _user = UserStore();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   Color _colorDt;
   FontWeight _weightDt;
@@ -38,7 +39,7 @@ class _SignUpScreen extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-    bool _rank = ModalRoute.of(context).settings.arguments;
+    bool _usertype = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -128,16 +129,27 @@ class _SignUpScreen extends State<SignUpScreen> {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
                             _addedDate = getDateNow();
+                            if(_usertype){
                             _user.addUser(
-                                UserData(
+                                User(
                                   uName: _name,
                                   uAddDate: _addedDate,
-                                  uImageLoc: 'null',
-                                  urank: _rank,
+                                  uImageUrl: 'null',
                                   ubirthDate: _birthDate,
                                   uphoneNumber: _phone,
+                                  isAdmin: false,
                                 ),
                                 authResult.user.uid);
+                            }else{
+                              _user.addProvider(Provider(
+                                pName: _name,
+                                pAddDate: _addedDate,
+                                pbirthDate: _birthDate,
+                                pphoneNumber: _phone,
+                                pImageUrl: null,
+                                pProvideService: 'nice'
+                              ), authResult.user.uid);
+                            }  
                             toggleProgressHUD(false, progress);
                             Navigator.pushNamed(context, LoginScreen.id);
                           } catch (e) {

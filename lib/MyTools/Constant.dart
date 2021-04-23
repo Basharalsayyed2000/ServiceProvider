@@ -24,8 +24,21 @@ const KServicesImageUrl = 'servicesImageUrl';
 //user Data
 const KUserCollection = 'Users';
 const KUserName = 'UserName';
-const KUserRank = 'UserRank';
 const KUserAddDate = 'UserAddDate';
-const KUserImageLocation = 'UserImageLocation';
+const KUserImageUrl = 'UserImageUrl';
 const KUserBirthDate='userBirthDate';
 const KUserPhoneNumber='UserPhoneNumber';
+const KUserIsAdmin='UserIsAdmin';
+
+
+//Provider
+const KProviderCollection = 'Providers';
+const KProviderName = 'ProviderName';
+const KProviderAddDate = 'ProviderAddDate';
+const KProviderImageUrl = 'ProviderImageUrl';
+const KProviderBirthDate='ProviderBirthDate';
+const KProviderPhoneNumber='ProviderPhoneNumber';
+const KProviderIsAdmin='ProviderIsAdmin';
+const KProviderDescription='ProviderDescription';
+const KProviderService='ProviderService';
+const KProviderAddress='ProviderAddress';

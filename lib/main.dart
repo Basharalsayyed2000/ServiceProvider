@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
+import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/User/MyRequests.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
@@ -23,9 +24,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
 
-      initialRoute: SplashScreen.id,
+      initialRoute: AdminHome.id,
 
       routes: {
+        ProviderHome.id: (context) => ProviderHome(),
         SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         UserHome.id: (context) => UserHome(),

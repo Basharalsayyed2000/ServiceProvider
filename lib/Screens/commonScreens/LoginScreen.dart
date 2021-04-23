@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/commonScreens/SignUpScreen.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
@@ -22,7 +23,7 @@ class _LoginScreen extends State<LoginScreen> {
   // ignore: unused_field
   final _auth = Auth();
   // ignore: unused_field
-  final _user = User();
+  final _user = UserStore();
   bool isAdmin = false;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
@@ -122,9 +123,16 @@ class _LoginScreen extends State<LoginScreen> {
                                 // ignore: unused_local_variable
                                 final _authresult = await _auth.signIn(
                                     _email.trim(), _password.trim());
+                                if(_usertype==true){    
                                 Navigator.pushReplacementNamed(
                                     context, UserHome.id,
                                     arguments: _authresult.user.uid);
+                                }
+                                else{
+                                   Navigator.pushReplacementNamed(
+                                    context, ProviderHome.id,
+                                    arguments: _authresult.user.uid);
+                                }
                               } catch (e) {
                                 // ignore: deprecated_member_use
                                 Scaffold.of(context).showSnackBar(SnackBar(

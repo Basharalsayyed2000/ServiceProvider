@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:service_provider/Models/Services.dart';
+import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Services/store.dart';
@@ -38,11 +38,11 @@ class _ProvidersListState extends State<ProvidersList> {
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Services> _services = [];
+            List<Service> _services = [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
 
-              _services.add(Services(
+              _services.add(Service(
                 sName: data[KServiceName],
                 sDesc: data[KServiceDesc],
                 sImageUrl: data[KServicesImageUrl],
