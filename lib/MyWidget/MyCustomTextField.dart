@@ -22,6 +22,13 @@ class CustomTextField extends StatefulWidget {
 
   final bool iconBlank;
 
+  final bool enabled;
+
+  final int minLines;
+
+  final int maxLines;
+
+  final int maxLength;
  
 
   CustomTextField(
@@ -35,6 +42,10 @@ class CustomTextField extends StatefulWidget {
         this.prefixText,
         this.iconBlank,
         this.controller,
+        this.minLines,
+        this.maxLines,
+        this.maxLength,
+        this.enabled,
         });
 
   @override
@@ -50,8 +61,11 @@ class CustomTextField extends StatefulWidget {
       prefixIcon: this.prefixIcon,
       prefixText: this.prefixText,
       iconBlank: this.iconBlank,
-      controller :this.controller,
-     
+      controller: this.controller,
+      minLines: (this.minLines == null) ? 1 : this.minLines,
+      maxLines: (this.maxLines == null) ? (this.minLines == null) ? 1 : this.minLines : this.maxLines,
+      maxLength: this.maxLength,
+      enabled: this.enabled,
     );
   }
 }
@@ -64,9 +78,13 @@ class _CustomTextField extends State<CustomTextField> {
   final String hintText;
   final IconData prefixIcon;
   final Function onClicked;
+  final bool enabled;
   final bool iconBlank;
   final bool obscureText;
   final TextEditingController controller;
+  final int minLines;
+  final int maxLines;
+  final int maxLength;
  
 
   Color _color;
@@ -84,6 +102,10 @@ class _CustomTextField extends State<CustomTextField> {
         this.prefixText,
         this.iconBlank,
         this.controller,
+        this.minLines,
+        this.maxLines,
+        this.maxLength,
+        this.enabled,
        });
 
   // ignore: missing_return
@@ -122,6 +144,7 @@ class _CustomTextField extends State<CustomTextField> {
           child: TextFormField(
             autofocus: false,
             obscureText: this.obscureText,
+            enabled: this.enabled,
 
             // ignore: missing_return
             validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
@@ -129,7 +152,12 @@ class _CustomTextField extends State<CustomTextField> {
             keyboardType: TextInputType.multiline,
            // expands: true, 
             onSaved: onClicked,
-           
+
+            minLines: this.minLines,
+            maxLines: this.maxLines,
+
+            maxLength: this.maxLength,
+
             decoration: InputDecoration(
             
               //textLabel and hintText values
@@ -187,10 +215,17 @@ class _CustomTextField extends State<CustomTextField> {
             child: TextFormField(
               autofocus: false,
 
+              enabled: this.enabled,
+
               // ignore: missing_return
               validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
 
               onSaved: onClicked,
+
+              minLines: this.minLines,
+              maxLines: this.maxLines,
+
+              maxLength: this.maxLength,
 
               decoration: InputDecoration(
                 //textLabel and hintText values
@@ -242,10 +277,17 @@ class _CustomTextField extends State<CustomTextField> {
 
               autofocus: false,
 
+              enabled: this.enabled,
+
               // ignore: missing_return
               validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
 
               onSaved: onClicked,
+
+              minLines: this.minLines,
+              maxLines: this.maxLines,
+
+              maxLength: this.maxLength,
 
               decoration: InputDecoration(
                 //textLabel and hintText values
