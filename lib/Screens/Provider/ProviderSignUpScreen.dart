@@ -4,31 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:intl/intl.dart';
 import 'package:service_provider/Models/provider.dart';
-import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
+import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/user.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-class SignUpScreen extends StatefulWidget {
-  static String id = 'signUpScreen';
+class ProviderSignUpScreen extends StatefulWidget {
+  static String id = 'ProviderSignUpScreen';
 
   @override
   State<StatefulWidget> createState() {
-    return _SignUpScreen();
+    return _ProviderSignUpScreen();
   }
 }
 
-class _SignUpScreen extends State<SignUpScreen> {
+class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
   // ignore: unused_field
   String _email, _password, _name, _birthDate, _addedDate, _phone, _errorMessage;
 
   // ignore: unused_field
   bool _isAdmin = false;
-  // ignore: unused_field
   final _auth = Auth();
   final _user = UserStore();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
@@ -118,7 +116,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                   // ignore: deprecated_member_use
                   child: Builder(
                     builder: (context) => CustomButton(
-                      textValue: "Sign Up",
+                      textValue: "Continue",
                       onPressed: () async {
                         final progress = ProgressHUD.of(context);
                         toggleProgressHUD(true, progress);
@@ -129,29 +127,21 @@ class _SignUpScreen extends State<SignUpScreen> {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
                             _addedDate = getDateNow();
-                            if(_usertype){
-                            _user.addUser(
-                                User(
-                                  uName: _name,
-                                  uAddDate: _addedDate,
-                                  uImageUrl: 'null',
-                                  ubirthDate: _birthDate,
-                                  uphoneNumber: _phone,
-                                  isAdmin: false,
-                                ),
-                                authResult.user.uid);
-                            }else{
+                           
                               _user.addProvider(Provider(
                                 pName: _name,
                                 pAddDate: _addedDate,
                                 pbirthDate: _birthDate,
                                 pphoneNumber: _phone,
                                 pImageUrl: null,
-                                pProvideService: 'nice'
+                                pProvideService: 'nice',
+                                 pEmail: _email.trim(),
+                                pId: authResult.user.uid,
+                                  pPassword: _password.trim(),
                               ), authResult.user.uid);
-                            }  
+                            
                             toggleProgressHUD(false, progress);
-                            Navigator.pushNamed(context, LoginScreen.id);
+                            Navigator.pushNamed(context, ProviderLoginScreen.id);
                           } catch (e) {
                             toggleProgressHUD(false, progress);
 
@@ -179,7 +169,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, LoginScreen.id);
+                          Navigator.pushReplacementNamed(context, ProviderLoginScreen.id,arguments: _usertype);
                         },
                         child: Text(
                           "Sign in",
@@ -242,7 +232,7 @@ class _SignUpScreen extends State<SignUpScreen> {
           ),
         ),
 
-        validator: (value) => "Date Of Birth is Empty !",
+        //validator: (value) => "Date Of Birth is Empty !",
         format: DateFormat("MMMM d yyyy"),
         inputType: InputType.date,
         initialDate: DateTime(1970, 1, 1),

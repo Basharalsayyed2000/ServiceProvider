@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
 class CustomTextField extends StatefulWidget {
+  final TextEditingController controller;
 
   final String labelText;
 
@@ -21,6 +22,8 @@ class CustomTextField extends StatefulWidget {
 
   final bool iconBlank;
 
+ 
+
   CustomTextField(
       {@required this.onClicked,
         @required this.labelText,
@@ -30,7 +33,9 @@ class CustomTextField extends StatefulWidget {
         this.hintText,
         this.prefixIcon,
         this.prefixText,
-        this.iconBlank});
+        this.iconBlank,
+        this.controller,
+        });
 
   @override
   State<StatefulWidget> createState() {
@@ -45,6 +50,8 @@ class CustomTextField extends StatefulWidget {
       prefixIcon: this.prefixIcon,
       prefixText: this.prefixText,
       iconBlank: this.iconBlank,
+      controller :this.controller,
+     
     );
   }
 }
@@ -59,6 +66,8 @@ class _CustomTextField extends State<CustomTextField> {
   final Function onClicked;
   final bool iconBlank;
   final bool obscureText;
+  final TextEditingController controller;
+ 
 
   Color _color;
   Color _iconColor = KprimaryColorDark;
@@ -73,7 +82,9 @@ class _CustomTextField extends State<CustomTextField> {
         this.hintText,
         this.prefixIcon,
         this.prefixText,
-        this.iconBlank});
+        this.iconBlank,
+        this.controller,
+       });
 
   // ignore: missing_return
   String _errorMessage(String str) {
@@ -114,14 +125,19 @@ class _CustomTextField extends State<CustomTextField> {
 
             // ignore: missing_return
             validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
-
+            
+            keyboardType: TextInputType.multiline,
+           // expands: true, 
             onSaved: onClicked,
-
+           
             decoration: InputDecoration(
+            
               //textLabel and hintText values
               labelText: this.labelText,
               hintText: this.hintText,
               isDense: true,
+              
+
               //PrefixIcon with Design
               prefixIcon: Icon(
                 this.prefixIcon,

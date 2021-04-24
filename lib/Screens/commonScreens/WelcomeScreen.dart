@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:service_provider/Screens/commonScreens/LoginScreen.dart';
+import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
+import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'WelcomeScreen';
@@ -8,7 +9,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreen extends State<WelcomeScreen> {
-   bool _isUser= false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,10 +67,8 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               GestureDetector(
                 
                 onTap: () {
-                  setState(() {
-                    _isUser=true;
-                    Navigator.of(context).pushReplacementNamed(LoginScreen.id,arguments: _isUser);
-                  });
+                 
+                  Navigator.of(context).pushNamed(UserLoginScreen.id,);
                 },
                 child: Card(
                   margin: const EdgeInsets.all(10),
@@ -94,10 +92,8 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                   setState(() {
-                    _isUser=false;
-                    Navigator.of(context).pushReplacementNamed(LoginScreen.id,arguments: _isUser);
-                  });
+                   
+                  Navigator.of(context).pushNamed(ProviderLoginScreen.id);
                 },
                 child: Card(
                   margin: const EdgeInsets.all(10),
@@ -126,4 +122,5 @@ class _WelcomeScreen extends State<WelcomeScreen> {
       ),
     );
   }
+ 
 }

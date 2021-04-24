@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
+import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
+import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
 
 class ProvidersList extends StatefulWidget {
@@ -12,6 +14,7 @@ class ProvidersList extends StatefulWidget {
 
 class _ProvidersListState extends State<ProvidersList> {
   final _store = Store();
+  final _auth =Auth();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +23,19 @@ class _ProvidersListState extends State<ProvidersList> {
         title: Text("Providers"),
         backgroundColor: KprimaryColor,
         actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: handleClick,
-            itemBuilder: (BuildContext context) {
-              return {'Logout', 'Settings'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
+          // ignore: deprecated_member_use
+          RaisedButton(onPressed: (){
+            _auth.signOut();
+            Navigator.pushReplacementNamed(context,WelcomeScreen.id);
+          },
+          child: Text(
+          'logout',
+          style:TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),
           ),
+          color: KprimaryColor,
+
+          ),
+          
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(

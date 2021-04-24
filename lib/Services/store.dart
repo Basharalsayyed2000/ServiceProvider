@@ -11,6 +11,7 @@ class Store {
       KServiceDesc: service.sDesc,
       KServiceAddDate: service.sAddDate,
       KServicesImageUrl: service.sImageUrl,
+      KServicesStatus:service.status,
     });
   }
   Stream<QuerySnapshot> loadService(){

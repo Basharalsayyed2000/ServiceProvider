@@ -19,6 +19,7 @@ const KServiceName = 'serviceName';
 const KServiceDesc = 'serviceDesc';
 const KServiceAddDate = 'serviceAddDate';
 const KServicesImageUrl = 'servicesImageUrl';
+const KServicesStatus = 'ServicesStatus';
 
 
 //user Data
@@ -29,6 +30,9 @@ const KUserImageUrl = 'UserImageUrl';
 const KUserBirthDate='userBirthDate';
 const KUserPhoneNumber='UserPhoneNumber';
 const KUserIsAdmin='UserIsAdmin';
+const KUserEmail='UserEmail';
+const KUserPassword='UserPassword';
+const KUserId="UserId";
 
 
 //Provider
@@ -40,5 +44,8 @@ const KProviderBirthDate='ProviderBirthDate';
 const KProviderPhoneNumber='ProviderPhoneNumber';
 const KProviderIsAdmin='ProviderIsAdmin';
 const KProviderDescription='ProviderDescription';
-const KProviderService='ProviderService';
+const KServiceId='ServiceId';
 const KProviderAddress='ProviderAddress';
+const KProviderEmail='ProviderEmail';
+const KProviderPassword='ProviderPassword';
+const KProviderId="ProviderId";

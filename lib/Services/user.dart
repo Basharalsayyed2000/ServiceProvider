@@ -17,6 +17,15 @@ class UserStore{
     });
   }
 
+  Future<bool> isExistInUserCollection(uid)async{
+  // ignore: await_only_futures
+   Stream  snapshot = await _firestore.collection(KUserCollection).snapshots();
+   if(await snapshot.contains(uid))
+    return true;
+   else
+    return false;
+  }
+
   getDataUserById(uid) async {
     try {
       final DocumentSnapshot doc =
@@ -36,7 +45,7 @@ class UserStore{
       KProviderIsAdmin:provider.isAdmin,
       KProviderAddress:provider.pAddress,
       KProviderDescription:provider.pProviderDescription,
-      KProviderService:provider.pProvideService
+      KServiceId:provider.pProvideService
 
     });
   }
