@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
+import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
@@ -7,6 +8,7 @@ import 'package:service_provider/Screens/User/MyRequests.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
+import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
 import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {
+        ResetPassword.id: (context) => ResetPassword(),
+        AdditionalInfo.id: (context) => AdditionalInfo(),
         ProviderHome.id: (context) => ProviderHome(),
         SplashScreen.id: (context) => SplashScreen(),
         UserHome.id: (context) => UserHome(),
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
         AdminHome.id: (context) => AdminHome(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ManageService.id: (context) => ManageService(),
-        Profilescreen.id: (context) => Profilescreen(),
+        UserProfilescreen.id: (context) => UserProfilescreen(),
         Recommended.id: (context) => Recommended(),
         MyRequests.id: (context) => MyRequests(),
         UserSignUpScreen.id: (context) => UserSignUpScreen(),

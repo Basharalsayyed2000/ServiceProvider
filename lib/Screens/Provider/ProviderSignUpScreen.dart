@@ -7,6 +7,7 @@ import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/user.dart';
@@ -23,7 +24,16 @@ class ProviderSignUpScreen extends StatefulWidget {
 
 class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
   // ignore: unused_field
-  String _email, _password, _name, _birthDate, _addedDate, _phone, _errorMessage;
+  String _email,
+      _password,
+      _name,
+      _birthDate,
+      _addedDate,
+      _phone,
+      // ignore: unused_field
+      _errorMessage,
+      // ignore: unused_field
+      _id;
 
   // ignore: unused_field
   bool _isAdmin = false;
@@ -37,7 +47,6 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-    bool _usertype = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -127,24 +136,30 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
                             _addedDate = getDateNow();
-                             // ignore: unused_local_variable
-                             List<String> _address=['Lebanon','Tripoli','Dam w Fariz'];
-                              _user.addProvider(Providers(
-                                pName: _name,
-                                pAddDate: _addedDate,
-                                pbirthDate: _birthDate,
-                                pphoneNumber: _phone,
-                                pImageUrl: null,
-                                pProvideService: 'nice',
-                                pEmail: _email.trim(),
-                                pId: authResult.user.uid,
-                                pPassword: _password.trim(),
-                                pProviderDescription: 'gooood',
-                                pAddress: _address
-                              ), authResult.user.uid);
-                            
+                            _id=authResult.user.uid;
+                            // ignore: unused_local_variable
+                            List<String> _address = [
+                              'Lebanon',
+                              'Tripoli',
+                              'Dam w Fariz'
+                            ];
+                            _user.addProvider(
+                                Providers(
+                                    pName: _name,
+                                    pAddDate: _addedDate,
+                                    pbirthDate: _birthDate,
+                                    pphoneNumber: _phone,
+                                    pImageUrl: null,
+                                    pProvideService: 'nice',
+                                    pEmail: _email.trim(),
+                                    pId: authResult.user.uid,
+                                    pPassword: _password.trim(),
+                                    pProviderDescription: 'gooood',
+                                    pAddress: _address),
+                                authResult.user.uid);
+
                             toggleProgressHUD(false, progress);
-                            Navigator.pushNamed(context, ProviderLoginScreen.id);
+                            Navigator.pushNamed(context, AdditionalInfo.id);
                           } catch (e) {
                             toggleProgressHUD(false, progress);
 
@@ -172,15 +187,15 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, ProviderLoginScreen.id,arguments: _usertype);
+                          Navigator.pushReplacementNamed(
+                              context, ProviderLoginScreen.id);
                         },
                         child: Text(
                           "Sign in",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: KprimaryColorDark,
-                            decoration: TextDecoration.underline
-                          ),
+                              fontWeight: FontWeight.bold,
+                              color: KprimaryColorDark,
+                              decoration: TextDecoration.underline),
                         ),
                       ),
                     ],

@@ -5,6 +5,7 @@ import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
+import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
 import 'package:service_provider/Services/auth.dart';
 
 // ignore: must_be_immutable
@@ -83,7 +84,10 @@ class UserLoginScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  print('hello');
+                  Navigator.pushNamed(
+                    context,
+                    ResetPassword.id,
+                  );
                 },
                 child: Container(
                   alignment: Alignment(0.8, 0.0),
@@ -114,14 +118,8 @@ class UserLoginScreen extends StatelessWidget {
                   builder: (context) => CustomButton(
                     textValue: "LOGIN",
                     onPressed: () async {
-                      // ignore: unused_local_variable
-                      //final progresshud = Provider.of<ProgressHud>(context,listen: false);
-                      // ignore: unused_local_variable
                       final _progress = ProgressHUD.of(context);
-                      toggleProgressHUD(
-                          //progresshud.isLoading
-                          true,
-                          _progress);
+                      toggleProgressHUD(true, _progress);
 
                       if (_globalKey.currentState.validate()) {
                         _globalKey.currentState.save();

@@ -1,8 +1,8 @@
-class User{
+class Users{
   String uName, uImageUrl, uAddDate, ubirthDate, uphoneNumber,uEmail,uPassword,uId;
   bool isAdmin;
 
-  User(
+  Users(
       {this.uName,
       this.uAddDate,
       this.uImageUrl,

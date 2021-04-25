@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/ServiceRequestLocation.dart';
 
 class MapDialog extends StatelessWidget{

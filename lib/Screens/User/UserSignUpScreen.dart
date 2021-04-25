@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
@@ -127,7 +128,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                                 _email.trim(), _password.trim());
                             _addedDate = getDateNow();
                             _user.addUser(
-                                User(
+                                Users(
                                   uName: _name,
                                   uAddDate: _addedDate,
                                   uImageUrl: 'null',
@@ -142,6 +143,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                            
                             toggleProgressHUD(false, progress);
                             Navigator.pushNamed(context, UserLoginScreen.id,arguments: _usertype);
+                            Fluttertoast.showToast(msg: 'Record Succesfully');
                           } catch (e) {
                             toggleProgressHUD(false, progress);
 

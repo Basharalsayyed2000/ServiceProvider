@@ -88,7 +88,7 @@ class _AdditionalInfo extends State<AdditionalInfo>{
               padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/20),
               child: CustomTextField(
                 minLines: 5,
-                maxLength: 200,
+                maxLength: 200, labelText: '', onClicked: null,
               ),
             ),
 
@@ -96,7 +96,7 @@ class _AdditionalInfo extends State<AdditionalInfo>{
               margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/60),
               child: CustomTextField(
                 enabled: false,
-                labelText: "Address"
+                labelText: "Address", onClicked: null,
               ),
             ),
 

@@ -7,12 +7,12 @@ import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
 
-class ProvidersList extends StatefulWidget {
+class ServicesList extends StatefulWidget {
   @override
-  _ProvidersListState createState() => _ProvidersListState();
+  _ServicesListState createState() => _ServicesListState();
 }
 
-class _ProvidersListState extends State<ProvidersList> {
+class _ServicesListState extends State<ServicesList> {
   final _store = Store();
   final _auth =Auth();
   @override

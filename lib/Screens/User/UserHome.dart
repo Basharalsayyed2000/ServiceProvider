@@ -25,7 +25,7 @@ class _UserHomeState extends State<UserHome> {
   void initState() {
     _selectedIndex = 0;
     super.initState();
-   
+    print(_useId);
   }
 
   @override
@@ -36,7 +36,7 @@ class _UserHomeState extends State<UserHome> {
     });
     PageController _pageController=PageController();
     List<Widget> _screen=[
-    ProvidersList(),MyRequests(),Profilescreen(),
+    ServicesList(),MyRequests(),UserProfilescreen(),
     ];
 
     void _onPageChanged(int index){

@@ -3,15 +3,13 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-
-class Profilescreen extends StatefulWidget {
-  static String id = 'Profilescreen';
+class UserProfilescreen extends StatefulWidget {
+  static String id = 'UserProfilescreen';
   @override
-  _ProfilescreenState createState() => _ProfilescreenState();
+  _UserProfilescreenState createState() => _UserProfilescreenState();
 }
 
-class _ProfilescreenState extends State<Profilescreen> {
+class _UserProfilescreenState extends State<UserProfilescreen> {
   PickedFile _imageFile;
   // ignore: unused_field
   dynamic _pickImageError;
@@ -22,7 +20,7 @@ class _ProfilescreenState extends State<Profilescreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Profile"),
-        backgroundColor:KprimaryColor ,
+        backgroundColor: KprimaryColor,
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: handleClick,
@@ -37,135 +35,131 @@ class _ProfilescreenState extends State<Profilescreen> {
           ),
         ],
       ),
-      
-    
-      body: 
-      GestureDetector(
-        onTap: (){
-          FocusScope.of(context).unfocus();
-        },
-        child:
-      ListView(
-        children: [
-         
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.0185,
-          ),
-          Center(
-              child: Stack(
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: ListView(
             children: [
-              CircleAvatar(
-                radius: 80,
-                backgroundImage: _imageFile == null
-                    ? AssetImage("Assets/images/noprofile.png") as ImageProvider
-                    : FileImage(File(_imageFile.path)),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.0185,
               ),
-              Positioned(
-                bottom: 20.0,
-                right: 20.0,
-                child: InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: ((builder) => bottomsheet()),
-                      );
-                    },
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.teal,
-                      size: 28.0,
+              Center(
+                  child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 80,
+                    backgroundImage: _imageFile == null
+                        ? AssetImage("Assets/images/noprofile.png")
+                            as ImageProvider
+                        : FileImage(File(_imageFile.path)),
+                  ),
+                  Positioned(
+                    bottom: 20.0,
+                    right: 20.0,
+                    child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: ((builder) => bottomsheet()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.teal,
+                          size: 28.0,
+                        )),
+                  )
+                ],
+              )),
+              Center(
+                child: Text(
+                  "Said Asfour",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.0385,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: "E-mail",
+                    labelStyle: TextStyle(
+                        color: KprimaryColor, fontWeight: FontWeight.bold),
+                    hintText: "saidasfour@gmail.com",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     )),
-              )
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.0485,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: "Phone Number",
+                    labelStyle: TextStyle(
+                        color: KprimaryColor, fontWeight: FontWeight.bold),
+                    hintText: "81/748400",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    )),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.0485,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: "Age",
+                    labelStyle: TextStyle(
+                        color: KprimaryColor, fontWeight: FontWeight.bold),
+                    hintText: "21",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    )),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.0485,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: "Accout Type",
+                    labelStyle: TextStyle(
+                        color: KprimaryColor, fontWeight: FontWeight.bold),
+                    hintText: "User",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    )),
+              ),
             ],
           )),
-          Center(child:
-          Text(
-            "Said Asfour",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),),
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.0385,
-          ),
-          TextField(
-            decoration: InputDecoration(
-                 focusedBorder: UnderlineInputBorder(
-                
-                borderSide: BorderSide(color: KfocusColor, width: 2.5),
-              ),
-                contentPadding: EdgeInsets.only(bottom: 3),
-                labelText: "E-mail",
-                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
-                hintText: "saidasfour@gmail.com",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  //fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.0485,
-          ),
-          TextField(
-            decoration: InputDecoration(
-               focusedBorder: UnderlineInputBorder(
-                
-                borderSide: BorderSide(color: KfocusColor, width: 2.5),
-              ),
-                contentPadding: EdgeInsets.only(bottom: 3),
-                labelText: "Phone Number",
-                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
-                hintText: "81/748400",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  //fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.0485,
-          ),
-          TextField(
-            decoration: InputDecoration(
-               focusedBorder: UnderlineInputBorder(
-                
-                borderSide: BorderSide(color: KfocusColor, width: 2.5),
-              ),
-                contentPadding: EdgeInsets.only(bottom: 3),
-                labelText: "Age",
-                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
-                hintText: "21",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  //fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.0485,
-          ),
-          TextField(
-            decoration: InputDecoration(
-               focusedBorder: UnderlineInputBorder(
-                
-                borderSide: BorderSide(color: KfocusColor, width: 2.5),
-              ),
-                contentPadding: EdgeInsets.only(bottom: 3),
-                labelText: "Accout Type",
-                labelStyle: TextStyle(color: KprimaryColor,fontWeight: FontWeight.bold),
-                hintText: "User",
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  //fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )),
-          ),
-          
-        ],
-      )),
     );
   }
 
@@ -226,6 +220,7 @@ class _ProfilescreenState extends State<Profilescreen> {
       });
     }
   }
+
   void handleClick(String value) {
     switch (value) {
       case 'Logout':
@@ -233,5 +228,5 @@ class _ProfilescreenState extends State<Profilescreen> {
       case 'Settings':
         break;
     }
-}
+  }
 }

@@ -12,6 +12,7 @@ import 'package:service_provider/Screens/User/ServiceRequest.dart';
 /// to get the latitude and longitude of the user
 ///
 ///
+// ignore: must_be_immutable
 class ServiceRequestLocation extends StatefulWidget {
   static String id = "serviceRequestLocation";
 
