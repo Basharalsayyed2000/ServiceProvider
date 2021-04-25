@@ -46,13 +46,14 @@ class _ProvidersListState extends State<ProvidersList> {
             List<Service> _services = [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
-
+               if(data[KServicesStatus]){
               _services.add(Service(
                 sName: data[KServiceName],
                 sDesc: data[KServiceDesc],
                 sImageUrl: data[KServicesImageUrl],
                 sAddDate: data[KServiceAddDate],
               ));
+              }
             }
             return GridView.builder(
               primary: false,

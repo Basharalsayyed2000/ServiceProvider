@@ -127,17 +127,20 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
                             _addedDate = getDateNow();
-                           
-                              _user.addProvider(Provider(
+                             // ignore: unused_local_variable
+                             List<String> _address=['Lebanon','Tripoli','Dam w Fariz'];
+                              _user.addProvider(Providers(
                                 pName: _name,
                                 pAddDate: _addedDate,
                                 pbirthDate: _birthDate,
                                 pphoneNumber: _phone,
                                 pImageUrl: null,
                                 pProvideService: 'nice',
-                                 pEmail: _email.trim(),
+                                pEmail: _email.trim(),
                                 pId: authResult.user.uid,
-                                  pPassword: _password.trim(),
+                                pPassword: _password.trim(),
+                                pProviderDescription: 'gooood',
+                                pAddress: _address
                               ), authResult.user.uid);
                             
                             toggleProgressHUD(false, progress);

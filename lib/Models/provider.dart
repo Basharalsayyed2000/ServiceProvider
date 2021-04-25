@@ -1,8 +1,8 @@
-class Provider{
+class Providers{
 String pName, pImageUrl, pAddDate, pbirthDate, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId;
 bool isAdmin;
 List<String> pAddress;
-Provider(
+Providers(
       {this.pName,
       this.pAddDate,
       this.pImageUrl,

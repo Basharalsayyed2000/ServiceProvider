@@ -14,20 +14,18 @@ import 'package:service_provider/Screens/Admin/ManageServices.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
-
 import 'Screens/User/ServiceRequestLocation.dart';
 
-main() => runApp(MyApp());
+main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-
       initialRoute: SplashScreen.id,
-
       routes: {
         ProviderHome.id: (context) => ProviderHome(),
         SplashScreen.id: (context) => SplashScreen(),
@@ -35,15 +33,15 @@ class MyApp extends StatelessWidget {
         ServiceRequest.id: (context) => ServiceRequest(),
         ServiceRequestLocation.id: (context) => ServiceRequestLocation(),
         AddService.id: (context) => AddService(),
-        AdminHome.id: (context) => AdminHome(),    
-        WelcomeScreen.id: (context)=>WelcomeScreen(), 
+        AdminHome.id: (context) => AdminHome(),
+        WelcomeScreen.id: (context) => WelcomeScreen(),
         ManageService.id: (context) => ManageService(),
         Profilescreen.id: (context) => Profilescreen(),
-        Recommended.id: (context) => Recommended(),    
-        MyRequests.id: (context) => MyRequests(),   
-        UserSignUpScreen.id:(context)=>UserSignUpScreen(),       
+        Recommended.id: (context) => Recommended(),
+        MyRequests.id: (context) => MyRequests(),
+        UserSignUpScreen.id: (context) => UserSignUpScreen(),
         UserLoginScreen.id: (context) => UserLoginScreen(),
-        ProviderLoginScreen.id:(context)=>ProviderLoginScreen(),
+        ProviderLoginScreen.id: (context) => ProviderLoginScreen(),
         ProviderSignUpScreen.id: (context) => ProviderSignUpScreen(),
       },
     );

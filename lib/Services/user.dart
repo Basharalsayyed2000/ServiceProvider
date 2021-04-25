@@ -35,7 +35,7 @@ class UserStore{
       print(e);
     }
   }
-  addProvider(Provider provider, String pid) async {
+  addProvider(Providers provider, String pid) async {
     await _firestore.collection(KProviderCollection).document(pid).setData({
       KProviderName: provider.pName,
       KProviderAddDate: provider.pAddDate,

@@ -3,6 +3,7 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/User/MyRequests.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/ProvidersList.dart';
+import 'package:service_provider/Services/auth.dart';
 
 
 class UserHome extends StatefulWidget {
@@ -12,6 +13,9 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
+  final aut =Auth();
+  // ignore: unused_field
+  static String _useId;
 
   Color _colorH = KprimaryColor, _colorS, _colorP;
 
@@ -21,12 +25,15 @@ class _UserHomeState extends State<UserHome> {
   void initState() {
     _selectedIndex = 0;
     super.initState();
+   
   }
 
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-    String _useId = ModalRoute.of(context).settings.arguments;
+    setState(() {
+          _useId = ModalRoute.of(context).settings.arguments;
+    });
     PageController _pageController=PageController();
     List<Widget> _screen=[
     ProvidersList(),MyRequests(),Profilescreen(),
