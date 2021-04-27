@@ -4,7 +4,8 @@ import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
-import 'package:service_provider/Screens/User/MyRequests.dart';
+import 'package:service_provider/Screens/User/MyBooks.dart';
+import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {
+        ServiceDetails.id: (context) => ServiceDetails(),
         ResetPassword.id: (context) => ResetPassword(),
         AdditionalInfo.id: (context) => AdditionalInfo(),
         ProviderHome.id: (context) => ProviderHome(),
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
         ManageService.id: (context) => ManageService(),
         UserProfilescreen.id: (context) => UserProfilescreen(),
         Recommended.id: (context) => Recommended(),
-        MyRequests.id: (context) => MyRequests(),
+        MyBooks.id: (context) => MyBooks(),
         UserSignUpScreen.id: (context) => UserSignUpScreen(),
         UserLoginScreen.id: (context) => UserLoginScreen(),
         ProviderLoginScreen.id: (context) => ProviderLoginScreen(),

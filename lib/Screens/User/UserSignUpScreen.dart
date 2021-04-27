@@ -143,7 +143,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                            
                             toggleProgressHUD(false, progress);
                             Navigator.pushNamed(context, UserLoginScreen.id,arguments: _usertype);
-                            Fluttertoast.showToast(msg: 'Record Succesfully');
+                            Fluttertoast.showToast(msg: 'Record Succesfully',);
                           } catch (e) {
                             toggleProgressHUD(false, progress);
 

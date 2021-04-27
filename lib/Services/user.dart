@@ -20,23 +20,13 @@ class UserStore{
     });
   }
 
-  Future<bool> isExistInUserCollection(uid)async{
-  // ignore: await_only_futures
-   Stream  snapshot = await _firestore.collection(KUserCollection).snapshots();
-   if(await snapshot.contains(uid))
-    return true;
-   else
-    return false;
-  }
 
-  getDataUserById(uid) async {
-    try {
-      final DocumentSnapshot doc =
-      await _firestore.collection(KUserCollection).document(uid).get();
-      print(doc.data[KUserName]);
-    } catch (e) {
-      print(e);
-    }
+  Future<void> getDataUserById(uid) async {
+   var document =  Firestore.instance.collection(KUserCollection).document(uid);
+   await document.get().then((value) {
+      
+      
+    });
   }
   addProvider(Providers provider, String pid) async {
     await _firestore.collection(KProviderCollection).document(pid).setData({

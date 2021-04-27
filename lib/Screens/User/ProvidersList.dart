@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
+import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Services/auth.dart';
@@ -15,11 +17,36 @@ class ServicesList extends StatefulWidget {
 class _ServicesListState extends State<ServicesList> {
   final _store = Store();
   final _auth =Auth();
+  final _userModel=Users();
+
+   @override
+  void initState() {
+    super.initState();
+    _getUserName();
+  }
+    Future<void> _getUserName() async {
+    Firestore.instance
+        .collection(KUserCollection)
+        .document(await _auth.getCurrentUserId())
+        .get()
+        .then((value) {
+      setState(() {
+      _userModel.uName=value.data[KUserName];
+      _userModel.uEmail=value.data[KUserEmail];
+      _userModel.uPassword=value.data[KUserPassword];
+      _userModel.ubirthDate=value.data[KUserBirthDate];
+      _userModel.uAddDate=value.data[KUserAddDate];
+      _userModel.uId=value.data[KUserId];
+      _userModel.uphoneNumber=value.data[KUserPhoneNumber];
+      _userModel.isAdmin=value.data[KUserIsAdmin];
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         title: Text("Providers"),
         backgroundColor: KprimaryColor,
         actions: <Widget>[
@@ -36,6 +63,21 @@ class _ServicesListState extends State<ServicesList> {
 
           ),
           
+          (_userModel.isAdmin==true)?
+          // ignore: deprecated_member_use
+          RaisedButton(
+            onPressed: (){
+            _auth.signOut();
+            Navigator.pushNamed(context,AdminHome.id);
+          },
+          child: Text(
+          'Control panel',
+          style:TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),
+          ),
+          color: KprimaryColor,
+          
+          )
+          :Text(''),
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(

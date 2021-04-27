@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:service_provider/MyTools/Constant.dart';
 
-class MyRequests extends StatefulWidget {
-  static String id = 'MyRequests';
+class MyBooks extends StatefulWidget {
+  static String id = 'MyBooks';
 
   @override
-  _MyRequestsState createState() => _MyRequestsState();
+  _MyBooksState createState() => _MyBooksState();
 }
 
-class _MyRequestsState extends State<MyRequests> {
+class _MyBooksState extends State<MyBooks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: KprimaryColor,
-        title: Text("My Request"),
+        title: Text("My Book"),
         centerTitle: true,
       ),
       body: Column(

@@ -29,7 +29,9 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               ),
             ),
           ),
-          SizedBox(height: 65,),
+          SizedBox(
+            height: 65,
+          ),
           Container(
             child: Column(
               children: [
@@ -54,21 +56,18 @@ class _WelcomeScreen extends State<WelcomeScreen> {
           SizedBox(
             height: 70,
           ),
-         
           Expanded(
-            
               child: GridView.count(
-              
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             primary: false,
             children: [
               GestureDetector(
-                
                 onTap: () {
-                 
-                  Navigator.of(context).pushNamed(UserLoginScreen.id,);
+                  Navigator.of(context).pushNamed(
+                    UserLoginScreen.id,
+                  );
                 },
                 child: Card(
                   margin: const EdgeInsets.all(10),
@@ -92,7 +91,6 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                   
                   Navigator.of(context).pushNamed(ProviderLoginScreen.id);
                 },
                 child: Card(
@@ -122,5 +120,4 @@ class _WelcomeScreen extends State<WelcomeScreen> {
       ),
     );
   }
- 
 }

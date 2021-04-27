@@ -1,53 +1,4 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:service_provider/Models/user.dart';
-import 'package:service_provider/MyTools/Constant.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:service_provider/Services/auth.dart';
-
-class UserProfilescreen extends StatefulWidget {
-  static String id = 'UserProfilescreen';
-  @override
-  _UserProfilescreenState createState() => _UserProfilescreenState();
-}
-
-class _UserProfilescreenState extends State<UserProfilescreen> {
-  PickedFile _imageFile;
-  final _auth = Auth();
-  var _userModel = Users();
-  // ignore: unused_field
-  dynamic _pickImageError;
-  final ImagePicker _picker = ImagePicker();
-
-  @override
-  void initState(){
-    super.initState();
-    _getUserName();
-  }
-
-  Future<void> _getUserName() async {
-    Firestore.instance
-        .collection(KUserCollection)
-        .document(await _auth.getCurrentUserId())
-        .get()
-        .then((value) {
-      setState(() {
-      _userModel.uName=value.data[KUserName];
-      _userModel.uEmail=value.data[KUserEmail];
-      _userModel.uPassword=value.data[KUserPassword];
-      _userModel.ubirthDate=value.data[KUserBirthDate];
-      _userModel.uAddDate=value.data[KUserAddDate];
-      _userModel.uId=value.data[KUserId];
-      _userModel.uphoneNumber=value.data[KUserPhoneNumber];
-      _userModel.isAdmin=value.data[KUserIsAdmin];
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+ Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text("Profile"),
@@ -93,7 +44,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
               )),
               Center(
                 child: Text(
-                  '${_userModel.uName}',
+                  (_userModel == null) ? "wait" : '${_userModel.uName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
@@ -109,7 +60,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelText: "E-mail",
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${_userModel.uEmail}",
+                    hintText: "saidasfour@gmail.com",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,
@@ -129,7 +80,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelText: "Phone Number",
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${_userModel.uphoneNumber}",
+                    hintText: "81/748400",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,
@@ -149,7 +100,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelText: "Age",
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${_userModel.ubirthDate}",
+                    hintText: "21",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,
@@ -180,72 +131,3 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
             ],
           )),
     );
-  }
-
-  Widget bottomsheet() {
-    return Container(
-      height: 100,
-      width: 200,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: [
-          Text(
-            "Choose a profile",
-            style: TextStyle(fontSize: 20),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // ignore: deprecated_member_use
-              FlatButton.icon(
-                icon: Icon(Icons.camera),
-                onPressed: () {
-                  takePhoto(ImageSource.camera);
-                },
-                label: Text("Camera"),
-              ),
-              // ignore: deprecated_member_use
-              FlatButton.icon(
-                icon: Icon(Icons.image),
-                onPressed: () {
-                  takePhoto(ImageSource.gallery);
-                },
-                label: Text("Gallery"),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  void takePhoto(ImageSource source) async {
-    try {
-      final pickedFile = await _picker.getImage(
-        source: source,
-      );
-      setState(() {
-        _imageFile = pickedFile;
-      });
-    } catch (e) {
-      setState(() {
-        _pickImageError = e;
-      });
-    }
-  }
-
-  void handleClick(String value) {
-    switch (value) {
-      case 'Logout':
-        break;
-      case 'Settings':
-        break;
-    }
-  }
-}

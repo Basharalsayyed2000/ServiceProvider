@@ -20,8 +20,8 @@ class Auth {
     await _auth.sendPasswordResetEmail(email: email);
   }
 
-  Future<FirebaseUser> getUser() async {
-    return  await _auth.currentUser();
+  Future<String> getCurrentUserId() async {
+    return  (await _auth.currentUser()).uid;
   }
 
    Future<void> checkEmailVerified(context)async{
