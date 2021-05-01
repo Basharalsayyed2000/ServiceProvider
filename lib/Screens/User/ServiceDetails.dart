@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
@@ -14,6 +16,7 @@ class ServiceDetails extends StatefulWidget{
 class _ServiceDetails extends State<ServiceDetails>{
   @override
   Widget build(BuildContext context) {
+     Providers _provider = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Service Details"),
@@ -21,7 +24,21 @@ class _ServiceDetails extends State<ServiceDetails>{
         backgroundColor: KprimaryColor,
       ),
 
-      body: Container(
+      body: StreamBuilder(
+          stream: Firestore.instance
+              .collection(KServicesCollection)
+              .document(_provider.pProvideService)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text("Loading");
+            }else{
+          var userDocument = snapshot.data;
+          return 
+      
+      
+      
+      Container(
         margin: EdgeInsets.only(left: Kminimumpadding * 5, right: Kminimumpadding * 4.5),
         child: ListView(
           children: [
@@ -32,9 +49,11 @@ class _ServiceDetails extends State<ServiceDetails>{
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: Kminimumpadding * 5),
-                    child: GalleryImages(
-                      assetImage: "Assets/images/electrician.png",
-                    ),
+                    child:CircleAvatar(
+                     
+                   backgroundImage: NetworkImage('${_provider.pImageUrl}'),
+              radius: MediaQuery.of(context).size.height * 0.067,
+            ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width/2.4,
@@ -43,7 +62,7 @@ class _ServiceDetails extends State<ServiceDetails>{
                       children: [
                         Container(
                           child: Text(
-                            "Car Repair and Servicing",
+                            "${userDocument[KServiceName]}",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               height: 1.3,
@@ -64,7 +83,7 @@ class _ServiceDetails extends State<ServiceDetails>{
                           ),
                         ),
                         Text(
-                          "By: Bassam Odaymat",
+                          "By: ${_provider.pName}",
                           style: TextStyle(
                             height: 1.3,
                             fontSize: 12,
@@ -80,8 +99,9 @@ class _ServiceDetails extends State<ServiceDetails>{
             Container(
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.only(top: Kminimumpadding * 5, bottom: Kminimumpadding * 4),
-              child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+ 
+               child: Text(
+                '${_provider.pProviderDescription}',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500
@@ -140,7 +160,9 @@ class _ServiceDetails extends State<ServiceDetails>{
                     child: Container(
                       margin: EdgeInsets.all(Kminimumpadding*1.5),
                       child: CustomButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          
+                        },
                         textValue: "Book Now",
                       ),
                     ),
@@ -159,7 +181,9 @@ class _ServiceDetails extends State<ServiceDetails>{
             ),
           ],
         ),
-      ),
+      );
+            }
+          }),
     );
   }
 

@@ -43,9 +43,9 @@ class UserStore{
     });
   }
 
-   Stream<QuerySnapshot> loadProvider(){
+  Stream<QuerySnapshot> loadProvider(){
      return _firestore.collection(KProviderCollection).snapshots();
   }
-
+ 
  
 }

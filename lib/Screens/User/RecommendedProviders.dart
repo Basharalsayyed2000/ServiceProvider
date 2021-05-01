@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Services/user.dart';
 
 class Recommended extends StatefulWidget {
@@ -15,7 +15,7 @@ class Recommended extends StatefulWidget {
 
 class _RecommendedState extends State<Recommended> {
   Service service;
-  final _user= UserStore();
+  final _user = UserStore();
   @override
   Widget build(BuildContext context) {
     service = ModalRoute.of(context).settings.arguments;
@@ -25,7 +25,7 @@ class _RecommendedState extends State<Recommended> {
         title: Text("Providers"),
         centerTitle: true,
       ),
-      body:  StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder<QuerySnapshot>(
         stream: _user.loadProvider(),
         // ignore: missing_return
         builder: (context, snapshot) {
@@ -33,30 +33,27 @@ class _RecommendedState extends State<Recommended> {
             List<Providers> _providers = [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
-              if(data[KServiceId]==service.sId){
-              _providers.add(Providers(
-               pName: data[KProviderName],
-               pbirthDate: data[KProviderBirthDate],
-               pAddDate: data[KProviderAddDate],
-               pphoneNumber: data[KProviderPhoneNumber],
-               pEmail: data[KProviderEmail],
-               pPassword: data[KProviderPassword],
-               pImageUrl: data[KProviderImageUrl],
-               pId: data[KProviderId],
-               pProvideService: data[KServiceId],
-               pProviderDescription: data[KProviderDescription],
-              ));
-             }
+              if (data[KServiceId] == service.sId) {
+                _providers.add(Providers(
+                  pName: data[KProviderName],
+                  pbirthDate: data[KProviderBirthDate],
+                  pAddDate: data[KProviderAddDate],
+                  pphoneNumber: data[KProviderPhoneNumber],
+                  pEmail: data[KProviderEmail],
+                  pPassword: data[KProviderPassword],
+                  pImageUrl: data[KProviderImageUrl],
+                  pId: data[KProviderId],
+                  pProvideService: data[KServiceId],
+                  pProviderDescription: data[KProviderDescription],
+                ));
+              }
             }
             return ListView.builder(
               primary: false,
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, ServiceRequest.id,arguments: _providers[index]),
-                    child: buildCard(//_providers[index].pName
-                    '${_providers[index].pName}','${service.sName}'),
-                    ),
+                  buildCard('${_providers[index].pName}', '${service.sName}',
+                      '${_providers[index].pImageUrl}', _providers[index]),
                 ],
               ),
               itemCount: _providers.length,
@@ -71,14 +68,21 @@ class _RecommendedState extends State<Recommended> {
     );
   }
 
-  Card buildCard(String title, String subtitle) {
+  Card buildCard(
+      String title, String subtitle, String imageurl, Providers _provider) {
     return Card(
       child: GestureDetector(
-            onTap: () => Navigator.pushNamed(context, ServiceRequest.id),
-              child: ListTile(
+        onTap: () => Navigator.pushNamed(context, ServiceDetails.id,
+            arguments: _provider),
+        child: ListTile(
             title: Text(title),
             subtitle: Text(subtitle),
-            leading: Image.asset("Assets/images/noprofile.png"),
+            leading: CircleAvatar(
+              backgroundImage: imageurl == ''
+                  ? AssetImage('Assets/images/provider.jpg')
+                  : NetworkImage(imageurl),
+              radius: MediaQuery.of(context).size.height * 0.037,
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -108,7 +112,6 @@ class _RecommendedState extends State<Recommended> {
         break;
     }
   }
-
 
   // ListView(
   //       children: [

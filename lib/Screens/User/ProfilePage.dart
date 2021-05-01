@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,35 +14,40 @@ class UserProfilescreen extends StatefulWidget {
 class _UserProfilescreenState extends State<UserProfilescreen> {
   PickedFile _imageFile;
   final _auth = Auth();
-  var _userModel = Users();
   // ignore: unused_field
   dynamic _pickImageError;
   final ImagePicker _picker = ImagePicker();
-
+  String _userId;
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _getUserName();
+    _getUserId();
   }
-
-  Future<void> _getUserName() async {
-    Firestore.instance
-        .collection(KUserCollection)
-        .document(await _auth.getCurrentUserId())
-        .get()
-        .then((value) {
+    _getUserId()async{
+      String value=await _auth.getCurrentUserId();
       setState(() {
-      _userModel.uName=value.data[KUserName];
-      _userModel.uEmail=value.data[KUserEmail];
-      _userModel.uPassword=value.data[KUserPassword];
-      _userModel.ubirthDate=value.data[KUserBirthDate];
-      _userModel.uAddDate=value.data[KUserAddDate];
-      _userModel.uId=value.data[KUserId];
-      _userModel.uphoneNumber=value.data[KUserPhoneNumber];
-      _userModel.isAdmin=value.data[KUserIsAdmin];
+        _userId=value;
       });
-    });
-  }
+    }
+  // Future<void> _getUserName() async {
+  //   Firestore.instance
+  //       .collection(KUserCollection)
+  //       .document(await _auth.getCurrentUserId())
+  //       .get()
+  //       .then((value) {
+  //     setState(() {
+  //       _userModel.uName = value.data[KUserName];
+  //       _userModel.uEmail = value.data[KUserEmail];
+  //       _userModel.uPassword = value.data[KUserPassword];
+  //       _userModel.ubirthDate = value.data[KUserBirthDate];
+  //       _userModel.uAddDate = value.data[KUserAddDate];
+  //       _userModel.uId = value.data[KUserId];
+  //       _userModel.uphoneNumber = value.data[KUserPhoneNumber];
+  //       _userModel.isAdmin = value.data[KUserIsAdmin];
+  //     });
+  //   });
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,17 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
         backgroundColor: KprimaryColor,
         actions: <Widget>[],
       ),
-      body: GestureDetector(
+      body: StreamBuilder(
+          stream: Firestore.instance
+              .collection(KUserCollection)
+              .document(_userId)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text("Loading");
+            }else{
+          var userDocument = snapshot.data;
+          return GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
           },
@@ -93,7 +107,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
               )),
               Center(
                 child: Text(
-                  '${_userModel.uName}',
+                  '${userDocument[KUserName]}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
@@ -109,7 +123,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelText: "E-mail",
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${_userModel.uEmail}",
+                    hintText: "${userDocument[KUserEmail]}",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,
@@ -129,7 +143,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelText: "Phone Number",
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${_userModel.uphoneNumber}",
+                    hintText: "${userDocument[KUserPhoneNumber]}",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,
@@ -149,7 +163,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelText: "Age",
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${_userModel.ubirthDate}",
+                    hintText: "${userDocument[KUserBirthDate]}",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,
@@ -178,7 +192,9 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     )),
               ),
             ],
-          )),
+          ));
+            }
+          }),
     );
   }
 
@@ -249,3 +265,5 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
     }
   }
 }
+
+
