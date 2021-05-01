@@ -206,6 +206,7 @@ class _AddServiceState extends State<AddService> {
               status: (activeState==1)? true: false,
               ));
                 toggleProgressHUD(false, progress);
+                
           showDialog(
               context: context,
               builder: (context) {

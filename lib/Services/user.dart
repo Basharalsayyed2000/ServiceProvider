@@ -24,8 +24,6 @@ class UserStore{
   Future<void> getDataUserById(uid) async {
    var document =  Firestore.instance.collection(KUserCollection).document(uid);
    await document.get().then((value) {
-      
-      
     });
   }
   addProvider(Providers provider, String pid) async {
@@ -42,7 +40,12 @@ class UserStore{
       KProviderEmail:provider.pEmail,
       KProviderId:provider.pId,
       KProviderPassword:provider.pPassword
-
     });
   }
+
+   Stream<QuerySnapshot> loadProvider(){
+     return _firestore.collection(KProviderCollection).snapshots();
+  }
+
+ 
 }

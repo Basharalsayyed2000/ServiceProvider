@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -126,9 +127,17 @@ class UserLoginScreen extends StatelessWidget {
                         try {
                           final _authresult = await _auth.signIn(
                               _email.trim(), _password.trim());
-
-                          Navigator.pushReplacementNamed(context, UserHome.id,
-                              arguments: _authresult.user.uid);
+                          String userId = _authresult.user.uid;
+                          // ignore: unrelated_type_equality_checks
+                          if (await checkUserExist(userId) == true) {
+                            Navigator.pushReplacementNamed(context, UserHome.id,
+                                arguments: _authresult.user.uid);
+                          } else {
+                            // ignore: deprecated_member_use
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('This account is for provider'),
+                            ));
+                          }
                           toggleProgressHUD(false, _progress);
                         } catch (e) {
                           toggleProgressHUD(false, _progress);
@@ -183,6 +192,24 @@ class UserLoginScreen extends StatelessWidget {
       _progressHUD.show();
     } else {
       _progressHUD.dismiss();
+    }
+  }
+
+  Future<bool> checkUserExist(String docID) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("$KUserCollection/$docID")
+          .get()
+          .then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
     }
   }
 }

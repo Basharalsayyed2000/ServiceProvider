@@ -21,7 +21,6 @@ const KServiceAddDate = 'serviceAddDate';
 const KServicesImageUrl = 'servicesImageUrl';
 const KServicesStatus = 'ServicesStatus';
 
-
 //user Data
 const KUserCollection = 'Users';
 const KUserName = 'UserName';
@@ -49,3 +48,14 @@ const KProviderAddress='ProviderAddress';
 const KProviderEmail='ProviderEmail';
 const KProviderPassword='ProviderPassword';
 const KProviderId="ProviderId";
+
+
+//Address data
+const KLocationCollection = 'LocationCollection';
+const KLocationAddress = 'LocationAddress';
+const KLocationCountry = 'LocationCountry';
+const KLocationCity = 'LocationCity';
+const KLocationPostalCode = 'LocationPostCode';
+const KLocationLatitude = 'LocationLatitude';
+const KLocationlonggitude='Locationlonggitude';
+const KLocationId='LocationId';

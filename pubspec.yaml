@@ -30,8 +30,9 @@ dependencies:
   provider: 
   flutter_progress_hud:     
   google_maps_flutter: 
-  geolocator: 
+  geolocator: ^6.0.0+4 
   geocoding:
+  geocoder:  
   firebase_storage: ^3.1.6
   image_picker: ^0.6.7+4
   datetime_picker_formfield: 

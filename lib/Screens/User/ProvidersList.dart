@@ -88,12 +88,14 @@ class _ServicesListState extends State<ServicesList> {
             List<Service> _services = [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
+              String serviceId=doc.documentID;
                if(data[KServicesStatus]){
               _services.add(Service(
                 sName: data[KServiceName],
                 sDesc: data[KServiceDesc],
                 sImageUrl: data[KServicesImageUrl],
                 sAddDate: data[KServiceAddDate],
+                sId: serviceId,
               ));
               }
             }
@@ -107,7 +109,7 @@ class _ServicesListState extends State<ServicesList> {
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, Recommended.id),
+                    onTap: () => Navigator.pushNamed(context, Recommended.id,arguments: _services[index]),
                     child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
@@ -133,8 +135,6 @@ class _ServicesListState extends State<ServicesList> {
                           
                         ),
                     ),
-                    
-                  
                 ],
               ),
               itemCount: _services.length,

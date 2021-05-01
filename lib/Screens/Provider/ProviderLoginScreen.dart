@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -121,16 +122,24 @@ class ProviderLoginScreen extends StatelessWidget {
                     onPressed: () async {
                       final _progress = ProgressHUD.of(context);
                       toggleProgressHUD(true, _progress);
-
+                      
                       if (_globalKey.currentState.validate()) {
                         _globalKey.currentState.save();
                         try {
                           final _authresult = await _auth.signIn(
                               _email.trim(), _password.trim());
-
-                          Navigator.pushReplacementNamed(
-                              context, ProviderHome.id,
-                              arguments: _authresult.user.uid);
+                           String userId = _authresult.user.uid;
+                          // ignore: unrelated_type_equality_checks
+                          if (await checkProviderExist(userId) == true) {
+                            Navigator.pushReplacementNamed(context, ProviderHome.id,
+                                arguments: _authresult.user.uid);
+                          } else {
+                            // ignore: deprecated_member_use
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('This account is for User'),
+                            ));
+                          }
+                          
                           toggleProgressHUD(false, _progress);
                         } catch (e) {
                           toggleProgressHUD(false, _progress);
@@ -185,6 +194,23 @@ class ProviderLoginScreen extends StatelessWidget {
       _progressHUD.show();
     } else {
       _progressHUD.dismiss();
+    }
+  }
+   static Future<bool> checkProviderExist(String docID) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("$KProviderCollection/$docID")
+          .get()
+          .then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
     }
   }
 }

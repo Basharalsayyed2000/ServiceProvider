@@ -14,6 +14,6 @@ Providers(
       this.pProviderDescription,
       this.pEmail,
       this.pPassword,
-      this.pId
+      this.pId,
       });
 }

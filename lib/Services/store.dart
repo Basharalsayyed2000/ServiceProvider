@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
@@ -16,5 +17,17 @@ class Store {
   }
   Stream<QuerySnapshot> loadService(){
      return _firestore.collection(KServicesCollection).snapshots();
+  }
+
+
+    addLocation(Address address) {
+    _firestore.collection(KLocationCollection).add({
+    //  KLocationAddress: address.address,
+      KLocationCountry: address.country,
+      KLocationPostalCode: address.postalCode,
+      KLocationLatitude:address.latitude,
+      KLocationlonggitude:address.longgitude,
+      //KLocationId:address.adId,
+    });
   }
 }

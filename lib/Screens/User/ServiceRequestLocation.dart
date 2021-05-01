@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Services/store.dart';
 
 ///
 ///
@@ -35,13 +37,13 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
   static Position _currentPosition = Position(latitude:37.42796133580664, longitude:-122.085749655962);
   static String _currentAddress = "";
   static bool mapToggle = false;
-
+  Store store;
   final bool appBar;
 
   _ServiceRequestLocation({this.appBar});
 
   static Placemark address;
-
+  Address _address;
   static final CameraPosition _initialCameraPosition  = CameraPosition(
     target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
     zoom: 15,
@@ -75,6 +77,11 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
 
       setState(() {
         _currentAddress = "${address.locality}";
+        _address.country=address.locality;
+        _address.postalCode=address.postalCode;
+       // _address.address=address.locality;
+        _address.longgitude=longitude;
+        _address.latitude=latitude;
         print(_currentAddress);
 
       });
@@ -153,6 +160,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
 
               setState(() {
                 _currentPosition = Position(latitude: pos.latitude, longitude: pos.longitude);
+                _getAddressFromLatLng(pos.latitude,pos.longitude);
               });
 
               Marker f = new Marker(markerId: MarkerId('$pos'), position: pos,
@@ -167,7 +175,12 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                   }
                   _markers.add(f);
                 });
-
+               store.addLocation(Address(
+                 country:_address.country ,
+                 postalCode: _address.postalCode,
+                 latitude: _address.latitude,
+                 longgitude: _address.longgitude,
+               ));
                 Navigator.pushNamed(context, ServiceRequest.id);
               
 

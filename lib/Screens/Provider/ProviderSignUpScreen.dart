@@ -10,7 +10,6 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Services/auth.dart';
-import 'package:service_provider/Services/user.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class ProviderSignUpScreen extends StatefulWidget {
@@ -28,17 +27,12 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
       _password,
       _name,
       _birthDate,
-      _addedDate,
+      
       _phone,
       // ignore: unused_field
-      _errorMessage,
-      // ignore: unused_field
-      _id;
-
-  // ignore: unused_field
-  bool _isAdmin = false;
+      _errorMessage;
+      
   final _auth = Auth();
-  final _user = UserStore();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   Color _colorDt;
   FontWeight _weightDt;
@@ -135,31 +129,17 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                           try {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
-                            _addedDate = getDateNow();
-                            _id=authResult.user.uid;
-                            // ignore: unused_local_variable
-                            List<String> _address = [
-                              'Lebanon',
-                              'Tripoli',
-                              'Dam w Fariz'
-                            ];
-                            _user.addProvider(
-                                Providers(
+                              Providers _provider= Providers(
                                     pName: _name,
-                                    pAddDate: _addedDate,
                                     pbirthDate: _birthDate,
+                                    isAdmin:false,
                                     pphoneNumber: _phone,
-                                    pImageUrl: null,
-                                    pProvideService: 'nice',
                                     pEmail: _email.trim(),
                                     pId: authResult.user.uid,
                                     pPassword: _password.trim(),
-                                    pProviderDescription: 'gooood',
-                                    pAddress: _address),
-                                authResult.user.uid);
-
+                                    );
                             toggleProgressHUD(false, progress);
-                            Navigator.pushNamed(context, AdditionalInfo.id);
+                            Navigator.pushNamed(context, AdditionalInfo.id,arguments: _provider);
                           } catch (e) {
                             toggleProgressHUD(false, progress);
 
