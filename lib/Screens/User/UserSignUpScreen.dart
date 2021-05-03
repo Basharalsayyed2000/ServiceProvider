@@ -234,7 +234,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
           ),
         ),
 
-        //validator: (value) => "Date Of Birth is Empty !",
+        validator: (value) => (value == null) ? "Date Of Birth is Empty !" : null,
         format: DateFormat("MMMM d yyyy"),
         inputType: InputType.date,
         initialDate: DateTime(1970, 1, 1),

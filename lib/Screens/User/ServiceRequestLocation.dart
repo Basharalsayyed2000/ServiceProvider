@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Services/store.dart';
 
@@ -36,6 +38,9 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
 
   static Position _currentPosition = Position(latitude:37.42796133580664, longitude:-122.085749655962);
   static String _currentAddress = "";
+  static String _city = "";
+  static String _country = "";
+  static String _postalcode = "";
   static bool mapToggle = false;
   Store store;
   final bool appBar;
@@ -76,13 +81,9 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
       address = p[0];
 
       setState(() {
-        _currentAddress = "${address.locality}";
-        _address.country=address.locality;
-        _address.postalCode=address.postalCode;
-       // _address.address=address.locality;
-        _address.longgitude=longitude;
-        _address.latitude=latitude;
-        print(_currentAddress);
+        _country = address.country;
+        _city = address.locality;
+        _postalcode = address.postalCode;
 
       });
     } catch (e) {
@@ -135,10 +136,8 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
 
   @override
   Widget build(BuildContext context) {
-    createMarker(context);
-    return (this.appBar == true)
-        ?
-    Scaffold(
+    // createMarker(context);
+    return Scaffold(
       appBar: AppBar(
         title: Text("Select Location"),
         centerTitle: true,
@@ -146,63 +145,66 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
       ),
 
       body: Container(
-        child: mapToggle ? GoogleMap(
-          mapType: MapType.hybrid,
-          initialCameraPosition: _initialCameraPosition,
-          mapToolbarEnabled: false,
-          zoomControlsEnabled: false,
-          onMapCreated: _onMapCreated,
-          markers: _markers,
+        height: MediaQuery.of(context).size.height,
+        child: true ?
+        Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height/2,
+              child: GoogleMap(
+                mapType: MapType.hybrid,
+                initialCameraPosition: _initialCameraPosition,
+                mapToolbarEnabled: false,
+                zoomControlsEnabled: false,
+                onMapCreated: _onMapCreated,
+                markers: _markers,
 
-          onLongPress: (pos) {
+                onTap:  (pos) {
 
+                  Marker f = new Marker(
+                    markerId: MarkerId('$pos'),
+                    position: pos,
+                    infoWindow: InfoWindow(
+                      title: "You Are Here",
+                    ),
+                  );
 
+                  setState(() {
 
-              setState(() {
-                _currentPosition = Position(latitude: pos.latitude, longitude: pos.longitude);
-                _getAddressFromLatLng(pos.latitude,pos.longitude);
-              });
+                    if(_markers.isNotEmpty){
+                      _markers = Set.from([]);
 
-              Marker f = new Marker(markerId: MarkerId('$pos'), position: pos,
+                    }
+                    _markers.add(f);
+                    _getAddressFromLatLng(pos.latitude,pos.longitude);
+                    print(pos.toString());
+                  });
+                  print(_country);
+                  print(_city);
+                  print(_postalcode);
+                }
+              ),
+            ),
 
-                onTap: (){});
-
-                setState(() {
-
-                  if(_markers.isNotEmpty){
-                    _markers = Set.from([]);
-
-                  }
-                  _markers.add(f);
-                });
-               store.addLocation(Address(
-                 country:_address.country ,
-                 postalCode: _address.postalCode,
-                 latitude: _address.latitude,
-                 longgitude: _address.longgitude,
-               ));
-                Navigator.pushNamed(context, ServiceRequest.id);
-              
-
-            },
-
-          onTap:  (pos) {
-
-            Marker f = new Marker(markerId: MarkerId('$pos'), position: pos,
-
-              onTap: (){});
-
-              setState(() {
-
-              if(_markers.isNotEmpty){
-                _markers = Set.from([]);
-
-              }
-              _markers.add(f);
-            });
-          }
+            CustomTextField(
+              labelText: _country,
+            ),
+            CustomTextField(
+              labelText: _city,
+            ),
+            CustomTextField(
+              labelText: _postalcode,
+            ),
 
 
+            CustomButton(
+              onPressed: (){
+                print(_country);
+              },
+              textValue: "Submit"
+            ),
+
+          ],
         ) : Center(
           child:Text(
             "Please Wait",
@@ -211,83 +213,6 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
             ),
           ),
         )
-      ),
-    )
-        :
-    Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          setState(() {
-            mapToggle = false;
-            _getCurrentLocation();
-          });
-        },
-        child: Icon(
-          Icons.add_location_outlined,
-          color: KprimaryColorDark,
-        ),
-        backgroundColor: KprimaryColor,
-      ),
-      body: Container(
-          child: mapToggle ? GoogleMap(
-              mapType: MapType.hybrid,
-              initialCameraPosition: _initialCameraPosition,
-              mapToolbarEnabled: false,
-              zoomControlsEnabled: false,
-              onMapCreated: _onMapCreated,
-              markers: _markers,
-
-              onLongPress: (pos) {
-
-
-
-                setState(() {
-                  _currentPosition = Position(latitude: pos.latitude, longitude: pos.longitude);
-                });
-
-                Marker f = new Marker(markerId: MarkerId('$pos'), position: pos,
-
-                    onTap: (){});
-
-                setState(() {
-
-                  if(_markers.isNotEmpty){
-                    _markers = Set.from([]);
-
-                  }
-                  _markers.add(f);
-                });
-
-                Navigator.pushNamed(context, ServiceRequest.id);
-
-
-              },
-
-              onTap:  (pos) {
-
-                Marker f = new Marker(markerId: MarkerId('$pos'), position: pos,
-
-                    onTap: (){});
-
-                setState(() {
-
-                  if(_markers.isNotEmpty){
-                    _markers = Set.from([]);
-
-                  }
-                  _markers.add(f);
-                });
-              }
-
-
-          ) : Center(
-            child:Text(
-              "Please Wait",
-              style: TextStyle(
-                  fontSize: 40
-              ),
-            ),
-          )
       ),
     );
   }

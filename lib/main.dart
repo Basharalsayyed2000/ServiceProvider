@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.id,
+      initialRoute: ServiceRequestLocation.id,
       routes: {
         ServiceDetails.id: (context) => ServiceDetails(),
         ResetPassword.id: (context) => ResetPassword(),

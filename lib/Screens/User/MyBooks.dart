@@ -18,11 +18,7 @@ class _MyBooksState extends State<MyBooks> {
         title: Text("My Book"),
         centerTitle: true,
       ),
-      body: Column(
-         children: [
-           Text('There is no request'),
-         ],
-      ),
+      body: true? Center(child: Text("There is no Request") ) : ListView(children: [])
     );
   }
 
