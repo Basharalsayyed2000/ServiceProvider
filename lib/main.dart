@@ -4,6 +4,7 @@ import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
+import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
 import 'package:service_provider/Screens/User/RequestComponent.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
 
 
         UserVerifyScreen.id: (context) => UserVerifyScreen(),
+        ProviderVerifyScreen.id: (context) => ProviderVerifyScreen(),
+
 
         RequestComponent.id: (context) => RequestComponent(),
         ServiceDetails.id: (context) => ServiceDetails(),

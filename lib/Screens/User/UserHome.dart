@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:service_provider/Models/Service.dart';
+import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
-import 'package:service_provider/Screens/User/ProvidersList.dart';
+import 'package:service_provider/Screens/User/RecommendedProviders.dart';
+import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Services/auth.dart';
+import 'package:service_provider/Services/store.dart';
 
 class UserHome extends StatefulWidget {
   static String id = 'Providerscreen';
@@ -13,137 +19,212 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-  final auth =  Auth();
-  // ignore: unused_field
-  static String _useId;
-
-
-  Color _colorH = KprimaryColor, _colorS, _colorP;
-
-  int _selectedIndex;
+  final auth = Auth();
+  String userId;
+  final _store = Store();
+  final _auth = Auth();
+  final _userModel = UserModel();
 
   @override
   void initState() {
-    _selectedIndex = 0;
+    getcurrentid();
+    _getUserName();
     super.initState();
   }
-  
-   Future<String> getcurrentid()async{
-   _useId = (await FirebaseAuth.instance.currentUser()).uid;
-   return '';
-   }
-  @override
-  Widget build(BuildContext context) {
-    setState(() {
-      getcurrentid();
-    });
-    PageController _pageController = PageController();
-    List<Widget> _screen = [
-      ServicesList(),
-      MyBooks(),
-      UserProfilescreen(),
-    ];
 
-    void _onPageChanged(int index) {
+  Future<void> _getUserName() async {
+    Firestore.instance
+        .collection(KUserCollection)
+        .document(await _auth.getCurrentUserId())
+        .get()
+        .then((value) {
       setState(() {
-        _selectedIndex = index;
-        _colorH = _selectedIndex == 0 ? KprimaryColor : null;
-        _colorS = _selectedIndex == 1 ? KprimaryColor : null;
-        _colorP = _selectedIndex == 2 ? KprimaryColor : null;
+        _userModel.uName = value.data[KUserName];
+        _userModel.uEmail = value.data[KUserEmail];
+        _userModel.uPassword = value.data[KUserPassword];
+        _userModel.ubirthDate = value.data[KUserBirthDate];
+        _userModel.uAddDate = value.data[KUserAddDate];
+        _userModel.uId = value.data[KUserId];
+        _userModel.uphoneNumber = value.data[KUserPhoneNumber];
+        _userModel.isAdmin = value.data[KUserIsAdmin];
       });
-    }
-
-    void _onItemTapped(int selectedIndex) {
-      _pageController.jumpToPage(selectedIndex);
-      _onPageChanged(selectedIndex);
-    }
-
-    return Scaffold(
-       drawer: NavDrawer(),
-      body: PageView(
-        controller: _pageController,
-        children: _screen,
-        onPageChanged: _onPageChanged,
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _colorH,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.build,
-              color: _colorS,
-            ),
-            label: 'Services',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: _colorP,
-            ),
-            label: 'My Profile',
-          ),
-        ],
-      ),
-    );
+    });
   }
-}
-class NavDrawer extends StatelessWidget {
+
+  void getcurrentid() async {
+    String _userId = (await FirebaseAuth.instance.currentUser()).uid;
+    setState(() {
+      userId=_userId;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      
-      child: ListView(
-        
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            
-            child: Text(
-              'Side menu',
-              style: TextStyle(color: Colors.white, fontSize: 25),
-            ),
-            decoration: BoxDecoration(
-                color: Colors.green,
-                image: DecorationImage(
-                  
-                    fit: BoxFit.fill,
-                    image: AssetImage('Assets/images/noprofile.png',))),
-          ),
-          ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Welcome'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-        ],
+
+    // setState(() {
+    //   // ignore: unnecessary_statements
+    //   userId== ModalRoute.of(context).settings.arguments;
+    // });
+     
+    return Scaffold(
+      drawer: Drawer(
+        child: StreamBuilder(
+            stream: Firestore.instance
+                .collection(KUserCollection)
+                .document(userId)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text("Loading");
+              } else {
+                var userDocument = snapshot.data;
+                return ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    DrawerHeader(
+                      child: Column(children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage:
+                              AssetImage('Assets/images/noprofile.png'),
+                          radius: 35,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          '${userDocument[KUserName]}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          '${userDocument[KUserEmail]}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ]),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.input),
+                      title: Text('Welcome'),
+                      onTap: () => {},
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.verified_user),
+                      title: Text('Profile'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, UserProfilescreen.id);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text('My Book'),
+                      onTap: ()  {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyBooks.id);
+                        },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.notifications_on),
+                      title: Text('Notification'),
+                      onTap: () => {Navigator.of(context).pop()},
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.exit_to_app),
+                      title: Text('Logout'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacementNamed(
+                            context, WelcomeScreen.id);
+                      },
+                    ),
+                    (userDocument[KUserIsAdmin] == true)
+                        ? ListTile(
+                            leading: Icon(Icons.control_point_sharp),
+                            title: Text('Control panel'),
+                            onTap: () {
+                              Navigator.pushNamed(context, AdminHome.id);
+                            })
+                        :ListTile()
+                  ],
+                );
+              }
+            }),
+      ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Services"),
+        backgroundColor: KprimaryColor,
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _store.loadService(),
+        // ignore: missing_return
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<ServiceModel> _services = [];
+            for (var doc in snapshot.data.documents) {
+              var data = doc.data;
+              String serviceId = doc.documentID;
+              if (data[KServicesStatus]) {
+                _services.add(ServiceModel(
+                  sName: data[KServiceName],
+                  sDesc: data[KServiceDesc],
+                  sImageUrl: data[KServicesImageUrl],
+                  sAddDate: data[KServiceAddDate],
+                  sId: serviceId,
+                ));
+              }
+            }
+            return GridView.builder(
+              primary: false,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) => Stack(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, Recommended.id,
+                        arguments: _services[index]),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      elevation: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.network(
+                              _services[index].sImageUrl,
+                              fit: BoxFit.fill,
+                              height: 140,
+                              width: 160,
+                            ),
+                            Text(
+                              _services[index].sName,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              itemCount: _services.length,
+            );
+          } else {
+            return Center(
+              child: Text('Loading'),
+            );
+          }
+        },
       ),
     );
   }

@@ -1,16 +1,14 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:intl/intl.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
-import 'package:service_provider/Services/auth.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
+ 
 
 class ProviderSignUpScreen extends StatefulWidget {
   static String id = 'ProviderSignUpScreen';
@@ -22,25 +20,16 @@ class ProviderSignUpScreen extends StatefulWidget {
 }
 
 class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
-  // ignore: unused_field
-  String _email,
-      _password,
-      _name,
-      _birthDate,
-      
-      _phone,
-      // ignore: unused_field
-      _errorMessage;
-      
-  final _auth = Auth();
+  String _email, _password, _name, _confirmPassWord;
+  final _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  Color _colorDt;
-  FontWeight _weightDt;
-  DateTime _date;
+  
+  bool isHidePassword = true;
 
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
+    bool _usertype = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -86,9 +75,9 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                   padding: EdgeInsets.symmetric(vertical: 0.325),
                   child: Focus(
                     child: CustomTextField(
-                      obscureText: true,
+                      obscureText: isHidePassword,
                       labelText: "Password",
-                      hintText: "e.g Password",
+                      hintText: "complex password",
                       prefixIcon: Icons.vpn_key,
                       onClicked: (value) {
                         _password = value;
@@ -98,18 +87,14 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 0.325),
-                  child: getDateFormPicker(),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 0.325),
                   child: Focus(
                     child: CustomTextField(
-                      labelText: "Phone Number",
-                      hintText: "+XXX 123456789",
-                      keyboardType: TextInputType.number,
-                      prefixIcon: Icons.phone_iphone,
+                      obscureText: isHidePassword,
+                      labelText: "Confirm Password",
+                      hintText: "confirm",
+                      prefixIcon: Icons.vpn_key,
                       onClicked: (value) {
-                        _phone = value;
+                        _confirmPassWord = value;
                       },
                     ),
                   ),
@@ -125,21 +110,33 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                         toggleProgressHUD(true, progress);
                         if (_globalKey.currentState.validate()) {
                           _globalKey.currentState.save();
-
                           try {
-                            final authResult = await _auth.signUp(
-                                _email.trim(), _password.trim());
-                              ProviderModel _provider= ProviderModel(
-                                    pName: _name,
-                                    pbirthDate: _birthDate,
-                                    isAdmin:false,
-                                    pphoneNumber: _phone,
-                                    pEmail: _email.trim(),
-                                    pId: authResult.user.uid,
-                                    pPassword: _password.trim(),
+                            if (_password == _confirmPassWord) {
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: _email.trim(),
+                                  password: _password.trim()).then((_){
+                                   
+                                  Navigator.pushReplacementNamed(context, ProviderVerifyScreen.id,arguments: ProviderModel(pName: _name,pEmail: _email.trim(),pPassword: _password.trim(),));
+                                  });
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("the password doesn't match"),
+                                      actions: [
+                                        // ignore: deprecated_member_use
+                                        RaisedButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          color: Colors.red,
+                                          child: Text("ok"),
+                                        ),
+                                      ],
                                     );
+                                  });
+                            }
                             toggleProgressHUD(false, progress);
-                            Navigator.pushNamed(context, AdditionalInfo.id,arguments: _provider);
                           } catch (e) {
                             toggleProgressHUD(false, progress);
 
@@ -168,7 +165,8 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                       GestureDetector(
                         onTap: () {
                           Navigator.pushReplacementNamed(
-                              context, ProviderLoginScreen.id);
+                              context, ProviderLoginScreen.id,
+                              arguments: _usertype);
                         },
                         child: Text(
                           "Sign in",
@@ -189,6 +187,12 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
     );
   }
 
+  void tooglePasswordView() {
+    setState(() {
+      isHidePassword = !isHidePassword;
+    });
+  }
+
   Widget getImage() {
     AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
     Image image = new Image(image: assetImage);
@@ -201,67 +205,6 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
         child: image,
       ),
     );
-  }
-
-  Widget getDateFormPicker() {
-    return SizedBox(
-      height: 73.0,
-      child: DateTimePickerFormField(
-        autofocus: false,
-        decoration: InputDecoration(
-          labelText: "Date Of Birth",
-          isDense: true,
-          labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
-          prefixIcon: Icon(
-            Icons.date_range,
-            color: KprimaryColorDark,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(color: KfocusColor, width: 2.5),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
-          ),
-        ),
-
-        //validator: (value) => "Date Of Birth is Empty !",
-        format: DateFormat("MMMM d yyyy"),
-        inputType: InputType.date,
-        initialDate: DateTime(1970, 1, 1),
-        onChanged: (selectedDate) {
-          setState(() {
-            _birthDate = selectedDate.toString();
-            if (selectedDate != null) {
-              _date = selectedDate;
-              _colorDt = KprimaryColorDark;
-              _weightDt = FontWeight.bold;
-              _errorMessage = "Date Of Birth is Empty !";
-            } else {
-              _colorDt = null;
-              _weightDt = null;
-              _errorMessage = null;
-            }
-          });
-          print('Selected date: $_date');
-        },
-      ),
-    );
-  }
-
-  // ignore: missing_return
-  String getDateNow() {
-    initializeDateFormatting();
-    DateTime now = DateTime.now();
-// ignore: unused_local_variable
-    var dateString = DateFormat('dd-MM-yyyy').format(now);
-    final String configFileName = dateString;
-    return configFileName;
   }
 
   void toggleProgressHUD(_loading, _progressHUD) {

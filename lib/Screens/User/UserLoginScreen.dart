@@ -124,8 +124,7 @@ class UserLoginScreen extends StatelessWidget {
                               _email.trim(), _password.trim());
                           String userId = _authresult.user.uid;
                           if (await checkUserExist(userId) == true) {
-                            Navigator.pushReplacementNamed(context, UserHome.id,
-                                arguments: _authresult.user.uid);
+                                  Navigator.pushNamedAndRemoveUntil(context, UserHome.id, (Route<dynamic> route) => false,arguments:userId );
                           } else {
                             // ignore: deprecated_member_use
                             Scaffold.of(context).showSnackBar(SnackBar(

@@ -47,7 +47,7 @@ class _MyBooksState extends State<MyBooks> {
               var data = doc.data;
               String requestId=doc.documentID;
                if(data[KRequestUserId]==_userId){
-              _store.addRequest(RequestModel(
+              _requests.add(RequestModel(
                 rProblem: data[KRequestProblem],
                 rDescription: data[KRequestDescription],
                 rAddDate: data[KRequestAddDate],
