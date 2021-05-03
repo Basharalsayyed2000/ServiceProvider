@@ -6,8 +6,6 @@ import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
-import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
 import 'package:service_provider/Services/store.dart';
 
 ///
@@ -37,10 +35,11 @@ class ServiceRequestLocation extends StatefulWidget {
 class _ServiceRequestLocation extends State<ServiceRequestLocation> {
 
   static Position _currentPosition = Position(latitude:37.42796133580664, longitude:-122.085749655962);
-  static String _currentAddress = "";
+ // static String _currentAddress = "";
   static String _city = "";
   static String _country = "";
   static String _postalcode = "";
+  static String _detailsAddress="";
   static bool mapToggle = false;
   Store store;
   final bool appBar;
@@ -48,7 +47,8 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
   _ServiceRequestLocation({this.appBar});
 
   static Placemark address;
-  Address _address;
+  // ignore: unused_field
+  AddressModel _address;
   static final CameraPosition _initialCameraPosition  = CameraPosition(
     target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
     zoom: 15,
@@ -84,6 +84,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
         _country = address.country;
         _city = address.locality;
         _postalcode = address.postalCode;
+        _detailsAddress=address.street;
 
       });
     } catch (e) {
@@ -146,11 +147,11 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
 
       body: Container(
         height: MediaQuery.of(context).size.height,
-        child: true ?
+        child: mapToggle ?
         Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height/2,
+              height: MediaQuery.of(context).size.height/1.7,
               child: GoogleMap(
                 mapType: MapType.hybrid,
                 initialCameraPosition: _initialCameraPosition,
@@ -182,30 +183,50 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                   print(_country);
                   print(_city);
                   print(_postalcode);
+                  print(_detailsAddress);
                 }
               ),
             ),
-
-            CustomTextField(
-              labelText: _country,
+            
+            // CustomTextField(
+            //   labelText: _country, onClicked: null,
+            // ),
+            // CustomTextField(
+            //   labelText: _city, onClicked: null,
+            // ),
+            // CustomTextField(
+            //   labelText: _postalcode, onClicked: null,
+            // ),
+            SizedBox(
+              height: 10,
             ),
-            CustomTextField(
-              labelText: _city,
+            Text('Country :$_country'),
+            SizedBox(
+              height: 10,
             ),
-            CustomTextField(
-              labelText: _postalcode,
+            Text('City :$_city'),
+            SizedBox(
+              height: 10,
             ),
-
-
+            Text('PostalCode :$_postalcode'),
+             SizedBox(
+              height: 10,
+            ),
+            Text('details :$_detailsAddress'),
+            SizedBox(
+              height: 30,
+            ),
             CustomButton(
               onPressed: (){
-                print(_country);
+               
+
+
               },
               textValue: "Submit"
             ),
 
           ],
-        ) : Center(
+          ) : Center(
           child:Text(
             "Please Wait",
             style: TextStyle(

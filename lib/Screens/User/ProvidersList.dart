@@ -17,7 +17,7 @@ class ServicesList extends StatefulWidget {
 class _ServicesListState extends State<ServicesList> {
   final _store = Store();
   final _auth =Auth();
-  final _userModel=Users();
+  final _userModel=UserModel();
 
    @override
   void initState() {
@@ -85,12 +85,12 @@ class _ServicesListState extends State<ServicesList> {
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Service> _services = [];
+            List<ServiceModel> _services = [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
               String serviceId=doc.documentID;
                if(data[KServicesStatus]){
-              _services.add(Service(
+              _services.add(ServiceModel(
                 sName: data[KServiceName],
                 sDesc: data[KServiceDesc],
                 sImageUrl: data[KServicesImageUrl],

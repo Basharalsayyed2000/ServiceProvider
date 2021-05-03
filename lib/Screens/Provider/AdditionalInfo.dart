@@ -13,7 +13,7 @@ import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Services/store.dart';
-import 'package:service_provider/Services/user.dart';
+import 'package:service_provider/Services/UserStore.dart';
 
 class AdditionalInfo extends StatefulWidget {
   static String id = "additionalInfo";
@@ -28,13 +28,13 @@ class _AdditionalInfo extends State<AdditionalInfo> {
   String _imageUrl;
   List<String> _servicesName = [""];
   // ignore: unused_field
-  List<Service> _services = [];
+  List<ServiceModel> _services = [];
   String _currentItemSelected = "";
   String _description;
   final _store = Store();
   UserStore _userStore = UserStore();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  Providers _provider;
+  ProviderModel _provider;
   String _sId = "";
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Service> _services = [];
+            List<ServiceModel> _services = [];
             List<String> _servicesName = [""];
             String sid;
             for (var doc in snapshot.data.documents) {
@@ -62,7 +62,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
               sid = doc.documentID.toString();
               if (data[KServicesStatus]) {
                 _servicesName.add(data[KServiceName]);
-                _services.add(Service(
+                _services.add(ServiceModel(
                   sName: data[KServiceName],
                   sDesc: data[KServiceDesc],
                   sImageUrl: data[KServicesImageUrl],
@@ -208,7 +208,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
     );
   }
 
-  void uploadImage(context, Providers _provider, _serviceId) async {
+  void uploadImage(context, ProviderModel _provider, _serviceId) async {
     if (_image == null) {
       showDialog(
           context: context,

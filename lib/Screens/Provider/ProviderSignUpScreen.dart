@@ -129,7 +129,7 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                           try {
                             final authResult = await _auth.signUp(
                                 _email.trim(), _password.trim());
-                              Providers _provider= Providers(
+                              ProviderModel _provider= ProviderModel(
                                     pName: _name,
                                     pbirthDate: _birthDate,
                                     isAdmin:false,

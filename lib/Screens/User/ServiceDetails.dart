@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/Screens/User/ServiceRequest.dart';
 
 class ServiceDetails extends StatefulWidget{
   static String id = "serviceDetails";
@@ -16,7 +18,7 @@ class ServiceDetails extends StatefulWidget{
 class _ServiceDetails extends State<ServiceDetails>{
   @override
   Widget build(BuildContext context) {
-     Providers _provider = ModalRoute.of(context).settings.arguments;
+     ProviderModel _provider = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Service Details"),
@@ -159,9 +161,11 @@ class _ServiceDetails extends State<ServiceDetails>{
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.all(Kminimumpadding*1.5),
+
+                      
                       child: CustomButton(
                         onPressed: (){
-                          
+                          Navigator.pushNamed(context, ServiceRequest.id,arguments:NeededData(provider:_provider,isActive:true) );
                         },
                         textValue: "Book Now",
                       ),
@@ -171,7 +175,9 @@ class _ServiceDetails extends State<ServiceDetails>{
                     child: Container(
                       margin: EdgeInsets.all(Kminimumpadding*1.5),
                       child: CustomButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.pushNamed(context, ServiceRequest.id,arguments:NeededData(provider:_provider,isActive:false) );
+                        },
                         textValue: "Book Later",
                       ),
                     ),

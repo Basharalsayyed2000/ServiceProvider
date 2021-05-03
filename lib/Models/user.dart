@@ -1,8 +1,8 @@
-class Users{
+class UserModel{
   String uName, uImageUrl, uAddDate, ubirthDate, uphoneNumber,uEmail,uPassword,uId;
   bool isAdmin;
 
-  Users(
+  UserModel(
       {this.uName,
       this.uAddDate,
       this.uImageUrl,

@@ -4,7 +4,7 @@ import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
-import 'package:service_provider/Services/user.dart';
+import 'package:service_provider/Services/UserStore.dart';
 
 class Recommended extends StatefulWidget {
   static String id = 'Recommended';
@@ -14,7 +14,7 @@ class Recommended extends StatefulWidget {
 }
 
 class _RecommendedState extends State<Recommended> {
-  Service service;
+  ServiceModel service;
   final _user = UserStore();
   @override
   Widget build(BuildContext context) {
@@ -30,11 +30,11 @@ class _RecommendedState extends State<Recommended> {
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Providers> _providers = [];
+            List<ProviderModel> _providers = [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
               if (data[KServiceId] == service.sId) {
-                _providers.add(Providers(
+                _providers.add(ProviderModel(
                   pName: data[KProviderName],
                   pbirthDate: data[KProviderBirthDate],
                   pAddDate: data[KProviderAddDate],
@@ -69,7 +69,7 @@ class _RecommendedState extends State<Recommended> {
   }
 
   Card buildCard(
-      String title, String subtitle, String imageurl, Providers _provider) {
+      String title, String subtitle, String imageurl, ProviderModel _provider) {
     return Card(
       child: GestureDetector(
         onTap: () => Navigator.pushNamed(context, ServiceDetails.id,

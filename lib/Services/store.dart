@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:service_provider/Models/Address.dart';
+import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
 class Store {
   final Firestore _firestore = Firestore.instance;
 
-  addservice(Service service) {
+  addservice(ServiceModel service) {
     _firestore.collection(KServicesCollection).add({
       KServiceName: service.sName,
       KServiceDesc: service.sDesc,
@@ -20,14 +21,32 @@ class Store {
   }
 
 
-    addLocation(Address address) {
+    addLocation(AddressModel address) {
     _firestore.collection(KLocationCollection).add({
-    //  KLocationAddress: address.address,
       KLocationCountry: address.country,
       KLocationPostalCode: address.postalCode,
       KLocationLatitude:address.latitude,
       KLocationlonggitude:address.longgitude,
-      //KLocationId:address.adId,
     });
+  }
+
+  addRequest(RequestModel request) {
+    _firestore.collection(KRequestCollection).add({
+      KRequestProblem: request.rProblem,
+      KRequestDescription: request.rDescription,
+      KRequestIsCompleted: request.isComplete,
+      KRequestIsActive: request.isActive,
+      KRequestIsAccepted:request.isAccepted,
+      KRequestUserId: request.userId,
+      KRequestProviderId: request.providerId,
+      KRequestTime: request.requestTime,
+      KRequestDate: request.requestDate,
+      KRequestAddDate:request.rAddDate,
+      KRequestImageUrl:request.rImageUrl
+    });
+  }
+
+  Stream<QuerySnapshot> loadRequest(){
+     return _firestore.collection(KRequestCollection).snapshots();
   }
 }

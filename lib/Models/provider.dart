@@ -1,19 +1,20 @@
-class Providers{
-String pName, pImageUrl, pAddDate, pbirthDate, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId;
+class ProviderModel{
+String pName, pAddDate,pImageUrl, pbirthDate, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId;
 bool isAdmin;
-List<String> pAddress;
-Providers(
-      {this.pName,
+List<String> certificateImages;
+ProviderModel(
+      {
+      this.pName,
       this.pAddDate,
       this.pImageUrl,
       this.pphoneNumber,
       this.pbirthDate,
       this.isAdmin,
-      this.pAddress,
       this.pProvideService,
       this.pProviderDescription,
       this.pEmail,
       this.pPassword,
       this.pId,
+      this.locationId
       });
 }

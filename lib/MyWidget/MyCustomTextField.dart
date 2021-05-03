@@ -119,8 +119,11 @@ class _CustomTextField extends State<CustomTextField> {
         return "Name is empty !";
       case "Email":
         return "Email is empty !";
+      case "Confirm Password":
+        return "Confirm Password is empty !";   
       case "Phone Number":
         return "Phone Number is empty !";
+      
     }
   }
 

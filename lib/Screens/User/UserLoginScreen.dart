@@ -12,13 +12,8 @@ import 'package:service_provider/Services/auth.dart';
 // ignore: must_be_immutable
 class UserLoginScreen extends StatelessWidget {
   static String id = 'UserLoginScreen';
-  // ignore: unused_field
   String _email, _password;
-
-  // ignore: unused_field
   final _auth = Auth();
-
-  // ignore: unused_field
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -128,7 +123,6 @@ class UserLoginScreen extends StatelessWidget {
                           final _authresult = await _auth.signIn(
                               _email.trim(), _password.trim());
                           String userId = _authresult.user.uid;
-                          // ignore: unrelated_type_equality_checks
                           if (await checkUserExist(userId) == true) {
                             Navigator.pushReplacementNamed(context, UserHome.id,
                                 arguments: _authresult.user.uid);
@@ -155,6 +149,7 @@ class UserLoginScreen extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.0485,
               ),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

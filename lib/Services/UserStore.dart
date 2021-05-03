@@ -6,7 +6,7 @@ import 'package:service_provider/MyTools/Constant.dart';
 class UserStore{
   final Firestore _firestore = Firestore.instance;
 
-  addUser(Users user, String uid) async {
+  addUser(UserModel user, String uid) async {
     await _firestore.collection(KUserCollection).document(uid).setData({
       KUserName: user.uName,
       KUserAddDate: user.uAddDate,
@@ -26,7 +26,7 @@ class UserStore{
    await document.get().then((value) {
     });
   }
-  addProvider(Providers provider, String pid) async {
+  addProvider(ProviderModel provider, String pid) async {
     await _firestore.collection(KProviderCollection).document(pid).setData({
       KProviderName: provider.pName,
       KProviderAddDate: provider.pAddDate,
@@ -34,7 +34,7 @@ class UserStore{
       KProviderBirthDate: provider.pbirthDate,
       KProviderPhoneNumber: provider.pphoneNumber,
       KProviderIsAdmin:provider.isAdmin,
-      KProviderAddress:provider.pAddress,
+      KProviderAddress:provider.locationId,
       KProviderDescription:provider.pProviderDescription,
       KServiceId:provider.pProvideService,
       KProviderEmail:provider.pEmail,

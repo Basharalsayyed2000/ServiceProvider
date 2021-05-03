@@ -59,3 +59,22 @@ const KLocationPostalCode = 'LocationPostCode';
 const KLocationLatitude = 'LocationLatitude';
 const KLocationlonggitude='Locationlonggitude';
 const KLocationId='LocationId';
+
+
+//Provider
+const KRequestCollection = 'Requests';
+const KRequestId = 'RequestId';
+const KRequestAddDate = 'RequestAddDate';
+const KRequestImageUrl = 'RequestImageUrl';
+const KRequestDate='RequestDate';
+const KRequestTime='RequestTime';
+const KRequestIsCompleted='RequestIsCompleted';
+const KRequestIsActive='RequestIsActive';
+const KRequestIsAccepted='RequestIsAccepted';
+const KRequestUserId='RequestUserId';
+const KRequestProviderId='RequestProviderId';
+const KRequestAddress='RequestAddress';
+const KRequestProblem='RequestProblem';
+const KRequestDescription='RequestDescription';
+
+

@@ -23,7 +23,7 @@ class _AddServiceState extends State<AddService> {
   File _image;
   String _imageUrl;
   String _name, _desc, _addedDate;
-  int activeState=1;
+  int activeState = 1;
   bool status;
   // ignore: unused_field
   final TextEditingController _nameEditingController = TextEditingController();
@@ -36,9 +36,9 @@ class _AddServiceState extends State<AddService> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _globalKey,
-        child: ProgressHUD(
+      body: ProgressHUD(
+        child: Form(
+          key: _globalKey,
           child: ListView(
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -92,7 +92,7 @@ class _AddServiceState extends State<AddService> {
                 prefixIcon: Icons.text_fields,
                 labelText: 'Description',
               ),
-             
+
               ListTile(
                 title: const Text('active'),
                 leading: Radio(
@@ -124,9 +124,7 @@ class _AddServiceState extends State<AddService> {
               Builder(
                 builder: (context) => CustomButton(
                   onPressed: () async {
-                   
                     uploadImage(context);
-                  
                   },
                   textValue: 'Add Service',
                 ),
@@ -142,7 +140,7 @@ class _AddServiceState extends State<AddService> {
     _globalKey.currentState.reset();
     setState(() {
       _image = null;
-      activeState=1;
+      activeState = 1;
     });
   }
 
@@ -177,10 +175,9 @@ class _AddServiceState extends State<AddService> {
             );
           });
     } else {
-
       try {
-         final progress = ProgressHUD.of(context);
-                    toggleProgressHUD(true, progress);
+        final progress = ProgressHUD.of(context);
+        toggleProgressHUD(true, progress);
         FirebaseStorage storage = FirebaseStorage(
             storageBucket: 'gs://service-provider-ef677.appspot.com');
         String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
@@ -197,16 +194,16 @@ class _AddServiceState extends State<AddService> {
           // loadImage();
           _addedDate = getDateNow();
           _globalKey.currentState.save();
-           
-          _store.addservice(Service(
-              sName: _name,
-              sDesc: _desc,
-              sAddDate: _addedDate,
-              sImageUrl: _imageUrl,
-              status: (activeState==1)? true: false,
-              ));
-                toggleProgressHUD(false, progress);
-                
+
+          _store.addservice(ServiceModel(
+            sName: _name,
+            sDesc: _desc,
+            sAddDate: _addedDate,
+            sImageUrl: _imageUrl,
+            status: (activeState == 1) ? true : false,
+          ));
+          toggleProgressHUD(false, progress);
+
           showDialog(
               context: context,
               builder: (context) {
@@ -244,8 +241,6 @@ class _AddServiceState extends State<AddService> {
       }
     }
   }
-
-  
 
   void loadImage() async {
     var imageId = await ImageDownloader.downloadImage(_imageUrl);

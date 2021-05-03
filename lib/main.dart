@@ -5,10 +5,12 @@ import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
+import 'package:service_provider/Screens/User/RequestComponent.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
+import 'package:service_provider/Screens/User/VerificationUser.dart';
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
 import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/User/ServiceRequest.dart';
@@ -28,19 +30,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: ServiceRequestLocation.id,
+      initialRoute: SplashScreen.id,
       routes: {
+        SplashScreen.id: (context) => SplashScreen(),
+        WelcomeScreen.id: (context) => WelcomeScreen(),
+
+
+
+        UserVerifyScreen.id: (context) => UserVerifyScreen(),
+
+        RequestComponent.id: (context) => RequestComponent(),
         ServiceDetails.id: (context) => ServiceDetails(),
         ResetPassword.id: (context) => ResetPassword(),
         AdditionalInfo.id: (context) => AdditionalInfo(),
         ProviderHome.id: (context) => ProviderHome(),
-        SplashScreen.id: (context) => SplashScreen(),
+       
         UserHome.id: (context) => UserHome(),
         ServiceRequest.id: (context) => ServiceRequest(),
         ServiceRequestLocation.id: (context) => ServiceRequestLocation(),
         AddService.id: (context) => AddService(),
         AdminHome.id: (context) => AdminHome(),
-        WelcomeScreen.id: (context) => WelcomeScreen(),
         ManageService.id: (context) => ManageService(),
         UserProfilescreen.id: (context) => UserProfilescreen(),
         Recommended.id: (context) => Recommended(),

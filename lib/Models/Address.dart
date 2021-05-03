@@ -1,8 +1,8 @@
-class Address{
-  String address,country,postalCode,city,adId;
+class AddressModel{
+  String street,country,postalCode,city,adId;
   double latitude,longgitude;
-  Address(
-      {this.address,
+  AddressModel(
+      {this.street,
       this.country,
       this.postalCode,
       this.city,

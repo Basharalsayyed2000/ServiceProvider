@@ -1,0 +1,99 @@
+ async {
+                        final progress = ProgressHUD.of(context);
+                        toggleProgressHUD(true, progress);
+                        if (_globalKey.currentState.validate()) {
+                          _globalKey.currentState.save();
+
+                          try {
+                            final authResult = await _auth.signUp(
+                                _email.trim(), _password.trim());
+                            _addedDate = getDateNow();
+                            _user.addUser(
+                                UserModel(
+                                  uName: _name,
+                                  uAddDate: _addedDate,
+                                  uImageUrl: 'null',
+                                  ubirthDate: _birthDate,
+                                  uphoneNumber: _phone,
+                                  isAdmin: false,
+                                  uEmail: _email.trim(),
+                                  uId: authResult.user.uid,
+                                  uPassword: _password.trim(),
+                                ),
+                                authResult.user.uid);
+                           
+                            toggleProgressHUD(false, progress);
+                            Navigator.pushReplacementNamed(context, UserLoginScreen.id,arguments: _usertype);
+                            Fluttertoast.showToast(msg: 'Record Succesfully',);
+                          } catch (e) {
+                            toggleProgressHUD(false, progress);
+
+                            // ignore: deprecated_member_use
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(e.toString()),
+                            ));
+                          }
+                        }
+                        toggleProgressHUD(false, progress);
+                      },
+
+
+
+
+
+
+
+
+
+
+
+                      Widget getDateFormPicker() {
+    return SizedBox(
+      height: 73.0,
+      child: DateTimePickerFormField(
+        autofocus: false,
+        decoration: InputDecoration(
+          labelText: "Date Of Birth",
+          isDense: true,
+          labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
+          prefixIcon: Icon(
+            Icons.date_range,
+            color: KprimaryColorDark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: KfocusColor, width: 2.5),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+          ),
+        ),
+        validator: (value) =>
+            (value == null) ? "Date Of Birth is Empty !" : null,
+        format: DateFormat("MMMM d yyyy"),
+        inputType: InputType.date,
+        initialDate: DateTime(1970, 1, 1),
+        onChanged: (selectedDate) {
+          setState(() {
+            _birthDate = selectedDate.toString();
+            if (selectedDate != null) {
+              _date = selectedDate;
+              _colorDt = KprimaryColorDark;
+              _weightDt = FontWeight.bold;
+              _errorMessage = "Date Of Birth is Empty !";
+            } else {
+              _colorDt = null;
+              _weightDt = null;
+              _errorMessage = null;
+            }
+          });
+          print('Selected date: $_date');
+        },
+      ),
+    );
+  }
