@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +26,7 @@ class AdditionalInfo extends StatefulWidget {
 
 class _AdditionalInfo extends State<AdditionalInfo> {
   File _image;
+  List<File> _gallery = new List<File>();
   String _imageUrl;
   List<String> _servicesName = [""];
   // ignore: unused_field
@@ -82,7 +84,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                         child: GestureDetector(
                           onTap: pickImage,
                           child: Container(
-                            //margin: EdgeInsets.only(top: 40),
+                            margin: EdgeInsets.only(top: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(120.0),
                               color: Colors.white,
@@ -96,7 +98,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                               backgroundImage: _image == null
                                   ? AssetImage('Assets/images/provider.jpg')
                                   : FileImage(_image),
-                              radius: MediaQuery.of(context).size.height * 0.16,
+                              radius: MediaQuery.of(context).size.height * 0.12,
                             ),
                             // Image(
                             //         image: _image == null
@@ -151,6 +153,38 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           },
                         ),
                       ),
+
+                      Container(
+                        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height/55),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.width/3.4,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _gallery.length+1,
+                            itemBuilder: (context,index){
+                              return GestureDetector(
+                                onTap: () => (index == 0) ? pickGalleryImage() : null,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(color: Colors.grey, spreadRadius: 1.5),
+                                    ],
+                                  ),
+
+                                  width: MediaQuery.of(context).size.width/2.6,
+                                  margin: EdgeInsets.only(left: 2, top: 2, right: 13, bottom: 2),
+                                  child: (index == 0) ? Icon(Icons.add, size: 60, color: KprimaryColor)
+                                      :
+                                  Image.file(_gallery[index-1]),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+
                       Container(
                         padding: EdgeInsets.only(top: 4),
                         // ignore: deprecated_member_use
@@ -193,6 +227,8 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           ),
                         ),
                       ),
+
+
                     ],
                   ),
                 ),
@@ -285,6 +321,21 @@ class _AdditionalInfo extends State<AdditionalInfo> {
 
       setState(() {
         _image = image;
+      });
+    }
+  }
+
+  void pickGalleryImage() async {
+    await Permission.photos.request();
+    var _permessionStatus = await Permission.photos.status;
+    if (_permessionStatus.isGranted) {
+      // ignore: deprecated_member_use
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _gallery.add(image);
+
+        print("HERE ------------------------------" + image.path + " " + _gallery.length.toString());
       });
     }
   }
