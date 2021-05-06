@@ -1,18 +1,20 @@
+import 'dart:io';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/User/UserHome.dart';
+import 'package:service_provider/Screens/Request/RequestLocation.dart';
 import 'package:service_provider/Services/auth.dart';
-import 'package:service_provider/Services/store.dart';
 
 class ServiceRequest extends StatefulWidget {
   static String id = "serviceRequestScreen";
@@ -24,28 +26,32 @@ class ServiceRequest extends StatefulWidget {
 
 class _ServiceRequest extends State<ServiceRequest> {
   final _auth = Auth();
+  // ignore: deprecated_member_use
+  List<File> _gallery = new List<File>();
+  List<String> _galleryUrl = [];
+
+  FontWeight _weightT;
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   Color _colorDt;
   FontWeight _weightDt;
   Color _colorT;
-  FontWeight _weightT;
-  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  final Store _store = Store();
-
   DateTime _date;
   DateTime _time;
   RequestModel request;
-  String rProblem, rDescription, rDate, rTime, _addedDate,_userId;
+  String rProblem, rDescription, rDate, rTime, _userId;
   @override
   void initState() {
     super.initState();
     _getUserId();
   }
-    _getUserId()async{
-      String value=await _auth.getCurrentUserId();
-      setState(() {
-        _userId=value;
-      });
-    }
+
+  _getUserId() async {
+    String value = await _auth.getCurrentUserId();
+    setState(() {
+      _userId = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     NeededData neededData = ModalRoute.of(context).settings.arguments;
@@ -107,12 +113,58 @@ class _ServiceRequest extends State<ServiceRequest> {
                     },
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Problem Image',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height / 55),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.width / 3.4,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _gallery.length + 1,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => (index == 0) ? pickGalleryImage() : null,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey, spreadRadius: 1.5),
+                              ],
+                            ),
+                            width: MediaQuery.of(context).size.width / 2.6,
+                            margin: EdgeInsets.only(
+                                left: 2, top: 2, right: 13, bottom: 2),
+                            child: (index == 0)
+                                ? Icon(Icons.add,
+                                    size: 60, color: KprimaryColor)
+                                : Image.file(_gallery[index - 1]),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.only(top: Kminimumpadding * 2),
                   child: Builder(
                     builder: (context) => CustomButton(
                       onPressed: () async {
-                        addRequest(context, neededData.isActive,
+                        capsolateData(context, request, neededData.isActive,
                             neededData.provider);
                       },
                       textValue: 'Continue',
@@ -187,7 +239,7 @@ class _ServiceRequest extends State<ServiceRequest> {
         setState(() {
           if (selectedTime != null) {
             _time = selectedTime;
-            rTime=selectedTime.toString();
+            rTime = selectedTime.toString();
             _colorT = KprimaryColorDark;
             _weightT = FontWeight.bold;
           } else {
@@ -200,8 +252,141 @@ class _ServiceRequest extends State<ServiceRequest> {
     );
   }
 
-  void addRequest(
-      context, bool isactive, ProviderModel provider) async {
+  // void addRequest(context, bool isactive, ProviderModel provider) async {
+  //   if (_date == null) {
+  //     showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             title: Text("You must choose date"),
+  //             actions: [
+  //               // ignore: deprecated_member_use
+  //               RaisedButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 color: Colors.red,
+  //                 child: Text("ok"),
+  //               ),
+  //             ],
+  //           );
+  //         });
+  //   } else if (_time == null) {
+  //     showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             title: Text("You must choose time"),
+  //             actions: [
+  //               // ignore: deprecated_member_use
+  //               RaisedButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 color: Colors.red,
+  //                 child: Text("ok"),
+  //               ),
+  //             ],
+  //           );
+  //         });
+  //   } else {
+  //     try {
+  //       final progress = ProgressHUD.of(context);
+  //       toggleProgressHUD(true, progress);
+  //       if (_globalKey.currentState.validate()) {
+  //         // loadImage();
+  //         _addedDate = getDateNow();
+  //         _globalKey.currentState.save();
+
+  //         _store.addRequest(RequestModel(
+  //           rProblem: rProblem,
+  //           rDescription: rDescription,
+  //           rAddDate: _addedDate,
+  //           requestDate: rDate,
+  //           requestTime: rTime,
+  //           isActive: (isactive == true) ? true : false,
+  //           isAccepted: false,
+  //           isComplete: false,
+  //           providerId: provider.pId,
+  //           userId: _userId,
+  //         ));
+  //         toggleProgressHUD(false, progress);
+
+  //         showDialog(
+  //             context: context,
+  //             builder: (context) {
+  //               return AlertDialog(
+  //                 title: Text("successfully uplaoded"),
+  //                 actions: [
+  //                   // ignore: deprecated_member_use
+  //                   RaisedButton(
+  //                     onPressed: () => Navigator.pop(context),
+  //                     color: KprimaryColor,
+  //                     child: Text("ok"),
+  //                   ),
+  //                 ],
+  //               );
+  //             });
+  //         Navigator.pushNamed(context, UserHome.id);
+  //         Fluttertoast.showToast(
+  //           msg: 'Send Succesfully',
+  //         );
+  //       }
+  //     } catch (ex) {
+  //       // ignore: deprecated_member_use
+  //       showDialog(
+  //           context: context,
+  //           builder: (context) {
+  //             return AlertDialog(
+  //               title: Text(ex.message),
+  //               actions: [
+  //                 // ignore: deprecated_member_use
+  //                 RaisedButton(
+  //                   onPressed: () => Navigator.pop(context),
+  //                   color: Colors.red,
+  //                   child: Text("ok"),
+  //                 ),
+  //               ],
+  //             );
+  //           });
+  //     }
+  //   }
+  // }
+
+  Future uploadGalleryImage(docId) async {
+    for (var img in _gallery) {
+      FirebaseStorage storage = FirebaseStorage(
+          storageBucket: 'gs://service-provider-ef677.appspot.com');
+      String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+      StorageReference ref =
+          storage.ref().child('RequestImages/$imageFileName');
+      StorageUploadTask storageUploadTask = ref.putFile(img);
+      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+
+      String url = await taskSnapshot.ref.getDownloadURL();
+
+      //_userStore.addGallaryCollection(url, docId);
+
+      _galleryUrl.add(url);
+    }
+  }
+
+  void pickGalleryImage() async {
+    await Permission.photos.request();
+    var _permessionStatus = await Permission.photos.status;
+    if (_permessionStatus.isGranted) {
+      // ignore: deprecated_member_use
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _gallery.add(image);
+
+        print("HERE ------------------------------" +
+            image.path +
+            " " +
+            _gallery.length.toString());
+      });
+    }
+  }
+
+  void capsolateData(context, RequestModel _request, bool isactive,
+      ProviderModel provider) async {
     if (_date == null) {
       showDialog(
           context: context,
@@ -235,59 +420,28 @@ class _ServiceRequest extends State<ServiceRequest> {
             );
           });
     } else {
+      final progress = ProgressHUD.of(context);
+      toggleProgressHUD(true, progress);
       try {
-        // FirebaseStorage storage = FirebaseStorage(
-        //     storageBucket: 'gs://service-provider-ef677.appspot.com');
-        // String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-        // StorageReference ref =
-        //     storage.ref().child('ServicesImage/$imageFileName');
-        // StorageUploadTask storageUploadTask = ref.putFile(_image);
-        // StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+        await uploadGalleryImage(_request.requestId);
 
-        // String url = await taskSnapshot.ref.getDownloadURL();
-        // setState(() {
-        //   _imageUrl = url;
-        // });
-        final progress = ProgressHUD.of(context);
-        toggleProgressHUD(true, progress);
         if (_globalKey.currentState.validate()) {
-          // loadImage();
-          _addedDate = getDateNow();
           _globalKey.currentState.save();
-
-          _store.addRequest(RequestModel(
-            rProblem: rProblem,
-            rDescription: rDescription,
-            rAddDate: _addedDate,
-            requestDate: rDate,
-            requestTime: rTime,
-            isActive: (isactive == true) ? true : false,
-            isAccepted: false,
-            isComplete: false,
-            providerId: provider.pId,
-            userId: _userId,
-          ));
+          _request.rDescription = rDescription;
+          _request.requestDate = rDate.toString();
+          _request.requestTime = rTime.toString();
+          _request.rProblem = rProblem;
+          _request.userId = _userId;
+          _request.providerId = provider.pId;
+          _request.isAccepted = false;
+          _request.isComplete = false;
+          _request.isActive = (isactive == true) ? true : false;
           toggleProgressHUD(false, progress);
-
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("successfully uplaoded"),
-                  actions: [
-                    // ignore: deprecated_member_use
-                    RaisedButton(
-                      onPressed: () => Navigator.pop(context),
-                      color: KprimaryColor,
-                      child: Text("ok"),
-                    ),
-                  ],
-                );
-              });
-          Navigator.pushNamed(context, UserHome.id);
-           Fluttertoast.showToast(msg: 'Send Succesfully',);
+          Navigator.pushReplacementNamed(context, ServiceRequestLocation.id,
+              arguments: _request);
         }
       } catch (ex) {
+        toggleProgressHUD(true, progress);
         // ignore: deprecated_member_use
         showDialog(
             context: context,
@@ -305,6 +459,7 @@ class _ServiceRequest extends State<ServiceRequest> {
               );
             });
       }
+      toggleProgressHUD(true, progress);
     }
   }
 

@@ -15,6 +15,7 @@ ProviderModel(
       this.pEmail,
       this.pPassword,
       this.pId,
-      this.locationId
+      this.locationId,
+      this.certificateImages
       });
 }

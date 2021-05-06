@@ -48,17 +48,19 @@ const KProviderAddress='ProviderAddress';
 const KProviderEmail='ProviderEmail';
 const KProviderPassword='ProviderPassword';
 const KProviderId="ProviderId";
-
+const KImageCartificateCollection="ImageCartificate";
+const KImageCartificateUrl = 'ImageCartificateUrl';
+const KImageCartificateUrlList='ImageCartificateUrlList';
 
 //Address data
-const KLocationCollection = 'LocationCollection';
-const KLocationAddress = 'LocationAddress';
+const KLocationCollection = 'Locations';
 const KLocationCountry = 'LocationCountry';
 const KLocationCity = 'LocationCity';
 const KLocationPostalCode = 'LocationPostCode';
 const KLocationLatitude = 'LocationLatitude';
 const KLocationlonggitude='Locationlonggitude';
 const KLocationId='LocationId';
+const KLocationStreet='LocationStreet';
 
 
 //Provider

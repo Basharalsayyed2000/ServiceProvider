@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 
@@ -26,26 +25,38 @@ class UserStore{
    await document.get().then((value) {
     });
   }
-  addProvider(ProviderModel provider, String pid) async {
-    await _firestore.collection(KProviderCollection).document(pid).setData({
-      KProviderName: provider.pName,
-      KProviderAddDate: provider.pAddDate,
-      KProviderImageUrl: provider.pImageUrl,
-      KProviderBirthDate: provider.pbirthDate,
-      KProviderPhoneNumber: provider.pphoneNumber,
-      KProviderIsAdmin:provider.isAdmin,
-      KProviderAddress:provider.locationId,
-      KProviderDescription:provider.pProviderDescription,
-      KServiceId:provider.pProvideService,
-      KProviderEmail:provider.pEmail,
-      KProviderId:provider.pId,
-      KProviderPassword:provider.pPassword
-    });
-  }
+  // addProvider(ProviderModel provider,String pid) async {
+  //   await _firestore.collection(KProviderCollection).document(pid).setData({
+  //     KProviderName: provider.pName,
+  //      KProviderEmail:provider.pEmail,
+  //     KProviderPassword:provider.pPassword,
+  //     // KProviderAddDate: provider.pAddDate,
+  //     // KProviderImageUrl: provider.pImageUrl,
+  //     // KProviderBirthDate: provider.pbirthDate,
+  //     // KProviderPhoneNumber: provider.pphoneNumber,
+  //      //KProviderIsAdmin:provider.isAdmin,
+  //     // KProviderAddress:provider.locationId,
+  //     // KProviderDescription:provider.pProviderDescription,
+  //     // KServiceId:provider.pProvideService,
+     
+  //     // KProviderId:provider.pId,
+  //     // KImageCartificateUrlList:provider.certificateImages
+  //   });
+  // }
 
   Stream<QuerySnapshot> loadProvider(){
      return _firestore.collection(KProviderCollection).snapshots();
   }
  
- 
+  addGallaryCollection(String url,String docId) async{
+    await _firestore
+    .collection(KProviderCollection)
+    .document(docId)
+    .collection(
+        KImageCartificateCollection)
+    .add({
+        KImageCartificateUrl:url
+        });
+  }
+
 }

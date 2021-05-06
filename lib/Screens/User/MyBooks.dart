@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/User/RequestComponent.dart';
+import 'package:service_provider/Screens/Request/RequestComponent.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
 

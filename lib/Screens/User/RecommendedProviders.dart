@@ -45,6 +45,7 @@ class _RecommendedState extends State<Recommended> {
                   pId: data[KProviderId],
                   pProvideService: data[KServiceId],
                   pProviderDescription: data[KProviderDescription],
+                  certificateImages: List.from(data[KImageCartificateUrlList]),
                 ));
               }
             }
