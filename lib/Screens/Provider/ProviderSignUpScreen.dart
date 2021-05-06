@@ -8,7 +8,7 @@ import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
-import 'package:service_provider/Services/UserStore.dart';
+ 
 
 class ProviderSignUpScreen extends StatefulWidget {
   static String id = 'ProviderSignUpScreen';
@@ -23,7 +23,7 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
   String _email, _password, _name, _confirmPassWord;
   final _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  UserStore user;
+  
   bool isHidePassword = true;
 
   @override
@@ -112,19 +112,12 @@ class _ProviderSignUpScreen extends State<ProviderSignUpScreen> {
                           _globalKey.currentState.save();
                           try {
                             if (_password == _confirmPassWord) {
-                              await _auth
-                                  .createUserWithEmailAndPassword(
-                                      email: _email.trim(),
-                                      password: _password.trim())
-                                  .then((_) {
-                                Navigator.pushReplacementNamed(
-                                    context, ProviderVerifyScreen.id,
-                                    arguments: ProviderModel(
-                                      pName: _name,
-                                      pEmail: _email.trim(),
-                                      pPassword: _password.trim(),
-                                    ));
-                              });
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: _email.trim(),
+                                  password: _password.trim()).then((_){
+                                   
+                                  Navigator.pushReplacementNamed(context, ProviderVerifyScreen.id,arguments: ProviderModel(pName: _name,pEmail: _email.trim(),pPassword: _password.trim(),));
+                                  });
                             } else {
                               showDialog(
                                   context: context,

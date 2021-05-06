@@ -14,7 +14,7 @@ class _ProviderVerifyScreenState extends State<ProviderVerifyScreen> {
   final _auth = FirebaseAuth.instance;
   Timer timer;
   FirebaseUser user;
-  ProviderModel providerModel;
+  var providerModel=ProviderModel();
   @override
   void initState() {
     getCurrentUser();
@@ -34,7 +34,8 @@ class _ProviderVerifyScreenState extends State<ProviderVerifyScreen> {
     providerModel = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Center(
-        child: Column(
+        child: 
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -51,13 +52,9 @@ class _ProviderVerifyScreenState extends State<ProviderVerifyScreen> {
     await user.reload();
     if (user.isEmailVerified) {
       timer.cancel();
-
-      providerModel.isAdmin = false;
-      providerModel.pId = user.uid;
-
-      Navigator.pushNamedAndRemoveUntil(
-          context, AdditionalInfo.id, (Route<dynamic> route) => false,
-          arguments: providerModel);
+      providerModel.pId=user.uid;
+      providerModel.isAdmin=false;
+      Navigator.pushNamedAndRemoveUntil(context, AdditionalInfo.id, (Route<dynamic> route) => false,arguments: providerModel);
     }
   }
 
