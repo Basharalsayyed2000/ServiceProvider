@@ -85,6 +85,9 @@ class _CustomTextField extends State<CustomTextField> {
   final int minLines;
   final int maxLines;
   final int maxLength;
+
+  bool _passwordVisible = false;
+  bool _isObscure;
  
 
   Color _color;
@@ -128,6 +131,12 @@ class _CustomTextField extends State<CustomTextField> {
   }
 
   @override
+  void initState() {
+    _isObscure = this.obscureText;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (this.prefixIcon != null || this.iconBlank == true) {
       return SizedBox(
@@ -146,7 +155,7 @@ class _CustomTextField extends State<CustomTextField> {
 
           child: TextFormField(
             autofocus: false,
-            obscureText: this.obscureText,
+            obscureText: _isObscure,
             enabled: this.enabled,
 
             // ignore: missing_return
@@ -166,6 +175,18 @@ class _CustomTextField extends State<CustomTextField> {
               //textLabel and hintText values
               labelText: this.labelText,
               hintText: this.hintText,
+              suffixIcon: this.obscureText ? IconButton(
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  semanticLabel: _passwordVisible ? 'hide password' : 'show password',
+                ),
+                onPressed: (){
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                    _isObscure = !_isObscure;
+                  });
+                },
+              ) : null,
               isDense: true,
               
 
