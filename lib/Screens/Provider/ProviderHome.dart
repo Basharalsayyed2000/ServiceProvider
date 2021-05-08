@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class ProviderHome extends StatefulWidget {
    static String id = 'ProviderHome';
   @override
-
   _ProviderHomeState createState() => _ProviderHomeState();
 }
 
