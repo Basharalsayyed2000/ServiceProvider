@@ -46,19 +46,31 @@ class _MyBooksState extends State<MyBooks> {
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
               String requestId=doc.documentID;
-               if(data[KRequestUserId]==_userId){
+              // ignore: deprecated_member_use
+              
+              if(data[KRequestUserId]==_userId){
+                //List<dynamic> requestUrl=[];
+
+               
+              //  if(!(data[KRequestImageUrl]==null)){
+              //  requestUrl= List.of(data[KRequestImageUrl]);
+              // }
+               
+
+
               _requests.add(RequestModel(
                 rProblem: data[KRequestProblem],
                 rDescription: data[KRequestDescription],
                 rAddDate: data[KRequestAddDate],
                 requestDate: data[KRequestDate],
-                 requestTime: data[KRequestTime],
+                requestTime: data[KRequestTime],
                 requestId: requestId,
                 providerId: data[KRequestProviderId],
                 userId: _userId,
                 isAccepted: data[KRequestIsAccepted],
                 isActive: data[KRequestIsActive],
                 isComplete: data[KRequestIsCompleted],
+                //rImageUrl:requestUrl as List<String>,
               ));
               }
             }
@@ -66,7 +78,7 @@ class _MyBooksState extends State<MyBooks> {
               primary: false,
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
-                  buildCard('${_requests[index].providerId}', '${_requests[index].userId}',
+                  buildCard('${_requests[index].rProblem}', '${_requests[index].rDescription}',
                        _requests[index]),
                 ],
               ),

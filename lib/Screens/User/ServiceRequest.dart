@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
-import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
@@ -24,6 +23,14 @@ class ServiceRequest extends StatefulWidget {
 
 class _ServiceRequest extends State<ServiceRequest> {
   final _auth = Auth();
+<<<<<<< Updated upstream:lib/Screens/User/ServiceRequest.dart
+=======
+  // ignore: deprecated_member_use
+  List<File> _gallery = new List<File>();
+  List<String> _galleryUrl = [];
+  FontWeight _weightT;
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+>>>>>>> Stashed changes:lib/Screens/Request/ServiceRequest.dart
   Color _colorDt;
   FontWeight _weightDt;
   Color _colorT;
@@ -112,8 +119,12 @@ class _ServiceRequest extends State<ServiceRequest> {
                   child: Builder(
                     builder: (context) => CustomButton(
                       onPressed: () async {
+<<<<<<< Updated upstream:lib/Screens/User/ServiceRequest.dart
                         addRequest(context, neededData.isActive,
                             neededData.provider);
+=======
+                        capsolateData(context, neededData);
+>>>>>>> Stashed changes:lib/Screens/Request/ServiceRequest.dart
                       },
                       textValue: 'Continue',
                     ),
@@ -127,40 +138,121 @@ class _ServiceRequest extends State<ServiceRequest> {
     );
   }
 
-  Widget getDateFormPicker() {
-    return DateTimePickerFormField(
-      autofocus: false,
-      decoration: InputDecoration(
-          labelText: "Date",
-          labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
-          prefixIcon: Icon(
-            Icons.date_range,
-            color: _colorDt,
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(color: KdisabledColor, width: 1.5)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: KfocusColor, width: 2.5))),
-      format: DateFormat("EEEE, MMMM d, yyyy"),
-      inputType: InputType.date,
-      initialDate: DateTime.now(),
-      onChanged: (selectedDate) {
-        setState(() {
-          if (selectedDate != null) {
-            _date = selectedDate;
-            rDate = selectedDate.toString();
-            _colorDt = KprimaryColorDark;
-            _weightDt = FontWeight.bold;
-          } else {
-            _colorDt = null;
-            _weightDt = null;
-          }
-        });
-        print('Selected date: $_date');
-      },
-    );
+  Future uploadGalleryImage() async {
+    for (var img in _gallery) {
+      FirebaseStorage storage = FirebaseStorage(
+          storageBucket: 'gs://service-provider-ef677.appspot.com');
+      String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+      StorageReference ref =
+          storage.ref().child('RequestImages/$imageFileName');
+      StorageUploadTask storageUploadTask = ref.putFile(img);
+      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+
+      String url = await taskSnapshot.ref.getDownloadURL();
+
+      //_userStore.addGallaryCollection(url, docId);
+
+      _galleryUrl.add(url);
+    }
+  }
+
+  void pickGalleryImage() async {
+    await Permission.photos.request();
+    var _permessionStatus = await Permission.photos.status;
+    if (_permessionStatus.isGranted) {
+      // ignore: deprecated_member_use
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _gallery.add(image);
+
+        print("HERE ------------------------------" +
+            image.path +
+            " " +
+            _gallery.length.toString());
+      });
+    }
+  }
+
+  void capsolateData(context, NeededData _neededData) async {
+    if (_date == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("You must choose date"),
+              actions: [
+                // ignore: deprecated_member_use
+                RaisedButton(
+                  onPressed: () => Navigator.pop(context),
+                  color: Colors.red,
+                  child: Text("ok"),
+                ),
+              ],
+            );
+          });
+    } else if (_time == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("You must choose time"),
+              actions: [
+                // ignore: deprecated_member_use
+                RaisedButton(
+                  onPressed: () => Navigator.pop(context),
+                  color: Colors.red,
+                  child: Text("ok"),
+                ),
+              ],
+            );
+          });
+    } else {
+      final progress = ProgressHUD.of(context);
+      toggleProgressHUD(true, progress);
+      try {
+        if (_gallery.isNotEmpty) {
+          await uploadGalleryImage();
+        }
+
+        if (_globalKey.currentState.validate()) {
+          _globalKey.currentState.save();
+          RequestModel requestModel = RequestModel(
+              rDescription: rDescription,
+              requestDate: rDate,
+              requestTime: rTime,
+              rProblem: rProblem,
+              userId: _userId,
+              providerId: _neededData.provider.pId,
+              isAccepted: false,
+              isComplete: false,
+              rImageUrl: (_galleryUrl.isEmpty)?null:_galleryUrl,
+              isActive: (_neededData.isActive == true) ? true : false);
+          toggleProgressHUD(false, progress);
+          Navigator.pushReplacementNamed(context, ServiceRequestLocation.id,
+              arguments: requestModel);
+        }
+      } catch (ex) {
+        toggleProgressHUD(true, progress);
+        // ignore: deprecated_member_use
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(ex.message),
+                actions: [
+                  // ignore: deprecated_member_use
+                  RaisedButton(
+                    onPressed: () => Navigator.pop(context),
+                    color: Colors.red,
+                    child: Text("ok"),
+                  ),
+                ],
+              );
+            });
+      }
+      toggleProgressHUD(true, progress);
+    }
   }
 
   Widget getTimeFormPicker() {
@@ -200,6 +292,7 @@ class _ServiceRequest extends State<ServiceRequest> {
     );
   }
 
+<<<<<<< Updated upstream:lib/Screens/User/ServiceRequest.dart
   void addRequest(
       context, bool isactive, ProviderModel provider) async {
     if (_date == null) {
@@ -307,6 +400,140 @@ class _ServiceRequest extends State<ServiceRequest> {
       }
     }
   }
+=======
+  Widget getDateFormPicker() {
+    return DateTimePickerFormField(
+      autofocus: false,
+      decoration: InputDecoration(
+          labelText: "Date",
+          labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
+          prefixIcon: Icon(
+            Icons.date_range,
+            color: _colorDt,
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: BorderSide(color: KdisabledColor, width: 1.5)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(color: KfocusColor, width: 2.5))),
+      format: DateFormat("EEEE, MMMM d, yyyy"),
+      inputType: InputType.date,
+      initialDate: DateTime.now(),
+      onChanged: (selectedDate) {
+        setState(() {
+          if (selectedDate != null) {
+            _date = selectedDate;
+            rDate = selectedDate.toString();
+            _colorDt = KprimaryColorDark;
+            _weightDt = FontWeight.bold;
+          } else {
+            _colorDt = null;
+            _weightDt = null;
+          }
+        });
+        print('Selected date: $_date');
+      },
+    );
+  }
+
+  // void addRequest(context, bool isactive, ProviderModel provider) async {
+  //   if (_date == null) {
+  //     showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             title: Text("You must choose date"),
+  //             actions: [
+  //               // ignore: deprecated_member_use
+  //               RaisedButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 color: Colors.red,
+  //                 child: Text("ok"),
+  //               ),
+  //             ],
+  //           );
+  //         });
+  //   } else if (_time == null) {
+  //     showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             title: Text("You must choose time"),
+  //             actions: [
+  //               // ignore: deprecated_member_use
+  //               RaisedButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 color: Colors.red,
+  //                 child: Text("ok"),
+  //               ),
+  //             ],
+  //           );
+  //         });
+  //   } else {
+  //     try {
+  //       final progress = ProgressHUD.of(context);
+  //       toggleProgressHUD(true, progress);
+  //       if (_globalKey.currentState.validate()) {
+  //         // loadImage();
+  //         _addedDate = getDateNow();
+  //         _globalKey.currentState.save();
+
+  //         _store.addRequest(RequestModel(
+  //           rProblem: rProblem,
+  //           rDescription: rDescription,
+  //           rAddDate: _addedDate,
+  //           requestDate: rDate,
+  //           requestTime: rTime,
+  //           isActive: (isactive == true) ? true : false,
+  //           isAccepted: false,
+  //           isComplete: false,
+  //           providerId: provider.pId,
+  //           userId: _userId,
+  //         ));
+  //         toggleProgressHUD(false, progress);
+
+  //         showDialog(
+  //             context: context,
+  //             builder: (context) {
+  //               return AlertDialog(
+  //                 title: Text("successfully uplaoded"),
+  //                 actions: [
+  //                   // ignore: deprecated_member_use
+  //                   RaisedButton(
+  //                     onPressed: () => Navigator.pop(context),
+  //                     color: KprimaryColor,
+  //                     child: Text("ok"),
+  //                   ),
+  //                 ],
+  //               );
+  //             });
+  //         Navigator.pushNamed(context, UserHome.id);
+  //         Fluttertoast.showToast(
+  //           msg: 'Send Succesfully',
+  //         );
+  //       }
+  //     } catch (ex) {
+  //       // ignore: deprecated_member_use
+  //       showDialog(
+  //           context: context,
+  //           builder: (context) {
+  //             return AlertDialog(
+  //               title: Text(ex.message),
+  //               actions: [
+  //                 // ignore: deprecated_member_use
+  //                 RaisedButton(
+  //                   onPressed: () => Navigator.pop(context),
+  //                   color: Colors.red,
+  //                   child: Text("ok"),
+  //                 ),
+  //               ],
+  //             );
+  //           });
+  //     }
+  //   }
+  // }
+>>>>>>> Stashed changes:lib/Screens/Request/ServiceRequest.dart
 
   void toggleProgressHUD(_loading, _progressHUD) {
     setState(() {

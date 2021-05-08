@@ -44,10 +44,16 @@ const KProviderPhoneNumber='ProviderPhoneNumber';
 const KProviderIsAdmin='ProviderIsAdmin';
 const KProviderDescription='ProviderDescription';
 const KServiceId='ServiceId';
-const KProviderAddress='ProviderAddress';
+const KProviderLocationId='ProviderLocationId';
 const KProviderEmail='ProviderEmail';
 const KProviderPassword='ProviderPassword';
 const KProviderId="ProviderId";
+const KImageCartificateUrlList='ImageCartificateUrlList';
+
+
+//ignord
+const KImageCartificateCollection="ImageCartificate";
+const KImageCartificateUrl = 'ImageCartificateUrl';
 
 
 //Address data
@@ -61,7 +67,7 @@ const KLocationlonggitude='Locationlonggitude';
 const KLocationId='LocationId';
 
 
-//Provider
+//Request
 const KRequestCollection = 'Requests';
 const KRequestId = 'RequestId';
 const KRequestAddDate = 'RequestAddDate';
