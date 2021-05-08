@@ -23,6 +23,7 @@ import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'Screens/Provider/ProviderLocation.dart';
+import 'Screens/Provider/Providerhome.dart';
 
 main() {
   runApp(MyApp());
