@@ -12,9 +12,8 @@ import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/User/ServiceRequestLocation.dart';
+import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
 import 'package:service_provider/Services/auth.dart';
-import 'package:service_provider/Services/store.dart';
 
 class ServiceRequest extends StatefulWidget {
   static String id = "serviceRequestScreen";
@@ -29,30 +28,29 @@ class _ServiceRequest extends State<ServiceRequest> {
   // ignore: deprecated_member_use
   List<File> _gallery = new List<File>();
   List<String> _galleryUrl = [];
+
   FontWeight _weightT;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   Color _colorDt;
   FontWeight _weightDt;
   Color _colorT;
-  // ignore: unused_field
-  final Store _store = Store();
-
   DateTime _date;
   DateTime _time;
   RequestModel request;
-  // ignore: unused_field
-  String rProblem, rDescription, rDate, rTime, _addedDate,_userId;
+  String rProblem, rDescription, rDate, rTime, _userId;
   @override
   void initState() {
     super.initState();
     _getUserId();
   }
-    _getUserId()async{
-      String value=await _auth.getCurrentUserId();
-      setState(() {
-        _userId=value;
-      });
-    }
+
+  _getUserId() async {
+    String value = await _auth.getCurrentUserId();
+    setState(() {
+      _userId = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     NeededData neededData = ModalRoute.of(context).settings.arguments;
@@ -114,6 +112,52 @@ class _ServiceRequest extends State<ServiceRequest> {
                     },
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Problem Image',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height / 55),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.width / 3.4,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _gallery.length + 1,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => (index == 0) ? pickGalleryImage() : null,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey, spreadRadius: 1.5),
+                              ],
+                            ),
+                            width: MediaQuery.of(context).size.width / 2.6,
+                            margin: EdgeInsets.only(
+                                left: 2, top: 2, right: 13, bottom: 2),
+                            child: (index == 0)
+                                ? Icon(Icons.add,
+                                    size: 60, color: KprimaryColor)
+                                : Image.file(_gallery[index - 1]),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.only(top: Kminimumpadding * 2),
                   child: Builder(
@@ -130,160 +174,6 @@ class _ServiceRequest extends State<ServiceRequest> {
           ),
         ),
       ),
-    );
-  }
-
-  Future uploadGalleryImage() async {
-    for (var img in _gallery) {
-      FirebaseStorage storage = FirebaseStorage(
-          storageBucket: 'gs://service-provider-ef677.appspot.com');
-      String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-      StorageReference ref =
-          storage.ref().child('RequestImages/$imageFileName');
-      StorageUploadTask storageUploadTask = ref.putFile(img);
-      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
-
-      String url = await taskSnapshot.ref.getDownloadURL();
-
-      //_userStore.addGallaryCollection(url, docId);
-
-      _galleryUrl.add(url);
-    }
-  }
-
-  void pickGalleryImage() async {
-    await Permission.photos.request();
-    var _permessionStatus = await Permission.photos.status;
-    if (_permessionStatus.isGranted) {
-      // ignore: deprecated_member_use
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        _gallery.add(image);
-
-        print("HERE ------------------------------" +
-            image.path +
-            " " +
-            _gallery.length.toString());
-      });
-    }
-  }
-
-  void capsolateData(context, NeededData _neededData) async {
-    if (_date == null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("You must choose date"),
-              actions: [
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  onPressed: () => Navigator.pop(context),
-                  color: Colors.red,
-                  child: Text("ok"),
-                ),
-              ],
-            );
-          });
-    } else if (_time == null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("You must choose time"),
-              actions: [
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  onPressed: () => Navigator.pop(context),
-                  color: Colors.red,
-                  child: Text("ok"),
-                ),
-              ],
-            );
-          });
-    } else {
-      final progress = ProgressHUD.of(context);
-      toggleProgressHUD(true, progress);
-      try {
-        if (_gallery.isNotEmpty) {
-          await uploadGalleryImage();
-        }
-
-        if (_globalKey.currentState.validate()) {
-          _globalKey.currentState.save();
-          RequestModel requestModel = RequestModel(
-              rDescription: rDescription,
-              requestDate: rDate,
-              requestTime: rTime,
-              rProblem: rProblem,
-              userId: _userId,
-              providerId: _neededData.provider.pId,
-              isAccepted: false,
-              isComplete: false,
-              rImageUrl: (_galleryUrl.isEmpty)?null:_galleryUrl,
-              isActive: (_neededData.isActive == true) ? true : false);
-          toggleProgressHUD(false, progress);
-          Navigator.pushReplacementNamed(context, ServiceRequestLocation.id,
-              arguments: requestModel);
-        }
-      } catch (ex) {
-        toggleProgressHUD(true, progress);
-        // ignore: deprecated_member_use
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(ex.message),
-                actions: [
-                  // ignore: deprecated_member_use
-                  RaisedButton(
-                    onPressed: () => Navigator.pop(context),
-                    color: Colors.red,
-                    child: Text("ok"),
-                  ),
-                ],
-              );
-            });
-      }
-      toggleProgressHUD(true, progress);
-    }
-  }
-
-  Widget getTimeFormPicker() {
-    return DateTimePickerFormField(
-      inputType: InputType.time,
-      format: DateFormat("HH:mm"),
-      initialTime: (_date == DateTime.now()) ? TimeOfDay.now() : null,
-      editable: false,
-      decoration: InputDecoration(
-        labelText: "Time",
-        labelStyle: TextStyle(fontWeight: _weightT, color: _colorT),
-        prefixIcon: Icon(
-          Icons.access_time_sharp,
-          color: _colorT,
-        ),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: KaccentColor, width: 1.5)),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: KaccentColor, width: 2.5)),
-      ),
-      onChanged: (selectedTime) {
-        setState(() {
-          if (selectedTime != null) {
-            _time = selectedTime;
-            rTime=selectedTime.toString();
-            _colorT = KprimaryColorDark;
-            _weightT = FontWeight.bold;
-          } else {
-            _colorT = null;
-            _weightT = null;
-          }
-        });
-        print('Selected date: $_time');
-      },
     );
   }
 
@@ -319,6 +209,43 @@ class _ServiceRequest extends State<ServiceRequest> {
           }
         });
         print('Selected date: $_date');
+      },
+    );
+  }
+
+  Widget getTimeFormPicker() {
+    return DateTimePickerFormField(
+      inputType: InputType.time,
+      format: DateFormat("HH:mm"),
+      initialTime: (_date == DateTime.now()) ? TimeOfDay.now() : null,
+      editable: false,
+      decoration: InputDecoration(
+        labelText: "Time",
+        labelStyle: TextStyle(fontWeight: _weightT, color: _colorT),
+        prefixIcon: Icon(
+          Icons.access_time_sharp,
+          color: _colorT,
+        ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KaccentColor, width: 1.5)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KaccentColor, width: 2.5)),
+      ),
+      onChanged: (selectedTime) {
+        setState(() {
+          if (selectedTime != null) {
+            _time = selectedTime;
+            rTime = selectedTime.toString();
+            _colorT = KprimaryColorDark;
+            _weightT = FontWeight.bold;
+          } else {
+            _colorT = null;
+            _weightT = null;
+          }
+        });
+        print('Selected date: $_time');
       },
     );
   }
@@ -419,6 +346,124 @@ class _ServiceRequest extends State<ServiceRequest> {
   //     }
   //   }
   // }
+
+  Future uploadGalleryImage() async {
+    for (var img in _gallery) {
+      FirebaseStorage storage = FirebaseStorage(
+          storageBucket: 'gs://service-provider-ef677.appspot.com');
+      String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+      StorageReference ref =
+          storage.ref().child('RequestImages/$imageFileName');
+      StorageUploadTask storageUploadTask = ref.putFile(img);
+      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+
+      String url = await taskSnapshot.ref.getDownloadURL();
+
+      //_userStore.addGallaryCollection(url, docId);
+
+      _galleryUrl.add(url);
+    }
+  }
+
+  void pickGalleryImage() async {
+    await Permission.photos.request();
+    var _permessionStatus = await Permission.photos.status;
+    if (_permessionStatus.isGranted) {
+      // ignore: deprecated_member_use
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _gallery.add(image);
+
+        print("HERE ------------------------------" +
+            image.path +
+            " " +
+            _gallery.length.toString());
+      });
+    }
+  }
+
+  void capsolateData(context, NeededData neededData) async {
+    if (_date == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("You must choose date"),
+              actions: [
+                // ignore: deprecated_member_use
+                RaisedButton(
+                  onPressed: () => Navigator.pop(context),
+                  color: Colors.red,
+                  child: Text("ok"),
+                ),
+              ],
+            );
+          });
+    } else if (_time == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("You must choose time"),
+              actions: [
+                // ignore: deprecated_member_use
+                RaisedButton(
+                  onPressed: () => Navigator.pop(context),
+                  color: Colors.red,
+                  child: Text("ok"),
+                ),
+              ],
+            );
+          });
+    } else {
+      final progress = ProgressHUD.of(context);
+      toggleProgressHUD(true, progress);
+      try {
+        if (_gallery.isNotEmpty) {
+          await uploadGalleryImage();
+        }
+        if (_globalKey.currentState.validate()) {
+          _globalKey.currentState.save();
+          RequestModel _request = RequestModel(
+            rDescription: rDescription,
+            requestDate: rDate,
+            requestTime: rTime,
+            rProblem: rProblem,
+            userId: _userId,
+            providerId: neededData.provider.pId,
+            isAccepted: false,
+            isComplete: false,
+            isActive: (neededData.isActive == true) ? true : false,
+            rImageUrl:_galleryUrl,
+          );
+
+          toggleProgressHUD(false, progress);
+          Navigator.pushReplacementNamed(context, ServiceRequestLocation.id,
+              arguments: _request);
+        }
+      } catch (ex) {
+        toggleProgressHUD(true, progress);
+        // ignore: deprecated_member_use
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(ex.message),
+                actions: [
+                  // ignore: deprecated_member_use
+                  RaisedButton(
+                    onPressed: () => Navigator.pop(context),
+                    color: Colors.red,
+                    child: Text("ok"),
+                  ),
+                ],
+              );
+            });
+      }
+      toggleProgressHUD(true, progress);
+    }
+  }
 
   void toggleProgressHUD(_loading, _progressHUD) {
     setState(() {

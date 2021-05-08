@@ -21,13 +21,17 @@ class Store {
   }
 
 
-    addLocation(AddressModel address) {
-    _firestore.collection(KLocationCollection).add({
+    Future<String> addLocation(AddressModel address) async {
+      String locId="";
+    await _firestore.collection(KLocationCollection).add({
       KLocationCountry: address.country,
       KLocationPostalCode: address.postalCode,
       KLocationLatitude:address.latitude,
       KLocationlonggitude:address.longgitude,
+    }).then((value) {
+      locId=value.documentID;
     });
+    return locId;
   }
 
   addRequest(RequestModel request) {

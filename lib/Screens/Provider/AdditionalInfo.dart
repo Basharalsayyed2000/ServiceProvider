@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
@@ -12,9 +14,10 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
-import 'package:service_provider/Services/store.dart';
+import 'package:service_provider/Screens/Provider/ProviderLocation.dart';
 import 'package:service_provider/Services/UserStore.dart';
+import 'package:service_provider/Services/store.dart';
+//import 'package:service_provider/Services/UserStore.dart';
 
 class AdditionalInfo extends StatefulWidget {
   static String id = "additionalInfo";
@@ -28,17 +31,26 @@ class _AdditionalInfo extends State<AdditionalInfo> {
   File _image;
   // ignore: deprecated_member_use
   List<File> _gallery = new List<File>();
+  List<String> _galleryUrl = [];
   String _imageUrl;
   List<String> _servicesName = [""];
   // ignore: unused_field
   List<ServiceModel> _services = [];
   String _currentItemSelected = "";
-  String _description;
-  final _store = Store();
-  UserStore _userStore = UserStore();
+  // ignore: unused_field
+  String _description, _birthDate, _errorMessage, _phoneNumber;
+  final _userStore = Store();
+  UserStore user;
+  // UserStore _userStore = UserStore();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   ProviderModel _provider;
   String _sId = "";
+  Color _colorDt;
+  FontWeight _weightDt;
+
+  // ignore: unused_field
+  Color _colorT;
+  DateTime _date;
   @override
   void initState() {
     _currentItemSelected = _servicesName[0];
@@ -53,7 +65,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
 
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
-        stream: _store.loadService(),
+        stream: _userStore.loadService(),
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -154,44 +166,65 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           },
                         ),
                       ),
-
                       Container(
-                        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height/55),
+                        padding: EdgeInsets.only(
+                            top: Kminimumpadding * 1.35,
+                            bottom: Kminimumpadding * 1.35),
+                        height: 70,
+                        child: getDateFormPicker(),
+                      ),
+                      Container(
+                        child: CustomTextField(
+                          onClicked: (value) {
+                            _phoneNumber = value;
+                          },
+                          hintText: '+XXX XXXXX.....',
+                          prefixIcon: Icons.phone,
+                          labelText: 'Phone Number',
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height / 55),
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.width/3.4,
+                          height: MediaQuery.of(context).size.width / 3.4,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: _gallery.length+1,
-                            itemBuilder: (context,index){
+                            itemCount: _gallery.length + 1,
+                            itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () => (index == 0) ? pickGalleryImage() : null,
+                                onTap: () =>
+                                    (index == 0) ? pickGalleryImage() : null,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5.0),
                                     color: Colors.white,
                                     boxShadow: [
-                                      BoxShadow(color: Colors.grey, spreadRadius: 1.5),
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          spreadRadius: 1.5),
                                     ],
                                   ),
-
-                                  width: MediaQuery.of(context).size.width/2.6,
-                                  margin: EdgeInsets.only(left: 2, top: 2, right: 13, bottom: 2),
-                                  child: (index == 0) ? Icon(Icons.add, size: 60, color: KprimaryColor)
-                                      :
-                                  Image.file(_gallery[index-1]),
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.6,
+                                  margin: EdgeInsets.only(
+                                      left: 2, top: 2, right: 13, bottom: 2),
+                                  child: (index == 0)
+                                      ? Icon(Icons.add,
+                                          size: 60, color: KprimaryColor)
+                                      : Image.file(_gallery[index - 1]),
                                 ),
                               );
                             },
                           ),
                         ),
                       ),
-
                       Container(
                         padding: EdgeInsets.only(top: 4),
                         // ignore: deprecated_member_use
                         child: Builder(
                           builder: (context) => CustomButton(
-                            textValue: "Finish",
+                            textValue: "Continue",
                             onPressed: () async {
                               if (_currentItemSelected == "") {
                                 showDialog(
@@ -228,8 +261,6 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           ),
                         ),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -278,6 +309,9 @@ class _AdditionalInfo extends State<AdditionalInfo> {
         setState(() {
           _imageUrl = url;
         });
+
+        await uploadGalleryImage(_provider.pId);
+
         if (_globalKey.currentState.validate()) {
           _globalKey.currentState.save();
 
@@ -285,10 +319,13 @@ class _AdditionalInfo extends State<AdditionalInfo> {
           _provider.pProviderDescription = _description;
 
           _provider.pProvideService = _serviceId;
-          _provider.pAddDate=getDateNow();
+          _provider.pAddDate = getDateNow();
+          _provider.pbirthDate = _birthDate;
+          _provider.pphoneNumber = _phoneNumber;
+          _provider.certificateImages = _galleryUrl;
           toggleProgressHUD(false, progress);
-          _userStore.addProvider(_provider, _provider.pId);
-          Navigator.pushReplacementNamed(context, ProviderLoginScreen.id);
+          Navigator.pushReplacementNamed(context, ProviderLocation.id,
+              arguments: _provider);
         }
       } catch (ex) {
         // ignore: deprecated_member_use
@@ -308,6 +345,24 @@ class _AdditionalInfo extends State<AdditionalInfo> {
               );
             });
       }
+    }
+  }
+
+  Future uploadGalleryImage(docId) async {
+    for (var img in _gallery) {
+      FirebaseStorage storage = FirebaseStorage(
+          storageBucket: 'gs://service-provider-ef677.appspot.com');
+      String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+      StorageReference ref =
+          storage.ref().child('CertificateImage/$imageFileName');
+      StorageUploadTask storageUploadTask = ref.putFile(img);
+      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+
+      String url = await taskSnapshot.ref.getDownloadURL();
+
+      //_userStore.addGallaryCollection(url, docId);
+
+      _galleryUrl.add(url);
     }
   }
 
@@ -336,7 +391,10 @@ class _AdditionalInfo extends State<AdditionalInfo> {
       setState(() {
         _gallery.add(image);
 
-        print("HERE ------------------------------" + image.path + " " + _gallery.length.toString());
+        print("HERE ------------------------------" +
+            image.path +
+            " " +
+            _gallery.length.toString());
       });
     }
   }
@@ -349,5 +407,56 @@ class _AdditionalInfo extends State<AdditionalInfo> {
         _progressHUD.show();
       }
     });
+  }
+
+  Widget getDateFormPicker() {
+    return SizedBox(
+      height: 73.0,
+      child: DateTimePickerFormField(
+        autofocus: false,
+        decoration: InputDecoration(
+          labelText: "Date Of Birth",
+          isDense: true,
+          labelStyle: TextStyle(color: _colorDt, fontWeight: _weightDt),
+          prefixIcon: Icon(
+            Icons.date_range,
+            color: KprimaryColorDark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: KfocusColor, width: 2.5),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(color: KdisabledColor, width: 1.5),
+          ),
+        ),
+        validator: (value) =>
+            (value == null) ? "Date Of Birth is Empty !" : null,
+        format: DateFormat("MMMM d yyyy"),
+        inputType: InputType.date,
+        initialDate: DateTime(1970, 1, 1),
+        onChanged: (selectedDate) {
+          setState(() {
+            _birthDate = selectedDate.toString();
+            if (selectedDate != null) {
+              _date = selectedDate;
+              _colorDt = KprimaryColorDark;
+              _weightDt = FontWeight.bold;
+              _errorMessage = "Date Of Birth is Empty !";
+            } else {
+              _colorDt = null;
+              _weightDt = null;
+              _errorMessage = null;
+            }
+          });
+          print('Selected date: $_date');
+        },
+      ),
+    );
   }
 }

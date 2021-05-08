@@ -1,11 +1,10 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Function.dart';
-import 'package:service_provider/Screens/User/UserLoginScreen.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Services/UserStore.dart';
 
 class UserVerifyScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('An email has been sent'),
+            Text('An email has been sent to'),
             Text('please verify'),
           ],
         ),
@@ -74,7 +73,7 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
       ),
       user.uid);
                            
-      Navigator.pushNamedAndRemoveUntil(context, UserLoginScreen.id, (Route<dynamic> route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, UserHome.id, (Route<dynamic> route) => false);
       Fluttertoast.showToast(msg: 'Record Succesfully',);
 
     }

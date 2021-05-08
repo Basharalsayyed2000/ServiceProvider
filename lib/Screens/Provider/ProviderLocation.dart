@@ -221,7 +221,7 @@ class _ProviderLocation extends State<ProviderLocation> {
                               longgitude: _longitude,
                             ));
 
-                            _provider.locationId = locId;
+                            print(locId);
                             await Firestore.instance
                                 .collection(KProviderCollection)
                                 .document(_provider.pId)
@@ -233,14 +233,14 @@ class _ProviderLocation extends State<ProviderLocation> {
                               KProviderImageUrl: _provider.pImageUrl,
                               KProviderBirthDate: _provider.pbirthDate,
                               KProviderPhoneNumber: _provider.pphoneNumber,
-                              KProviderLocationId: _provider.locationId,
+                              KProviderLocationId: locId,
                               KProviderDescription:
                                   _provider.pProviderDescription,
                               KServiceId: _provider.pProvideService,
                               KProviderIsAdmin: _provider.isAdmin,
                               KProviderId: _provider.pId,
                               KImageCartificateUrlList:
-                                  _provider.certificateImages
+                                  _provider.certificateImages,
                             });
                             Navigator.pushNamedAndRemoveUntil(
                                 context,

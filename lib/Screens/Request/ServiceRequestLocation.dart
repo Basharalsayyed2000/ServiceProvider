@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
+import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/store.dart';
 
 ///
@@ -47,6 +49,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
   Store store = new Store();
   final bool appBar;
   double _latitude, _longitude;
+  UserStore user;
   _ServiceRequestLocation({this.appBar});
 
   static Placemark address;
@@ -54,7 +57,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
   RequestModel _requestModel;
   static final CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-    zoom: 5,
+    zoom: 15,
   );
 
   _getCurrentLocation() async {
@@ -218,14 +221,30 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));
-                            _requestModel.locationId=locId;
-                            _requestModel.rAddDate=getDateNow();
-                            
-                            store.addRequest(_requestModel);
+
+                            _requestModel.locationId = locId;
+                            await Firestore.instance
+                                .collection(KRequestCollection)
+                                .add({
+                              KRequestProblem: _requestModel.rProblem,
+                              KRequestDescription: _requestModel.rDescription,
+                              KRequestIsCompleted: _requestModel.isComplete,
+                              KRequestIsActive: _requestModel.isActive,
+                              KRequestIsAccepted: _requestModel.isAccepted,
+                              KRequestUserId: _requestModel.userId,
+                              KRequestProviderId: _requestModel.providerId,
+                              KRequestTime: _requestModel.requestTime,
+                              KRequestDate: _requestModel.requestDate,
+                              KRequestAddDate: getDateNow().toString(),
+                              KRequestImageUrl: _requestModel.rImageUrl,
+                              KRequestLocationId:_requestModel.locationId,
+                            });
                             Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                UserHome.id,
-                                (Route<dynamic> route) => false,);
+                              context,
+                              UserHome.id,
+                              (Route<dynamic> route) => false,
+                            );
+
                             // toggleProgressHUD(false, progress);
                             Fluttertoast.showToast(
                               msg: 'Record Succesfully',

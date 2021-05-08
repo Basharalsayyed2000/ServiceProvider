@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
+import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
-import 'package:service_provider/Screens/Request/RequestLocation.dart';
+import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
-import 'package:service_provider/Screens/User/RequestComponent.dart';
+import 'package:service_provider/Screens/Request/RequestComponent.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {
+        JobDetails.id: (context) => JobDetails(),
         SplashScreen.id: (context) => SplashScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ServiceRequestLocation.id :(context)=>ServiceRequestLocation(),

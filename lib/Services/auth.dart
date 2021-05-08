@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Auth {
   final _auth = FirebaseAuth.instance;
@@ -21,19 +20,10 @@ class Auth {
   }
 
   Future<String> getCurrentUserId() async {
-    return  (await _auth.currentUser()).uid;
-  }
-
-   Future<void> checkEmailVerified(context)async{
-    FirebaseUser user = await _auth.currentUser();
-    await user.sendEmailVerification();
-    Fluttertoast.showToast(msg: 'An Email has been sent to ${user.email} please verify');
+    return (await _auth.currentUser()).uid;
   }
 
   Future<void> signOut() async {
     await _auth.signOut();
   }
-
-
-   
 }

@@ -5,7 +5,7 @@ import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
-import 'package:service_provider/Screens/User/ServiceRequest.dart';
+import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 
 class ServiceDetails extends StatefulWidget{
   static String id = "serviceDetails";
@@ -128,18 +128,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                     ),
                   
              
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(top: Kminimumpadding * 5, bottom: Kminimumpadding * 4),
- 
-               child: Text(
-                '${_provider.pProviderDescription}',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500
-                ),
-              ),
-            ),
+          
 
             Container(
               padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
@@ -161,20 +150,11 @@ class _ServiceDetails extends State<ServiceDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        GalleryImages(
-                          assetImage: "Assets/images/Logo.png",
+                        for(String imageurl in _provider.certificateImages) 
+                           GalleryImages(
+                          assetImage: imageurl,
+                          isOnline:true,
                         ),
-                        GalleryImages(
-                          assetImage: "Assets/images/painter.png",
-                        ),
-                        GalleryImages(
-                          assetImage: "Assets/images/parquet.png",
-                        ),
-                        GalleryImages(
-                          assetImage: "https://www.netclipart.com/pp/m/326-3265302_handyman-cartoon-mechanic.png",
-                          isOnline: true,
-                        ),
-
                       ],
                     ),
                   ]

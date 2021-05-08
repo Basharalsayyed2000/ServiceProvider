@@ -4,8 +4,14 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 
-class JobDetails extends StatelessWidget {
-  static String id = "jobDetails";
+class JobDetails extends StatefulWidget {
+     static String id = "jobDetails";
+
+  @override
+  _JobDetailsState createState() => _JobDetailsState();
+}
+
+class _JobDetailsState extends State<JobDetails> {
   double _padding;
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class JobDetails extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        child: Column(
+        child: ListView(
           children: [
 
             Expanded(

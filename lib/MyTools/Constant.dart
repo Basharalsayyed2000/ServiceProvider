@@ -57,7 +57,7 @@ const KImageCartificateUrl = 'ImageCartificateUrl';
 
 
 //Address data
-const KLocationCollection = 'LocationCollection';
+const KLocationCollection = 'Location';
 const KLocationAddress = 'LocationAddress';
 const KLocationCountry = 'LocationCountry';
 const KLocationCity = 'LocationCity';
@@ -79,7 +79,7 @@ const KRequestIsActive='RequestIsActive';
 const KRequestIsAccepted='RequestIsAccepted';
 const KRequestUserId='RequestUserId';
 const KRequestProviderId='RequestProviderId';
-const KRequestAddress='RequestAddress';
+const KRequestLocationId='RequestLocationId';
 const KRequestProblem='RequestProblem';
 const KRequestDescription='RequestDescription';
 
