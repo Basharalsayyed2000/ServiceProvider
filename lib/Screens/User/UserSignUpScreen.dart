@@ -45,7 +45,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
               children: <Widget>[
                 getImage(),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 0.325),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
                   child: Focus(
                     child: CustomTextField(
                       labelText: "Full Name",
@@ -58,7 +58,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 0.325),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
                   child: CustomTextField(
                     labelText: "Email",
                     hintText: "example@yourmail.com",
@@ -71,7 +71,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 0.325),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
                   child: Focus(
                     child: CustomTextField(
                       obscureText: isHidePassword,
@@ -85,7 +85,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 0.325),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
                   child: Focus(
                     child: CustomTextField(
                       obscureText: isHidePassword,
@@ -151,7 +151,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: Kminimumpadding * 2.5),
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.0345),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

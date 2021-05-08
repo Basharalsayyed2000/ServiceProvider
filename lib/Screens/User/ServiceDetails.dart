@@ -153,7 +153,6 @@ class _ServiceDetails extends State<ServiceDetails> {
             ),
 
             Container(
-
               child: SizedBox(
                 height: MediaQuery.of(context).size.width/3.4,
                 child: ListView(

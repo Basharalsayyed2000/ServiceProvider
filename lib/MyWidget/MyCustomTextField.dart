@@ -179,6 +179,7 @@ class _CustomTextField extends State<CustomTextField> {
                 icon: Icon(
                   _passwordVisible ? Icons.visibility : Icons.visibility_off,
                   semanticLabel: _passwordVisible ? 'hide password' : 'show password',
+                  color: KprimaryColorDark,
                 ),
                 onPressed: (){
                   setState(() {
