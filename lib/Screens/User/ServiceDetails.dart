@@ -15,10 +15,11 @@ class ServiceDetails extends StatefulWidget{
   }
 }
 
-class _ServiceDetails extends State<ServiceDetails>{
+class _ServiceDetails extends State<ServiceDetails> {
+  ProviderModel _provider;
   @override
   Widget build(BuildContext context) {
-     ProviderModel _provider = ModalRoute.of(context).settings.arguments;
+    _provider = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Service Details"),
@@ -34,7 +35,6 @@ class _ServiceDetails extends State<ServiceDetails>{
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("Loading");
-
             } else {
               var userDocument = snapshot.data;
               List<String> urlList = _provider.certificateImages;
@@ -127,8 +127,7 @@ class _ServiceDetails extends State<ServiceDetails>{
                       ),
                     ),
                   
-               
-              
+             
             Container(
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.only(top: Kminimumpadding * 5, bottom: Kminimumpadding * 4),

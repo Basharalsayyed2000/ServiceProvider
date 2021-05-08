@@ -1,15 +1,18 @@
+import 'dart:io';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/User/UserHome.dart';
+import 'package:service_provider/Screens/User/ServiceRequestLocation.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
 
@@ -23,24 +26,21 @@ class ServiceRequest extends StatefulWidget {
 
 class _ServiceRequest extends State<ServiceRequest> {
   final _auth = Auth();
-<<<<<<< Updated upstream:lib/Screens/User/ServiceRequest.dart
-=======
   // ignore: deprecated_member_use
   List<File> _gallery = new List<File>();
   List<String> _galleryUrl = [];
   FontWeight _weightT;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
->>>>>>> Stashed changes:lib/Screens/Request/ServiceRequest.dart
   Color _colorDt;
   FontWeight _weightDt;
   Color _colorT;
-  FontWeight _weightT;
-  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  // ignore: unused_field
   final Store _store = Store();
 
   DateTime _date;
   DateTime _time;
   RequestModel request;
+  // ignore: unused_field
   String rProblem, rDescription, rDate, rTime, _addedDate,_userId;
   @override
   void initState() {
@@ -119,12 +119,7 @@ class _ServiceRequest extends State<ServiceRequest> {
                   child: Builder(
                     builder: (context) => CustomButton(
                       onPressed: () async {
-<<<<<<< Updated upstream:lib/Screens/User/ServiceRequest.dart
-                        addRequest(context, neededData.isActive,
-                            neededData.provider);
-=======
                         capsolateData(context, neededData);
->>>>>>> Stashed changes:lib/Screens/Request/ServiceRequest.dart
                       },
                       textValue: 'Continue',
                     ),
@@ -292,115 +287,6 @@ class _ServiceRequest extends State<ServiceRequest> {
     );
   }
 
-<<<<<<< Updated upstream:lib/Screens/User/ServiceRequest.dart
-  void addRequest(
-      context, bool isactive, ProviderModel provider) async {
-    if (_date == null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("You must choose date"),
-              actions: [
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  onPressed: () => Navigator.pop(context),
-                  color: Colors.red,
-                  child: Text("ok"),
-                ),
-              ],
-            );
-          });
-    } else if (_time == null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("You must choose time"),
-              actions: [
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  onPressed: () => Navigator.pop(context),
-                  color: Colors.red,
-                  child: Text("ok"),
-                ),
-              ],
-            );
-          });
-    } else {
-      try {
-        // FirebaseStorage storage = FirebaseStorage(
-        //     storageBucket: 'gs://service-provider-ef677.appspot.com');
-        // String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-        // StorageReference ref =
-        //     storage.ref().child('ServicesImage/$imageFileName');
-        // StorageUploadTask storageUploadTask = ref.putFile(_image);
-        // StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
-
-        // String url = await taskSnapshot.ref.getDownloadURL();
-        // setState(() {
-        //   _imageUrl = url;
-        // });
-        final progress = ProgressHUD.of(context);
-        toggleProgressHUD(true, progress);
-        if (_globalKey.currentState.validate()) {
-          // loadImage();
-          _addedDate = getDateNow();
-          _globalKey.currentState.save();
-
-          _store.addRequest(RequestModel(
-            rProblem: rProblem,
-            rDescription: rDescription,
-            rAddDate: _addedDate,
-            requestDate: rDate,
-            requestTime: rTime,
-            isActive: (isactive == true) ? true : false,
-            isAccepted: false,
-            isComplete: false,
-            providerId: provider.pId,
-            userId: _userId,
-          ));
-          toggleProgressHUD(false, progress);
-
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("successfully uplaoded"),
-                  actions: [
-                    // ignore: deprecated_member_use
-                    RaisedButton(
-                      onPressed: () => Navigator.pop(context),
-                      color: KprimaryColor,
-                      child: Text("ok"),
-                    ),
-                  ],
-                );
-              });
-          Navigator.pushNamed(context, UserHome.id);
-           Fluttertoast.showToast(msg: 'Send Succesfully',);
-        }
-      } catch (ex) {
-        // ignore: deprecated_member_use
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(ex.message),
-                actions: [
-                  // ignore: deprecated_member_use
-                  RaisedButton(
-                    onPressed: () => Navigator.pop(context),
-                    color: Colors.red,
-                    child: Text("ok"),
-                  ),
-                ],
-              );
-            });
-      }
-    }
-  }
-=======
   Widget getDateFormPicker() {
     return DateTimePickerFormField(
       autofocus: false,
@@ -533,7 +419,6 @@ class _ServiceRequest extends State<ServiceRequest> {
   //     }
   //   }
   // }
->>>>>>> Stashed changes:lib/Screens/Request/ServiceRequest.dart
 
   void toggleProgressHUD(_loading, _progressHUD) {
     setState(() {

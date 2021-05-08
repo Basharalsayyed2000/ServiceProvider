@@ -26,6 +26,7 @@ class AdditionalInfo extends StatefulWidget {
 
 class _AdditionalInfo extends State<AdditionalInfo> {
   File _image;
+  // ignore: deprecated_member_use
   List<File> _gallery = new List<File>();
   String _imageUrl;
   List<String> _servicesName = [""];

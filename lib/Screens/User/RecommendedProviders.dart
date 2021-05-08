@@ -45,11 +45,8 @@ class _RecommendedState extends State<Recommended> {
                   pId: data[KProviderId],
                   pProvideService: data[KServiceId],
                   pProviderDescription: data[KProviderDescription],
-<<<<<<< Updated upstream
-=======
                   certificateImages: List.from(data[KImageCartificateUrlList]),
                   locationId: data[KProviderLocationId],
->>>>>>> Stashed changes
                 ));
               }
             }

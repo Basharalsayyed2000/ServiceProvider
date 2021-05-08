@@ -34,7 +34,7 @@ class UserStore{
       KProviderBirthDate: provider.pbirthDate,
       KProviderPhoneNumber: provider.pphoneNumber,
       KProviderIsAdmin:provider.isAdmin,
-      KProviderAddress:provider.locationId,
+      KProviderLocationId:provider.locationId,
       KProviderDescription:provider.pProviderDescription,
       KServiceId:provider.pProvideService,
       KProviderEmail:provider.pEmail,
