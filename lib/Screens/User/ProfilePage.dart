@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Services/auth.dart';
 
 class UserProfilescreen extends StatefulWidget {
@@ -56,7 +57,22 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
         centerTitle: true,
         title: Text("Profile"),
         backgroundColor: KprimaryColor,
-        actions: <Widget>[],
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (choice){
+              (choice == "My Activity") ? Navigator.pushNamed(context, MyActivity.id) : null;
+            },
+            itemBuilder: (BuildContext context){
+              return {"My Activity", "Logout", "Settings"}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }
+              ).toList();
+            },
+          )
+        ],
       ),
       body: StreamBuilder(
           stream: Firestore.instance
@@ -75,7 +91,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
           child: ListView(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0185,
+                height: MediaQuery.of(context).size.height * 0.0485,
               ),
               Center(
                   child: Stack(
@@ -111,6 +127,28 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.0485,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: "Accout Type",
+                    labelStyle: TextStyle(
+                        color: KprimaryColor, fontWeight: FontWeight.bold),
+                    hintText: "User",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    )),
+              ),
+
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.0385,
               ),
@@ -151,6 +189,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                       color: Colors.black,
                     )),
               ),
+
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.0485,
               ),
@@ -164,26 +203,6 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                     labelStyle: TextStyle(
                         color: KprimaryColor, fontWeight: FontWeight.bold),
                     hintText: "${userDocument[KUserBirthDate]}",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintStyle: TextStyle(
-                      fontSize: 18,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0485,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
-                    ),
-                    contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "Accout Type",
-                    labelStyle: TextStyle(
-                        color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "User",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintStyle: TextStyle(
                       fontSize: 18,

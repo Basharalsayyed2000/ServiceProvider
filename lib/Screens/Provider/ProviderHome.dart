@@ -17,7 +17,6 @@ class _ProviderHomeState extends State<ProviderHome> {
           Expanded(
               child: GridView.count(
             crossAxisCount: 2,
-<<<<<<< Updated upstream
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             primary: false,
@@ -27,18 +26,6 @@ class _ProviderHomeState extends State<ProviderHome> {
               elements("Jobs", "Assets/images/jobs.png",context,RecommendedJobs.id),
               elements("Done Jobs", "Assets/images/donejobs.jpg",context,""),
             ],
-=======
-         mainAxisSpacing: 10,
-         crossAxisSpacing: 10,
-         primary: false,
-         children: [
-           elements("Settings", "Assets/images/settings.jpg"),
-           elements("Profile", "Assets/images/prof.png"),
-           elements("Jobs", "Assets/images/jobs2.png"),
-           elements("Done Jobs", "Assets/images/donejobs.jpg"),
-           
-         ],
->>>>>>> Stashed changes
           ))
         ],
       ),
