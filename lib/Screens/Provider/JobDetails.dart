@@ -195,7 +195,7 @@ class _JobDetailsState extends State<JobDetails> {
                       ),
                     ),
                     Divider(
-                      color: Colors.black,
+                      color: KprimaryColorDark,
                       height: 35,
                       thickness: 2,
                     ),
@@ -261,6 +261,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
           ],
+        
         ),
       ),
     );
