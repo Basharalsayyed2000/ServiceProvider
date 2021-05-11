@@ -5,10 +5,12 @@ import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
+import 'package:service_provider/Screens/Provider/RecommendedJobs.dart';
 import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
 import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
 import 'package:service_provider/Screens/Request/RequestComponent.dart';
+import 'package:service_provider/Screens/User/MyFavorateProviders.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {
+        MyFavorateProviders.id: (context) => MyFavorateProviders(),
         JobDetails.id: (context) => JobDetails(),
         SplashScreen.id: (context) => SplashScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
@@ -54,12 +57,17 @@ class MyApp extends StatelessWidget {
         AdminHome.id: (context) => AdminHome(),
         ManageService.id: (context) => ManageService(),
         UserProfilescreen.id: (context) => UserProfilescreen(),
-        Recommended.id: (context) => Recommended(),
+        RecommendedProviders.id: (context) => RecommendedProviders(),
         MyBooks.id: (context) => MyBooks(),
         UserSignUpScreen.id: (context) => UserSignUpScreen(),
         UserLoginScreen.id: (context) => UserLoginScreen(),
         ProviderLoginScreen.id: (context) => ProviderLoginScreen(),
         ProviderSignUpScreen.id: (context) => ProviderSignUpScreen(),
+        RecommendedJobs.id: (context) => RecommendedJobs(),
+
+      //  SearchScreen.id: (context) => SearchScreen(),
+
+        
       },
     );
   }

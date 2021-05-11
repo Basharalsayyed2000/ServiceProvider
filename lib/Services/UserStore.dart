@@ -16,9 +16,11 @@ class UserStore {
       KUserIsAdmin: user.isAdmin,
       KUserEmail: user.uEmail,
       KUserPassword: user.uPassword,
-      KUserId: user.uId
+      KUserId: user.uId,
+      KFavorateProviderList:user.favorateProvider
     });
   }
+
 
   updateUser(UserModel user, String uid) async {
     await _firestore.collection(KUserCollection).document(uid).updateData({
@@ -30,8 +32,15 @@ class UserStore {
       KUserIsAdmin: user.isAdmin,
       KUserEmail: user.uEmail,
       KUserPassword: user.uPassword,
-      KUserId: user.uId
+      KUserId: user.uId,
+      KFavorateProviderList:user.favorateProvider
     });
+  }
+
+  updateFvorateUser(uid,List<String> list)async{
+     await _firestore.collection(KUserCollection).document(uid).updateData({
+       KFavorateProviderList:list
+     });
   }
 
   deleteUser(String uid) async {
@@ -58,6 +67,26 @@ class UserStore {
       KProviderId: provider.pId,
       KProviderPassword: provider.pPassword
     });
+  }
+
+  updateProvider(ProviderModel provider, String pid)async{
+    await _firestore.collection(KProviderCollection).document(pid).updateData(
+      {
+         KProviderName: provider.pName,
+      KProviderAddDate: provider.pAddDate,
+      KProviderImageUrl: provider.pImageUrl,
+      KProviderBirthDate: provider.pbirthDate,
+      KProviderPhoneNumber: provider.pphoneNumber,
+      KProviderIsAdmin: provider.isAdmin,
+      KProviderLocationId: provider.locationId,
+      KProviderDescription: provider.pProviderDescription,
+      KServiceId: provider.pProvideService,
+      KProviderEmail: provider.pEmail,
+      KProviderId: provider.pId,
+      KProviderPassword: provider.pPassword,
+      KMyFavorateList:provider.myFavorateList
+      }
+    );
   }
 
   Stream<QuerySnapshot> loadProvider() {

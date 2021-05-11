@@ -70,6 +70,7 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
        uEmail: userModel.uEmail,
        uId: user.uid,
        uPassword: userModel.uPassword,
+       favorateProvider: []
       ),
       user.uid);
                            

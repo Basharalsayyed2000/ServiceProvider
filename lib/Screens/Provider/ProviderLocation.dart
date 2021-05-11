@@ -241,6 +241,7 @@ class _ProviderLocation extends State<ProviderLocation> {
                               KProviderId: _provider.pId,
                               KImageCartificateUrlList:
                                   _provider.certificateImages,
+                              KMyFavorateList:_provider.myFavorateList    
                             });
                             Navigator.pushNamedAndRemoveUntil(
                                 context,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
@@ -6,16 +7,31 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Services/UserStore.dart';
 
-class Recommended extends StatefulWidget {
+class RecommendedProviders extends StatefulWidget {
   static String id = 'Recommended';
 
   @override
-  _RecommendedState createState() => _RecommendedState();
+  _RecommendedProvidersState createState() => _RecommendedProvidersState();
 }
 
-class _RecommendedState extends State<Recommended> {
+class _RecommendedProvidersState extends State<RecommendedProviders> {
   ServiceModel service;
   final _user = UserStore();
+  String uId = "";
+  List<String> userFavorateProvider=[];
+  @override
+  void initState() {
+    getcurrentid();
+    super.initState();
+  }
+
+  void getcurrentid() async {
+    String _userId = (await FirebaseAuth.instance.currentUser()).uid;
+    setState(() {
+      uId = _userId;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     service = ModalRoute.of(context).settings.arguments;
@@ -47,6 +63,9 @@ class _RecommendedState extends State<Recommended> {
                   pProviderDescription: data[KProviderDescription],
                   certificateImages: List.from(data[KImageCartificateUrlList]),
                   locationId: data[KProviderLocationId],
+                  myFavorateList: (data[KMyFavorateList] == null)
+                      ? []
+                      : List.from(data[KMyFavorateList]),
                 ));
               }
             }
@@ -88,18 +107,29 @@ class _RecommendedState extends State<Recommended> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.phone),
-                PopupMenuButton<String>(
-                  onSelected: handleClick2,
-                  itemBuilder: (BuildContext context) {
-                    return {'Edit', 'Settings'}.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
-                  },
-                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.star,
+                      size: 32,
+                      color: (_provider.myFavorateList.contains(uId))
+                          ? Colors.yellow
+                          : Colors.grey,
+                    ),
+                    onPressed: () async {
+                      if (_provider.myFavorateList.contains(uId)) {
+                        setState(() {
+                          _provider.myFavorateList.remove(uId);
+                          userFavorateProvider.remove(_provider.pId);
+                        });
+                      } else {
+                        setState(() {
+                          _provider.myFavorateList.add(uId);
+                          userFavorateProvider.add(_provider.pId);
+                        });
+                      }
+                      await _user.updateProvider(_provider, _provider.pId);
+                      await _user.updateFvorateUser(uId, userFavorateProvider);
+                    }),
               ],
             )),
       ),

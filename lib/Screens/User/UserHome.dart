@@ -6,6 +6,7 @@ import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
+import 'package:service_provider/Screens/User/MyFavorateProviders.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
@@ -120,6 +121,14 @@ class _UserHomeState extends State<UserHome> {
                         Navigator.pushNamed(context, UserProfilescreen.id);
                       },
                     ),
+                     ListTile(
+                      leading: Icon(Icons.verified_user),
+                      title: Text('MyFavorate Providers'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyFavorateProviders.id);
+                      },
+                    ),
                     ListTile(
                       leading: Icon(Icons.settings),
                       title: Text('My Book'),
@@ -189,7 +198,7 @@ class _UserHomeState extends State<UserHome> {
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, Recommended.id,
+                    onTap: () => Navigator.pushNamed(context, RecommendedProviders.id,
                         arguments: _services[index]),
                     child: Card(
                       shape: RoundedRectangleBorder(

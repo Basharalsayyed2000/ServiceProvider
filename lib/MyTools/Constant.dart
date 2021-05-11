@@ -32,6 +32,7 @@ const KUserIsAdmin='UserIsAdmin';
 const KUserEmail='UserEmail';
 const KUserPassword='UserPassword';
 const KUserId="UserId";
+const KFavorateProviderList="FavorateProviderList";
 
 
 //Provider
@@ -49,6 +50,7 @@ const KProviderEmail='ProviderEmail';
 const KProviderPassword='ProviderPassword';
 const KProviderId="ProviderId";
 const KImageCartificateUrlList='ImageCartificateUrlList';
+const KMyFavorateList="MyFavorateList";
 
 
 //ignord
@@ -58,7 +60,7 @@ const KImageCartificateUrl = 'ImageCartificateUrl';
 
 //Address data
 const KLocationCollection = 'Location';
-const KLocationAddress = 'LocationAddress';
+const KLocationStreet = 'LocationStreet';
 const KLocationCountry = 'LocationCountry';
 const KLocationCity = 'LocationCity';
 const KLocationPostalCode = 'LocationPostCode';

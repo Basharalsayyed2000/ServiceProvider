@@ -70,7 +70,7 @@ class _MyBooksState extends State<MyBooks> {
                 isAccepted: data[KRequestIsAccepted],
                 isActive: data[KRequestIsActive],
                 isComplete: data[KRequestIsCompleted],
-                //rImageUrl:requestUrl as List<String>,
+                rImageUrl:data[KRequestImageUrl]==null? []:data[KRequestImageUrl].map<String>((i)=> i as String).toList() ,
               ));
               }
             }

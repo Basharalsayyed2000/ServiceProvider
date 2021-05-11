@@ -28,6 +28,8 @@ class Store {
       KLocationPostalCode: address.postalCode,
       KLocationLatitude:address.latitude,
       KLocationlonggitude:address.longgitude,
+      KLocationCity:address.city,
+      KLocationStreet:address.street
     }).then((value) {
       locId=value.documentID;
     });
@@ -52,5 +54,13 @@ class Store {
 
   Stream<QuerySnapshot> loadRequest(){
      return _firestore.collection(KRequestCollection).snapshots();
+  }
+
+   searchByName(String searchField) {
+    return Firestore.instance
+        .collection(KProviderCollection)
+        .where('SearchKey',
+            isEqualTo: searchField.substring(0, 1).toUpperCase())
+        .getDocuments();
   }
 }

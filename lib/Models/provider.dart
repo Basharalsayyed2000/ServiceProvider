@@ -1,7 +1,7 @@
 class ProviderModel{
 String pName, pAddDate,pImageUrl, pbirthDate, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId;
 bool isAdmin;
-List<String> certificateImages;
+List<String> certificateImages,myFavorateList;
 ProviderModel(
       {
       this.pName,
@@ -16,6 +16,7 @@ ProviderModel(
       this.pPassword,
       this.pId,
       this.locationId,
-      this.certificateImages
+      this.certificateImages,
+      this.myFavorateList
       });
 }
