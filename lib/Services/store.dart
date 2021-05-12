@@ -51,6 +51,24 @@ class Store {
       KRequestImageUrl:request.rImageUrl
     });
   }
+   
+     updateRequest(RequestModel request,String requestId) async {
+    await _firestore.collection(KRequestCollection).document(requestId).updateData({
+      KRequestProblem: request.rProblem,
+      KRequestDescription: request.rDescription,
+      KRequestIsCompleted: request.isComplete,
+      KRequestIsActive: request.isActive,
+      KRequestIsAccepted:request.isAccepted,
+      KRequestUserId: request.userId,
+      KRequestProviderId: request.providerId,
+      KRequestTime: request.requestTime,
+      KRequestDate: request.requestDate,
+      KRequestAddDate:request.rAddDate,
+      KRequestImageUrl:request.rImageUrl,
+      KRequestIsProviderSeen:request.isProviderSeen
+    });
+  }
+   
 
   Stream<QuerySnapshot> loadRequest(){
      return _firestore.collection(KRequestCollection).snapshots();

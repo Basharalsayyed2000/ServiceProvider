@@ -79,6 +79,7 @@ const KRequestTime='RequestTime';
 const KRequestIsCompleted='RequestIsCompleted';
 const KRequestIsActive='RequestIsActive';
 const KRequestIsAccepted='RequestIsAccepted';
+const KRequestIsProviderSeen='RequestIsProviderSeen';
 const KRequestUserId='RequestUserId';
 const KRequestProviderId='RequestProviderId';
 const KRequestLocationId='RequestLocationId';

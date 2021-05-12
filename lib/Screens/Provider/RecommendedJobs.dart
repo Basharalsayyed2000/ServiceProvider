@@ -13,7 +13,7 @@ class RecommendedJobs extends StatefulWidget {
 
 class _RecommendedJobsState extends State<RecommendedJobs> {
   String pId;
-
+  List<RequestModel> requests=[];
   @override
   void initState() {
     getcurrentid();
@@ -28,11 +28,14 @@ class _RecommendedJobsState extends State<RecommendedJobs> {
   }
 
   @override
+  // ignore: missing_return
   Widget build(BuildContext context) {
+    String pageType = ModalRoute.of(context).settings.arguments;
+    if(pageType=="Available"){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: KprimaryColor,
-        title: Text("Hello"),
+        title: Text("Avaliable Jobs"),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -40,10 +43,10 @@ class _RecommendedJobsState extends State<RecommendedJobs> {
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<RequestModel> requests = [];
+             requests= [];
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
-              if (data[KRequestProviderId] == pId) {
+              if (data[KRequestProviderId] == pId && data[KRequestIsActive] && !data[KRequestIsCompleted] && !data[KRequestIsAccepted ] && !data[KRequestIsProviderSeen]) {
                 requests.add(RequestModel(
                     rAddDate: data[KRequestAddDate],
                     rProblem: data[KRequestProblem],
@@ -72,14 +75,39 @@ class _RecommendedJobsState extends State<RecommendedJobs> {
               ),
               itemCount: requests.length,
             );
-          } else {
+          }else {
             return Center(
               child: Text('no provider provide this service'),
             );
           }
+          // ignore: dead_code
+          if (snapshot.hasData && requests.isEmpty){
+            return Center(
+              child: Text('There is no recommended job'),
+            );
+          } 
+         
         },
       ),
     );
+    }else if(pageType=="Done"){
+      return Scaffold(
+      appBar: AppBar(
+        backgroundColor: KprimaryColor,
+        title: Text("Done Jobs"),
+        centerTitle: true,
+      ),
+      );
+    }
+    else if(pageType=="Inprogress"){
+        return Scaffold(
+      appBar: AppBar(
+        backgroundColor: KprimaryColor,
+        title: Text("InProgress Jobs"),
+        centerTitle: true,
+      ),
+      );
+    }
   }
 
   Card buildCard(String title, String subtitle, RequestModel _request) {

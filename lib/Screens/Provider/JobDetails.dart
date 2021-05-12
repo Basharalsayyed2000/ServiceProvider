@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/Services/store.dart';
 
 class JobDetails extends StatefulWidget {
   static String id = "jobDetails";
@@ -15,6 +18,7 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   double _padding;
   RequestModel requestModel;
+  Store store=Store();
   @override
   Widget build(BuildContext context) {
     requestModel = ModalRoute.of(context).settings.arguments;
@@ -170,26 +174,42 @@ class _JobDetailsState extends State<JobDetails> {
                             ),
                           ),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Lebanon",
-                                  style: TextStyle(
-                                      fontSize: 16, color: KprimaryColorDark),
-                                ),
-                                Text(
-                                  "Tripoli",
-                                  style: TextStyle(
-                                      fontSize: 16, color: KprimaryColorDark),
-                                ),
-                                Text(
-                                  "Sehet Al Nour",
-                                  style: TextStyle(
-                                      fontSize: 16, color: KprimaryColorDark),
-                                ),
-                              ],
-                            ),
+                            child: StreamBuilder(
+                                stream: Firestore.instance
+                                    .collection(KLocationCollection)
+                                    .document(requestModel
+                                        .locationId) //ID OF DOCUMENT
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return new CircularProgressIndicator();
+                                  }
+                                  var document = snapshot.data;
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${document[KLocationCountry]}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: KprimaryColorDark),
+                                      ),
+                                      Text(
+                                        "${document[KLocationCity]}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: KprimaryColorDark),
+                                      ),
+                                      Text(
+                                        "${document[KLocationStreet]}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: KprimaryColorDark),
+                                      ),
+                                    ],
+                                  );
+                                }),
                           ),
                         ],
                       ),
@@ -246,14 +266,32 @@ class _JobDetailsState extends State<JobDetails> {
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: _padding * 7),
                         child:
-                            CustomButton(onPressed: () {}, textValue: "Accept"),
+                            CustomButton(onPressed: () async {
+                              requestModel.isAccepted=true;
+                              requestModel.isProviderSeen=true;
+                             await store.updateRequest(requestModel, requestModel.requestId);
+                           
+                               Fluttertoast.showToast(
+                              msg: 'The job was Accepted',
+                            );
+                            },
+                            textValue: "Accept"),
                       ),
                     ),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: _padding * 7),
                         child:
-                            CustomButton(onPressed: () {}, textValue: "Reject"),
+                            CustomButton(onPressed: () async{
+
+                              requestModel.isAccepted=false;
+                              requestModel.isProviderSeen=true;
+                             await store.updateRequest(requestModel, requestModel.requestId);
+                           
+                               Fluttertoast.showToast(
+                              msg: 'The job was Rejected',
+                            );
+                            }, textValue: "Reject"),
                       ),
                     ),
                   ],
@@ -261,7 +299,6 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
           ],
-        
         ),
       ),
     );

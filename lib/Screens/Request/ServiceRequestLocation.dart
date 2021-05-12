@@ -57,7 +57,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
   RequestModel _requestModel;
   static final CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-    zoom: 15,
+    zoom: 5,
   );
 
   _getCurrentLocation() async {
@@ -223,6 +223,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                             ));
 
                             _requestModel.locationId = locId;
+                            _requestModel.isProviderSeen=false;
                             await Firestore.instance
                                 .collection(KRequestCollection)
                                 .add({
@@ -238,6 +239,7 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                               KRequestAddDate: getDateNow().toString(),
                               KRequestImageUrl: _requestModel.rImageUrl,
                               KRequestLocationId:_requestModel.locationId,
+                              KRequestIsProviderSeen:_requestModel.isProviderSeen,
                             });
                             Navigator.pushNamedAndRemoveUntil(
                               context,

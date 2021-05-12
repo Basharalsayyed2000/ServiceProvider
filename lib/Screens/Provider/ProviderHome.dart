@@ -17,28 +17,16 @@ class _ProviderHomeState extends State<ProviderHome> {
           Expanded(
               child: GridView.count(
             crossAxisCount: 2,
-<<<<<<< Updated upstream
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             primary: false,
             children: [
-              elements("Settings", "Assets/images/settings.jpg",context,""),
-              elements("Profile", "Assets/images/prof.png",context,""),
-              elements("Jobs", "Assets/images/jobs.png",context,RecommendedJobs.id),
-              elements("Done Jobs", "Assets/images/donejobs.jpg",context,""),
+              elements("Settings", "Assets/images/settings.jpg",context,"",""),
+              elements("Profile", "Assets/images/prof.png",context,"",""),
+              elements("Available Jobs", "Assets/images/jobs.png",context,RecommendedJobs.id,"Available"),
+              elements("Done Jobs", "Assets/images/donejobs.jpg",context,RecommendedJobs.id,"Done"),
+              elements("InProgress", "Assets/images/donejobs.jpg",context,RecommendedJobs.id,"Inprogress"),
             ],
-=======
-         mainAxisSpacing: 10,
-         crossAxisSpacing: 10,
-         primary: false,
-         children: [
-           elements("Settings", "Assets/images/settings.jpg"),
-           elements("Profile", "Assets/images/prof.png"),
-           elements("Jobs", "Assets/images/jobs2.png"),
-           elements("Done Jobs", "Assets/images/donejobs.jpg"),
-           
-         ],
->>>>>>> Stashed changes
           ))
         ],
       ),
@@ -46,10 +34,10 @@ class _ProviderHomeState extends State<ProviderHome> {
   }
 }
 
-Widget elements(String title, String imagepath,context,String routeName) {
+Widget elements(String title, String imagepath,context,String routeName,String pageType) {
   return GestureDetector(
     onTap: (){
-      Navigator.of(context).pushNamed(routeName);
+      Navigator.of(context).pushNamed(routeName,arguments: pageType);
     },
       child: Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
