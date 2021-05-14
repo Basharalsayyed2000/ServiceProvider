@@ -60,6 +60,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (choice){
+              // ignore: unnecessary_statements
               (choice == "My Activity") ? Navigator.pushNamed(context, MyActivity.id) : null;
             },
             itemBuilder: (BuildContext context){

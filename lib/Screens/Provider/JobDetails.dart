@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:service_provider/Models/Request.dart';
+import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Services/store.dart';
 
 class JobDetails extends StatefulWidget {
@@ -17,11 +18,11 @@ class JobDetails extends StatefulWidget {
 
 class _JobDetailsState extends State<JobDetails> {
   double _padding;
-  RequestModel requestModel;
-  Store store=Store();
+  NeededData neededData;
+  Store store = Store();
   @override
   Widget build(BuildContext context) {
-    requestModel = ModalRoute.of(context).settings.arguments;
+    neededData = ModalRoute.of(context).settings.arguments;
     _padding = MediaQuery.of(context).size.height / 400;
     return Scaffold(
       appBar: AppBar(
@@ -59,11 +60,36 @@ class _JobDetailsState extends State<JobDetails> {
                             ),
                           ),
                           Expanded(
-                            child: Text(
-                              "Electrician",
-                              style: TextStyle(
-                                  fontSize: 16, color: KprimaryColorDark),
-                            ),
+                            child: StreamBuilder(
+                                stream: Firestore.instance
+                                    .collection(KProviderCollection)
+                                    .document(neededData.requestModel
+                                        .providerId) //ID OF DOCUMENT
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return new CircularProgressIndicator();
+                                  }
+                                  var document1 = snapshot.data;
+                                  return StreamBuilder(
+                                      stream: Firestore.instance
+                                          .collection(KServicesCollection)
+                                          .document(document1[
+                                              KServiceId]) //ID OF DOCUMENT
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return new CircularProgressIndicator();
+                                        }
+                                        var document2 = snapshot.data;
+                                        return Text(
+                                          "${document2[KServiceName]}",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: KprimaryColorDark),
+                                        );
+                                      });
+                                }),
                           ),
                         ],
                       ),
@@ -89,7 +115,7 @@ class _JobDetailsState extends State<JobDetails> {
                           ),
                           Expanded(
                             child: Text(
-                              "${requestModel.rProblem}",
+                              "${neededData.requestModel.rProblem}",
                               style: TextStyle(
                                   fontSize: 16, color: KprimaryColorDark),
                             ),
@@ -118,7 +144,7 @@ class _JobDetailsState extends State<JobDetails> {
                           ),
                           Expanded(
                             child: Text(
-                              "${requestModel.rDescription}",
+                              "${neededData.requestModel.rDescription}",
                               style: TextStyle(
                                   fontSize: 16, color: KprimaryColorDark),
                             ),
@@ -147,7 +173,7 @@ class _JobDetailsState extends State<JobDetails> {
                           ),
                           Expanded(
                             child: Text(
-                              "${requestModel.requestDate.substring(0, 10)} , ${requestModel.requestTime.substring(10, 16)}",
+                              "${neededData.requestModel.requestDate.substring(0, 10)} , ${neededData.requestModel.requestTime.substring(10, 16)}",
                               style: TextStyle(
                                   fontSize: 16, color: KprimaryColorDark),
                             ),
@@ -177,7 +203,7 @@ class _JobDetailsState extends State<JobDetails> {
                             child: StreamBuilder(
                                 stream: Firestore.instance
                                     .collection(KLocationCollection)
-                                    .document(requestModel
+                                    .document(neededData.requestModel
                                         .locationId) //ID OF DOCUMENT
                                     .snapshots(),
                                 builder: (context, snapshot) {
@@ -242,7 +268,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   for (String imageurl
-                                      in requestModel.rImageUrl)
+                                      in neededData.requestModel.rImageUrl)
                                     GalleryImages(
                                       assetImage: imageurl,
                                       isOnline: true,
@@ -256,48 +282,82 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: _padding * 7),
-                        child:
-                            CustomButton(onPressed: () async {
-                              requestModel.isAccepted=true;
-                              requestModel.isProviderSeen=true;
-                             await store.updateRequest(requestModel, requestModel.requestId);
-                           
-                               Fluttertoast.showToast(
-                              msg: 'The job was Accepted',
-                            );
-                            },
-                            textValue: "Accept"),
+            (neededData.pageType == "Available")
+                ? Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: _padding * 7),
+                              child: CustomButton(
+                                  onPressed: () async {
+                                    neededData.requestModel.isAccepted = true;
+                                    neededData.requestModel.isProviderSeen =
+                                        true;
+                                    await store.updateRequest(
+                                        neededData.requestModel,
+                                        neededData.requestModel.requestId);
+                                    Navigator.of(context)
+                                        .pushReplacementNamed(ProviderHome.id);
+                                    Fluttertoast.showToast(
+                                      msg: 'The job was Accepted',
+                                    );
+                                  },
+                                  textValue: "Accept"),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: _padding * 7),
+                              child: CustomButton(
+                                  onPressed: () async {
+                                    neededData.requestModel.isAccepted = false;
+                                    neededData.requestModel.isProviderSeen =
+                                        true;
+                                    await store.updateRequest(
+                                        neededData.requestModel,
+                                        neededData.requestModel.requestId);
+                                    Navigator.of(context)
+                                        .pushReplacementNamed(ProviderHome.id);
+                                    Fluttertoast.showToast(
+                                      msg: 'The job was Rejected',
+                                    );
+                                  },
+                                  textValue: "Reject"),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: _padding * 7),
-                        child:
-                            CustomButton(onPressed: () async{
-
-                              requestModel.isAccepted=false;
-                              requestModel.isProviderSeen=true;
-                             await store.updateRequest(requestModel, requestModel.requestId);
-                           
-                               Fluttertoast.showToast(
-                              msg: 'The job was Rejected',
+                  )
+                :(neededData.pageType == "Inprogress")? Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: _padding * 7),
+                      child: CustomButton(
+                          onPressed: () async {
+                            neededData.requestModel.isAccepted = true;
+                            neededData.requestModel.isProviderSeen = true;
+                            neededData.requestModel.isComplete = true;
+                            await store.updateRequest(neededData.requestModel,
+                                neededData.requestModel.requestId);
+                            Navigator.of(context)
+                                .pushReplacementNamed(ProviderHome.id);
+                            Fluttertoast.showToast(
+                              msg: 'The job was completed',
                             );
-                            }, textValue: "Reject"),
-                      ),
+                          },
+                          textValue: "Complete"),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ):Expanded(
+                    child: Container(
+                      child: Text("This job was complete"),
+                    ),
+                  ),
           ],
         ),
       ),

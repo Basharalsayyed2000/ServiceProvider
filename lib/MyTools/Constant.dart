@@ -33,7 +33,8 @@ const KUserEmail='UserEmail';
 const KUserPassword='UserPassword';
 const KUserId="UserId";
 const KFavorateProviderList="FavorateProviderList";
-
+const KFavorateProviderListCollection="FavorateProviderListCollection";
+const KFavorateProviderId="FavorateProviderId";
 
 //Provider
 const KProviderCollection = 'Providers';

@@ -43,6 +43,13 @@ class UserStore {
      });
   }
 
+  addFavorateProvider(String pid,String uid) async {
+   await _firestore.collection(KUserCollection).document(uid).collection(KFavorateProviderListCollection).document(pid).setData({KFavorateProviderId:pid});
+  }
+  deleteFavorateProvider(String pid,String uid) async {
+   await _firestore.collection(KUserCollection).document(uid).collection(KFavorateProviderListCollection).document(pid).delete();
+  }
+
   deleteUser(String uid) async {
     await _firestore.collection(KUserCollection).document(uid).delete();
   }

@@ -18,7 +18,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
   ServiceModel service;
   final _user = UserStore();
   String uId = "";
-  List<String> userFavorateProvider=[];
+  List<String> userFavorateProvider = [];
   @override
   void initState() {
     getcurrentid();
@@ -119,16 +119,18 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                       if (_provider.myFavorateList.contains(uId)) {
                         setState(() {
                           _provider.myFavorateList.remove(uId);
-                          userFavorateProvider.remove(_provider.pId);
+                          //userFavorateProvider.remove(_provider.pId);
+                          _user.deleteFavorateProvider(_provider.pId, uId);
                         });
                       } else {
                         setState(() {
                           _provider.myFavorateList.add(uId);
-                          userFavorateProvider.add(_provider.pId);
+                          //userFavorateProvider.add(_provider.pId);
+                          _user.addFavorateProvider(_provider.pId, uId);
                         });
                       }
                       await _user.updateProvider(_provider, _provider.pId);
-                      await _user.updateFvorateUser(uId, userFavorateProvider);
+                      // await _user.updateFvorateUser(uId, userFavorateProvider);
                     }),
               ],
             )),

@@ -16,6 +16,7 @@ class _MyActivity extends State<MyActivity>{
   @override
   void initState() {
     super.initState();
+    // ignore: deprecated_member_use
     _seriesPieData = new List<charts.Series<Task, String>>();
     _generateData();
   }
