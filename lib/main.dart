@@ -17,6 +17,7 @@ import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
 import 'package:service_provider/Screens/User/VerificationUser.dart';
+import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
 import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.id,
+      initialRoute: UserProfilescreen.id,
       routes: {
         MyFavorateProviders.id: (context) => MyFavorateProviders(),
         JobDetails.id: (context) => JobDetails(),
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         ProviderLoginScreen.id: (context) => ProviderLoginScreen(),
         ProviderSignUpScreen.id: (context) => ProviderSignUpScreen(),
         RecommendedJobs.id: (context) => RecommendedJobs(),
+        MyActivity.id: (context) => MyActivity(),
 
       //  SearchScreen.id: (context) => SearchScreen(),
 

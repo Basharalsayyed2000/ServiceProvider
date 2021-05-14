@@ -4,6 +4,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -68,10 +69,13 @@ class _AdditionalInfo extends State<AdditionalInfo> {
         stream: _userStore.loadService(),
         // ignore: missing_return
         builder: (context, snapshot) {
+
           if (snapshot.hasData) {
+
             List<ServiceModel> _services = [];
             List<String> _servicesName = [""];
             String sid;
+
             for (var doc in snapshot.data.documents) {
               var data = doc.data;
               sid = doc.documentID.toString();
@@ -86,6 +90,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                 ));
               }
             }
+
             return ProgressHUD(
               child: Form(
                 key: _globalKey,
@@ -124,6 +129,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           ),
                         ),
                       ),
+
                       Container(
                         margin: EdgeInsets.only(
                             right: MediaQuery.of(context).size.width / 4 * 2,
@@ -192,6 +198,9 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                             scrollDirection: Axis.horizontal,
                             itemCount: _gallery.length + 1,
                             itemBuilder: (context, index) {
+                              int indexNB;
+                              print(index);
+                              // setState(() => _gallery.length != 0 ? indexNB = index+1 : null);
                               return GestureDetector(
                                 onTap: () =>
                                     (index == 0) ? pickGalleryImage() : null,
@@ -210,15 +219,27 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                                   margin: EdgeInsets.only(
                                       left: 2, top: 2, right: 13, bottom: 2),
                                   child: (index == 0)
-                                      ? Icon(Icons.add,
-                                          size: 60, color: KprimaryColor)
-                                      : Image.file(_gallery[index - 1]),
+                                  ? Icon(Icons.add,
+                                    size: 60, color: KprimaryColor)
+                                  : Stack(
+                                    alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          child: Image.file(_gallery[index - 1]),
+                                        ),
+                                        Container(
+                                          child: _createOverlayEntry(index),
+                                          //color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
                                 ),
                               );
                             },
                           ),
                         ),
                       ),
+
                       Container(
                         padding: EdgeInsets.only(top: 4),
                         // ignore: deprecated_member_use
@@ -459,4 +480,32 @@ class _AdditionalInfo extends State<AdditionalInfo> {
       ),
     );
   }
+
+  Widget _createOverlayEntry(int index) {
+    RenderBox renderBox = context.findRenderObject();
+    return Container(
+      margin: EdgeInsets.only(bottom: (renderBox.size.height/9), left: (renderBox.size.width/3.2)),
+      width: 20,
+      height: 20,
+
+      child: RaisedButton(
+        color: Colors.transparent,
+        elevation: 0,
+        padding: EdgeInsets.zero,
+        child: Text(
+            "❌",
+          style: TextStyle(
+            fontSize: 12,
+          ),
+        ),
+        onPressed: (){
+          setState(() {
+            _gallery.removeAt(index-1);
+          });
+        },
+      ),
+    );
+
+  }
+
 }
