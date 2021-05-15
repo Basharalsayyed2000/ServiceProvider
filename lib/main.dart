@@ -3,8 +3,10 @@ import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
+import 'package:service_provider/Screens/Provider/ProviderHom.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
+import 'package:service_provider/Screens/Provider/Providerhom.dart';
 import 'package:service_provider/Screens/Provider/RecommendedJobs.dart';
 import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
 import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
@@ -66,6 +68,7 @@ class MyApp extends StatelessWidget {
         ProviderSignUpScreen.id: (context) => ProviderSignUpScreen(),
         RecommendedJobs.id: (context) => RecommendedJobs(),
         MyActivity.id: (context) => MyActivity(),
+        Providerhom.id: (context) => Providerhom(),
 
       //  SearchScreen.id: (context) => SearchScreen(),
 
