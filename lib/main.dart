@@ -18,6 +18,7 @@ import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserLoginScreen.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
 import 'package:service_provider/Screens/User/VerificationUser.dart';
+import 'package:service_provider/Screens/commonScreens/ChangeEmail.dart';
 import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
 import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
@@ -28,6 +29,7 @@ import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'Screens/Provider/ProviderLocation.dart';
 import 'Screens/Provider/ProviderHome.dart';
+import 'Screens/commonScreens/ChangePassword.dart';
 main() {
   runApp(MyApp());
 }
@@ -67,6 +69,8 @@ class MyApp extends StatelessWidget {
         RecommendedJobs.id: (context) => RecommendedJobs(),
         MyActivity.id: (context) => MyActivity(),
         HomeProvider.id: (context) => HomeProvider(),
+        ChangeEmail.id: (context) => ChangeEmail(),
+        ChangePassword.id: (context) => ChangePassword(),
         
 
       //  SearchScreen.id: (context) => SearchScreen(),

@@ -15,10 +15,9 @@ class UserProfilescreen extends StatefulWidget {
 
 class _UserProfilescreenState extends State<UserProfilescreen> {
 
-  FocusNode _emailNode;
-
   PickedFile _imageFile;
   final _auth = Auth();
+  
   // ignore: unused_field
   dynamic _pickImageError;
   final ImagePicker _picker = ImagePicker();
@@ -179,6 +178,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                   isusername: true,
                   edit: true,
                   controller: _username,
+                  id: _userId,
                 )
                 // Text(
                 //   '${userDocument[KUserName]}',
@@ -196,7 +196,10 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
               
               Container(
                 margin: EdgeInsets.only(top: 15, bottom: 5),
-                child: ProfileTextField(controller: _accountType, prefix: "Account Type",)
+                child: ProfileTextField(
+                  controller: _accountType,
+                  prefix: "Account Type",
+                )
               ),
 
               Divider(
@@ -209,7 +212,12 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 5),
-                child: ProfileTextField(controller: _email, prefix: "E-mail", edit: true,),
+                child: ProfileTextField(
+                  controller: _email, 
+                  prefix: "E-mail",
+                  edit: true,
+                  id: _userId,
+                ),
               ),
 
               Divider(

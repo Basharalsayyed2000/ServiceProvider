@@ -68,6 +68,12 @@ class Store {
       KRequestIsProviderSeen:request.isProviderSeen
     });
   }
+
+   updateUserName(String username,String userId) {
+    _firestore.collection(KUserCollection).document(userId).updateData({
+      KUserName: username
+    });
+  }
    
 
   Stream<QuerySnapshot> loadRequest(){

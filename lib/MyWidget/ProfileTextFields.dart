@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
+import 'package:service_provider/Services/store.dart';
+
+import 'PasswordVerificationDialog.dart';
 
 class ProfileTextField extends StatefulWidget{
   
   final TextEditingController controller;
+  final String id;
   final String prefix;
   final bool isusername;
   final bool isPassword;
   final bool edit;
 
   @override
-  ProfileTextField({@required this.controller, this.prefix, this.isusername, this.edit, this.isPassword});
+  ProfileTextField({@required this.controller, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
 
   @override
   State<StatefulWidget> createState(){
-    return _ProfileTextField(controller: controller, prefix: prefix, isusername: (isusername == null)? false : isusername, edit: (this.edit == null) ? false : this.edit, isPassword: (this.isPassword == null) ? false : this.isPassword);
+    return _ProfileTextField(controller: controller, id: id, prefix: prefix, isusername: (isusername == null)? false : isusername, edit: (this.edit == null) ? false : this.edit, isPassword: (this.isPassword == null) ? false : this.isPassword);
   }
 
 }
@@ -24,15 +27,18 @@ class _ProfileTextField extends State<ProfileTextField>{
   
   FocusNode focusNode;
   bool _edit = false;
-
+  
+  final Store _store = Store();
+  
   final TextEditingController controller;
+  final String id;
   final String prefix;
   final bool isusername;
   final bool isPassword;
   final bool edit;
 
   @override
-  _ProfileTextField({@required this.controller, this.prefix, this.isusername, this.edit, this.isPassword});
+  _ProfileTextField({@required this.controller, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
 
   @override
   void initState() {
@@ -42,7 +48,7 @@ class _ProfileTextField extends State<ProfileTextField>{
 
   @override
   Widget build(BuildContext context){
-    return edit ? SizedBox(
+    return Form(child: edit ? SizedBox(
       width: (isusername == false) ? null : (!_edit) ?(controller.text.characters.length * 10.5 + 100) : (controller.text.characters.length * 10.5 + 100) * 1.5,
       child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -66,14 +72,13 @@ class _ProfileTextField extends State<ProfileTextField>{
           onPressed: (){
             setState(() {
               if(!isPassword){
-                _edit = !_edit;
+                if(isusername)
+                  _edit = !_edit;
                   FocusScope.of(context).requestFocus(focusNode);
               }
-              else
-                Navigator.pushNamed(context, AdditionalInfo.id);    
             });
 
-            
+            (isPassword) ?  DialogHelper.exit(context, false) : (!isusername) ? DialogHelper.exit(context, true) : null ;  
 
           },
         ) : TextButton(
@@ -86,15 +91,21 @@ class _ProfileTextField extends State<ProfileTextField>{
               ),
             ),
             onPressed: (){
+              (isusername)? _store.updateUserName( 
+                controller.text.toString(),
+                id
+              ) : (!isPassword) ? print("EMAIL"): null;
+
               setState(() {
                 _edit = !_edit;
               });
+              
             },
           ),
 
       ],
     ),
-    ) : textField();
+    ) : textField());
   
   }
 

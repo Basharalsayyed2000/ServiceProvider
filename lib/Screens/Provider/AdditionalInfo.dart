@@ -198,7 +198,6 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                             scrollDirection: Axis.horizontal,
                             itemCount: _gallery.length + 1,
                             itemBuilder: (context, index) {
-                              int indexNB;
                               print(index);
                               // setState(() => _gallery.length != 0 ? indexNB = index+1 : null);
                               return GestureDetector(
@@ -488,6 +487,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
       width: 20,
       height: 20,
 
+      // ignore: deprecated_member_use
       child: RaisedButton(
         color: Colors.transparent,
         elevation: 0,
