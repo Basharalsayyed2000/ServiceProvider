@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Providerhom extends StatefulWidget {
-  static String id = 'Userhom';
+class HomeProvider extends StatefulWidget {
+  static String id = 'HomeProvider';
   @override
-  _ProviderhomState createState() => _ProviderhomState();
+  _HomeProviderState createState() => _HomeProviderState();
 }
 
-class _ProviderhomState extends State<Providerhom> {
+class _HomeProviderState extends State<HomeProvider> {
   bool isCompleted=true;
   @override
   Widget build(BuildContext context) {
