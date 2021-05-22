@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const KprimaryColor = Color.fromRGBO(79, 194, 185, 1);
 
+const KsecondaryColor = Color.fromRGBO(3, 148, 134, 1);
+
 const KaccentColor = Color.fromRGBO(157, 215, 211, 1);
 
 const KfocusColor = KprimaryColor;

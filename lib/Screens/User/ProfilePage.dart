@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_provider/MyWidget/ProfileTextFields.dart';
 import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Services/auth.dart';
 
@@ -13,12 +14,23 @@ class UserProfilescreen extends StatefulWidget {
 }
 
 class _UserProfilescreenState extends State<UserProfilescreen> {
+
+  FocusNode _emailNode;
+
   PickedFile _imageFile;
   final _auth = Auth();
   // ignore: unused_field
   dynamic _pickImageError;
   final ImagePicker _picker = ImagePicker();
   String _userId;
+
+  var userDocument;
+
+  TextEditingController _username;
+  TextEditingController _accountType;
+  TextEditingController _email;
+  TextEditingController _password;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +40,8 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
       String value=await _auth.getCurrentUserId();
       setState(() {
         _userId=value;
+        _accountType = TextEditingController(text: "User");
+        
       });
     }
   // Future<void> _getUserName() async {
@@ -56,6 +70,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Profile"),
+        elevation: 2.5,
         backgroundColor: KprimaryColor,
         actions: <Widget>[
           PopupMenuButton<String>(
@@ -84,26 +99,59 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
             if (!snapshot.hasData) {
               return Text("Loading");
             }else{
-          var userDocument = snapshot.data;
+          userDocument = snapshot.data;
+
+          if(userDocument[KUserName] != null)
+          _username = TextEditingController(text: "${userDocument[KUserName]}");
+
+          if(userDocument[KUserEmail] != null)
+          _email = TextEditingController(text: "${userDocument[KUserEmail]}");
+          
+          if(userDocument[KUserPassword] != null)
+          _password = TextEditingController(text: "${userDocument[KUserPassword]}");
+
           return GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
           },
           child: ListView(
             children: [
-              SizedBox(
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter, 
+                    end: Alignment.bottomCenter, 
+                    colors: [KprimaryColor.withOpacity(0.87), KprimaryColor, KsecondaryColor.withOpacity(.82)])
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
                 height: MediaQuery.of(context).size.height * 0.0485,
               ),
               Center(
                   child: Stack(
                 children: [
-                  CircleAvatar(
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(80.0),
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 3,
+                          color: Colors.black.withOpacity(.3),
+                          blurRadius: 3
+                        )
+                      ]
+                    ),
+
+                    child: CircleAvatar(
                     radius: 80,
                     backgroundImage: _imageFile == null
                         ? AssetImage("Assets/images/noprofile.png")
                             as ImageProvider
                         : FileImage(File(_imageFile.path)),
                   ),
+                  ),
+                  
                   Positioned(
                     bottom: 20.0,
                     right: 20.0,
@@ -122,95 +170,69 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                   )
                 ],
               )),
-              Center(
-                child: Text(
-                  '${userDocument[KUserName]}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 18),
+                margin: EdgeInsets.only(left: 50),
+                
+                child: ProfileTextField(
+                  isusername: true,
+                  edit: true,
+                  controller: _username,
+                )
+                // Text(
+                //   '${userDocument[KUserName]}',
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                // ),
+              ),
+              
+
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.0185,
+              // ),
+                  ],
                 ),
               ),
-
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0485,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
-                    ),
-                    contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "Accout Type",
-                    labelStyle: TextStyle(
-                        color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "User",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintStyle: TextStyle(
-                      fontSize: 18,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
+              
+              Container(
+                margin: EdgeInsets.only(top: 15, bottom: 5),
+                child: ProfileTextField(controller: _accountType, prefix: "Account Type",)
               ),
 
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0385,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
-                    ),
-                    contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "E-mail",
-                    labelStyle: TextStyle(
-                        color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${userDocument[KUserEmail]}",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintStyle: TextStyle(
-                      fontSize: 18,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0485,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
-                    ),
-                    contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "Phone Number",
-                    labelStyle: TextStyle(
-                        color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${userDocument[KUserPhoneNumber]}",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintStyle: TextStyle(
-                      fontSize: 18,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
+              Divider(
+                color: KprimaryColorDark,
+                height: 1,
+                thickness: 1.5,
+                indent: 10,
+                endIndent: 10,
               ),
 
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0485,
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5),
+                child: ProfileTextField(controller: _email, prefix: "E-mail", edit: true,),
               ),
-              TextField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: KfocusColor, width: 2.5),
-                    ),
-                    contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "Age",
-                    labelStyle: TextStyle(
-                        color: KprimaryColor, fontWeight: FontWeight.bold),
-                    hintText: "${userDocument[KUserBirthDate]}",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintStyle: TextStyle(
-                      fontSize: 18,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
+
+              Divider(
+                color: KprimaryColorDark,
+                height: 1,
+                thickness: 1.5,
+                indent: 10,
+                endIndent: 10,
               ),
+
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5),
+                child: ProfileTextField(controller: _password, prefix: "Password", edit: true, isPassword: true,),
+              ),
+
+              // Divider(
+              //   color: KprimaryColorDark,
+              //   height: 1,
+              //   thickness: 1.5,
+              //   indent: 10,
+              //   endIndent: 10,
+              // ),
+
             ],
           ));
             }
