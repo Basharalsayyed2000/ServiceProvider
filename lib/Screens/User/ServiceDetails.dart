@@ -147,7 +147,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    Row(
+                    (_provider.certificateImages.isNotEmpty)?Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         for(String imageurl in _provider.certificateImages) 
@@ -156,7 +156,8 @@ class _ServiceDetails extends State<ServiceDetails> {
                           isOnline:true,
                         ),
                       ],
-                    ),
+                    ):
+                    Text('No image')
                   ]
                 ),
               ),

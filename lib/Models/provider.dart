@@ -1,5 +1,6 @@
 class ProviderModel{
 String pName, pAddDate,pImageUrl, pbirthDate, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId;
+double rate;
 bool isAdmin;
 List<String> certificateImages,myFavorateList;
 ProviderModel(
@@ -17,6 +18,7 @@ ProviderModel(
       this.pId,
       this.locationId,
       this.certificateImages,
-      this.myFavorateList
+      this.myFavorateList,
+      this.rate
       });
 }

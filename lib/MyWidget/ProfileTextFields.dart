@@ -78,6 +78,7 @@ class _ProfileTextField extends State<ProfileTextField>{
               }
             });
 
+            // ignore: unnecessary_statements
             (isPassword) ?  DialogHelper.exit(context, false) : (!isusername) ? DialogHelper.exit(context, true) : null ;  
 
           },
@@ -94,6 +95,7 @@ class _ProfileTextField extends State<ProfileTextField>{
               (isusername)? _store.updateUserName( 
                 controller.text.toString(),
                 id
+              // ignore: unnecessary_statements
               ) : (!isPassword) ? print("EMAIL"): null;
 
               setState(() {

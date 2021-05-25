@@ -15,7 +15,7 @@ class _ProviderHomeState extends State<ProviderHome> {
       body: Column(
         children: [
           Expanded(
-              child: GridView.count(
+            child: GridView.count(
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,

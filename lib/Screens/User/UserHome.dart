@@ -55,18 +55,17 @@ class _UserHomeState extends State<UserHome> {
   void getcurrentid() async {
     String _userId = (await FirebaseAuth.instance.currentUser()).uid;
     setState(() {
-      userId=_userId;
+      userId = _userId;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     // setState(() {
     //   // ignore: unnecessary_statements
     //   userId== ModalRoute.of(context).settings.arguments;
     // });
-     
+
     return Scaffold(
       drawer: Drawer(
         child: StreamBuilder(
@@ -75,6 +74,8 @@ class _UserHomeState extends State<UserHome> {
                 .document(userId)
                 .snapshots(),
             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return new Center(child: new CircularProgressIndicator());
               if (!snapshot.hasData) {
                 return Text("Loading");
               } else {
@@ -85,8 +86,9 @@ class _UserHomeState extends State<UserHome> {
                     DrawerHeader(
                       child: Column(children: <Widget>[
                         CircleAvatar(
-                          backgroundImage:
-                              AssetImage('Assets/images/noprofile.png'),
+                          backgroundImage: (userDocument[KUserImageUrl] == "")
+                              ? AssetImage("Assets/images/noprofile.png")
+                              : NetworkImage(userDocument[KUserImageUrl]),
                           radius: 35,
                         ),
                         SizedBox(
@@ -121,7 +123,7 @@ class _UserHomeState extends State<UserHome> {
                         Navigator.pushNamed(context, UserProfilescreen.id);
                       },
                     ),
-                     ListTile(
+                    ListTile(
                       leading: Icon(Icons.verified_user),
                       title: Text('MyFavorate Providers'),
                       onTap: () {
@@ -132,10 +134,10 @@ class _UserHomeState extends State<UserHome> {
                     ListTile(
                       leading: Icon(Icons.settings),
                       title: Text('My Book'),
-                      onTap: ()  {
+                      onTap: () {
                         Navigator.of(context).pop();
                         Navigator.pushNamed(context, MyBooks.id);
-                        },
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.notifications_on),
@@ -158,7 +160,7 @@ class _UserHomeState extends State<UserHome> {
                             onTap: () {
                               Navigator.pushNamed(context, AdminHome.id);
                             })
-                        :ListTile()
+                        : ListTile()
                   ],
                 );
               }
@@ -198,7 +200,8 @@ class _UserHomeState extends State<UserHome> {
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, RecommendedProviders.id,
+                    onTap: () => Navigator.pushNamed(
+                        context, RecommendedProviders.id,
                         arguments: _services[index]),
                     child: Card(
                       shape: RoundedRectangleBorder(

@@ -133,7 +133,8 @@ class _MyFavorateProvidersState extends State<MyFavorateProviders> {
                           _user.addFavorateProvider(_provider.pId, uId);
                         });
                       }
-                      await _user.updateProvider(_provider, _provider.pId);
+                      await _user.updatefavorateList(
+                          _provider.myFavorateList, _provider.pId);
                       // await _user.updateFvorateUser(uId, userFavorateProvider);
                     }),
               ],

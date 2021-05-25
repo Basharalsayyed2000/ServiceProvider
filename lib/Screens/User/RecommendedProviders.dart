@@ -97,41 +97,54 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
             arguments: _provider),
         child: ListTile(
             title: Text(title),
-            subtitle: Text(subtitle),
+            // subtitle: Text(subtitle),
+            subtitle: Row(children: [
+              Icon(Icons.star, size: 30, color: Colors.yellow),
+              Icon(Icons.star, size: 30, color: Colors.yellow),
+              Icon(Icons.star, size: 30, color: Colors.yellow),
+              Icon(Icons.star, size: 30, color: Colors.yellow),
+              Icon(Icons.star, size: 30, color: Colors.yellow),
+
+            ]),
             leading: CircleAvatar(
               backgroundImage: imageurl == ''
                   ? AssetImage('Assets/images/provider.jpg')
                   : NetworkImage(imageurl),
               radius: MediaQuery.of(context).size.height * 0.037,
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
+            trailing: Column(
               children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.star,
-                      size: 32,
-                      color: (_provider.myFavorateList.contains(uId))
-                          ? Colors.yellow
-                          : Colors.grey,
-                    ),
-                    onPressed: () async {
-                      if (_provider.myFavorateList.contains(uId)) {
-                        setState(() {
-                          _provider.myFavorateList.remove(uId);
-                          //userFavorateProvider.remove(_provider.pId);
-                          _user.deleteFavorateProvider(_provider.pId, uId);
-                        });
-                      } else {
-                        setState(() {
-                          _provider.myFavorateList.add(uId);
-                          //userFavorateProvider.add(_provider.pId);
-                          _user.addFavorateProvider(_provider.pId, uId);
-                        });
-                      }
-                      await _user.updateProvider(_provider, _provider.pId);
-                      // await _user.updateFvorateUser(uId, userFavorateProvider);
-                    }),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.favorite,
+                          size: 32,
+                          color: (_provider.myFavorateList.contains(uId))
+                              ? Colors.red
+                              : Colors.grey,
+                        ),
+                        onPressed: () async {
+                          if (_provider.myFavorateList.contains(uId)) {
+                            setState(() {
+                              _provider.myFavorateList.remove(uId);
+                              //userFavorateProvider.remove(_provider.pId);
+                              _user.deleteFavorateProvider(_provider.pId, uId);
+                            });
+                          } else {
+                            setState(() {
+                              _provider.myFavorateList.add(uId);
+                              //userFavorateProvider.add(_provider.pId);
+                              _user.addFavorateProvider(_provider.pId, uId);
+                            });
+                          }
+                          await _user.updatefavorateList(
+                              _provider.myFavorateList, _provider.pId);
+                          // await _user.updateFvorateUser(uId, userFavorateProvider);
+                        }),
+                  ],
+                ),
               ],
             )),
       ),

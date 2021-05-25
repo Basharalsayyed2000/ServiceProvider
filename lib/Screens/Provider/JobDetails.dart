@@ -295,11 +295,7 @@ class _JobDetailsState extends State<JobDetails> {
                                   horizontal: _padding * 7),
                               child: CustomButton(
                                   onPressed: () async {
-                                    neededData.requestModel.isAccepted = true;
-                                    neededData.requestModel.isProviderSeen =
-                                        true;
-                                    await store.updateRequest(
-                                        neededData.requestModel,
+                                    await store.acceptJob(
                                         neededData.requestModel.requestId);
                                     Navigator.of(context)
                                         .pushReplacementNamed(ProviderHome.id);
@@ -319,8 +315,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     neededData.requestModel.isAccepted = false;
                                     neededData.requestModel.isProviderSeen =
                                         true;
-                                    await store.updateRequest(
-                                        neededData.requestModel,
+                                    await store.rejectJob(
                                         neededData.requestModel.requestId);
                                     Navigator.of(context)
                                         .pushReplacementNamed(ProviderHome.id);
@@ -335,29 +330,30 @@ class _JobDetailsState extends State<JobDetails> {
                       ),
                     ),
                   )
-                :(neededData.pageType == "Inprogress")? Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: _padding * 7),
-                      child: CustomButton(
-                          onPressed: () async {
-                            neededData.requestModel.isAccepted = true;
-                            neededData.requestModel.isProviderSeen = true;
-                            neededData.requestModel.isComplete = true;
-                            await store.updateRequest(neededData.requestModel,
-                                neededData.requestModel.requestId);
-                            Navigator.of(context)
-                                .pushReplacementNamed(ProviderHome.id);
-                            Fluttertoast.showToast(
-                              msg: 'The job was completed',
-                            );
-                          },
-                          textValue: "Complete"),
-                    ),
-                  ):Expanded(
-                    child: Container(
-                      child: Text("This job was complete"),
-                    ),
-                  ),
+                : (neededData.pageType == "Inprogress")
+                    ? Expanded(
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: _padding * 7),
+                          child: CustomButton(
+                              onPressed: () async {
+                                neededData.requestModel.isComplete = true;
+                                await store
+                                    .endJob(neededData.requestModel.requestId);
+                                Navigator.of(context)
+                                    .pushReplacementNamed(ProviderHome.id);
+                                Fluttertoast.showToast(
+                                  msg: 'The job was completed',
+                                );
+                              },
+                              textValue: "Complete"),
+                        ),
+                      )
+                    : Expanded(
+                        child: Container(
+                          child: Text("This job was complete"),
+                        ),
+                      ),
           ],
         ),
       ),

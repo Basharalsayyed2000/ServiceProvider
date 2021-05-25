@@ -13,25 +13,25 @@ class Store {
       KServiceDesc: service.sDesc,
       KServiceAddDate: service.sAddDate,
       KServicesImageUrl: service.sImageUrl,
-      KServicesStatus:service.status,
+      KServicesStatus: service.status,
     });
   }
-  Stream<QuerySnapshot> loadService(){
-     return _firestore.collection(KServicesCollection).snapshots();
+
+  Stream<QuerySnapshot> loadService() {
+    return _firestore.collection(KServicesCollection).snapshots();
   }
 
-
-    Future<String> addLocation(AddressModel address) async {
-      String locId="";
+  Future<String> addLocation(AddressModel address) async {
+    String locId = "";
     await _firestore.collection(KLocationCollection).add({
       KLocationCountry: address.country,
       KLocationPostalCode: address.postalCode,
-      KLocationLatitude:address.latitude,
-      KLocationlonggitude:address.longgitude,
-      KLocationCity:address.city,
-      KLocationStreet:address.street
+      KLocationLatitude: address.latitude,
+      KLocationlonggitude: address.longgitude,
+      KLocationCity: address.city,
+      KLocationStreet: address.street
     }).then((value) {
-      locId=value.documentID;
+      locId = value.documentID;
     });
     return locId;
   }
@@ -42,49 +42,78 @@ class Store {
       KRequestDescription: request.rDescription,
       KRequestIsCompleted: request.isComplete,
       KRequestIsActive: request.isActive,
-      KRequestIsAccepted:request.isAccepted,
+      KRequestIsAccepted: request.isAccepted,
       KRequestUserId: request.userId,
       KRequestProviderId: request.providerId,
       KRequestTime: request.requestTime,
       KRequestDate: request.requestDate,
-      KRequestAddDate:request.rAddDate,
-      KRequestImageUrl:request.rImageUrl
-    });
-  }
-   
-     updateRequest(RequestModel request,String requestId) async {
-    await _firestore.collection(KRequestCollection).document(requestId).updateData({
-      KRequestProblem: request.rProblem,
-      KRequestDescription: request.rDescription,
-      KRequestIsCompleted: request.isComplete,
-      KRequestIsActive: request.isActive,
-      KRequestIsAccepted:request.isAccepted,
-      KRequestUserId: request.userId,
-      KRequestProviderId: request.providerId,
-      KRequestTime: request.requestTime,
-      KRequestDate: request.requestDate,
-      KRequestAddDate:request.rAddDate,
-      KRequestImageUrl:request.rImageUrl,
-      KRequestIsProviderSeen:request.isProviderSeen
+      KRequestAddDate: request.rAddDate,
+      KRequestImageUrl: request.rImageUrl
     });
   }
 
-   updateUserName(String username,String userId) {
-    _firestore.collection(KUserCollection).document(userId).updateData({
-      KUserName: username
-    });
-  }
-   
+  //    updateRequest(RequestModel request,String requestId) async {
+  //   await _firestore.collection(KRequestCollection).document(requestId).updateData({
+  //     KRequestProblem: request.rProblem,
+  //     KRequestDescription: request.rDescription,
+  //     KRequestIsCompleted: request.isComplete,
+  //     KRequestIsActive: request.isActive,
+  //     KRequestIsAccepted:request.isAccepted,
+  //     KRequestUserId: request.userId,
+  //     KRequestProviderId: request.providerId,
+  //     KRequestTime: request.requestTime,
+  //     KRequestDate: request.requestDate,
+  //     KRequestAddDate:request.rAddDate,
+  //     KRequestImageUrl:request.rImageUrl,
+  //     KRequestIsProviderSeen:request.isProviderSeen
+  //   });
+  // }
 
-  Stream<QuerySnapshot> loadRequest(){
-     return _firestore.collection(KRequestCollection).snapshots();
+  updateUserName(String username, String userId) {
+    _firestore
+        .collection(KUserCollection)
+        .document(userId)
+        .updateData({KUserName: username});
   }
 
-   searchByName(String searchField) {
+  Stream<QuerySnapshot> loadRequest() {
+    return _firestore.collection(KRequestCollection).snapshots();
+  }
+
+  searchByName(String searchField) {
     return Firestore.instance
         .collection(KProviderCollection)
         .where('SearchKey',
             isEqualTo: searchField.substring(0, 1).toUpperCase())
         .getDocuments();
+  }
+
+  acceptJob(String requestId) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestIsAccepted: true,
+      KRequestIsProviderSeen: true,
+    });
+  }
+
+  rejectJob(String requestId) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestIsAccepted: false,
+      KRequestIsProviderSeen: true,
+    });
+  }
+
+  endJob(String requestId) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestIsCompleted: true,
+    });
   }
 }
