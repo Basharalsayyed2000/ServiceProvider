@@ -7,7 +7,7 @@ class HomeProvider extends StatefulWidget {
 }
 
 class _HomeProviderState extends State<HomeProvider> {
-  bool isCompleted=true;
+  bool isCompleted = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,105 +36,97 @@ class _HomeProviderState extends State<HomeProvider> {
                 },
                               child: Column(
                   children: [
-                    Text("REQUESTS",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: !isCompleted? Colors.black : Colors.grey
-                    ),),
-                    if(!isCompleted)
-                    Container(
-                      margin: EdgeInsets.only(top:3),
-                      height: 2,
-                      width: 55,
-                      color: Colors.orange,
-
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isCompleted = false;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            "Available",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    !isCompleted ? Colors.black : Colors.grey),
+                          ),
+                          if (!isCompleted)
+                            Container(
+                              margin: EdgeInsets.only(top: 3),
+                              height: 2,
+                              width: 55,
+                              color: Colors.orange,
+                            )
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isCompleted = true;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            "InProgress",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    isCompleted ? Colors.black : Colors.grey),
+                          ),
+                          if (isCompleted)
+                            Container(
+                              margin: EdgeInsets.only(top: 3),
+                              height: 2,
+                              width: 55,
+                              color: Colors.orange,
+                            )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              ),
-              GestureDetector(
-                onTap: (){
-                  setState(() {
-                    isCompleted=true;
-                  });
-                },
-                              child: Column(
-                  children: [
-                    Text("COMPLETED",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: isCompleted? Colors.black : Colors.grey
-                    ),),
-                    if(isCompleted)
-                    Container(
-                      margin: EdgeInsets.only(top:3),
-                      height: 2,
-                      width: 55,
-                      color: Colors.orange,
-
-                    )
-                  ],
-                ),
-              )
-            ],
+              ],
+            ),
           ),
-          
-         
-        ],
-      ),),
-      SizedBox(height: 10,),
-      if(!isCompleted)
-      buildRequests(),
-      if(isCompleted)
-      buildComplited()
-      
-      ]
-      
-      
-      )
-      
-    );
+          SizedBox(
+            height: 10,
+          ),
+          if (!isCompleted) buildRequests(),
+          if (isCompleted) buildComplited()
+        ]));
   }
 
   Container buildComplited() {
-    return Container(child: 
- Column
-      (
-      children: [
-        buildCard("Said Asfour", "81 748 400"),
-        buildCard("Bashar Sayed", "81 350 091"),
-        
-        
-      ],
+    return Container(
+      child: Column(
+        children: [
+          buildCard("Said Asfour", "81 748 400"),
+          buildCard("Bashar Sayed", "81 350 091"),
+        ],
       ),
-      
-  );
+    );
   }
 
   Container buildRequests() {
-    return Container(child: 
- Column
-        (
-        children: [
-         buildCard("Bassam Odaymat", "81 655 888")
-          
-          
-        ],
-        )
-    );
-    
+    return Container(
+        child: Column(
+      children: [buildCard("Bassam Odaymat", "81 655 888")],
+    ));
   }
-   Card buildCard(String title,String subtitle) {
+
+  Card buildCard(String title, String subtitle) {
     return Card(
-         child: ListTile(
-           title: Text(title),
-           subtitle: Text(subtitle),
-           leading: Image.asset("assets/noprofile.png"),
-           trailing: Icon(Icons.phone),
-         ),
-       );
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(subtitle),
+        leading: Image.asset("Assets/images/noprofile.png"),
+        trailing: Icon(Icons.phone),
+      ),
+    );
   }
 }
-

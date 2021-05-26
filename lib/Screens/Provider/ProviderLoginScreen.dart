@@ -4,7 +4,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/Provider/ProviderHome.dart';
+import 'package:service_provider/Screens/Provider/HomeProvider.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
@@ -18,7 +18,6 @@ class ProviderLoginScreen extends StatelessWidget {
 
   // ignore: unused_field
   final _auth = Auth();
-
   // ignore: unused_field
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
@@ -122,16 +121,25 @@ class ProviderLoginScreen extends StatelessWidget {
                     onPressed: () async {
                       final _progress = ProgressHUD.of(context);
                       toggleProgressHUD(true, _progress);
-                      
+
                       if (_globalKey.currentState.validate()) {
                         _globalKey.currentState.save();
                         try {
                           final _authresult = await _auth.signIn(
                               _email.trim(), _password.trim());
-                           String userId = _authresult.user.uid;
+                          String userId = _authresult.user.uid;
                           // ignore: unrelated_type_equality_checks
                           if (await checkProviderExist(userId) == true) {
-                            Navigator.pushReplacementNamed(context, ProviderHome.id,
+                            // ignore: await_only_futures
+                            // await _userStore.updateProviderPassword( _password,userId);
+                            await Firestore.instance
+                                .collection(KProviderCollection)
+                                .document(userId)
+                                .updateData({KProviderPassword: _password});
+                            Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                HomeProvider.id,
+                                (Route<dynamic> route) => false,
                                 arguments: _authresult.user.uid);
                           } else {
                             // ignore: deprecated_member_use
@@ -139,7 +147,7 @@ class ProviderLoginScreen extends StatelessWidget {
                               content: Text('This account is for User'),
                             ));
                           }
-                          
+
                           toggleProgressHUD(false, _progress);
                         } catch (e) {
                           toggleProgressHUD(false, _progress);
@@ -148,8 +156,8 @@ class ProviderLoginScreen extends StatelessWidget {
                             content: Text(e.message),
                           ));
                         }
-                        toggleProgressHUD(false, _progress);
                       }
+                      toggleProgressHUD(false, _progress);
                     },
                   ),
                 ),
@@ -196,7 +204,8 @@ class ProviderLoginScreen extends StatelessWidget {
       _progressHUD.dismiss();
     }
   }
-   static Future<bool> checkProviderExist(String docID) async {
+
+  static Future<bool> checkProviderExist(String docID) async {
     bool exists = false;
     try {
       await Firestore.instance

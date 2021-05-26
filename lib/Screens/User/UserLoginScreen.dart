@@ -124,7 +124,12 @@ class UserLoginScreen extends StatelessWidget {
                               _email.trim(), _password.trim());
                           String userId = _authresult.user.uid;
                           if (await checkUserExist(userId) == true) {
-                                  Navigator.pushNamedAndRemoveUntil(context, UserHome.id, (Route<dynamic> route) => false,arguments:userId );
+                             await Firestore.instance
+                                .collection(KUserCollection)
+                                .document(userId)
+                                .updateData({KUserPassword: _password});
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                UserHome.id, (Route<dynamic> route) => false,);
                           } else {
                             // ignore: deprecated_member_use
                             Scaffold.of(context).showSnackBar(SnackBar(
@@ -139,8 +144,8 @@ class UserLoginScreen extends StatelessWidget {
                             content: Text(e.message),
                           ));
                         }
-                        toggleProgressHUD(false, _progress);
                       }
+                      toggleProgressHUD(false, _progress);
                     },
                   ),
                 ),
@@ -148,7 +153,6 @@ class UserLoginScreen extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.0485,
               ),
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

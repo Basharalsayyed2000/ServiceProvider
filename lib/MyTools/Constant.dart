@@ -54,6 +54,8 @@ const KProviderPassword='ProviderPassword';
 const KProviderId="ProviderId";
 const KImageCartificateUrlList='ImageCartificateUrlList';
 const KMyFavorateList="MyFavorateList";
+const KProviderRate="ProviderRate";
+
 
 
 //ignord
