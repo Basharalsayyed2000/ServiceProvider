@@ -16,25 +16,7 @@ class _HomeProviderState extends State<HomeProvider> {
           title: Text("My Jobs"),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'My Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          // currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          // onTap: _onItemTapped,
-        ),
+        
         body: Column(children: [
           Container(
             padding: EdgeInsets.all(20),
