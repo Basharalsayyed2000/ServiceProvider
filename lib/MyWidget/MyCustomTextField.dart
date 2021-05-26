@@ -14,7 +14,7 @@ class CustomTextField extends StatefulWidget {
 
   final TextInputType keyboardType;
 
-  final Function(String) validator;
+  final String Function(String) validator;
 
   final bool obscureText;
 
@@ -29,41 +29,44 @@ class CustomTextField extends StatefulWidget {
   final int maxLines;
 
   final int maxLength;
- 
 
-  CustomTextField(
-      {@required this.onClicked,
-        @required this.labelText,
-        this.obscureText,
-        this.validator,
-        this.keyboardType,
-        this.hintText,
-        this.prefixIcon,
-        this.prefixText,
-        this.iconBlank,
-        this.controller,
-        this.minLines,
-        this.maxLines,
-        this.maxLength,
-        this.enabled,
-        });
+  CustomTextField({
+    @required this.onClicked,
+    @required this.labelText,
+    this.obscureText,
+    this.validator,
+    this.keyboardType,
+    this.hintText,
+    this.prefixIcon,
+    this.prefixText,
+    this.iconBlank,
+    this.controller,
+    this.minLines,
+    this.maxLines,
+    this.maxLength,
+    this.enabled,
+  });
 
   @override
   State<StatefulWidget> createState() {
-
     return _CustomTextField(
       onClicked: this.onClicked,
       labelText: this.labelText,
       validator: this.validator,
       hintText: this.hintText,
       obscureText: (this.obscureText == null) ? false : this.obscureText,
-      keyboardType: (this.keyboardType == null) ? TextInputType.text : this.keyboardType,
+      keyboardType:
+          (this.keyboardType == null) ? TextInputType.text : this.keyboardType,
       prefixIcon: this.prefixIcon,
       prefixText: this.prefixText,
       iconBlank: this.iconBlank,
       controller: this.controller,
       minLines: (this.minLines == null) ? 1 : this.minLines,
-      maxLines: (this.maxLines == null) ? (this.minLines == null) ? 1 : this.minLines : this.maxLines,
+      maxLines: (this.maxLines == null)
+          ? (this.minLines == null)
+              ? 1
+              : this.minLines
+          : this.maxLines,
       maxLength: this.maxLength,
       enabled: this.enabled,
     );
@@ -88,28 +91,27 @@ class _CustomTextField extends State<CustomTextField> {
 
   bool _passwordVisible = false;
   bool _isObscure;
- 
 
   Color _color;
   Color _iconColor = KprimaryColorDark;
   FontWeight _weight;
 
-  _CustomTextField(
-      {@required this.onClicked,
-        @required this.labelText,
-        @required this.keyboardType,
-        this.obscureText,
-        this.validator,
-        this.hintText,
-        this.prefixIcon,
-        this.prefixText,
-        this.iconBlank,
-        this.controller,
-        this.minLines,
-        this.maxLines,
-        this.maxLength,
-        this.enabled,
-       });
+  _CustomTextField({
+    @required this.onClicked,
+    @required this.labelText,
+    @required this.keyboardType,
+    this.obscureText,
+    this.validator,
+    this.hintText,
+    this.prefixIcon,
+    this.prefixText,
+    this.iconBlank,
+    this.controller,
+    this.minLines,
+    this.maxLines,
+    this.maxLength,
+    this.enabled,
+  });
 
   // ignore: missing_return
   String _errorMessage(String str) {
@@ -123,10 +125,11 @@ class _CustomTextField extends State<CustomTextField> {
       case "Email":
         return "Email is empty !";
       case "Confirm Password":
-        return "Confirm Password is empty !";   
+        return "Confirm Password is empty !";
       case "Phone Number":
         return "Phone Number is empty !";
-      
+      // case "Current Password":
+      //   return "password can't be empty !";
     }
   }
 
@@ -158,11 +161,16 @@ class _CustomTextField extends State<CustomTextField> {
             obscureText: _isObscure,
             enabled: this.enabled,
 
-            // ignore: missing_return
-            validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
-            
+            validator: (value) {
+              return (validator == null)
+                  ? (value.isEmpty)
+                      ? _errorMessage(value)
+                      : null
+                  : validator(value);
+            },
+
             keyboardType: TextInputType.multiline,
-           // expands: true, 
+            // expands: true,
             onSaved: onClicked,
 
             minLines: this.minLines,
@@ -171,25 +179,29 @@ class _CustomTextField extends State<CustomTextField> {
             maxLength: this.maxLength,
 
             decoration: InputDecoration(
-            
               //textLabel and hintText values
               labelText: this.labelText,
               hintText: this.hintText,
-              suffixIcon: this.obscureText ? IconButton(
-                icon: Icon(
-                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                  semanticLabel: _passwordVisible ? 'hide password' : 'show password',
-                  color: KprimaryColorDark,
-                ),
-                onPressed: (){
-                  setState(() {
-                    _passwordVisible = !_passwordVisible;
-                    _isObscure = !_isObscure;
-                  });
-                },
-              ) : null,
+              suffixIcon: this.obscureText
+                  ? IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        semanticLabel: _passwordVisible
+                            ? 'hide password'
+                            : 'show password',
+                        color: KprimaryColorDark,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                    )
+                  : null,
               isDense: true,
-              
 
               //PrefixIcon with Design
               prefixIcon: Icon(
@@ -243,7 +255,8 @@ class _CustomTextField extends State<CustomTextField> {
               enabled: this.enabled,
 
               // ignore: missing_return
-              validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
+              validator: (value) =>
+                  value.isEmpty ? _errorMessage(labelText) : null,
 
               onSaved: onClicked,
 
@@ -285,7 +298,6 @@ class _CustomTextField extends State<CustomTextField> {
         );
       } else {
         return Container(
-
           child: Focus(
             //function comes with Focus Widget
             //gives a bool hasFocus variable used to track textField focus state
@@ -305,7 +317,8 @@ class _CustomTextField extends State<CustomTextField> {
               enabled: this.enabled,
 
               // ignore: missing_return
-              validator: (value) => value.isEmpty ? _errorMessage(labelText) : null,
+              validator: (value) =>
+                  value.isEmpty ? _errorMessage(labelText) : null,
 
               onSaved: onClicked,
 
