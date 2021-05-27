@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Provider/HomeProvider.dart';
-import 'package:service_provider/Screens/Provider/ProviderHome.dart';
-import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/RecommendedJobs.dart';
 
 

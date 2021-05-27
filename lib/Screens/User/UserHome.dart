@@ -86,6 +86,7 @@ class _UserHomeState extends State<UserHome> {
                     DrawerHeader(
                       child: Column(children: <Widget>[
                         CircleAvatar(
+                          backgroundColor: KprimaryColor,
                           backgroundImage: (userDocument[KUserImageUrl] == "")
                               ? AssetImage("Assets/images/noprofile.png")
                               : NetworkImage(userDocument[KUserImageUrl]),
@@ -149,8 +150,8 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Logout'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushReplacementNamed(
-                            context, WelcomeScreen.id);
+                        Navigator.pushReplacementNamed(context, WelcomeScreen.id);
+                        _auth.signOut();
                       },
                     ),
                     (userDocument[KUserIsAdmin] == true)

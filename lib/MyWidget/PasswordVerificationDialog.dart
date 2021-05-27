@@ -55,41 +55,50 @@ class _PasswordDialog extends State<PasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       backgroundColor: Colors.white.withOpacity(1),
       elevation: 8,
+      
       child: Form(
         key: _globalKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
-              child: CustomTextField(
-                prefixIcon: Icons.vpn_key,
-                labelText: "Current Password",
-                obscureText: true,
-                validator: (value) {
-                  print(value);
-                  if (value == "") {
-                    return "password can't be empty";
-                  } else {
-                    if (value != myPassword) {
-                      return "the password is incorrect";
+
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height/2.3,
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              Container(
+                margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
+
+                child: CustomTextField(
+                  prefixIcon: Icons.vpn_key,
+                  labelText: "Current Password",
+                  obscureText: true,
+                  validator: (value) {
+                    print(value);
+                    if (value == "") {
+                      return "The Password Field Can't Be Empty!";
                     } else {
-                      changeEmail
-                          ? Navigator.of(context)
-                              .pushReplacementNamed(ChangeEmail.id)
-                          : Navigator.of(context)
-                              .pushReplacementNamed(ChangePassword.id);
+                      if (value != myPassword) {
+                        return "The Password Is Incorrect";
+                      } else {
+                        changeEmail
+                            ? Navigator.of(context)
+                                .pushReplacementNamed(ChangeEmail.id)
+                            : Navigator.of(context)
+                                .pushReplacementNamed(ChangePassword.id);
+                      }
                     }
-                  }
-                },
-                onClicked: (value) {},
+                  },
+                  onClicked: (value) {},
+                ),
               ),
-            ),
-            CustomButton(
+
+              CustomButton(
                 elevation: 10,
                 onPressed: () async {
                   _globalKey.currentState.validate();
@@ -100,8 +109,11 @@ class _PasswordDialog extends State<PasswordDialog> {
 
                   //   }
                 },
-                textValue: "Verify")
-          ],
+                textValue: "Verify",
+              )
+
+            ],
+          ),
         ),
       ),
     );

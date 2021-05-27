@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
+import 'package:service_provider/Screens/Provider/AvailableJobs.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
-import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Navbar.id,
+      initialRoute: SplashScreen.id,
       routes: {
         MyFavorateProviders.id: (context) => MyFavorateProviders(),
         JobDetails.id: (context) => JobDetails(),
@@ -68,11 +68,11 @@ class MyApp extends StatelessWidget {
         ProviderLoginScreen.id: (context) => ProviderLoginScreen(),
         ProviderSignUpScreen.id: (context) => ProviderSignUpScreen(),
         RecommendedJobs.id: (context) => RecommendedJobs(),
+        AvailableRequests.id: (context) => AvailableRequests(),
         MyActivity.id: (context) => MyActivity(),
         HomeProvider.id: (context) => HomeProvider(),
         ChangeEmail.id: (context) => ChangeEmail(),
         ChangePassword.id: (context) => ChangePassword(),
-        Navbar.id: (context) => Navbar(),
         
 
       //  SearchScreen.id: (context) => SearchScreen(),

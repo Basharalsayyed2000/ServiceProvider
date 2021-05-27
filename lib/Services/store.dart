@@ -76,6 +76,13 @@ class Store {
         .updateData({KUserName: username});
   }
 
+  updateProviderName(String username, String providerId) {
+    _firestore
+        .collection(KProviderCollection)
+        .document(providerId)
+        .updateData({KProviderName: username});
+  }
+
   Stream<QuerySnapshot> loadRequest() {
     return _firestore.collection(KRequestCollection).snapshots();
   }

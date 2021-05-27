@@ -162,6 +162,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                                         ]),
                                     child: CircleAvatar(
                                         radius: 80,
+                                        backgroundColor: KprimaryColor,
                                         backgroundImage: imageUrl == ""
                                             ? AssetImage(
                                                     "Assets/images/noprofile.png")
@@ -194,6 +195,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                                   padding: EdgeInsets.symmetric(vertical: 18),
                                   margin: EdgeInsets.only(left: 50),
                                   child: ProfileTextField(
+                                    isUser: true,
                                     isusername: true,
                                     edit: true,
                                     controller: _username,

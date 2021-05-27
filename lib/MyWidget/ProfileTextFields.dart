@@ -9,16 +9,17 @@ class ProfileTextField extends StatefulWidget{
   final TextEditingController controller;
   final String id;
   final String prefix;
+  final bool isUser;
   final bool isusername;
   final bool isPassword;
   final bool edit;
 
   @override
-  ProfileTextField({@required this.controller, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
+  ProfileTextField({@required this.controller, this.isUser, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
 
   @override
   State<StatefulWidget> createState(){
-    return _ProfileTextField(controller: controller, id: id, prefix: prefix, isusername: (isusername == null)? false : isusername, edit: (this.edit == null) ? false : this.edit, isPassword: (this.isPassword == null) ? false : this.isPassword);
+    return _ProfileTextField(controller: controller, isUser: isUser, id: id, prefix: prefix, isusername: (isusername == null)? false : isusername, edit: (this.edit == null) ? false : this.edit, isPassword: (this.isPassword == null) ? false : this.isPassword);
   }
 
 }
@@ -33,12 +34,13 @@ class _ProfileTextField extends State<ProfileTextField>{
   final TextEditingController controller;
   final String id;
   final String prefix;
+  final bool isUser;
   final bool isusername;
   final bool isPassword;
   final bool edit;
 
   @override
-  _ProfileTextField({@required this.controller, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
+  _ProfileTextField({@required this.controller, this.isUser, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
 
   @override
   void initState() {
@@ -92,11 +94,11 @@ class _ProfileTextField extends State<ProfileTextField>{
               ),
             ),
             onPressed: (){
-              (isusername)? _store.updateUserName( 
-                controller.text.toString(),
-                id
-              // ignore: unnecessary_statements
-              ) : (!isPassword) ? print("EMAIL"): null;
+              
+              (isUser) ? 
+                _store.updateUserName(controller.text.toString(),id) 
+                : 
+                _store.updateProviderName(controller.text.toString(),id);
 
               setState(() {
                 _edit = !_edit;

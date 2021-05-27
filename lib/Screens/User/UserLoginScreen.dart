@@ -123,7 +123,7 @@ class UserLoginScreen extends StatelessWidget {
                           final _authresult = await _auth.signIn(
                               _email.trim(), _password.trim());
                           String userId = _authresult.user.uid;
-                          if (await checkUserExist(userId) == true) {
+                          if (await _auth.checkUserExist(userId) == true) {
                              await Firestore.instance
                                 .collection(KUserCollection)
                                 .document(userId)
@@ -193,21 +193,4 @@ class UserLoginScreen extends StatelessWidget {
     }
   }
 
-  Future<bool> checkUserExist(String docID) async {
-    bool exists = false;
-    try {
-      await Firestore.instance
-          .document("$KUserCollection/$docID")
-          .get()
-          .then((doc) {
-        if (doc.exists)
-          exists = true;
-        else
-          exists = false;
-      });
-      return exists;
-    } catch (e) {
-      return false;
-    }
-  }
 }

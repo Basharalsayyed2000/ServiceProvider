@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:service_provider/Screens/Provider/HomeProvider.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
+import 'package:service_provider/Services/auth.dart';
 
 class SplashScreen extends StatefulWidget{
   static String id = 'splashScreen';
@@ -11,13 +14,38 @@ class SplashScreen extends StatefulWidget{
 }
 
 class _SplashScreen extends State<SplashScreen>{
+  bool _isLoggedIn = false, _asUser = true;
+
+  Auth _auth = new Auth();
+
   @override
   void initState() {
+
+    _auth.isUserLoggedIn().then((isLog) => setState((){
+        _isLoggedIn = isLog;
+        
+        if(_isLoggedIn){
+          _auth.getCurrentUserId().then((uid) => setState((){
+            print(uid);
+              _auth.checkUserExist(uid).then((isUser) => setState((){
+                  _asUser = isUser;
+                })
+              );
+            })
+          );
+        }
+          
+      })
+
+    );
+
+    //print(_asUser);
+
     super.initState();
     Timer(Duration(seconds: 4),
         ()=>Navigator.pushReplacement(context,
           MaterialPageRoute(
-              builder: (context) => WelcomeScreen(),
+              builder: (context) => (!_isLoggedIn) ? WelcomeScreen() : ((_asUser) ? UserHome() : HomeProvider()),
           )
         )
     );

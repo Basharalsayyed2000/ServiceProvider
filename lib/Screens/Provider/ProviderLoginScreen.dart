@@ -129,7 +129,7 @@ class ProviderLoginScreen extends StatelessWidget {
                               _email.trim(), _password.trim());
                           String userId = _authresult.user.uid;
                           // ignore: unrelated_type_equality_checks
-                          if (await checkProviderExist(userId) == true) {
+                          if (await _auth.checkProviderExist(userId) == true) {
                             // ignore: await_only_futures
                             // await _userStore.updateProviderPassword( _password,userId);
                             await Firestore.instance
@@ -205,21 +205,4 @@ class ProviderLoginScreen extends StatelessWidget {
     }
   }
 
-  static Future<bool> checkProviderExist(String docID) async {
-    bool exists = false;
-    try {
-      await Firestore.instance
-          .document("$KProviderCollection/$docID")
-          .get()
-          .then((doc) {
-        if (doc.exists)
-          exists = true;
-        else
-          exists = false;
-      });
-      return exists;
-    } catch (e) {
-      return false;
-    }
-  }
 }

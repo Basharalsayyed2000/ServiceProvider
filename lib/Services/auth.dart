@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:service_provider/MyTools/Constant.dart';
 
 class Auth {
   final _auth = FirebaseAuth.instance;
@@ -17,6 +19,46 @@ class Auth {
 
   sendRequestToResetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<bool> isUserLoggedIn() async {
+    return ((await _auth.currentUser()) != null);
+  }
+
+  Future<bool> checkUserExist(String docID) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("$KUserCollection/$docID")
+          .get()
+          .then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> checkProviderExist(String docID) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("$KProviderCollection/$docID")
+          .get()
+          .then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<String> getCurrentUserId() async {
