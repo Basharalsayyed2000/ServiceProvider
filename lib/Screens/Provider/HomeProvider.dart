@@ -11,30 +11,19 @@ class _HomeProviderState extends State<HomeProvider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text("Requests"),
-        centerTitle: true,
-      ),
-           
-      body:
-      Column(children:[
-      Container(
+        appBar: AppBar(
+          elevation: 0,
+          title: Text("My Jobs"),
+          centerTitle: true,
+        ),
         
-        padding: EdgeInsets.all(20),
-        child:
-       Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              GestureDetector(
-                onTap: (){
-                  setState(() {
-                    isCompleted=false;
-                  });
-                },
-                              child: Column(
+        body: Column(children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
                       onTap: () {
