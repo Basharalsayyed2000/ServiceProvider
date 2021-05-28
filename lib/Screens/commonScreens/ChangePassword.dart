@@ -50,7 +50,7 @@ class _ChangePassword extends State<ChangePassword> {
                   labelText: "New Password",
                   validator: (value) {
                     setState(() {
-                      _pass = value;
+                      newPasswd = value;
                     });
                     
                     if(value == "")
@@ -74,7 +74,7 @@ class _ChangePassword extends State<ChangePassword> {
                   labelText: "Confirm Password",
                   validator: (value) {
                     if(value != ""){
-                      if(_pass != "" && _pass.length >= 10)
+                      if(newPasswd != "" && newPasswd.length >= 10)
                           return null;
                     }else
                       return"Please Confirm your new Password!";
@@ -133,7 +133,7 @@ class _ChangePassword extends State<ChangePassword> {
           ),
         ),
       ),
-    ));
+    );
   }
 
   void toggleProgressHUD(_loading, _progressHUD) {
