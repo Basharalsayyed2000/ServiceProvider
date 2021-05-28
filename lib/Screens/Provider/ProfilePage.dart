@@ -29,9 +29,18 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   String imageUrl;
   var providerDocument;
 
+  String _providerType = "Electrician";
+  String _phone = "+961 70 223 200";
+  var _address = ["Lebanon", "Tripoli", "Maarad"];
+  var _description;
+  //String _description = "I am a Electrician graduate at the Beirut Arabic University in Beirut.";
+  //String _gallery = "Electrician";
+
+
   TextEditingController _username;
   TextEditingController _accountType;
   TextEditingController _email;
+  TextEditingController _phoneNb;
   TextEditingController _password;
 
   @override
@@ -100,11 +109,18 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
             if (providerDocument[KProviderName] != null)
               _username =TextEditingController(text: "${providerDocument[KProviderName]}");
 
-            if (providerDocument[KProviderEmail] != null)
-              _email =TextEditingController(text: "${providerDocument[KProviderEmail]}");
+            // if (providerDocument[KProviderEmail] != null)
+            //   _email =TextEditingController(text: "${providerDocument[KProviderEmail]}");
 
-            if (providerDocument[KProviderPassword] != null)
-              _password = TextEditingController(text: "${providerDocument[KProviderPassword]}");
+            // if (providerDocument[KProviderPhoneNumber] != null)
+            //   _phoneNb =TextEditingController(text: "${providerDocument[KProviderPhoneNumber]}");
+
+            // if (providerDocument[KProviderPassword] != null)
+            //   _password = TextEditingController(text: "${providerDocument[KProviderPassword]}");
+
+            if (providerDocument[KProviderDescription] != null) {
+              _description = providerDocument[KProviderDescription];
+            }
 
             return ProgressHUD(
               child: GestureDetector(
@@ -119,11 +135,11 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            // KprimaryColor.withOpacity(0.87),
-                            // KprimaryColor,
-                            // KsecondaryColor.withOpacity(.82)
-                            Color.fromRGBO(6, 87, 91, 1).withOpacity(.7),
-                            Color.fromRGBO(102, 165, 173, 1),
+                            KprimaryColor.withOpacity(0.87),
+                            KprimaryColor,
+                            KsecondaryColor.withOpacity(.82)
+                            // Color.fromRGBO(6, 87, 91, 1).withOpacity(.7),
+                            // Color.fromRGBO(102, 165, 173, 1),
                           ]
                         )
                       ),
@@ -168,7 +184,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                                   },
                                   child: Icon(
                                     Icons.camera_alt,
-                                    color: Colors.teal,
+                                    color: KprimaryColorDark.withOpacity(.89),
                                     size: 28.0,
                                   )
                                 ),
@@ -177,8 +193,8 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                           )),
 
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 18),
-                            margin: EdgeInsets.only(left: 50),
+                            padding: EdgeInsets.only(top: 5),
+                            margin: EdgeInsets.only(left: 35),
                             child: ProfileTextField(
                               isUser: false,
                               isusername: true,
@@ -191,6 +207,8 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                             //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                             // ),
                           ),
+
+                          
 
                           // SizedBox(
                           //   height: MediaQuery.of(context).size.height * 0.0185,
@@ -215,13 +233,28 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                       endIndent: 10,
                     ),
 
-                    Container(
+                    /*Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: ProfileTextField(
                         controller: _email,
                         prefix: "E-mail",
-                        edit: true,
                         id: _userId,
+                      ),
+                    ),
+
+                    Divider(
+                      color: KprimaryColorDark,
+                      height: 1,
+                      thickness: 1.5,
+                      indent: 10,
+                      endIndent: 10,
+                    ),
+
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: ProfileTextField(
+                        controller: _phoneNb,
+                        prefix: "Phone-number",
                       ),
                     ),
 
@@ -238,10 +271,19 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                       child: ProfileTextField(
                         controller: _password,
                         prefix: "Password",
-                        edit: true,
                         isPassword: true,
                       ),
-                    ),
+                    ),*/
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height/3,
+                      child: Container(
+                        padding: EdgeInsets.all(18),
+                        child: Text(
+                          _description,
+                          style: Theme.of(context).textTheme.subtitle1
+                        ),
+                      ),
+                    )
 
                     // Divider(
                     //   color: KprimaryColorDark,

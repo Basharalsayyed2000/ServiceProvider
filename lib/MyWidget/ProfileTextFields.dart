@@ -9,17 +9,18 @@ class ProfileTextField extends StatefulWidget{
   final TextEditingController controller;
   final String id;
   final String prefix;
+  final bool multiline;
   final bool isUser;
   final bool isusername;
   final bool isPassword;
   final bool edit;
 
   @override
-  ProfileTextField({@required this.controller, this.isUser, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
+  ProfileTextField({@required this.controller, this.multiline, this.isUser, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
 
   @override
   State<StatefulWidget> createState(){
-    return _ProfileTextField(controller: controller, isUser: isUser, id: id, prefix: prefix, isusername: (isusername == null)? false : isusername, edit: (this.edit == null) ? false : this.edit, isPassword: (this.isPassword == null) ? false : this.isPassword);
+    return _ProfileTextField(controller: controller, multiline: (multiline == null)? false : multiline, isUser: isUser, id: id, prefix: prefix, isusername: (isusername == null)? false : isusername, edit: (this.edit == null) ? false : this.edit, isPassword: (this.isPassword == null) ? false : this.isPassword);
   }
 
 }
@@ -34,13 +35,14 @@ class _ProfileTextField extends State<ProfileTextField>{
   final TextEditingController controller;
   final String id;
   final String prefix;
+  final bool multiline;
   final bool isUser;
   final bool isusername;
   final bool isPassword;
   final bool edit;
 
   @override
-  _ProfileTextField({@required this.controller, this.isUser, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
+  _ProfileTextField({@required this.controller, this.multiline, this.isUser, this.id, this.prefix, this.isusername, this.edit, this.isPassword});
 
   @override
   void initState() {
@@ -55,6 +57,13 @@ class _ProfileTextField extends State<ProfileTextField>{
       child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+
+        (!isUser)? 
+          Expanded(
+            flex: 1,
+            child: Icon(Icons.verified, color: KprimaryColorDark,)) 
+            : null,
+
         (isusername == false) ? 
           Expanded(
             child: textField(),
@@ -63,6 +72,7 @@ class _ProfileTextField extends State<ProfileTextField>{
           :
 
           Expanded(
+            flex: 60,
             child: textFieldF(FontWeight.bold, 20),
           ),
 
@@ -125,6 +135,9 @@ class _ProfileTextField extends State<ProfileTextField>{
 
             obscureText: isPassword,
             focusNode: focusNode,
+
+            maxLines: multiline? 3 : 1,
+            minLines: multiline? 3 : 1,
 
             style: TextStyle(
               color: KprimaryColorDark,

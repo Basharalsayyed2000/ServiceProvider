@@ -197,9 +197,9 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                                   child: ProfileTextField(
                                     isUser: true,
                                     isusername: true,
-                                    edit: true,
                                     controller: _username,
                                     id: _userId,
+                                    edit: true,
                                   )
                                   // Text(
                                   //   '${userDocument[KUserName]}',
@@ -234,7 +234,6 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                           child: ProfileTextField(
                             controller: _email,
                             prefix: "E-mail",
-                            edit: true,
                             id: _userId,
                           ),
                         ),
@@ -252,7 +251,6 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                           child: ProfileTextField(
                             controller: _password,
                             prefix: "Password",
-                            edit: true,
                             isPassword: true,
                           ),
                         ),
