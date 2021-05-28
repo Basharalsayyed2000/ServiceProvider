@@ -128,8 +128,8 @@ class _CustomTextField extends State<CustomTextField> {
         return "Confirm Password is empty !";
       case "Phone Number":
         return "Phone Number is empty !";
-      // case "Current Password":
-      //   return "password can't be empty !";
+      case "New Password":
+        return "password can't be empty !";
     }
   }
 

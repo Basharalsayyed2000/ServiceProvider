@@ -7,7 +7,7 @@ import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 
-class ServiceDetails extends StatefulWidget{
+class ServiceDetails extends StatefulWidget {
   static String id = "serviceDetails";
   @override
   State<StatefulWidget> createState() {
@@ -26,7 +26,6 @@ class _ServiceDetails extends State<ServiceDetails> {
         centerTitle: true,
         backgroundColor: KprimaryColor,
       ),
-
       body: StreamBuilder(
           stream: Firestore.instance
               .collection(KServicesCollection)
@@ -106,10 +105,10 @@ class _ServiceDetails extends State<ServiceDetails> {
                       indent: 5,
                       endIndent: 5,
                     ),
-                      Container(
+                    Container(
                       padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
                       child: Text(
-                      "Certificate",
+                        "Certificate",
                         style: TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w500),
                       ),
@@ -126,78 +125,77 @@ class _ServiceDetails extends State<ServiceDetails> {
                             fontSize: 15, fontWeight: FontWeight.w500),
                       ),
                     ),
-                  
-             
-          
-
-            Container(
-              padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
-              child: Text(
-                "Service Gallery",
-                style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w500
-                ),
-              ),
-            ),
-
-            Container(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.width/3.4,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    (_provider.certificateImages.isNotEmpty)?Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        for(String imageurl in _provider.certificateImages) 
-                           GalleryImages(
-                          assetImage: imageurl,
-                          isOnline:true,
-                        ),
-                      ],
-                    ):
-                    Text('No image')
-                  ]
-                ),
-              ),
-            ),
-
-            Container(
-              padding: EdgeInsets.only(top: Kminimumpadding * 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(Kminimumpadding*1.5),
-
-                      
-                      child: CustomButton(
-                        onPressed: (){
-                          Navigator.pushNamed(context, ServiceRequest.id,arguments:NeededData(provider:_provider,isActive:true) );
-                        },
-                        textValue: "Book Now",
+                    Container(
+                      padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
+                      child: Text(
+                        "Service Gallery",
+                        style: TextStyle(
+                            fontSize: 19, fontWeight: FontWeight.w500),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(Kminimumpadding*1.5),
-                      child: CustomButton(
-                        onPressed: (){
-                          Navigator.pushNamed(context, ServiceRequest.id,arguments:NeededData(provider:_provider,isActive:false) );
-                        },
-                        textValue: "Book Later",
+                    Container(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.width / 3.4,
+                        child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              (_provider.certificateImages.isNotEmpty)
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        for (String imageurl
+                                            in _provider.certificateImages)
+                                          GalleryImages(
+                                            assetImage: imageurl,
+                                            isOnline: true,
+                                          ),
+                                      ],
+                                    )
+                                  : Text('No image')
+                            ]),
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
+                    Container(
+                      padding: EdgeInsets.only(top: Kminimumpadding * 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.all(Kminimumpadding * 1.5),
+                              child: CustomButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, ServiceRequest.id,
+                                      arguments: NeededData(
+                                          provider: _provider, isActive: true));
+                                },
+                                textValue: "Book Now",
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.all(Kminimumpadding * 1.5),
+                              child: CustomButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, ServiceRequest.id,
+                                      arguments: NeededData(
+                                          provider: _provider,
+                                          isActive: false));
+                                },
+                                textValue: "Book Later",
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
           }),
     );
@@ -206,20 +204,18 @@ class _ServiceDetails extends State<ServiceDetails> {
   // ignore: unused_element
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          bottom: 10,
-          left: 10,
-          right: 10,
-          top: 10),
+      margin: EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
       child: getImage(),
     );
   }
 
-  Widget getImage(){
+  Widget getImage() {
     AssetImage assetImage = new AssetImage("Assets/images/Logo.png");
-    Image image = new Image(image: assetImage, width: MediaQuery.of(context).size.width/2.6, height: MediaQuery.of(context).size.width/3.4);
+    Image image = new Image(
+        image: assetImage,
+        width: MediaQuery.of(context).size.width / 2.6,
+        height: MediaQuery.of(context).size.width / 3.4);
 
     return image;
   }
-
 }
