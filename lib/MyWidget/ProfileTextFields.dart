@@ -58,11 +58,11 @@ class _ProfileTextField extends State<ProfileTextField>{
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
 
-        (!isUser)? 
+        if(!isUser) 
           Expanded(
             flex: 1,
-            child: Icon(Icons.verified, color: KprimaryColorDark,)) 
-            : null,
+            child: Icon(Icons.verified, color: KprimaryColorDark,)
+          ),
 
         (isusername == false) ? 
           Expanded(

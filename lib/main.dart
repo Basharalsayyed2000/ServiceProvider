@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';

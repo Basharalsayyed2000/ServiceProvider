@@ -22,8 +22,6 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
   String _email, _password, _name, _confirmPassWord;
   final _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  
-  bool isHidePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +72,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
                   child: Focus(
                     child: CustomTextField(
-                      obscureText: isHidePassword,
+                      obscureText: true,
                       labelText: "Password",
                       hintText: "complex password",
                       prefixIcon: Icons.vpn_key,
@@ -88,7 +86,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
                   child: Focus(
                     child: CustomTextField(
-                      obscureText: isHidePassword,
+                      obscureText: true,
                       labelText: "Confirm Password",
                       hintText: "confirm",
                       prefixIcon: Icons.vpn_key,
@@ -184,12 +182,6 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
         ),
       ),
     );
-  }
-
-  void tooglePasswordView() {
-    setState(() {
-      isHidePassword = !isHidePassword;
-    });
   }
 
   Widget getImage() {
