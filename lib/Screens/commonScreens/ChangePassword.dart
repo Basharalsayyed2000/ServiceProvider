@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -17,7 +16,7 @@ class ChangePassword extends StatefulWidget {
 
 class _ChangePassword extends State<ChangePassword> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  String newPasswd, _pass, confirmPasswd, userId;
+  String newPasswd, confirmPasswd, userId;
   Auth _auth;
 
   @override
@@ -133,8 +132,8 @@ class _ChangePassword extends State<ChangePassword> {
             ),
           ),
         ),
-      )
-    );
+      ),
+    ));
   }
 
   void toggleProgressHUD(_loading, _progressHUD) {

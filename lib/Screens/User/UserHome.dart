@@ -85,12 +85,18 @@ class _UserHomeState extends State<UserHome> {
                   children: <Widget>[
                     DrawerHeader(
                       child: Column(children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: KprimaryColor,
-                          backgroundImage: (userDocument[KUserImageUrl] == "")
-                              ? AssetImage("Assets/images/noprofile.png")
-                              : NetworkImage(userDocument[KUserImageUrl]),
-                          radius: 35,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.pushNamed(context, UserProfilescreen.id);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: KprimaryColor,
+                            backgroundImage: (userDocument[KUserImageUrl] == "")
+                                ? AssetImage("Assets/images/noprofile.png")
+                                : NetworkImage(userDocument[KUserImageUrl]),
+                            radius: 35,
+                          ),
                         ),
                         SizedBox(
                           height: 10,
@@ -125,20 +131,52 @@ class _UserHomeState extends State<UserHome> {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.verified_user),
+                      leading: Icon(Icons.favorite_rounded),
                       title: Text('MyFavorate Providers'),
                       onTap: () {
                         Navigator.of(context).pop();
                         Navigator.pushNamed(context, MyFavorateProviders.id);
                       },
                     ),
+                    const Divider(
+                      height: 35,
+                      thickness: 2,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, bottom: 12),
+                      child: Text("My Book"),
+                    ),
                     ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text('My Book'),
+                      leading: Icon(Icons.send),
+                      title: Text('Sended request'),
                       onTap: () {
                         Navigator.of(context).pop();
                         Navigator.pushNamed(context, MyBooks.id);
                       },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.watch_later),
+                      title: Text('Book later requests'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyBooks.id);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.check_sharp),
+                      title: Text('Completed requests'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyBooks.id);
+                      },
+                    ),
+                    const Divider(
+                      height: 35,
+                      thickness: 2,
+                      indent: 5,
+                      endIndent: 5,
                     ),
                     ListTile(
                       leading: Icon(Icons.notifications_on),
@@ -146,17 +184,29 @@ class _UserHomeState extends State<UserHome> {
                       onTap: () => {Navigator.of(context).pop()},
                     ),
                     ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text('Setting'),
+                      onTap: () => {Navigator.of(context).pop()},
+                    ),
+                    const Divider(
+                      height: 35,
+                      thickness: 2,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    ListTile(
                       leading: Icon(Icons.exit_to_app),
                       title: Text('Logout'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushReplacementNamed(context, WelcomeScreen.id);
+                        Navigator.pushReplacementNamed(
+                            context, WelcomeScreen.id);
                         _auth.signOut();
                       },
                     ),
                     (userDocument[KUserIsAdmin] == true)
                         ? ListTile(
-                            leading: Icon(Icons.control_point_sharp),
+                            leading: Icon(Icons.arrow_left),
                             title: Text('Control panel'),
                             onTap: () {
                               Navigator.pushNamed(context, AdminHome.id);

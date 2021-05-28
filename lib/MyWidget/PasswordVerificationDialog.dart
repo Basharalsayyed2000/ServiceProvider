@@ -22,7 +22,7 @@ class PasswordDialog extends StatefulWidget {
 class _PasswordDialog extends State<PasswordDialog> {
   final _auth = Auth();
   final bool changeEmail;
-  String _currentPassword;
+  String currentPassword;
   String userId;
   String myPassword;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
@@ -102,12 +102,6 @@ class _PasswordDialog extends State<PasswordDialog> {
                 elevation: 10,
                 onPressed: () async {
                   _globalKey.currentState.validate();
-                  //   _globalKey.currentState.save();
-                  //   if (_currentPassword == myPassword) {
-
-                  //   } else {
-
-                  //   }
                 },
                 textValue: "Verify",
               )
