@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/AvailableJobs.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
+import 'package:service_provider/Screens/Provider/ProfilePage.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
@@ -38,6 +40,7 @@ main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
@@ -61,6 +64,7 @@ class MyApp extends StatelessWidget {
         AdminHome.id: (context) => AdminHome(),
         ManageService.id: (context) => ManageService(),
         UserProfilescreen.id: (context) => UserProfilescreen(),
+        ProviderProfilescreen.id: (context) => ProviderProfilescreen(),
         RecommendedProviders.id: (context) => RecommendedProviders(),
         MyBooks.id: (context) => MyBooks(),
         UserSignUpScreen.id: (context) => UserSignUpScreen(),
