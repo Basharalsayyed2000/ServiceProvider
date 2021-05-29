@@ -9,6 +9,7 @@ import 'package:service_provider/Screens/User/MyBooks.dart';
 import 'package:service_provider/Screens/User/MyFavorateProviders.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
+import 'package:service_provider/Screens/commonScreens/Settings.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
@@ -186,7 +187,10 @@ class _UserHomeState extends State<UserHome> {
                     ListTile(
                       leading: Icon(Icons.settings),
                       title: Text('Setting'),
-                      onTap: () => {Navigator.of(context).pop()},
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, Settings.id);
+                      },
                     ),
                     const Divider(
                       height: 35,

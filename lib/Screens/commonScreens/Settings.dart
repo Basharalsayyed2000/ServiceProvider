@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/PasswordVerificationDialog.dart';
 
 
 class Settings extends StatefulWidget {
@@ -35,10 +37,13 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: KprimaryColor,
         title: Text("Settings",style: TextStyle(fontSize: 22),),
-      leading: IconButton(onPressed: (){},
-      icon: Icon(Icons.arrow_back
-      ,color: Colors.white ,),),),
+      // leading: IconButton(onPressed: (){},
+      // icon: Icon(Icons.arrow_back
+      // ,color: Colors.white ,),
+      // ),
+      ),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -53,7 +58,7 @@ class _SettingsState extends State<Settings> {
            ),
            Divider(height: 20,thickness: 1,),
            SizedBox(height: 10,),
-            buildAccountOption(context,"Change Password"),
+            buildAccountOption(context,"Change Password",),
             buildAccountOption(context,"Content settings"),
             buildAccountOption(context,"Privacy and Security"),
             SizedBox(height: 40,),
@@ -103,7 +108,9 @@ class _SettingsState extends State<Settings> {
   }
   GestureDetector buildAccountOption(BuildContext context,String title){
     return GestureDetector(
-      onTap: (){},
+      onTap: (){
+        DialogHelper.exit(context, false) ;
+        },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 20),
         child: Row(

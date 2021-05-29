@@ -83,7 +83,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   ],
                                 );
                               });
-
                         } catch (e) {
                           toggleProgressHUD(false, _progress);
                           // ignore: deprecated_member_use

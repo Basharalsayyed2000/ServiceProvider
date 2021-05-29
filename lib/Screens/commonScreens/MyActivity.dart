@@ -1,45 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:service_provider/MyTools/Constant.dart';
 
-class MyActivity extends StatefulWidget{
+class MyActivity extends StatefulWidget {
   static String id = "myActivity";
 
   @override
-  State<StatefulWidget> createState(){
+  State<StatefulWidget> createState() {
     return _MyActivity();
   }
 }
 
-class _MyActivity extends State<MyActivity>{
+class _MyActivity extends State<MyActivity> {
+  String userId;
+  double rejectedCount=0, disactiveCount=0, inprogressCount=0, completeCount=0, idleCount=0;
+  bool loading=false;
+  void getcurrentid() async {
+    String _userId = (await FirebaseAuth.instance.currentUser()).uid;
+    setState(() {
+      userId = _userId;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    getcurrentid();
+    _fetchData();
     // ignore: deprecated_member_use
-    _seriesPieData = new List<charts.Series<Task, String>>();
-    _generateData();
+    _seriesPieData = new List<charts.Series<Task, String>>(); 
+      _generateData();
   }
 
   List<charts.Series<Task, String>> _seriesPieData;
-  
-  _generateData(){
+
+  _generateData() {
     var pieData = [
-      Task("Private Requests", 30, Colors.redAccent),
-      Task("Idle Requests", 10, Colors.orange),
-      Task("Completed Requests", 10, Colors.deepPurpleAccent),
+      Task("disActive ", disactiveCount, Colors.redAccent),
+      Task("Idle ", idleCount, Colors.orange),
+      Task("Completed ", completeCount, Colors.deepPurpleAccent),
+      Task("Inprogress ", inprogressCount, Colors.cyanAccent),
+      Task("Rejected ", rejectedCount, Colors.lightGreenAccent),
     ];
-    
-    _seriesPieData.add(
-      charts.Series(
-        data: pieData,
-        domainFn: (Task task,_) => task.name,
-        measureFn: (Task task,_) => task.value,
-        colorFn: (Task task,_) => charts.ColorUtil.fromDartColor(task.color),
-        id: "My Activity",
-        labelAccessorFn: (Task row,_)=> row.value.toString(),
-      )
-    );
+
+    _seriesPieData.add(charts.Series(
+      data: pieData,
+      domainFn: (Task task, _) => task.name,
+      measureFn: (Task task, _) => task.value,
+      colorFn: (Task task, _) => charts.ColorUtil.fromDartColor(task.color),
+      id: "My Activity",
+      labelAccessorFn: (Task row, _) => row.value.toString(),
+    ));
   }
 
   @override
@@ -50,7 +63,8 @@ class _MyActivity extends State<MyActivity>{
         title: Text("My Activity"),
         centerTitle: true,
       ),
-      body: Padding(
+      body:(loading==true)?
+       Padding(
         padding: EdgeInsets.all(8.0),
         child: Center(
           child: Column(
@@ -62,9 +76,9 @@ class _MyActivity extends State<MyActivity>{
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
-              SizedBox(height: 50.0,),
-
+              SizedBox(
+                height: 50.0,
+              ),
               Expanded(
                 child: charts.PieChart(
                   _seriesPieData,
@@ -72,7 +86,8 @@ class _MyActivity extends State<MyActivity>{
                   animationDuration: Duration(seconds: 4),
                   behaviors: [
                     charts.DatumLegend(
-                      outsideJustification: charts.OutsideJustification.endDrawArea,
+                      outsideJustification:
+                          charts.OutsideJustification.endDrawArea,
                       horizontalFirst: false,
                       desiredMaxRows: 2,
                       cellPadding: EdgeInsets.only(top: 5, right: 4, bottom: 4),
@@ -87,22 +102,66 @@ class _MyActivity extends State<MyActivity>{
                     arcWidth: 100,
                     arcRendererDecorators: [
                       charts.ArcLabelDecorator(
-                        labelPosition: charts.ArcLabelPosition.inside
-                      )
+                          labelPosition: charts.ArcLabelPosition.inside)
                     ],
                   ),
                 ),
               ),
-
             ],
           ),
         ),
-      ),
+      ):
+      CircularProgressIndicator(),
     );
+  }
+
+  _fetchData() async {
+    await Firestore.instance
+        .collection(KRequestCollection)
+        .getDocuments()
+        .then((QuerySnapshot querySnapshot) async {
+      querySnapshot.documents.forEach((doc) {
+        if (userId == doc[KRequestUserId]) {
+          if(!doc[KRequestIsActive]){
+            setState(() {
+               disactiveCount++;
+               print("disactive $disactiveCount");
+            });
+          }
+          else if(doc[KRequestIsActive]&& !doc[KRequestIsProviderSeen]){
+             setState(() {
+              idleCount++;
+               print("idleCount $idleCount");
+            });
+          }
+           else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && doc[KRequestIsCompleted]){
+             setState(() {
+              completeCount++;
+               print("completeCount $completeCount");
+            });
+          }
+           else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& doc[KRequestIsAccepted]){
+              setState(() {
+              inprogressCount++;
+               print("inprogressCount $inprogressCount");
+            });
+          }
+           else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& !doc[KRequestIsAccepted]){
+              setState(() {
+              rejectedCount++;
+              print("rejectedCount $rejectedCount");
+            });
+          }
+        }
+      });
+    });
+    setState(() {
+      loading=true;
+    });
   }
 }
 
-class Task{
+class Task {
   String name;
   double value;
   Color color;

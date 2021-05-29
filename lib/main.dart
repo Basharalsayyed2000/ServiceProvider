@@ -3,6 +3,7 @@ import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/AvailableJobs.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
+import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProfilePage.dart';
 import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
@@ -23,6 +24,7 @@ import 'package:service_provider/Screens/User/VerificationUser.dart';
 import 'package:service_provider/Screens/commonScreens/ChangeEmail.dart';
 import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
+import 'package:service_provider/Screens/commonScreens/Settings.dart';
 import 'package:service_provider/Screens/commonScreens/SplashScreen.dart';
 import 'package:service_provider/Screens/Admin/AddServices.dart';
 import 'package:service_provider/Screens/Admin/ManageServices.dart';
@@ -76,7 +78,8 @@ class MyApp extends StatelessWidget {
         HomeProvider.id: (context) => HomeProvider(),
         ChangeEmail.id: (context) => ChangeEmail(),
         ChangePassword.id: (context) => ChangePassword(),
-        
+        Settings.id :(context)=>Settings(),
+        Navbar.id : (context)=>Navbar(),
 
       //  SearchScreen.id: (context) => SearchScreen(),
 

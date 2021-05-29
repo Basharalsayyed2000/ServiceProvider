@@ -5,6 +5,7 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/Provider/HomeProvider.dart';
+import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
@@ -138,7 +139,7 @@ class ProviderLoginScreen extends StatelessWidget {
                                 .updateData({KProviderPassword: _password});
                             Navigator.pushNamedAndRemoveUntil(
                                 context,
-                                HomeProvider.id,
+                                Navbar.id,
                                 (Route<dynamic> route) => false,
                                 arguments: _authresult.user.uid);
                           } else {

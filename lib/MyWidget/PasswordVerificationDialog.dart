@@ -55,25 +55,19 @@ class _PasswordDialog extends State<PasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       backgroundColor: Colors.white.withOpacity(1),
       elevation: 8,
-      
       child: Form(
         key: _globalKey,
-
         child: SizedBox(
-          height: MediaQuery.of(context).size.height/2.3,
-
+          height: MediaQuery.of(context).size.height / 2.3,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               Container(
                 margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
-
                 child: CustomTextField(
                   prefixIcon: Icons.vpn_key,
                   labelText: "Current Password",
@@ -97,7 +91,6 @@ class _PasswordDialog extends State<PasswordDialog> {
                   onClicked: (value) {},
                 ),
               ),
-
               CustomButton(
                 elevation: 10,
                 onPressed: () async {
@@ -105,7 +98,6 @@ class _PasswordDialog extends State<PasswordDialog> {
                 },
                 textValue: "Verify",
               )
-
             ],
           ),
         ),
