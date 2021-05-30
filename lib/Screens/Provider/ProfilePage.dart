@@ -5,6 +5,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_provider/MyWidget/GalleryImages.dart';
 import 'package:service_provider/MyWidget/ProfileTextFields.dart';
 import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
@@ -29,8 +30,9 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   String imageUrl;
   var providerDocument;
 
+  // ignore: unused_field
   String _providerType = "Electrician";
-  String _phone = "+961 70 223 200";
+  // ignore: unused_field
   var _address = ["Lebanon", "Tripoli", "Maarad"];
   var _description;
   //String _description = "I am a Electrician graduate at the Beirut Arabic University in Beirut.";
@@ -38,9 +40,13 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
 
 
   TextEditingController _username;
+  List<File> _gallery;
   TextEditingController _accountType;
+  // ignore: unused_field
   TextEditingController _email;
+  // ignore: unused_field
   TextEditingController _phoneNb;
+  // ignore: unused_field
   TextEditingController _password;
 
   @override
@@ -108,6 +114,11 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
               _accountType = TextEditingController(text: "Provider");
             if (providerDocument[KProviderName] != null)
               _username =TextEditingController(text: "${providerDocument[KProviderName]}");
+            
+            // if (providerDocument[KImageCartificateUrlList] != null)
+            //   foreach( String file in providerDocument[KImageCartificateUrlList] ){
+
+            //   }  
 
             // if (providerDocument[KProviderEmail] != null)
             //   _email =TextEditingController(text: "${providerDocument[KProviderEmail]}");
@@ -233,6 +244,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                       endIndent: 10,
                     ),
 
+
                     /*Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: ProfileTextField(
@@ -275,7 +287,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                       ),
                     ),*/
                     SizedBox(
-                      height: MediaQuery.of(context).size.height/3,
+                      height: MediaQuery.of(context).size.height/4,
                       child: Container(
                         padding: EdgeInsets.all(18),
                         child: Text(
@@ -283,8 +295,9 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                           style: Theme.of(context).textTheme.subtitle1
                         ),
                       ),
-                    )
+                    ),
 
+                    GalleryImages(gallery: []),
                     // Divider(
                     //   color: KprimaryColorDark,
                     //   height: 1,
@@ -393,6 +406,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   void handleClick(String value) {
     switch (value) {
       case 'Logout':
+        _auth.signOut();
         break;
       case 'Settings':
         break;

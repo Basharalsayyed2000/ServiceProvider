@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ImageDialog extends StatelessWidget{
 
   final String image;
+  final File imageFile;
   final bool isOnline;
+  final bool isFile;
 
-  ImageDialog({@required this.image, this.isOnline});
+  ImageDialog({this.imageFile, this.isFile, this.image, this.isOnline});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class ImageDialog extends StatelessWidget{
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height/2,
-        child: isOnline ? Image.network(this.image): Image(image: AssetImage(this.image),),
+        child: isOnline ? Image.network(this.image): ( !isFile ? Image(image: AssetImage(this.image)) : Image.file(imageFile)),
       )
     );
   }
@@ -27,5 +31,6 @@ class ImageDialog extends StatelessWidget{
 
 class DialogHelper{
   static exit(context, assetImage, isOnline) => showDialog(context: context, builder: (context) => ImageDialog(image: assetImage,isOnline: (isOnline == null)? false : isOnline));
+  static exitFile(context, imageFile) => showDialog(context: context, builder: (context) => ImageDialog(imageFile: imageFile, isFile: true, isOnline: false));
 
 }

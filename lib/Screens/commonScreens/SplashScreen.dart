@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Provider/HomeProvider.dart';
+import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Services/auth.dart';
@@ -45,7 +46,7 @@ class _SplashScreen extends State<SplashScreen>{
     Timer(Duration(seconds: 4),
         ()=>Navigator.pushReplacement(context,
           MaterialPageRoute(
-              builder: (context) => (!_isLoggedIn) ? WelcomeScreen() : ((_asUser) ? UserHome() : HomeProvider()),
+              builder: (context) => (!_isLoggedIn) ? WelcomeScreen() : ((_asUser) ? UserHome() : Navbar()),
           )
         )
     );

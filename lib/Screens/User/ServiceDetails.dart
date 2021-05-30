@@ -144,8 +144,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        for (String imageurl
-                                            in _provider.certificateImages)
+                                        for (String imageurl in _provider.certificateImages)
                                           GalleryImages(
                                             assetImage: imageurl,
                                             isOnline: true,

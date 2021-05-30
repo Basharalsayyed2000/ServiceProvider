@@ -31,7 +31,7 @@ class _AvailableRequests extends State<AvailableRequests>{
         itemBuilder: (context, index){
           return Slidable(
 
-            actionPane: SlidableScrollActionPane(),
+            actionPane: SlidableBehindActionPane(),
             
             actions: <Widget>[
               SlideAction(

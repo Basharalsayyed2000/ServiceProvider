@@ -13,6 +13,7 @@ import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyTools/Function.dart';
+import 'package:service_provider/MyWidget/GalleryImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/Provider/ProviderLocation.dart';
@@ -189,55 +190,8 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           labelText: 'Phone Number',
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height / 55),
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.width / 3.4,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _gallery.length + 1,
-                            itemBuilder: (context, index) {
-                              print(index);
-                              // setState(() => _gallery.length != 0 ? indexNB = index+1 : null);
-                              return GestureDetector(
-                                onTap: () =>
-                                    (index == 0) ? pickGalleryImage() : null,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          spreadRadius: 1.5),
-                                    ],
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.6,
-                                  margin: EdgeInsets.only(
-                                      left: 2, top: 2, right: 13, bottom: 2),
-                                  child: (index == 0)
-                                  ? Icon(Icons.add,
-                                    size: 60, color: KprimaryColor)
-                                  : Stack(
-                                    alignment: Alignment.center,
-                                      children: [
-                                        Container(
-                                          child: Image.file(_gallery[index - 1]),
-                                        ),
-                                        Container(
-                                          child: _createOverlayEntry(index),
-                                          //color: Colors.white,
-                                        ),
-                                      ],
-                                    ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      
+                      GalleryImages(gallery: _gallery),
 
                       Container(
                         padding: EdgeInsets.only(top: 4),
@@ -369,7 +323,11 @@ class _AdditionalInfo extends State<AdditionalInfo> {
   }
 
   Future uploadGalleryImage(docId) async {
+    if(_gallery.isNotEmpty)
     for (var img in _gallery) {
+
+      print(img.path);
+
       FirebaseStorage storage = FirebaseStorage(
           storageBucket: 'gs://service-provider-ef677.appspot.com');
       String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
@@ -401,23 +359,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
     }
   }
 
-  void pickGalleryImage() async {
-    await Permission.photos.request();
-    var _permessionStatus = await Permission.photos.status;
-    if (_permessionStatus.isGranted) {
-      // ignore: deprecated_member_use
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        _gallery.add(image);
-
-        print("HERE ------------------------------" +
-            image.path +
-            " " +
-            _gallery.length.toString());
-      });
-    }
-  }
+  
 
   void toggleProgressHUD(_loading, _progressHUD) {
     setState(() {
@@ -478,34 +420,6 @@ class _AdditionalInfo extends State<AdditionalInfo> {
         },
       ),
     );
-  }
-
-  Widget _createOverlayEntry(int index) {
-    RenderBox renderBox = context.findRenderObject();
-    return Container(
-      margin: EdgeInsets.only(bottom: (renderBox.size.height/9), left: (renderBox.size.width/3.2)),
-      width: 20,
-      height: 20,
-
-      // ignore: deprecated_member_use
-      child: RaisedButton(
-        color: Colors.transparent,
-        elevation: 0,
-        padding: EdgeInsets.zero,
-        child: Text(
-            "❌",
-          style: TextStyle(
-            fontSize: 12,
-          ),
-        ),
-        onPressed: (){
-          setState(() {
-            _gallery.removeAt(index-1);
-          });
-        },
-      ),
-    );
-
   }
 
 }

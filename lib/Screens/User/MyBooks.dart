@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/SlidableTile.dart';
 import 'package:service_provider/Screens/Request/RequestComponent.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
@@ -35,6 +36,7 @@ class _MyBooksState extends State<MyBooks> {
         backgroundColor: KprimaryColor,
         title: Text("My Book"),
         centerTitle: true,
+        elevation: 0,
       ),
 
       body: StreamBuilder<QuerySnapshot>(
@@ -74,15 +76,17 @@ class _MyBooksState extends State<MyBooks> {
               ));
               }
             }
-            return  ListView.builder(
+            var profile = "https://am3pap003files.storage.live.com/y4mo7WDu-vFo78fggCLw9NZxp02tlFBN9obvHx5qpT7f7PHWLo-x2Yz5lTI1550vW53xyuYyHEOEfctpjPI5IbYkGvfJKd1KhYHF8shP98AC_NdfOHLtYKlmQo37oXMgW-8CTskyEnYuU-3EjkY2peQ_FvkE_wkloeXkhTp1xynY4tDJqvl9ZeijER1B01oCtw31Mk8ggKyPL0Y5TZXSCH0pw/bashar.jpeg?psid=1&width=720&height=718";
+            return  ListView.separated(
               primary: false,
-              itemBuilder: (context, index) => Stack(
-                children: <Widget>[
-                  buildCard('${_requests[index].rProblem}', '${_requests[index].rDescription}',
-                       _requests[index]),
-                ],
-              ),
-              itemCount: _requests.length,
+              itemBuilder: (context, index) => Container(margin: EdgeInsets.only(top: (index == 0) ? 8 : 0), child: SlidableTile(profile: profile, user: "Bashar alsayyed Adnan", title: _requests.elementAt(index).rProblem, schedule: "${_requests.elementAt(index).requestDate.substring(0, 10)} ${_requests.elementAt(index).requestTime.substring(10, 16)}", distance: "${0.5+index}"),),
+              itemCount: _requests.length, 
+              separatorBuilder: (BuildContext context, int index) { 
+                return Divider(
+                  thickness: 1,
+                  // height: 1,
+                );
+              },
             );
           } else {
             return Center(
