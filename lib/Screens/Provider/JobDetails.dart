@@ -6,7 +6,7 @@ import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
-import 'package:service_provider/Screens/Provider/ProviderHome.dart';
+import 'package:service_provider/Screens/Provider/HomeProvider.dart';
 import 'package:service_provider/Services/store.dart';
 
 class JobDetails extends StatefulWidget {
@@ -298,7 +298,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     await store.acceptJob(
                                         neededData.requestModel.requestId);
                                     Navigator.of(context)
-                                        .pushReplacementNamed(ProviderHome.id);
+                                        .pushReplacementNamed(HomeProvider.id);
                                     Fluttertoast.showToast(
                                       msg: 'The job was Accepted',
                                     );
@@ -318,7 +318,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     await store.rejectJob(
                                         neededData.requestModel.requestId);
                                     Navigator.of(context)
-                                        .pushReplacementNamed(ProviderHome.id);
+                                        .pushReplacementNamed(HomeProvider.id);
                                     Fluttertoast.showToast(
                                       msg: 'The job was Rejected',
                                     );
@@ -341,7 +341,7 @@ class _JobDetailsState extends State<JobDetails> {
                                 await store
                                     .endJob(neededData.requestModel.requestId);
                                 Navigator.of(context)
-                                    .pushReplacementNamed(ProviderHome.id);
+                                    .pushReplacementNamed(HomeProvider.id);
                                 Fluttertoast.showToast(
                                   msg: 'The job was completed',
                                 );

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:service_provider/Screens/Provider/HomeProvider.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';

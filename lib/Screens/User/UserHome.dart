@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
+import 'package:service_provider/Models/UserAction.dart';
 import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
@@ -30,28 +31,28 @@ class _UserHomeState extends State<UserHome> {
   @override
   void initState() {
     getcurrentid();
-    _getUserName();
+    // _getUserName();
     super.initState();
   }
 
-  Future<void> _getUserName() async {
-    Firestore.instance
-        .collection(KUserCollection)
-        .document(await _auth.getCurrentUserId())
-        .get()
-        .then((value) {
-      setState(() {
-        _userModel.uName = value.data[KUserName];
-        _userModel.uEmail = value.data[KUserEmail];
-        _userModel.uPassword = value.data[KUserPassword];
-        _userModel.ubirthDate = value.data[KUserBirthDate];
-        _userModel.uAddDate = value.data[KUserAddDate];
-        _userModel.uId = value.data[KUserId];
-        _userModel.uphoneNumber = value.data[KUserPhoneNumber];
-        _userModel.isAdmin = value.data[KUserIsAdmin];
-      });
-    });
-  }
+  // Future<void> _getUserName() async {
+  //   Firestore.instance
+  //       .collection(KUserCollection)
+  //       .document(await _auth.getCurrentUserId())
+  //       .get()
+  //       .then((value) {
+  //     setState(() {
+  //       _userModel.uName = value.data[KUserName];
+  //       _userModel.uEmail = value.data[KUserEmail];
+  //       _userModel.uPassword = value.data[KUserPassword];
+  //       _userModel.ubirthDate = value.data[KUserBirthDate];
+  //       _userModel.uAddDate = value.data[KUserAddDate];
+  //       _userModel.uId = value.data[KUserId];
+  //       _userModel.uphoneNumber = value.data[KUserPhoneNumber];
+  //       _userModel.isAdmin = value.data[KUserIsAdmin];
+  //     });
+  //   });
+  // }
 
   void getcurrentid() async {
     String _userId = (await FirebaseAuth.instance.currentUser()).uid;
@@ -81,6 +82,17 @@ class _UserHomeState extends State<UserHome> {
                 return Text("Loading");
               } else {
                 var userDocument = snapshot.data;
+
+                _userModel.uName = userDocument[KUserName];
+                _userModel.uEmail = userDocument[KUserEmail];
+                _userModel.uPassword = userDocument[KUserPassword];
+                _userModel.ubirthDate = userDocument[KUserBirthDate];
+                _userModel.uAddDate = userDocument[KUserAddDate];
+                _userModel.uId = userDocument[KUserId];
+                _userModel.uphoneNumber = userDocument[KUserPhoneNumber];
+                _userModel.isAdmin = userDocument[KUserIsAdmin];
+                _userModel.uImageUrl = userDocument[KUserImageUrl];
+
                 return ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
@@ -93,9 +105,9 @@ class _UserHomeState extends State<UserHome> {
                           },
                           child: CircleAvatar(
                             backgroundColor: KprimaryColor,
-                            backgroundImage: (userDocument[KUserImageUrl] == "")
+                            backgroundImage: (_userModel.uImageUrl == "")
                                 ? AssetImage("Assets/images/noprofile.png")
-                                : NetworkImage(userDocument[KUserImageUrl]),
+                                : NetworkImage(_userModel.uImageUrl),
                             radius: 35,
                           ),
                         ),
@@ -103,14 +115,14 @@ class _UserHomeState extends State<UserHome> {
                           height: 10,
                         ),
                         Text(
-                          '${userDocument[KUserName]}',
+                          '${_userModel.uName}',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                           ),
                         ),
                         Text(
-                          '${userDocument[KUserEmail]}',
+                          '${_userModel.uEmail}',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 12,
@@ -151,10 +163,12 @@ class _UserHomeState extends State<UserHome> {
                     ),
                     ListTile(
                       leading: Icon(Icons.send),
-                      title: Text('Sended request'),
+                      title: Text('Sent request'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id);
+                        Navigator.pushNamed(context, MyBooks.id,
+                            arguments: UserActionModel(
+                                userAction: "Sent", user: _userModel));
                       },
                     ),
                     ListTile(
@@ -162,7 +176,9 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Book later requests'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id);
+                        Navigator.pushNamed(context, MyBooks.id,
+                            arguments: UserActionModel(
+                                userAction: "Book Later", user: _userModel));
                       },
                     ),
                     ListTile(
@@ -170,7 +186,19 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Completed requests'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id);
+                        Navigator.pushNamed(context, MyBooks.id,
+                            arguments: UserActionModel(
+                                userAction: "Completed", user: _userModel));
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.work_outline_rounded),
+                      title: Text('Inprogress requests'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyBooks.id,
+                            arguments: UserActionModel(
+                                userAction: "Inprogress", user: _userModel));
                       },
                     ),
                     const Divider(

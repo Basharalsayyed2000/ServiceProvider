@@ -116,9 +116,10 @@ class _ProfileTextField extends State<ProfileTextField> {
 
                               // ignore: unnecessary_statements
                               (isPassword)
-                                  ? DialogHelper.exit(context, false)
+                                  ? DialogHelper.exit(context, false,isUser)
                                   : (!isusername)
-                                      ? DialogHelper.exit(context, true)
+                                      ? DialogHelper.exit(context, true,isUser)
+                                      // ignore: unnecessary_statements
                                       : null;
                             },
                           )

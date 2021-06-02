@@ -1,3 +1,14 @@
+sort by country
+sort by name
+sort by rate
+
+add pageround in the home page(discution)
+
+
+verify email error
+
+
+
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Provider/RecommendedJobs.dart';
 

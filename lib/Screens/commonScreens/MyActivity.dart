@@ -17,6 +17,9 @@ class _MyActivity extends State<MyActivity> {
   String userId;
   double rejectedCount=0, disactiveCount=0, inprogressCount=0, completeCount=0, idleCount=0;
   bool loading=false;
+  List<charts.Series<Task, String>> _seriesPieData;
+
+
   void getcurrentid() async {
     String _userId = (await FirebaseAuth.instance.currentUser()).uid;
     setState(() {
@@ -29,21 +32,26 @@ class _MyActivity extends State<MyActivity> {
     super.initState();
     getcurrentid();
     _fetchData();
+    
     // ignore: deprecated_member_use
     _seriesPieData = new List<charts.Series<Task, String>>(); 
-      _generateData();
+    
+    
   }
 
-  List<charts.Series<Task, String>> _seriesPieData;
 
   _generateData() {
-    var pieData = [
+    var pieData;
+    setState(() {
+      pieData = [
       Task("disActive ", disactiveCount, Colors.redAccent),
       Task("Idle ", idleCount, Colors.orange),
       Task("Completed ", completeCount, Colors.deepPurpleAccent),
       Task("Inprogress ", inprogressCount, Colors.cyanAccent),
       Task("Rejected ", rejectedCount, Colors.lightGreenAccent),
     ];
+    });
+  
 
     _seriesPieData.add(charts.Series(
       data: pieData,
@@ -155,6 +163,7 @@ class _MyActivity extends State<MyActivity> {
         }
       });
     });
+    _generateData();
     setState(() {
       loading=true;
     });

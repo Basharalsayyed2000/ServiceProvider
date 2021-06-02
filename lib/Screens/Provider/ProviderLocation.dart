@@ -9,9 +9,7 @@ import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
-import 'package:service_provider/Screens/Provider/HomeProvider.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
-import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/store.dart';
 

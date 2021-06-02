@@ -15,6 +15,7 @@ RequestModel(
       this.locationId,
       this.rImageUrl,
       this.requestId,
-      this.rProblem
+      this.rProblem,
+      this.isProviderSeen
       });
 }

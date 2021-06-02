@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
-import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Screens/User/ServiceDetails.dart';
 
 class MyFavorateProviders extends StatefulWidget {
   static String id = "MyFavorateProviders";
@@ -51,10 +49,10 @@ class _MyFavorateProvidersState extends State<MyFavorateProviders> {
             }
             List<String> providersId = [];
             for (var doc in snapshot.data.documents) {
-              var data = doc.data;
+            //  var data = doc.data;
               String providerId = doc.documentID.toString();
               providersId.add(providerId);
-              print(providerId);
+              //print(providerId);
             }
             return ListView.builder(
               primary: false,

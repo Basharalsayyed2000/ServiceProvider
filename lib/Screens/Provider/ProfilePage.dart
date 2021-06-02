@@ -40,14 +40,10 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
 
 
   TextEditingController _username;
-  List<File> _gallery;
   TextEditingController _accountType;
-  // ignore: unused_field
-  TextEditingController _email;
-  // ignore: unused_field
-  TextEditingController _phoneNb;
-  // ignore: unused_field
-  TextEditingController _password;
+  TextEditingController email;
+  TextEditingController phoneNb;
+  TextEditingController password;
 
   @override
   void initState() {

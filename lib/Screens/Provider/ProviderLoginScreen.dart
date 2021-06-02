@@ -4,7 +4,6 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Screens/Provider/HomeProvider.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 

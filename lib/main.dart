@@ -5,7 +5,6 @@ import 'package:service_provider/Screens/Provider/AvailableJobs.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProfilePage.dart';
-import 'package:service_provider/Screens/Provider/ProviderHome.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 import 'package:service_provider/Screens/Provider/HomeProvider.dart';
@@ -32,7 +31,6 @@ import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
 import 'package:service_provider/Screens/User/ProfilePage.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'Screens/Provider/ProviderLocation.dart';
-import 'Screens/Provider/ProviderHome.dart';
 import 'Screens/commonScreens/ChangePassword.dart';
 main() {
   runApp(MyApp());
@@ -57,7 +55,6 @@ class MyApp extends StatelessWidget {
         ServiceDetails.id: (context) => ServiceDetails(),
         ResetPassword.id: (context) => ResetPassword(),
         AdditionalInfo.id: (context) => AdditionalInfo(),
-        ProviderHome.id: (context) => ProviderHome(),
         UserHome.id: (context) => UserHome(),
         ServiceRequest.id: (context) => ServiceRequest(),
         ProviderLocation.id: (context) => ProviderLocation(),
@@ -78,12 +75,8 @@ class MyApp extends StatelessWidget {
         HomeProvider.id: (context) => HomeProvider(),
         ChangeEmail.id: (context) => ChangeEmail(),
         ChangePassword.id: (context) => ChangePassword(),
-        Settings.id :(context)=>Settings(),
         Navbar.id : (context)=>Navbar(),
-
-      //  SearchScreen.id: (context) => SearchScreen(),
-
-        
+        Settings.id:(context)=>Settings(),
       },
     );
   }
