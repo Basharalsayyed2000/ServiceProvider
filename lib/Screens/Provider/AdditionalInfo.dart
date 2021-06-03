@@ -32,7 +32,7 @@ class AdditionalInfo extends StatefulWidget {
 class _AdditionalInfo extends State<AdditionalInfo> {
   File _image;
   // ignore: deprecated_member_use
-  List<File> _gallery = new List<File>();
+  Map<bool, List> _gallery = <bool, List>{};
   List<String> _galleryUrl = [];
   String _imageUrl;
   List<String> _servicesName = [""];
@@ -324,7 +324,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
 
   Future uploadGalleryImage(docId) async {
     if(_gallery.isNotEmpty)
-    for (var img in _gallery) {
+    for (var img in _gallery[false]) {
 
       print(img.path);
 

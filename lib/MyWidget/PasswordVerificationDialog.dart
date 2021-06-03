@@ -72,6 +72,7 @@ class _PasswordDialog extends State<PasswordDialog> {
                   prefixIcon: Icons.vpn_key,
                   labelText: "Current Password",
                   obscureText: true,
+                  // ignore: missing_return
                   validator: (value) {
                     print(value);
                     if (value == "") {

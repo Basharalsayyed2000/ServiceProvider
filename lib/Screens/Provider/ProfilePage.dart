@@ -6,6 +6,7 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:service_provider/MyWidget/GalleryImages.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/ProfileTextFields.dart';
 import 'package:service_provider/Screens/commonScreens/MyActivity.dart';
 import 'package:service_provider/Screens/commonScreens/WelcomeScreen.dart';
@@ -40,15 +41,21 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
 
 
   TextEditingController _username;
+  var _gallery = <bool,List>{};
   TextEditingController _accountType;
-  TextEditingController email;
-  TextEditingController phoneNb;
-  TextEditingController password;
+  // ignore: unused_field
+  TextEditingController _email;
+  // ignore: unused_field
+  TextEditingController _phoneNb;
+  // ignore: unused_field
+  TextEditingController _password;
 
   @override
   void initState() {
     super.initState();
     _getUserId();
+    _gallery[true] = new List();
+    _gallery[false] = new List();
   }
 
   _getUserId() async {
@@ -111,10 +118,11 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
             if (providerDocument[KProviderName] != null)
               _username =TextEditingController(text: "${providerDocument[KProviderName]}");
             
-            // if (providerDocument[KImageCartificateUrlList] != null)
-            //   foreach( String file in providerDocument[KImageCartificateUrlList] ){
-
-            //   }  
+            if (providerDocument[KImageCartificateUrlList] != null)
+              providerDocument[KImageCartificateUrlList].forEach((value){
+                _gallery[true].add(value);
+                print("total:${_gallery.length}\t true:${_gallery[true].length} \t false:${_gallery[false].length}");
+              });
 
             // if (providerDocument[KProviderEmail] != null)
             //   _email =TextEditingController(text: "${providerDocument[KProviderEmail]}");
@@ -124,6 +132,8 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
 
             // if (providerDocument[KProviderPassword] != null)
             //   _password = TextEditingController(text: "${providerDocument[KProviderPassword]}");
+
+            _gallery[false].add(File("/data/user/0/com.example.service_provider/cache/image_picker4307476145657976484.jpg"));
 
             if (providerDocument[KProviderDescription] != null) {
               _description = providerDocument[KProviderDescription];
@@ -293,7 +303,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                       ),
                     ),
 
-                    GalleryImages(gallery: []),
+                    GalleryImages(gallery: _gallery),
                     // Divider(
                     //   color: KprimaryColorDark,
                     //   height: 1,
@@ -301,6 +311,14 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                     //   indent: 10,
                     //   endIndent: 10,
                     // ),
+
+                    CustomButton(
+                      textValue: "click me",
+                      onPressed: (){
+                        print("true:\t\t${_gallery[true].length}");
+                        print("false:\t\t${_gallery[false].length}");
+                      },
+                    )
                   ],
                 )
               ),

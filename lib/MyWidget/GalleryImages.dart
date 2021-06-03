@@ -10,7 +10,7 @@ import 'ImageDialog.dart';
 
 class GalleryImages extends StatefulWidget{
 
-  final List<File> gallery;
+  final Map<bool,List> gallery;
 
   GalleryImages({@required this.gallery});
 
@@ -25,7 +25,8 @@ class GalleryImages extends StatefulWidget{
 
 class _GalleryImages extends State<GalleryImages>{
 
-  final List<File> gallery;
+  final Map<bool,List> gallery;
+  //List<File> _files = [File("/data/user/0/com.example.service_provider/cache/image_picker4307476145657976484.jpg")];
   bool _asUser = false;
 
   Auth _auth = new Auth();
@@ -34,6 +35,10 @@ class _GalleryImages extends State<GalleryImages>{
 
   @override
   void initState() {
+    
+    // gallery[false] = _files;
+
+    // print("index-1-gallerytruelength${index - 1 - gallery[true].length}");
     super.initState();
     _auth.getCurrentUserId().then((uid) {
 
@@ -53,21 +58,36 @@ class _GalleryImages extends State<GalleryImages>{
         height: MediaQuery.of(context).size.width / 3.4,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: (!_asUser) ? gallery.length + 1 : gallery.length,
+          itemCount: (!_asUser) ? gallery[true].length + gallery[false].length + 1 : gallery[true].length + gallery[false].length,
           itemBuilder: (context, index) {
             print(index);
+            
             // setState(() => finalGallery.length != 0 ? indexNB = index+1 : null);
             return GestureDetector(
               //if(!_asUser)
               onTap: (){ 
-                ( !_asUser && index == 0) ? 
-                pickGalleryImage() 
-                
-                :(
-                  (!_asUser) ? 
-                  DialogHelper.exitFile(context, gallery[index - 1])
-                  :DialogHelper.exitFile(context, gallery[index])
-                );
+                if( !_asUser && index == 0)
+                  pickGalleryImage();
+                else
+                  if(!_asUser)
+                    if(index < gallery[true].length+1){
+                      if(gallery[true].length > 0)
+                        DialogHelper.exit(context, gallery[true][index - 1], true);
+                      else
+                        if (gallery[false].length > 0)
+                          DialogHelper.exitFile(context, gallery[false][index - 1]);
+                    }else{
+                      if(gallery[true].length > 0){
+                        if (gallery[false].length > 0)
+                          DialogHelper.exitFile(context, gallery[false][index - gallery[true].length - 1]);
+                      }else{
+                        if (gallery[false].length > 0)
+                          DialogHelper.exitFile(context, gallery[false][index-1]);
+                      }
+                    }
+
+                  // DialogHelper.exitFile(context, gallery[index - 1])
+                  // :DialogHelper.exitFile(context, gallery[index]);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -80,25 +100,35 @@ class _GalleryImages extends State<GalleryImages>{
                     ),
                   ],
                 ),
-                width:
-                    MediaQuery.of(context).size.width / 2.6,
-                margin: EdgeInsets.only(
-                    left: 2, top: 2, right: 13, bottom: 2),
+                width: MediaQuery.of(context).size.width / 2.6,
+                margin: EdgeInsets.only( left: 2, top: 2, right: 13, bottom: 2),
                 child: (index == 0)
-                ? Icon(Icons.add,
-                  size: 60, color: KprimaryColor)
+                ? Icon(Icons.add, size: 60, color: KprimaryColor)
                 : Stack(
                   alignment: Alignment.center,
                     children: [
-                      Container(
-                        child: Image.file(gallery[index - 1]),
-                      ),
+
+
+                      // if(gallery[true].length == 0)
+                      //   Container(child: Image.file(File("/data/user/0/com.example.service_provider/cache/image_picker4307476145657976484.jpg")),),
+
+
+
+                      if(index <= gallery[true].length && gallery[true].length > 0)
+                        Image.network(gallery[true][index-1]),
+
+                      if (index < gallery[true].length && gallery[true].length < 0 && gallery[false].length > 0)
+                        Image.file(gallery[false].reversed.elementAt(index)),
+
+                      if (index > gallery[true].length && gallery[true].length > 0 && gallery[false].length > 0)    
+                        Image.file(gallery[false].reversed.elementAt(index - gallery[true].length - 1)),
                       
+                      if (index > gallery[true].length && gallery[true].length <= 0 && gallery[false].length > 0)    
+                        Image.file(gallery[false].reversed.elementAt(index-1)),
+                        
                       if(!_asUser)
-                        Container(
-                          child: _createOverlayEntry(index),
+                        _createOverlayEntry(index),
                           //color: Colors.white,
-                        ),
                     ],
                   ),
               ),
@@ -115,22 +145,23 @@ class _GalleryImages extends State<GalleryImages>{
     if (_permessionStatus.isGranted) {
       // ignore: deprecated_member_use
       var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
       setState(() {
-        gallery.add(image);
+
+        print(image.path);
+        gallery[false].add(image);
 
         print("HERE ------------------------------" +
             image.path +
-            " " +
+            " + " +
             gallery.length.toString());
       });
     }
   }
 
   Widget _createOverlayEntry(int index) {
-    RenderBox renderBox = context.findRenderObject();
+    
     return Container(
-      margin: EdgeInsets.only(bottom: (renderBox.size.height/1.5), left: (renderBox.size.width/3.2)),
+      margin: EdgeInsets.only(bottom: (MediaQuery.of(context).size.height/10), left: (MediaQuery.of(context).size.width/3.2)),
       width: 20,
       height: 20,
 
@@ -147,7 +178,10 @@ class _GalleryImages extends State<GalleryImages>{
         ),
         onPressed: (){
           setState(() {
-            gallery.removeAt(index-1);
+            print("index:$index, gallerylength: ${gallery.length}, _fileslength: ${gallery[false].length}");
+            (index > gallery[true].length)? 
+              gallery[false].removeAt(gallery[false].length - (index-gallery[true].length))
+              : gallery[true].removeAt(index-1);
           });
         },
       ),
