@@ -78,7 +78,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
             onSelected: (choice) {
               // ignore: unnecessary_statements
               (choice == "My Activity")
-                  ? Navigator.pushNamed(context, MyActivity.id)
+                  ? Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity(isUser: true,)),)
                   // ignore: unnecessary_statements
                   : null;
               if (choice == "Logout") {
@@ -163,7 +163,7 @@ class _UserProfilescreenState extends State<UserProfilescreen> {
                                     child: CircleAvatar(
                                         radius: 80,
                                         backgroundColor: KprimaryColor,
-                                        backgroundImage: imageUrl == ""
+                                        backgroundImage: imageUrl == null
                                             ? AssetImage(
                                                     "Assets/images/noprofile.png")
                                                 as ImageProvider

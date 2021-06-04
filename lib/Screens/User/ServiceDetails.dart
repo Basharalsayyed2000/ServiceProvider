@@ -168,7 +168,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                   Navigator.pushNamed(
                                       context, ServiceRequest.id,
                                       arguments: NeededData(
-                                          provider: _provider, isActive: true));
+                                          provider: _provider, isRequestActive: true,isRequestPublic: false,serviceRequestId: _provider.pProvideService));
                                 },
                                 textValue: "Book Now",
                               ),
@@ -183,7 +183,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       context, ServiceRequest.id,
                                       arguments: NeededData(
                                           provider: _provider,
-                                          isActive: false));
+                                           isRequestActive: false,isRequestPublic: false,serviceRequestId: _provider.pProvideService ));
                                 },
                                 textValue: "Book Later",
                               ),

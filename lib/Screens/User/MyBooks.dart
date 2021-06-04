@@ -45,7 +45,9 @@ class _MyBooksState extends State<MyBooks> {
                 ? Text("Disactive Request")
                 : (userAction.userAction == "Inprogress")
                     ? Text("Inprogress requests")
-                    : Text("Completed requests"),
+                    : (userAction.userAction == "Rejected")
+                        ? Text("Rejected requests")
+                        : Text("requests"),
         centerTitle: true,
         elevation: 0,
       ),
@@ -81,8 +83,11 @@ class _MyBooksState extends State<MyBooks> {
                           userId: _userId,
                           isAccepted: data[KRequestIsAccepted],
                           isActive: data[KRequestIsActive],
+                                  locationId: data[KRequestLocationId],
                           isComplete: data[KRequestIsCompleted],
                           isProviderSeen: data[KRequestIsProviderSeen],
+                          isPublic: data[KRequestIsPublic],
+                          serviceId: data[KRequestServiceId],
                           rImageUrl: data[KRequestImageUrl] == null
                               ? []
                               : data[KRequestImageUrl]
@@ -96,39 +101,45 @@ class _MyBooksState extends State<MyBooks> {
                       ? ListView.separated(
                           primary: false,
                           itemBuilder: (context, index) => Container(
-                              color: Colors.blue[200],
-                              margin:
-                                  EdgeInsets.only(top: (index == 0) ? 8 : 0),
-                              child: StreamBuilder(
-                                  stream: Firestore.instance
-                                      .collection(KProviderCollection)
-                                      .document(_requests
-                                          .elementAt(index)
-                                          .providerId) //ID OF DOCUMENT
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting)
-                                      return new Center(
-                                          child:
-                                              new CircularProgressIndicator());
-                                    if (snapshot.hasData) {
-                                      var document2 = snapshot.data;
-                                      return SlidableTile(
-                                        profile: document2[KProviderImageUrl],
-                                        user: document2[KProviderName],
-                                        title:
-                                            _requests.elementAt(index).rProblem,
-                                        schedule:
-                                            "${_requests.elementAt(index).requestDate.substring(0, 10)} ${_requests.elementAt(index).requestTime.substring(10, 16)}",
-                                        distance: "${0.5 + index}",
-                                        action: "cancle",
-                                        hasAction: true,
-                                      );
-                                    } else {
-                                      return new CircularProgressIndicator();
-                                    }
-                                  })),
+                            //  color: Colors.blue[200],
+                            margin: EdgeInsets.only(top: (index == 0) ? 8 : 0),
+                            child: (_requests.elementAt(index).providerId != "")
+                                ? StreamBuilder(
+                                    stream: Firestore.instance
+                                        .collection(KProviderCollection)
+                                        .document(_requests
+                                            .elementAt(index)
+                                            .providerId) //ID OF DOCUMENT
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting)
+                                        return new Center(
+                                            child:
+                                                new CircularProgressIndicator());
+                                      if (snapshot.hasData) {
+                                        var document2 = snapshot.data;
+                                        return SlidableTile(
+                                          profile: document2[KProviderImageUrl],
+                                          user: document2[KProviderName],
+                                          request: _requests.elementAt(index),
+                                          status: "Idle",
+                                          hasAction: true,
+                                          forUser: true,
+                                        );
+                                      } else {
+                                        return new CircularProgressIndicator();
+                                      }
+                                    })
+                                : SlidableTile(
+                                    profile: null,
+                                    user: null,
+                                    request: _requests.elementAt(index),
+                                    status: "Idle",
+                                    hasAction: true,
+                                    forUser: true,
+                                  ),
+                          ),
                           itemCount: _requests.length,
                           separatorBuilder: (BuildContext context, int index) {
                             return Divider(
@@ -190,7 +201,10 @@ class _MyBooksState extends State<MyBooks> {
                               userId: _userId,
                               isAccepted: data[KRequestIsAccepted],
                               isActive: data[KRequestIsActive],
+                                  locationId: data[KRequestLocationId],
                               isComplete: data[KRequestIsCompleted],
+                              isPublic: data[KRequestIsPublic],
+                              serviceId: data[KRequestServiceId],
                               isProviderSeen: data[KRequestIsProviderSeen],
                               rImageUrl: data[KRequestImageUrl] == null
                                   ? []
@@ -205,41 +219,49 @@ class _MyBooksState extends State<MyBooks> {
                           ? ListView.separated(
                               primary: false,
                               itemBuilder: (context, index) => Container(
-                                  color: Colors.grey[300],
-                                  margin: EdgeInsets.only(
-                                      top: (index == 0) ? 8 : 0),
-                                  child: StreamBuilder(
-                                      stream: Firestore.instance
-                                          .collection(KProviderCollection)
-                                          .document(_requests
-                                              .elementAt(index)
-                                              .providerId) //ID OF DOCUMENT
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting)
-                                          return new Center(
-                                              child:
-                                                  new CircularProgressIndicator());
-                                        if (snapshot.hasData) {
-                                          var document2 = snapshot.data;
-                                          return SlidableTile(
-                                            profile:
-                                                document2[KProviderImageUrl],
-                                            user: document2[KProviderName],
-                                            title: _requests
+                                //  color: Colors.grey[300],
+                                margin:
+                                    EdgeInsets.only(top: (index == 0) ? 8 : 0),
+                                child: (_requests.elementAt(index).providerId !=
+                                        "")
+                                    ? StreamBuilder(
+                                        stream: Firestore.instance
+                                            .collection(KProviderCollection)
+                                            .document(_requests
                                                 .elementAt(index)
-                                                .rProblem,
-                                            schedule:
-                                                "${_requests.elementAt(index).requestDate.substring(0, 10)} ${_requests.elementAt(index).requestTime.substring(10, 16)}",
-                                            distance: "${0.5 + index}",
-                                            action: "activate",
-                                            hasAction: true,
-                                          );
-                                        } else {
-                                          return new CircularProgressIndicator();
-                                        }
-                                      })),
+                                                .providerId) //ID OF DOCUMENT
+                                            .snapshots(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting)
+                                            return new Center(
+                                                child:
+                                                    new CircularProgressIndicator());
+                                          if (snapshot.hasData) {
+                                            var document2 = snapshot.data;
+                                            return SlidableTile(
+                                              profile:
+                                                  document2[KProviderImageUrl],
+                                              user: document2[KProviderName],
+                                              request:
+                                                  _requests.elementAt(index),
+                                              status: "Disactive",
+                                              hasAction: true,
+                                              forUser: true,
+                                            );
+                                          } else {
+                                            return new CircularProgressIndicator();
+                                          }
+                                        })
+                                    : SlidableTile(
+                                        profile: null,
+                                        user: null,
+                                        request: _requests.elementAt(index),
+                                        status: "Disactive",
+                                        hasAction: true,
+                                        forUser: true,
+                                      ),
+                              ),
                               itemCount: _requests.length,
                               separatorBuilder:
                                   (BuildContext context, int index) {
@@ -271,232 +293,362 @@ class _MyBooksState extends State<MyBooks> {
                     }
                   })
               : (userAction.userAction == "Completed")
-                  ?  StreamBuilder<QuerySnapshot>(
-                  stream: _store.loadRequest(),
-                  // ignore: missing_return
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
-                      return new Center(child: new CircularProgressIndicator());
-                    if (snapshot.hasData) {
-                      List<RequestModel> _requests = [];
-                      for (var doc in snapshot.data.documents) {
-                        var data = doc.data;
-                        String requestId = doc.documentID;
-                        if (data[KRequestUserId] == _userId) {
-                          //List<dynamic> requestUrl=[];
-                          //  if(!(data[KRequestImageUrl]==null)){
-                          //  requestUrl= List.of(data[KRequestImageUrl]);
-                          // }
-                          if (data[KRequestIsActive] &&
-                              data[KRequestIsAccepted] &&
-                              data[KRequestIsCompleted] &&
-                              data[KRequestIsProviderSeen])
-                            _requests.add(RequestModel(
-                              rProblem: data[KRequestProblem],
-                              rDescription: data[KRequestDescription],
-                              rAddDate: data[KRequestAddDate],
-                              requestDate: data[KRequestDate],
-                              requestTime: data[KRequestTime],
-                              requestId: requestId,
-                              providerId: data[KRequestProviderId],
-                              userId: _userId,
-                              isAccepted: data[KRequestIsAccepted],
-                              isActive: data[KRequestIsActive],
-                              isComplete: data[KRequestIsCompleted],
-                              isProviderSeen: data[KRequestIsProviderSeen],
-                              rImageUrl: data[KRequestImageUrl] == null
-                                  ? []
-                                  : data[KRequestImageUrl]
-                                      .map<String>((i) => i as String)
-                                      .toList(),
-                            ));
-                        }
-                      }
+                  ? StreamBuilder<QuerySnapshot>(
+                      stream: _store.loadRequest(),
+                      // ignore: missing_return
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting)
+                          return new Center(
+                              child: new CircularProgressIndicator());
+                        if (snapshot.hasData) {
+                          List<RequestModel> _requests = [];
+                          for (var doc in snapshot.data.documents) {
+                            var data = doc.data;
+                            String requestId = doc.documentID;
+                            if (data[KRequestUserId] == _userId) {
+                              //List<dynamic> requestUrl=[];
+                              //  if(!(data[KRequestImageUrl]==null)){
+                              //  requestUrl= List.of(data[KRequestImageUrl]);
+                              // }
+                              if (data[KRequestIsActive] &&
+                                  data[KRequestIsAccepted] &&
+                                  data[KRequestIsCompleted] &&
+                                  data[KRequestIsProviderSeen])
+                                _requests.add(RequestModel(
+                                  rProblem: data[KRequestProblem],
+                                  rDescription: data[KRequestDescription],
+                                  rAddDate: data[KRequestAddDate],
+                                  requestDate: data[KRequestDate],
+                                  requestTime: data[KRequestTime],
+                                  requestId: requestId,
+                                  providerId: data[KRequestProviderId],
+                                  userId: _userId,
+                                   locationId: data[KRequestLocationId],
+                                  isAccepted: data[KRequestIsAccepted],
+                                  isActive: data[KRequestIsActive],
+                                  isComplete: data[KRequestIsCompleted],
+                                  isProviderSeen: data[KRequestIsProviderSeen],
+                                  rImageUrl: data[KRequestImageUrl] == null
+                                      ? []
+                                      : data[KRequestImageUrl]
+                                          .map<String>((i) => i as String)
+                                          .toList(),
+                                ));
+                            }
+                          }
 
-                      return (_requests.isNotEmpty)
-                          ? ListView.separated(
-                              primary: false,
-                              itemBuilder: (context, index) => Container(
-                                  color: Colors.green[300],
-                                  margin: EdgeInsets.only(
-                                      top: (index == 0) ? 4 : 0),
-                                  child: StreamBuilder(
-                                      stream: Firestore.instance
-                                          .collection(KProviderCollection)
-                                          .document(_requests
-                                              .elementAt(index)
-                                              .providerId) //ID OF DOCUMENT
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting)
-                                          return new Center(
-                                              child:
-                                                  new CircularProgressIndicator());
-                                        if (snapshot.hasData) {
-                                          var document2 = snapshot.data;
-                                          return SlidableTile(
-                                            profile:
-                                                document2[KProviderImageUrl],
-                                            user: document2[KProviderName],
-                                            title: _requests
-                                                .elementAt(index)
-                                                .rProblem,
-                                            schedule:
-                                                "${_requests.elementAt(index).requestDate.substring(0, 10)} ${_requests.elementAt(index).requestTime.substring(10, 16)}",
-                                            distance: "${0.5 + index}",
-                                            action: "Completed",
-                                            hasAction: false,
-                                          );
-                                        } else {
-                                          return new CircularProgressIndicator();
-                                        }
-                                      })),
-                              itemCount: _requests.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return Divider(
-                                  thickness: 1,
-                                  // height: 1,
+                          return (_requests.isNotEmpty)
+                              ? ListView.separated(
+                                  primary: false,
+                                  itemBuilder: (context, index) => Container(
+                                      //  color: Colors.green[300],
+                                      margin: EdgeInsets.only(
+                                          top: (index == 0) ? 4 : 0),
+                                      child: StreamBuilder(
+                                          stream: Firestore.instance
+                                              .collection(KProviderCollection)
+                                              .document(_requests
+                                                  .elementAt(index)
+                                                  .providerId) //ID OF DOCUMENT
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting)
+                                              return new Center(
+                                                  child:
+                                                      new CircularProgressIndicator());
+                                            if (snapshot.hasData) {
+                                              var document2 = snapshot.data;
+                                              return SlidableTile(
+                                                profile: document2[
+                                                    KProviderImageUrl],
+                                                user: document2[KProviderName],
+                                                status: "complete",
+                                                hasAction: false,
+                                                forUser: true,
+                                                request:
+                                                    _requests.elementAt(index),
+                                              );
+                                            } else {
+                                              return new CircularProgressIndicator();
+                                            }
+                                          })),
+                                  itemCount: _requests.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return Divider(
+                                      thickness: 1,
+                                      // height: 1,
+                                    );
+                                  },
+                                )
+                              : Center(
+                                  child: Text(
+                                    'There is no sent Request',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 );
-                              },
-                            )
-                          : Center(
-                              child: Text(
-                                'There is no sent Request',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                    } else {
-                      Center(
-                        child: Text(
-                          'There is no sent Request',
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    }
-                  })
+                        } else {
+                          Center(
+                            child: Text(
+                              'There is no sent Request',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          );
+                        }
+                      })
                   : (userAction.userAction == "Inprogress")
                       ? StreamBuilder<QuerySnapshot>(
-                  stream: _store.loadRequest(),
-                  // ignore: missing_return
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
-                      return new Center(child: new CircularProgressIndicator());
-                    if (snapshot.hasData) {
-                      List<RequestModel> _requests = [];
-                      for (var doc in snapshot.data.documents) {
-                        var data = doc.data;
-                        String requestId = doc.documentID;
-                        if (data[KRequestUserId] == _userId) {
-                          //List<dynamic> requestUrl=[];
-                          //  if(!(data[KRequestImageUrl]==null)){
-                          //  requestUrl= List.of(data[KRequestImageUrl]);
-                          // }
-                          if (data[KRequestIsActive] &&
-                              data[KRequestIsAccepted] &&
-                              !data[KRequestIsCompleted] &&
-                              data[KRequestIsProviderSeen])
-                            _requests.add(RequestModel(
-                              rProblem: data[KRequestProblem],
-                              rDescription: data[KRequestDescription],
-                              rAddDate: data[KRequestAddDate],
-                              requestDate: data[KRequestDate],
-                              requestTime: data[KRequestTime],
-                              requestId: requestId,
-                              providerId: data[KRequestProviderId],
-                              userId: _userId,
-                              isAccepted: data[KRequestIsAccepted],
-                              isActive: data[KRequestIsActive],
-                              isComplete: data[KRequestIsCompleted],
-                              isProviderSeen: data[KRequestIsProviderSeen],
-                              rImageUrl: data[KRequestImageUrl] == null
-                                  ? []
-                                  : data[KRequestImageUrl]
-                                      .map<String>((i) => i as String)
-                                      .toList(),
-                            ));
-                        }
-                      }
+                          stream: _store.loadRequest(),
+                          // ignore: missing_return
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              return new Center(
+                                  child: new CircularProgressIndicator());
+                            if (snapshot.hasData) {
+                              List<RequestModel> _requests = [];
+                              for (var doc in snapshot.data.documents) {
+                                var data = doc.data;
+                                String requestId = doc.documentID;
+                                if (data[KRequestUserId] == _userId) {
+                                  //List<dynamic> requestUrl=[];
+                                  //  if(!(data[KRequestImageUrl]==null)){
+                                  //  requestUrl= List.of(data[KRequestImageUrl]);
+                                  // }
+                                  if (data[KRequestIsActive] &&
+                                      data[KRequestIsAccepted] &&
+                                      !data[KRequestIsCompleted] &&
+                                      data[KRequestIsProviderSeen])
+                                    _requests.add(RequestModel(
+                                      rProblem: data[KRequestProblem],
+                                      rDescription: data[KRequestDescription],
+                                      rAddDate: data[KRequestAddDate],
+                                      requestDate: data[KRequestDate],
+                                      requestTime: data[KRequestTime],
+                                      requestId: requestId,
+                                  locationId: data[KRequestLocationId],
+                                      providerId: data[KRequestProviderId],
+                                      userId: _userId,
+                                      isAccepted: data[KRequestIsAccepted],
+                                      isActive: data[KRequestIsActive],
+                                      isComplete: data[KRequestIsCompleted],
+                                      isProviderSeen:
+                                          data[KRequestIsProviderSeen],
+                                      rImageUrl: data[KRequestImageUrl] == null
+                                          ? []
+                                          : data[KRequestImageUrl]
+                                              .map<String>((i) => i as String)
+                                              .toList(),
+                                    ));
+                                }
+                              }
 
-                      return (_requests.isNotEmpty)
-                          ? ListView.separated(
-                              primary: false,
-                              itemBuilder: (context, index) => Container(
-                                  color: Colors.orange[200],
-                                  margin: EdgeInsets.only(
-                                      top: (index == 0) ? 8 : 0),
-                                  child: StreamBuilder(
-                                      stream: Firestore.instance
-                                          .collection(KProviderCollection)
-                                          .document(_requests
-                                              .elementAt(index)
-                                              .providerId) //ID OF DOCUMENT
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting)
-                                          return new Center(
-                                              child:
-                                                  new CircularProgressIndicator());
-                                        if (snapshot.hasData) {
-                                          var document2 = snapshot.data;
-                                          return SlidableTile(
-                                            profile:
-                                                document2[KProviderImageUrl],
-                                            user: document2[KProviderName],
-                                            title: _requests
-                                                .elementAt(index)
-                                                .rProblem,
-                                            schedule:
-                                                "${_requests.elementAt(index).requestDate.substring(0, 10)} ${_requests.elementAt(index).requestTime.substring(10, 16)}",
-                                            distance: "${0.5 + index}",
-                                            action: "Inprogress",
-                                            hasAction: false,
-                                          );
-                                        } else {
-                                          return new CircularProgressIndicator();
-                                        }
-                                      })),
-                              itemCount: _requests.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return Divider(
-                                  thickness: 1,
-                                  // height: 1,
-                                );
-                              },
-                            )
+                              return (_requests.isNotEmpty)
+                                  ? ListView.separated(
+                                      primary: false,
+                                      itemBuilder: (context, index) =>
+                                          Container(
+                                              // color: Colors.orange[200],
+                                              margin: EdgeInsets.only(
+                                                  top: (index == 0) ? 8 : 0),
+                                              child: StreamBuilder(
+                                                  stream: Firestore.instance
+                                                      .collection(
+                                                          KProviderCollection)
+                                                      .document(_requests
+                                                          .elementAt(index)
+                                                          .providerId) //ID OF DOCUMENT
+                                                      .snapshots(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.waiting)
+                                                      return new Center(
+                                                          child:
+                                                              new CircularProgressIndicator());
+                                                    if (snapshot.hasData) {
+                                                      var document2 =
+                                                          snapshot.data;
+                                                      return SlidableTile(
+                                                        profile: document2[
+                                                            KProviderImageUrl],
+                                                        user: document2[
+                                                            KProviderName],
+                                                        request: _requests
+                                                            .elementAt(index),
+                                                        status: "Inprogress",
+                                                        hasAction: false,
+                                                        forUser: true,
+                                                      );
+                                                    } else {
+                                                      return new CircularProgressIndicator();
+                                                    }
+                                                  })),
+                                      itemCount: _requests.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return Divider(
+                                          thickness: 1,
+                                          // height: 1,
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'There is no sent Request',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    );
+                            } else {
+                              Center(
+                                child: Text(
+                                  'There is no sent Request',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }
+                          })
+                      : (userAction.userAction == "Rejected")
+                          ? StreamBuilder<QuerySnapshot>(
+                              stream: _store.loadRequest(),
+                              // ignore: missing_return
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting)
+                                  return new Center(
+                                      child: new CircularProgressIndicator());
+                                if (snapshot.hasData) {
+                                  List<RequestModel> _requests = [];
+                                  for (var doc in snapshot.data.documents) {
+                                    var data = doc.data;
+                                    String requestId = doc.documentID;
+                                    if (data[KRequestUserId] == _userId) {
+                                      //List<dynamic> requestUrl=[];
+                                      //  if(!(data[KRequestImageUrl]==null)){
+                                      //  requestUrl= List.of(data[KRequestImageUrl]);
+                                      // }
+                                      if (data[KRequestIsActive] &&
+                                          !data[KRequestIsAccepted] &&
+                                          !data[KRequestIsCompleted] &&
+                                          data[KRequestIsProviderSeen])
+                                        _requests.add(RequestModel(
+                                          rProblem: data[KRequestProblem],
+                                          rDescription:
+                                              data[KRequestDescription],
+                                          rAddDate: data[KRequestAddDate],
+                                          requestDate: data[KRequestDate],
+                                          requestTime: data[KRequestTime],
+                                          requestId: requestId,
+                                          providerId: data[KRequestProviderId],
+                                          userId: _userId,
+                                          isAccepted: data[KRequestIsAccepted],
+                                          isActive: data[KRequestIsActive],
+                                          isComplete: data[KRequestIsCompleted],
+                                          isProviderSeen:
+                                              data[KRequestIsProviderSeen],
+                                          rImageUrl:
+                                              data[KRequestImageUrl] == null
+                                                  ? []
+                                                  : data[KRequestImageUrl]
+                                                      .map<String>(
+                                                          (i) => i as String)
+                                                      .toList(),
+                                        ));
+                                    }
+                                  }
+
+                                  return (_requests.isNotEmpty)
+                                      ? ListView.separated(
+                                          primary: false,
+                                          itemBuilder: (context, index) =>
+                                              Container(
+                                                  // color: Colors.orange[200],
+                                                  margin: EdgeInsets.only(
+                                                      top:
+                                                          (index == 0) ? 8 : 0),
+                                                  child: StreamBuilder(
+                                                      stream: Firestore.instance
+                                                          .collection(
+                                                              KProviderCollection)
+                                                          .document(_requests
+                                                              .elementAt(index)
+                                                              .providerId) //ID OF DOCUMENT
+                                                          .snapshots(),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting)
+                                                          return new Center(
+                                                              child:
+                                                                  new CircularProgressIndicator());
+                                                        if (snapshot.hasData) {
+                                                          var document2 =
+                                                              snapshot.data;
+                                                          return SlidableTile(
+                                                            profile: document2[
+                                                                KProviderImageUrl],
+                                                            user: document2[
+                                                                KProviderName],
+                                                            request: _requests
+                                                                .elementAt(
+                                                                    index),
+                                                            status: "Rejected",
+                                                            hasAction: true,
+                                                            forUser: true,
+                                                          );
+                                                        } else {
+                                                          return new CircularProgressIndicator();
+                                                        }
+                                                      })),
+                                          itemCount: _requests.length,
+                                          separatorBuilder:
+                                              (BuildContext context,
+                                                  int index) {
+                                            return Divider(
+                                              thickness: 1,
+                                              // height: 1,
+                                            );
+                                          },
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            'There is no Rejected Request',
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        );
+                                } else {
+                                  Center(
+                                    child: Text(
+                                      'There is no Rejected Request',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  );
+                                }
+                              })
                           : Center(
-                              child: Text(
-                                'There is no sent Request',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                    } else {
-                      Center(
-                        child: Text(
-                          'There is no sent Request',
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    }
-                  })
-                      : Center(
-                          child: Text('Loading'),
-                        ),
+                              child: Text('Loading'),
+                            ),
     );
   }
 

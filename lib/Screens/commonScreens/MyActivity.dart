@@ -6,17 +6,22 @@ import 'package:service_provider/MyTools/Constant.dart';
 
 class MyActivity extends StatefulWidget {
   static String id = "myActivity";
-
+  final bool isUser;
+  final String serviceid;
+  MyActivity({this.isUser,this.serviceid});
   @override
   State<StatefulWidget> createState() {
-    return _MyActivity();
+    return _MyActivity(isUser:isUser,serviceid:serviceid);
   }
 }
 
 class _MyActivity extends State<MyActivity> {
   String userId;
-  double rejectedCount=0, disactiveCount=0, inprogressCount=0, completeCount=0, idleCount=0;
+  double rejectedCount=0, disactiveCount=0, inprogressCount=0, completeCount=0, idleCount=0,total=0,idleCountPublic=0;
   bool loading=false;
+  final bool isUser;
+  final String serviceid;
+  _MyActivity({this.isUser,this.serviceid});
   List<charts.Series<Task, String>> _seriesPieData;
 
 
@@ -32,11 +37,8 @@ class _MyActivity extends State<MyActivity> {
     super.initState();
     getcurrentid();
     _fetchData();
-    
     // ignore: deprecated_member_use
     _seriesPieData = new List<charts.Series<Task, String>>(); 
-    
-    
   }
 
 
@@ -44,11 +46,11 @@ class _MyActivity extends State<MyActivity> {
     var pieData;
     setState(() {
       pieData = [
-      Task("disActive ", disactiveCount, Colors.redAccent),
-      Task("Idle ", idleCount, Colors.orange),
-      Task("Completed ", completeCount, Colors.deepPurpleAccent),
-      Task("Inprogress ", inprogressCount, Colors.cyanAccent),
-      Task("Rejected ", rejectedCount, Colors.lightGreenAccent),
+      Task("Completed ", completeCount, Colors.green), 
+      (isUser)?Task("disActive ", disactiveCount, Colors.grey):Task("public Idle",idleCountPublic,Colors.purple),
+      (isUser)?Task("Rejected ", rejectedCount, Colors.red):Task("",0,Colors.white),
+      Task((isUser)?"Idle ":"private Idle ", idleCount, Colors.yellow),
+      Task("Inprogress ", inprogressCount, Colors.orange),
     ];
     });
   
@@ -115,11 +117,14 @@ class _MyActivity extends State<MyActivity> {
                   ),
                 ),
               ),
+              Container(
+                child: Text("Total Requests :$total"),
+              ),
             ],
           ),
         ),
       ):
-      CircularProgressIndicator(),
+      Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -129,35 +134,39 @@ class _MyActivity extends State<MyActivity> {
         .getDocuments()
         .then((QuerySnapshot querySnapshot) async {
       querySnapshot.documents.forEach((doc) {
-        if (userId == doc[KRequestUserId]) {
+        if (userId == ((isUser)?doc[KRequestUserId]:doc[KRequestProviderId]) || ((!isUser)?doc[KRequestServiceId]==serviceid:false)) {
           if(!doc[KRequestIsActive]){
             setState(() {
-               disactiveCount++;
-               print("disactive $disactiveCount");
+              (isUser)? disactiveCount++:disactiveCount=0;
+              (isUser)? total++:total=total;
             });
           }
-          else if(doc[KRequestIsActive]&& !doc[KRequestIsProviderSeen]){
+          else if(doc[KRequestIsActive]&& !doc[KRequestIsProviderSeen] ){
              setState(() {
-              idleCount++;
-               print("idleCount $idleCount");
+              (isUser)?idleCount++
+              :(doc[KRequestIsPublic])?
+               idleCountPublic++
+              : idleCount++;
+
+              total++;
             });
           }
            else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && doc[KRequestIsCompleted]){
              setState(() {
               completeCount++;
-               print("completeCount $completeCount");
+               total++;
             });
           }
            else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& doc[KRequestIsAccepted]){
               setState(() {
               inprogressCount++;
-               print("inprogressCount $inprogressCount");
+               total++;
             });
           }
            else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& !doc[KRequestIsAccepted]){
               setState(() {
-              rejectedCount++;
-              print("rejectedCount $rejectedCount");
+              (isUser)?rejectedCount++:rejectedCount=0;
+              (isUser)? total++:total=total;
             });
           }
         }

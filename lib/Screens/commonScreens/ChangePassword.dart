@@ -5,7 +5,6 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
-import 'package:service_provider/Services/auth.dart';
 
 class ChangePassword extends StatefulWidget {
   static String id = "changePassword";
@@ -19,7 +18,7 @@ class ChangePassword extends StatefulWidget {
 class _ChangePassword extends State<ChangePassword> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   String newPasswd, confirmPasswd, userId;
-  Auth _auth;
+  //Auth _auth;
 
   @override
   void initState() {
@@ -51,6 +50,7 @@ class _ChangePassword extends State<ChangePassword> {
                     prefixIcon: Icons.vpn_key,
                     obscureText: true,
                     labelText: "New Password",
+                    // ignore: missing_return
                     validator: (value) {
                       setState(() {
                         newPasswd = value;
@@ -73,6 +73,7 @@ class _ChangePassword extends State<ChangePassword> {
                     prefixIcon: Icons.vpn_key,
                     obscureText: true,
                     labelText: "Confirm Password",
+                    // ignore: missing_return
                     validator: (value) {
                       if (value != "") {
                         if (newPasswd != "" && newPasswd.length >= 8)
@@ -100,12 +101,22 @@ class _ChangePassword extends State<ChangePassword> {
                         if (_globalKey.currentState.validate()) {
                           _globalKey.currentState.save();
                           try {
-                            if (confirmPasswd != "") 
-                            if (newPasswd ==confirmPasswd) {
-                              await Firestore.instance
-                                  .collection(KUserCollection)
-                                  .document(userId)
-                                  .updateData({KUserPassword: newPasswd});
+                            if (confirmPasswd != "") if (newPasswd ==
+                                confirmPasswd) {
+                              FirebaseUser user =
+                                  await FirebaseAuth.instance.currentUser();
+
+                              user.updatePassword(newPasswd).then((_) async {
+                                await Firestore.instance
+                                    .collection(KUserCollection)
+                                    .document(userId)
+                                    .updateData({KUserPassword: newPasswd});
+
+                                print("Successfully changed password");
+                              }).catchError((error) {
+                                print("Password can't be changed" +
+                                    error.toString());
+                              });
 
                               // ignore: deprecated_member_use
                               Scaffold.of(context).showSnackBar(SnackBar(

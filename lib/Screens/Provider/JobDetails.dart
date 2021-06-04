@@ -7,6 +7,7 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/Screens/Provider/HomeProvider.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Services/store.dart';
 
 class JobDetails extends StatefulWidget {
@@ -263,18 +264,20 @@ class _JobDetailsState extends State<JobDetails> {
                         child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  for (String imageurl
-                                      in neededData.requestModel.rImageUrl)
-                                    GalleryImages(
-                                      assetImage: imageurl,
-                                      isOnline: true,
-                                    ),
-                                ],
-                              ),
+                              (neededData.requestModel.rImageUrl.isNotEmpty)
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        for (String imageurl in neededData
+                                            .requestModel.rImageUrl)
+                                          GalleryImages(
+                                            assetImage: imageurl,
+                                            isOnline: true,
+                                          ),
+                                      ],
+                                    )
+                                  : Text("no image"),
                             ]),
                       ),
                     ),
@@ -282,78 +285,127 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ),
             ),
-            (neededData.pageType == "Available")
-                ? Expanded(
-                    flex: 2,
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Container(
+
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                     (!neededData.forUser)
+                        ? Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: _padding * 7),
+                        child: CustomButton(
+                            color: Colors.green,
+                            onPressed: () async {
+                              await store
+                                  .acceptJob(neededData.requestModel.requestId);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(HomeProvider.id);
+                              Fluttertoast.showToast(
+                                msg: 'The job was Accepted',
+                              );
+                            },
+                            textValue: "Accept"),
+                      ),
+                    ):  Expanded(child: Text(""),),
+                   Expanded(
+                        child: Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: _padding * 7),
                               child: CustomButton(
-                                  onPressed: () async {
-                                    await store.acceptJob(
+                                  color: Colors.red,
+                                  onPressed: () async {           
+                                    await store.cancleJob(
                                         neededData.requestModel.requestId);
                                     Navigator.of(context)
-                                        .pushReplacementNamed(HomeProvider.id);
+                                        .pushReplacementNamed(UserHome.id);
                                     Fluttertoast.showToast(
-                                      msg: 'The job was Accepted',
+                                      msg: 'The job was cancled',
                                     );
                                   },
-                                  textValue: "Accept"),
+                                  textValue: "cancle"),
                             ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: _padding * 7),
-                              child: CustomButton(
-                                  onPressed: () async {
-                                    neededData.requestModel.isAccepted = false;
-                                    neededData.requestModel.isProviderSeen =
-                                        true;
-                                    await store.rejectJob(
-                                        neededData.requestModel.requestId);
-                                    Navigator.of(context)
-                                        .pushReplacementNamed(HomeProvider.id);
-                                    Fluttertoast.showToast(
-                                      msg: 'The job was Rejected',
-                                    );
-                                  },
-                                  textValue: "Reject"),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : (neededData.pageType == "Inprogress")
-                    ? Expanded(
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: _padding * 7),
-                          child: CustomButton(
-                              onPressed: () async {
-                                neededData.requestModel.isComplete = true;
-                                await store
-                                    .endJob(neededData.requestModel.requestId);
-                                Navigator.of(context)
-                                    .pushReplacementNamed(HomeProvider.id);
-                                Fluttertoast.showToast(
-                                  msg: 'The job was completed',
-                                );
-                              },
-                              textValue: "Complete"),
-                        ),
-                      )
-                    : Expanded(
-                        child: Container(
-                          child: Text("This job was complete"),
-                        ),
-                      ),
+                          )
+                       
+                  ],
+                ),
+              ),
+            )
+
+            // (neededData.pageType == "Available")
+            //     ? Expanded(
+            //         flex: 2,
+            //         child: Container(
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Expanded(
+            //                 child: Container(
+            //                   padding: EdgeInsets.symmetric(
+            //                       horizontal: _padding * 7),
+            //                   child: CustomButton(
+            //                       onPressed: () async {
+            //                         await store.acceptJob(
+            //                             neededData.requestModel.requestId);
+            //                         Navigator.of(context)
+            //                             .pushReplacementNamed(HomeProvider.id);
+            //                         Fluttertoast.showToast(
+            //                           msg: 'The job was Accepted',
+            //                         );
+            //                       },
+            //                       textValue: "Accept"),
+            //                 ),
+            //               ),
+            //               Expanded(
+            //                 child: Container(
+            //                   padding: EdgeInsets.symmetric(
+            //                       horizontal: _padding * 7),
+            //                   child: CustomButton(
+            //                       onPressed: () async {
+            //                         neededData.requestModel.isAccepted = false;
+            //                         neededData.requestModel.isProviderSeen =
+            //                             true;
+            //                         await store.rejectJob(
+            //                             neededData.requestModel.requestId);
+            //                         Navigator.of(context)
+            //                             .pushReplacementNamed(HomeProvider.id);
+            //                         Fluttertoast.showToast(
+            //                           msg: 'The job was Rejected',
+            //                         );
+            //                       },
+            //                       textValue: "Reject"),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //     : (neededData.pageType == "Inprogress")
+            //         ? Expanded(
+            //             child: Container(
+            //               padding:
+            //                   EdgeInsets.symmetric(horizontal: _padding * 7),
+            //               child: CustomButton(
+            //                   onPressed: () async {
+            //                     neededData.requestModel.isComplete = true;
+            //                     await store
+            //                         .endJob(neededData.requestModel.requestId);
+            //                     Navigator.of(context)
+            //                         .pushReplacementNamed(HomeProvider.id);
+            //                     Fluttertoast.showToast(
+            //                       msg: 'The job was completed',
+            //                     );
+            //                   },
+            //                   textValue: "Complete"),
+            //             ),
+            //           )
+            //         : Expanded(
+            //             child: Container(
+            //               child: Text("This job was complete"),
+            //             ),
+            //           ),
           ],
         ),
       ),

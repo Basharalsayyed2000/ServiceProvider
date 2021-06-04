@@ -4,17 +4,20 @@ import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/PasswordVerificationDialog.dart';
 
 
+// ignore: must_be_immutable
 class Settings extends StatefulWidget {
   static String id = 'Settings';
+  bool isUser;
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsState createState() => _SettingsState(isUser:isUser);
 }
 
 class _SettingsState extends State<Settings> {
   bool valNotify1=true;
   bool valNotify2=false;
   bool valNotify3=false;
-
+  bool isUser;
+  _SettingsState({this.isUser});
   onChangeFunction1(bool newValue1){
     setState(() {
       valNotify1=newValue1;
@@ -34,6 +37,7 @@ class _SettingsState extends State<Settings> {
   }
   @override
   Widget build(BuildContext context) {
+    isUser=ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -109,7 +113,7 @@ class _SettingsState extends State<Settings> {
   GestureDetector buildAccountOption(BuildContext context,String title){
     return GestureDetector(
       onTap: (){
-        DialogHelper.exit(context, false) ;
+        DialogHelper.exit(context, false,isUser) ;
         },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 20),

@@ -105,7 +105,7 @@ class _UserHomeState extends State<UserHome> {
                           },
                           child: CircleAvatar(
                             backgroundColor: KprimaryColor,
-                            backgroundImage: (_userModel.uImageUrl == "")
+                            backgroundImage: (_userModel.uImageUrl == null)
                                 ? AssetImage("Assets/images/noprofile.png")
                                 : NetworkImage(_userModel.uImageUrl),
                             radius: 35,
@@ -182,6 +182,16 @@ class _UserHomeState extends State<UserHome> {
                       },
                     ),
                     ListTile(
+                      leading: Icon(Icons.work_outline_rounded),
+                      title: Text('Inprogress requests'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyBooks.id,
+                            arguments: UserActionModel(
+                                userAction: "Inprogress", user: _userModel));
+                      },
+                    ),
+                    ListTile(
                       leading: Icon(Icons.check_sharp),
                       title: Text('Completed requests'),
                       onTap: () {
@@ -192,15 +202,16 @@ class _UserHomeState extends State<UserHome> {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.work_outline_rounded),
-                      title: Text('Inprogress requests'),
+                      leading: Icon(Icons.cancel_outlined),
+                      title: Text('Rejected requests'),
                       onTap: () {
                         Navigator.of(context).pop();
                         Navigator.pushNamed(context, MyBooks.id,
                             arguments: UserActionModel(
-                                userAction: "Inprogress", user: _userModel));
+                                userAction: "Rejected", user: _userModel));
                       },
                     ),
+                    
                     const Divider(
                       height: 35,
                       thickness: 2,

@@ -3,14 +3,17 @@ import 'package:service_provider/Models/provider.dart';
 
 class NeededData{
   ProviderModel provider;
-  bool isActive;
-  String pageType;
+  bool isRequestActive,isRequestPublic,forUser;
+  String pageType,serviceRequestId;
   RequestModel requestModel;
 
   NeededData({
     this.provider,
-    this.isActive,
+    this.isRequestActive,
     this.pageType,
-    this.requestModel
+    this.requestModel,
+    this.isRequestPublic,
+    this.forUser,
+    this.serviceRequestId
   });
 }

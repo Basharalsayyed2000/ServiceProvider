@@ -423,6 +423,7 @@ class _ServiceRequest extends State<ServiceRequest> {
         if (_gallery.isNotEmpty) {
           await uploadGalleryImage();
         }
+        
         if (_globalKey.currentState.validate()) {
           _globalKey.currentState.save();
           RequestModel _request = RequestModel(
@@ -431,11 +432,13 @@ class _ServiceRequest extends State<ServiceRequest> {
             requestTime: rTime,
             rProblem: rProblem,
             userId: _userId,
-            providerId: neededData.provider.pId,
+            providerId:(neededData.isRequestPublic)? "":neededData.provider.pId,
             isAccepted: false,
             isComplete: false,
-            isActive: (neededData.isActive == true) ? true : false,
+            isActive: neededData.isRequestActive ,
             rImageUrl:_galleryUrl,
+            isPublic: neededData.isRequestPublic,
+            serviceId: neededData.serviceRequestId
           );
 
           toggleProgressHUD(false, progress);

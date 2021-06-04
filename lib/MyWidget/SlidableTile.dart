@@ -1,112 +1,159 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:service_provider/Models/NeededData.dart';
+import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/Screens/Provider/JobDetails.dart';
+import 'package:service_provider/Services/store.dart';
 
 class SlidableTile extends StatefulWidget {
   final String profile;
   final String user;
-  final String title;
-  final String schedule;
-  final String distance;
-  final String action;
+  final String status;
   final bool hasAction;
+  final bool forUser;
+  final RequestModel request;
 
-  SlidableTile(
-      {@required this.profile,
-      @required this.user,
-      @required this.title,
-      @required this.schedule,
-      @required this.distance,
-      this.action,
-      @required this.hasAction});
+  SlidableTile({
+    @required this.profile,
+    @required this.user,
+    @required this.status,
+    @required this.hasAction,
+    @required this.forUser,
+    @required this.request,
+  });
 
   @override
   State<StatefulWidget> createState() {
     return _SlidableTile(
         profile: profile,
         user: user,
-        title: title,
-        schedule: schedule,
-        distance: distance,
-        action: action,
-        hasAction: hasAction);
+        status: status,
+        hasAction: hasAction,
+        forUser: forUser,
+        request: request);
   }
 }
 
 class _SlidableTile extends State<SlidableTile> {
   final String profile;
   final String user;
-  final String title;
-  final String schedule;
-  final String distance;
-  final String action;
+  final String status;
   final bool hasAction;
-
+  final bool forUser;
+  final RequestModel request;
+  Store store = new Store();
   _SlidableTile(
       {@required this.profile,
       @required this.user,
-      @required this.title,
-      @required this.schedule,
-      @required this.distance,
-      this.action,
-      @required this.hasAction});
+      @required this.status,
+      @required this.hasAction,
+      @required this.forUser,
+      @required this.request});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Slidable(
-        //(action=="cancle")? Colors.orange[200]:(action=="cancle")? Colors.grey[200]:Colors.white
         actionPane: SlidableScrollActionPane(),
-
         actions: <Widget>[
           SlideAction(
             //  icon: Icons.info_outline_rounded,
-            child: Text('View Details'),
+            child: Text(
+              'View Details',
+              style: TextStyle(color: Colors.white),
+            ),
             color: KprimaryColor,
             onTap: () {
-              print('Details');
+              Navigator.pushNamed(context, JobDetails.id,arguments: NeededData(requestModel:request,pageType: status,forUser: this.forUser));  
             },
           ),
         ],
-
         secondaryActions: (hasAction)
             ? <Widget>[
                 SlideAction(
                   //icon: Icons.remove_circle_outline,
-                  child: (action == "cancle")
+                  child: (status == "Idle" && forUser)
                       ? Text(
                           'cancle',
                           style: TextStyle(color: Colors.white),
                         )
-                      : (action == "activate")
+                      : (status == "Disactive" && forUser)
                           ? Text(
                               'activate',
                               style: TextStyle(color: Colors.white),
                             )
-                          : Text(
-                              'empty',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                  color: (action == "cancle")
-                      ? Colors.red
-                      : (action == "activate")
+                          : (status == "Idle" && !forUser && !request.isPublic)
+                              ? Text(
+                                  'reject',
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              : (status == "Inprogress" && !forUser)
+                                  ? Text(
+                                      'complete',
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  : (status == "Rejected" && forUser)
+                                      ? Text(
+                                          'forword',
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                       : (status == "Idle" && !forUser && request.isPublic)?
+                                        Text(
+                                          'Accept',
+                                          style: TextStyle(color: Colors.white),
+                                        ):
+                                        Text(
+                                          'empty',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                  color: (status == "Idle" && request.isPublic && !forUser)
+                      ? Colors.green
+                      : (status == "Disactive")
                           ? Colors.blue
-                          : Colors.red,
+                          : (status == "Inprogress" && !forUser)
+                              ? Colors.green
+                              : (status == "Rejected" && forUser)
+                              ? Colors.deepPurpleAccent
+                               : (status == "Idle")
+                              ? Colors.red
+                              : Colors.grey,
                   onTap: () {
-                    print('Remove');
+                    if (status == "Idle" && forUser) {
+                      store.cancleJob(request.requestId);
+                      Fluttertoast.showToast(
+                        msg: 'The job was Cancled',
+                      );
+                    } else if (status == "Disactive") {
+                      store.activateJob(request.requestId);
+                      Fluttertoast.showToast(
+                        msg: 'The job was Diactivated',
+                      );
+                    } else if (status == "Idle" && !forUser) {
+                      store.rejectJob(request.requestId);
+                      Fluttertoast.showToast(
+                        msg: 'The job was Rejected',
+                      );
+                    } else if (status == "Inprogress" && !forUser) {
+                      store.endJob(request.requestId);
+                      Fluttertoast.showToast(
+                        msg: 'The job was Completed',
+                      );
+                    }
                   },
                 )
               ]
             : null,
-
         actionExtentRatio: 0.25,
-
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: KsecondaryColor.withOpacity(.755),
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(profile),
+              backgroundImage: (profile != null)
+                  ? NetworkImage(profile)
+                  : AssetImage("Assets/images/noprofile.png"),
               radius: 26,
 
               // minRadius: 20,
@@ -121,37 +168,162 @@ class _SlidableTile extends State<SlidableTile> {
             child: Row(
               children: [
                 Text(
-                  title,
+                  (request.rProblem.length > 10)
+                      ? "${request.rProblem.substring(0, 10)}   "
+                      : "${request.rProblem}   ",
                   style: TextStyle(
                       fontSize: 17,
                       color: KprimaryColorDark,
                       fontWeight: FontWeight.w600),
                 ),
-                (action == "cancle")?Icon(Icons.iso_outlined, color: KsecondaryColor)
-                :(action == "activate")?Icon(Icons.domain_verification, color: KsecondaryColor)
-                :(action == "Inprogress")?Icon(Icons.domain_verification, color: KsecondaryColor)
-                :(action == "Completed")?Icon(Icons.domain_verification, color: KsecondaryColor)
-                :Icon(Icons.domain_verification, color: KsecondaryColor)
-
-
+                Container(
+                  child: Row(
+                    children: [
+                      Text(
+                        (status == "Idle")
+                            ? "  Idle "
+                            : (status == "Inprogress")
+                                ? " Inprogress "
+                                : (status == "complete")
+                                    ? " completed "
+                                    : (status == "Disactive")
+                                        ? " disactive "
+                                        : (status == "Rejected")
+                                            ? " Rejected"
+                                            : "activate",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  height: 25,
+                  width: (status == "Inprogress" || status == "complete")
+                      ? 85
+                      : (status == "Disactive" || status == "Rejected")
+                          ? 75
+                          : 40,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: (status == "Idle")
+                          ? Colors.yellow
+                          : (status == "Inprogress")
+                              ? Colors.orange
+                              : (status == "Disactive")
+                                  ? Colors.grey
+                                  : (status == "complete")
+                                      ? Colors.green
+                                      : (status == "Rejected")
+                                          ? Colors.red
+                                          : Colors.deepPurpleAccent),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                (!request.isPublic)
+                    ? Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            " private",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        height: 25,
+                        width: 56,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.blue[400]
+                        ),
+                      )
+                    : (request.isPublic && !forUser)
+                        ? Container(
+                            // margin: EdgeInsets.only(top: 1, bottom: 3),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                " public",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            height: 25,
+                            width: 46,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.deepPurpleAccent),
+                          )
+                        : Container()
+                // (action == "cancle")
+                //     ? Icon(Icons.iso_outlined, color: KsecondaryColor)
+                //     : (action == "activate")
+                //         ? Icon(Icons.domain_verification,
+                //             color: KsecondaryColor)
+                //         : (action == "Inprogress")
+                //             ? Icon(Icons.domain_verification,
+                //                 color: KsecondaryColor)
+                //             : (action == "Completed")
+                //                 ? Icon(Icons.domain_verification,
+                //                     color: KsecondaryColor)
+                //                 : Icon(Icons.domain_verification,
+                //                     color: KsecondaryColor),
               ],
             ),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "for: $user",
-                style: TextStyle(
-                    color: KprimaryColorDark,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14),
-              ),
+              (user != null)
+                  ? Text(
+                      (forUser) ? "to: $user" : "from: $user",
+                      style: TextStyle(
+                          color: KprimaryColorDark,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          "to:  ",
+                          style: TextStyle(
+                              color: KprimaryColorDark,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14),
+                        ),
+                        Container(
+                          // margin: EdgeInsets.only(top: 1, bottom: 3),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              " public",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          height: 25,
+                          width: 46,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.deepPurpleAccent),
+                        ),
+                      ],
+                    ),
               Container(
                 margin: EdgeInsets.only(top: 4),
-                child: Text(
-                  "\t\t${schedule.toString()}",
-                  style: TextStyle(fontSize: 13, color: KprimaryColorDark),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.timer,
+                      color: KsecondaryColor,
+                      size: 16,
+                    ),
+                    Text(
+                      "  ${request.requestDate.substring(0, 10)} ${request.requestTime.substring(10, 16)}",
+                      style: TextStyle(fontSize: 13, color: KprimaryColorDark),
+                    ),
+                  ],
                 ),
               ),
               Container(
@@ -164,7 +336,7 @@ class _SlidableTile extends State<SlidableTile> {
                       size: 16,
                     ),
                     Text(
-                      "${distance.toString()} Km ",
+                      "\t 1.5 Km ",
                       style: TextStyle(
                           color: KprimaryColorDark,
                           fontWeight: FontWeight.bold),
@@ -175,10 +347,6 @@ class _SlidableTile extends State<SlidableTile> {
                           color: KprimaryColorDark,
                           fontWeight: FontWeight.w500),
                     ),
-                    Divider(
-                      thickness: 1,
-                      // height: 1,
-                    )
                   ],
                 ),
               ),

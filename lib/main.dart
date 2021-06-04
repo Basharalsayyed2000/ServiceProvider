@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
     
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: ProviderProfilescreen.id,
+      initialRoute: SplashScreen.id,
       routes: {
         MyFavorateProviders.id: (context) => MyFavorateProviders(),
         JobDetails.id: (context) => JobDetails(),

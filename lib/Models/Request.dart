@@ -1,6 +1,6 @@
 class RequestModel{
-String providerId,  rAddDate, userId,rDescription,requestDate,requestTime,requestId,rProblem,locationId;
-bool isActive,isComplete,isAccepted,isProviderSeen;
+String providerId,  rAddDate, userId,rDescription,requestDate,requestTime,requestId,rProblem,locationId,serviceId;
+bool isActive,isComplete,isAccepted,isProviderSeen,isPublic;
 List<String> rImageUrl;
 RequestModel(
       {this.rDescription,
@@ -16,6 +16,8 @@ RequestModel(
       this.rImageUrl,
       this.requestId,
       this.rProblem,
-      this.isProviderSeen
+      this.isProviderSeen,
+      this.isPublic,
+      this.serviceId
       });
 }

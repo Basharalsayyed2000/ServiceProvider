@@ -30,7 +30,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   String _userId;
   String imageUrl;
   var providerDocument;
-
+  String serviceProviderId="";
   // ignore: unused_field
   String _providerType = "Electrician";
   // ignore: unused_field
@@ -54,7 +54,9 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   void initState() {
     super.initState();
     _getUserId();
+    // ignore: deprecated_member_use
     _gallery[true] = new List();
+    // ignore: deprecated_member_use
     _gallery[false] = new List();
   }
 
@@ -79,7 +81,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
             onSelected: (choice) {
               // ignore: unnecessary_statements
               (choice == "My Activity")
-                ? Navigator.pushNamed(context, MyActivity.id)
+                ? Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity(isUser: false,serviceid: serviceProviderId,)),)
                 // ignore: unnecessary_statements
                 : null;
               if (choice == "Logout") {
@@ -110,6 +112,10 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
             return Center(child: Column( mainAxisAlignment: MainAxisAlignment.center, children: [CircularProgressIndicator(backgroundColor: KsecondaryColor), Container(margin: EdgeInsets.only(top:MediaQuery.of(context).size.height/25), child:Text("Please Wait"))]));
           } else {
             var providerDocument = snapshot.data;
+            
+            if (providerDocument[KServiceId] != null)
+            serviceProviderId=providerDocument[KServiceId];
+          
             if (providerDocument[KProviderImageUrl] != null)
               imageUrl = providerDocument[KProviderImageUrl];
             //if(providerDocument[KProviderType] != null)

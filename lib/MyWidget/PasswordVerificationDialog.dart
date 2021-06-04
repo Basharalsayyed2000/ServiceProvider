@@ -9,13 +9,15 @@ import 'package:service_provider/Services/auth.dart';
 
 class PasswordDialog extends StatefulWidget {
   final bool changeEmail;
+  final bool isUser;
 
-  PasswordDialog({this.changeEmail});
+  PasswordDialog({@required this.changeEmail, @required this.isUser});
 
   @override
   State<StatefulWidget> createState() {
     return _PasswordDialog(
-        changeEmail: (changeEmail == null) ? false : changeEmail);
+        changeEmail: (changeEmail == null) ? false : changeEmail,
+        isUser: isUser);
   }
 }
 
@@ -24,9 +26,10 @@ class _PasswordDialog extends State<PasswordDialog> {
   final bool changeEmail;
   String currentPassword;
   String userId;
+  final bool isUser;
   String myPassword;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  _PasswordDialog({this.changeEmail});
+  _PasswordDialog({this.changeEmail, this.isUser});
   @override
   void initState() {
     super.initState();
@@ -108,7 +111,7 @@ class _PasswordDialog extends State<PasswordDialog> {
 }
 
 class DialogHelper {
-  static exit(context, changeEmail) => showDialog(
+  static exit(context, changeEmail,isUser) => showDialog(
       context: context,
-      builder: (context) => PasswordDialog(changeEmail: changeEmail));
+      builder: (context) => PasswordDialog(changeEmail: changeEmail,isUser: isUser,));
 }

@@ -239,6 +239,8 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                               KRequestAddDate: getDateNow().toString(),
                               KRequestImageUrl: _requestModel.rImageUrl,
                               KRequestLocationId:_requestModel.locationId,
+                              KRequestIsPublic:_requestModel.isPublic,
+                              KRequestServiceId:_requestModel.serviceId,
                               KRequestIsProviderSeen:_requestModel.isProviderSeen,
                             });
                             Navigator.pushNamedAndRemoveUntil(

@@ -92,5 +92,7 @@ const KRequestProviderId='RequestProviderId';
 const KRequestLocationId='RequestLocationId';
 const KRequestProblem='RequestProblem';
 const KRequestDescription='RequestDescription';
+const KRequestServiceId='RequestServiceId';
+const KRequestIsPublic='RequestIsPublic';
 
 

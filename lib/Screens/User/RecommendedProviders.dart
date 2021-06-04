@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Services/UserStore.dart';
 
@@ -69,15 +72,56 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                 ));
               }
             }
-            return ListView.builder(
-              primary: false,
-              itemBuilder: (context, index) => Stack(
-                children: <Widget>[
-                  buildCard('${_providers[index].pName}', '${service.sName}',
-                      '${_providers[index].pImageUrl}', _providers[index]),
-                ],
-              ),
-              itemCount: _providers.length,
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    primary: false,
+                    itemBuilder: (context, index) => Stack(
+                      children: <Widget>[
+                        buildCard(
+                            '${_providers[index].pName}',
+                            '${service.sName}',
+                            '${_providers[index].pImageUrl}',
+                            _providers[index]),
+                      ],
+                    ),
+                    itemCount: _providers.length,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom:Kminimumpadding * 8),
+                      child: CustomButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                          context, ServiceRequest.id,
+                          arguments: NeededData(serviceRequestId: service.sId,isRequestActive: true,isRequestPublic: true)
+                          );
+                        },
+                        textValue: "public Now",
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                     Container(
+                      margin: EdgeInsets.only(bottom:Kminimumpadding * 8),
+                       child: CustomButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                          context, ServiceRequest.id,
+                          arguments: NeededData(serviceRequestId: service.sId,isRequestActive: false,isRequestPublic: true)
+                          );
+                        },
+                        textValue: "public Later",
+                    ),
+                     ),
+                  ],
+                ),
+              ],
             );
           } else {
             return Center(
@@ -104,7 +148,6 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
               Icon(Icons.star, size: 30, color: Colors.yellow),
               Icon(Icons.star, size: 30, color: Colors.yellow),
               Icon(Icons.star, size: 30, color: Colors.yellow),
-
             ]),
             leading: CircleAvatar(
               backgroundImage: imageurl == ''

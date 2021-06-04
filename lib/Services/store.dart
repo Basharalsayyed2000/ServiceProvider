@@ -115,6 +115,24 @@ class Store {
     });
   }
 
+   cancleJob(String requestId) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestIsActive:false
+    });
+  }
+  
+  activateJob(String requestId) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestIsActive:true
+    });
+  }
+
   endJob(String requestId) async {
     await _firestore
         .collection(KRequestCollection)

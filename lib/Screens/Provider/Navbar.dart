@@ -65,14 +65,14 @@ class _NavbarState extends State<Navbar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.build,
+              Icons.person,
               color: _colorS,
             ),
             label: 'My profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.settings,
               color: _colorP,
             ),
             label: 'Setting',
