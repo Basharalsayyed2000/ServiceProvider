@@ -49,6 +49,10 @@ class Store {
       KRequestDate: request.requestDate,
       KRequestAddDate: request.rAddDate,
       KRequestImageUrl: request.rImageUrl
+    }).then((value) {
+      // value.documentID;
+      
+      // _firestore.collection(KRequestCollection).document().updateData(data);
     });
   }
 
@@ -140,5 +144,18 @@ class Store {
         .updateData({
       KRequestIsCompleted: true,
     });
+  }
+
+  acceptPublicJob(String requestId, String providerId) async {
+ 
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+     // KRequestIsAccepted: true,
+      KRequestIsProviderSeen: true,    
+      KRequestProviderId:providerId,
+     });
+
   }
 }

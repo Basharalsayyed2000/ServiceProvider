@@ -41,225 +41,241 @@ class _HomeProviderState extends State<HomeProvider> {
         backgroundColor: KprimaryColor,
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(top:20,bottom: 20),
         child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    pageType = "Available";
-                  });
-                },
-                child: Column(
-                  children: [
-                    Text(
-                      "Available",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: (pageType == "Available")
-                              ? Colors.black
-                              : Colors.grey),
-                    ),
-                    if (pageType == "Available")
-                      Container(
-                        margin: EdgeInsets.only(top: 3),
-                        height: 2,
-                        width: 55,
-                        color: Colors.orange,
-                      )
-                  ],
+          Padding(
+            padding: const EdgeInsets.only(left: 10,right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      pageType = "Available";
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        "Available",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: (pageType == "Available")
+                                ? Colors.black
+                                : Colors.grey),
+                      ),
+                      if (pageType == "Available")
+                        Container(
+                          margin: EdgeInsets.only(top: 3),
+                          height: 2,
+                          width: 55,
+                          color: Colors.orange,
+                        )
+                    ],
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    pageType = "Inprogress";
-                  });
-                },
-                child: Column(
-                  children: [
-                    Text(
-                      "InProgress",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: (pageType == "Inprogress")
-                              ? Colors.black
-                              : Colors.grey),
-                    ),
-                    if (pageType == "Inprogress")
-                      Container(
-                        margin: EdgeInsets.only(top: 3),
-                        height: 2,
-                        width: 55,
-                        color: Colors.orange,
-                      )
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      pageType = "Inprogress";
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        "InProgress",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: (pageType == "Inprogress")
+                                ? Colors.black
+                                : Colors.grey),
+                      ),
+                      if (pageType == "Inprogress")
+                        Container(
+                          margin: EdgeInsets.only(top: 3),
+                          height: 2,
+                          width: 55,
+                          color: Colors.orange,
+                        )
+                    ],
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    pageType = "Completed";
-                  });
-                },
-                child: Column(
-                  children: [
-                    Text(
-                      "Completed",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: (pageType == "Completed")
-                              ? Colors.black
-                              : Colors.grey),
-                    ),
-                    if (pageType == "Completed")
-                      Container(
-                        margin: EdgeInsets.only(top: 3),
-                        height: 2,
-                        width: 55,
-                        color: Colors.orange,
-                      )
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      pageType = "Completed";
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        "Completed",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: (pageType == "Completed")
+                                ? Colors.black
+                                : Colors.grey),
+                      ),
+                      if (pageType == "Completed")
+                        Container(
+                          margin: EdgeInsets.only(top: 3),
+                          height: 2,
+                          width: 55,
+                          color: Colors.orange,
+                        )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(
             height: 25,
           ),
           (pageType == "Available")
-              ? 
-              StreamBuilder(
-                stream:  Firestore.instance
-                        .collection(KProviderCollection).document(pId)
-                        .snapshots(),
-                 builder: (context, snapshot) { 
+              ? StreamBuilder(
+                  stream: Firestore.instance
+                      .collection(KProviderCollection)
+                      .document(pId)
+                      .snapshots(),
+                  builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting)
                       return new Center(child: new CircularProgressIndicator());
                     if (!snapshot.hasData) {
                       return Text("Loading");
                     }
                     var providerDocument = snapshot.data;
-                   return StreamBuilder<QuerySnapshot>(
-                    stream: Firestore.instance
-                        .collection(KRequestCollection)
-                        .snapshots(),
-                    // ignore: missing_return
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting)
-                        return new Center(child: new CircularProgressIndicator());
-                      if (snapshot.hasData) {
-                        List<RequestModel> _requests = [];
-                        for (var doc in snapshot.data.documents) {
-                          var data = doc.data;
-                          String requestId = doc.documentID;
-                          if (data[KRequestProviderId] == pId || providerDocument[KServiceId]==data[KRequestServiceId]) {
-                            //List<dynamic> requestUrl=[];
-                            //  if(!(data[KRequestImageUrl]==null)){
-                            //  requestUrl= List.of(data[KRequestImageUrl]);
-                            // }
-                            if (data[KRequestIsActive] &&
-                                !data[KRequestIsAccepted] &&
-                                !data[KRequestIsCompleted] &&
-                                !data[KRequestIsProviderSeen])
-                              _requests.add(RequestModel(
-                                rProblem: data[KRequestProblem],
-                                rDescription: data[KRequestDescription],
-                                rAddDate: data[KRequestAddDate],
-                                requestDate: data[KRequestDate],
-                                requestTime: data[KRequestTime],
-                                requestId: requestId,
-                                providerId: data[KRequestProviderId],
-                                userId: data[KRequestUserId],
-                                isAccepted: data[KRequestIsAccepted],
-                                isActive: data[KRequestIsActive],
-                                isComplete: data[KRequestIsCompleted],
-                                isProviderSeen: data[KRequestIsProviderSeen],
-                                locationId: data[KRequestLocationId],
-                                isPublic: data[KRequestIsPublic],
-                                serviceId: data[KRequestServiceId],
-                                rImageUrl: data[KRequestImageUrl] == null
-                                    ? []
-                                    : data[KRequestImageUrl]
-                                        .map<String>((i) => i as String)
-                                        .toList(),
-                              ));
-                          }
-                        }
+                    return StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection(KRequestCollection)
+                            .snapshots(),
+                        // ignore: missing_return
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return new Center(
+                                child: new CircularProgressIndicator());
+                          if (snapshot.hasData) {
+                            List<RequestModel> _requests = [];
+                            for (var doc in snapshot.data.documents) {
+                              var data = doc.data;
+                              String requestId = doc.documentID;
+                              if (data[KRequestProviderId] == pId ||
+                                  providerDocument[KServiceId] ==
+                                      data[KRequestServiceId]) {
+                                //List<dynamic> requestUrl=[];
+                                //  if(!(data[KRequestImageUrl]==null)){
+                                //  requestUrl= List.of(data[KRequestImageUrl]);
+                                // }
+                                if (data[KRequestIsActive] &&
+                                    !data[KRequestIsAccepted] &&
+                                    !data[KRequestIsCompleted] &&
+                                    !data[KRequestIsProviderSeen])
+                                  _requests.add(RequestModel(
+                                    rProblem: data[KRequestProblem],
+                                    rDescription: data[KRequestDescription],
+                                    rAddDate: data[KRequestAddDate],
+                                    requestDate: data[KRequestDate],
+                                    requestTime: data[KRequestTime],
+                                    requestId: requestId,
+                                    providerId: data[KRequestProviderId],
+                                    userId: data[KRequestUserId],
+                                    isAccepted: data[KRequestIsAccepted],
+                                    isActive: data[KRequestIsActive],
+                                    isComplete: data[KRequestIsCompleted],
+                                    isProviderSeen:
+                                        data[KRequestIsProviderSeen],
+                                    locationId: data[KRequestLocationId],
+                                    isPublic: data[KRequestIsPublic],
+                                    serviceId: data[KRequestServiceId],
+                                    rImageUrl: data[KRequestImageUrl] == null
+                                        ? []
+                                        : data[KRequestImageUrl]
+                                            .map<String>((i) => i as String)
+                                            .toList(),
+                                  ));
+                              }
+                            }
 
-                        return (_requests.isNotEmpty)
-                            ? Expanded(
-                                child: ListView.separated(
-                                  primary: false,
-                                  itemBuilder: (context, index) => Container(
-                                      // color: Colors.green[300],
-                                      margin: EdgeInsets.only(
-                                          top: (index == 0) ? 4 : 0),
-                                      child: StreamBuilder(
-                                          stream: Firestore.instance
-                                              .collection(KUserCollection)
-                                              .document(_requests
-                                                  .elementAt(index)
-                                                  .userId) //ID OF DOCUMENT
-                                              .snapshots(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting)
-                                              return new Center(
-                                                  child:
-                                                      new CircularProgressIndicator());
-                                            if (snapshot.hasData) {
-                                              var document2 = snapshot.data;
-                                              return SlidableTile(
-                                                profile: document2[KUserImageUrl],
-                                                user: document2[KUserName],
-                                                request:
-                                                    _requests.elementAt(index),
-                                                status: "Idle",
-                                                hasAction: true,
-                                                forUser: false,
-                                              );
-                                            } else {
-                                              return new CircularProgressIndicator();
-                                            }
-                                          })),
-                                  itemCount: _requests.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return Divider(
-                                      thickness: 1,
-                                      // height: 1,
-                                    );
-                                  },
-                                ),
-                              )
-                            : Center(
-                                child: Text(
-                                  'There is no Available Job',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.orange,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              );
-                      } else {
-                        Center(
-                          child: Text(
-                            'There is no Available Job',
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      }
-                    });
-                 })
+                            return (_requests.isNotEmpty)
+                                ? Expanded(
+                                    child: ListView.separated(
+                                      primary: false,
+                                      itemBuilder: (context, index) =>
+                                          Container(
+                                              // color: Colors.green[300],
+                                              margin: EdgeInsets.only(
+                                                  top: (index == 0) ? 4 : 0),
+                                              child: StreamBuilder(
+                                                  stream: Firestore.instance
+                                                      .collection(
+                                                          KUserCollection)
+                                                      .document(_requests
+                                                          .elementAt(index)
+                                                          .userId) //ID OF DOCUMENT
+                                                      .snapshots(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.waiting)
+                                                      return new Center(
+                                                          child:
+                                                              new CircularProgressIndicator());
+                                                    if (snapshot.hasData) {
+                                                      var document2 =
+                                                          snapshot.data;
+                                                      return SlidableTile(
+                                                        profile: document2[
+                                                            KUserImageUrl],
+                                                        user: document2[
+                                                            KUserName],
+                                                        request: _requests
+                                                            .elementAt(index),
+                                                        status: "Idle",
+                                                        hasAction: true,
+                                                        forUser: false,
+                                                        providerId:pId,
+                                                       
+                                                      );
+                                                    } else {
+                                                      return new CircularProgressIndicator();
+                                                    }
+                                                  })),
+                                      itemCount: _requests.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return Divider(
+                                          thickness: 1,
+                                          // height: 1,
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : Center(
+                                    child: Text(
+                                      'There is no Available Job',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  );
+                          } else {
+                            Center(
+                              child: Text(
+                                'There is no Available Job',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }
+                        });
+                  })
               : (pageType == "Inprogress")
                   ? StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance
@@ -296,6 +312,8 @@ class _HomeProviderState extends State<HomeProvider> {
                                   userId: data[KRequestUserId],
                                   isAccepted: data[KRequestIsAccepted],
                                   isActive: data[KRequestIsActive],
+                                  isPublic: data[KRequestIsPublic],
+                                  serviceId: data[KRequestServiceId],
                                   isComplete: data[KRequestIsCompleted],
                                   isProviderSeen: data[KRequestIsProviderSeen],
                                   rImageUrl: data[KRequestImageUrl] == null
@@ -411,6 +429,8 @@ class _HomeProviderState extends State<HomeProvider> {
                                       userId: data[KRequestUserId],
                                       isAccepted: data[KRequestIsAccepted],
                                       isActive: data[KRequestIsActive],
+                                      isPublic: data[KRequestIsPublic],
+                                      serviceId: data[KRequestServiceId],
                                       isComplete: data[KRequestIsCompleted],
                                       isProviderSeen:
                                           data[KRequestIsProviderSeen],

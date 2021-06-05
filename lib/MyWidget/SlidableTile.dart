@@ -14,6 +14,7 @@ class SlidableTile extends StatefulWidget {
   final bool hasAction;
   final bool forUser;
   final RequestModel request;
+  final String providerId;
 
   SlidableTile({
     @required this.profile,
@@ -22,17 +23,20 @@ class SlidableTile extends StatefulWidget {
     @required this.hasAction,
     @required this.forUser,
     @required this.request,
+    this.providerId,
   });
 
   @override
   State<StatefulWidget> createState() {
     return _SlidableTile(
-        profile: profile,
-        user: user,
-        status: status,
-        hasAction: hasAction,
-        forUser: forUser,
-        request: request);
+      profile: profile,
+      user: user,
+      status: status,
+      hasAction: hasAction,
+      forUser: forUser,
+      request: request,
+      providerId: providerId,
+    );
   }
 }
 
@@ -43,14 +47,17 @@ class _SlidableTile extends State<SlidableTile> {
   final bool hasAction;
   final bool forUser;
   final RequestModel request;
+  final String providerId;
   Store store = new Store();
-  _SlidableTile(
-      {@required this.profile,
-      @required this.user,
-      @required this.status,
-      @required this.hasAction,
-      @required this.forUser,
-      @required this.request});
+  _SlidableTile({
+    @required this.profile,
+    @required this.user,
+    @required this.status,
+    @required this.hasAction,
+    @required this.forUser,
+    @required this.request,
+    this.providerId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +73,11 @@ class _SlidableTile extends State<SlidableTile> {
             ),
             color: KprimaryColor,
             onTap: () {
-              Navigator.pushNamed(context, JobDetails.id,arguments: NeededData(requestModel:request,pageType: status,forUser: this.forUser));  
+              Navigator.pushNamed(context, JobDetails.id,
+                  arguments: NeededData(
+                      requestModel: request,
+                      pageType: status,
+                      forUser: this.forUser));
             },
           ),
         ],
@@ -99,15 +110,19 @@ class _SlidableTile extends State<SlidableTile> {
                                           'forword',
                                           style: TextStyle(color: Colors.white),
                                         )
-                                       : (status == "Idle" && !forUser && request.isPublic)?
-                                        Text(
-                                          'Accept',
-                                          style: TextStyle(color: Colors.white),
-                                        ):
-                                        Text(
-                                          'empty',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
+                                      : (status == "Idle" &&
+                                              !forUser &&
+                                              request.isPublic)
+                                          ? Text(
+                                              'Accept',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )
+                                          : Text(
+                                              'empty',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                   color: (status == "Idle" && request.isPublic && !forUser)
                       ? Colors.green
                       : (status == "Disactive")
@@ -115,10 +130,10 @@ class _SlidableTile extends State<SlidableTile> {
                           : (status == "Inprogress" && !forUser)
                               ? Colors.green
                               : (status == "Rejected" && forUser)
-                              ? Colors.deepPurpleAccent
-                               : (status == "Idle")
-                              ? Colors.red
-                              : Colors.grey,
+                                  ? Colors.deepPurpleAccent
+                                  : (status == "Idle")
+                                      ? Colors.red
+                                      : Colors.grey,
                   onTap: () {
                     if (status == "Idle" && forUser) {
                       store.cancleJob(request.requestId);
@@ -128,9 +143,11 @@ class _SlidableTile extends State<SlidableTile> {
                     } else if (status == "Disactive") {
                       store.activateJob(request.requestId);
                       Fluttertoast.showToast(
-                        msg: 'The job was Diactivated',
+                        msg: 'The job was activated',
                       );
-                    } else if (status == "Idle" && !forUser) {
+                    } else if (status == "Idle" &&
+                        !forUser &&
+                        !request.isPublic) {
                       store.rejectJob(request.requestId);
                       Fluttertoast.showToast(
                         msg: 'The job was Rejected',
@@ -139,6 +156,13 @@ class _SlidableTile extends State<SlidableTile> {
                       store.endJob(request.requestId);
                       Fluttertoast.showToast(
                         msg: 'The job was Completed',
+                      );
+                    } else if (status == "Idle" &&
+                        !forUser &&
+                        request.isPublic) {
+                      store.acceptPublicJob(request.requestId, providerId);
+                      Fluttertoast.showToast(
+                        msg: 'you must wait $user to accept',
                       );
                     }
                   },
@@ -183,7 +207,7 @@ class _SlidableTile extends State<SlidableTile> {
                         (status == "Idle")
                             ? "  Idle "
                             : (status == "Inprogress")
-                                ? " Inprogress "
+                                ? " Inprogress"
                                 : (status == "complete")
                                     ? " completed "
                                     : (status == "Disactive")
@@ -204,7 +228,7 @@ class _SlidableTile extends State<SlidableTile> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: (status == "Idle")
-                          ? Colors.yellow
+                          ? Colors.lime
                           : (status == "Inprogress")
                               ? Colors.orange
                               : (status == "Disactive")
@@ -218,7 +242,7 @@ class _SlidableTile extends State<SlidableTile> {
                 SizedBox(
                   width: 4,
                 ),
-                (!request.isPublic)
+                (!request.isPublic && !request.isProviderSeen)
                     ? Container(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 2),
@@ -233,23 +257,23 @@ class _SlidableTile extends State<SlidableTile> {
                         width: 56,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Colors.blue[400]
-                        ),
+                            color: Colors.blue[400]),
                       )
-                    : (request.isPublic && !forUser)
+                    : (request.isPublic && !forUser // &&request.isProviderSeen
+                        )
                         ? Container(
                             // margin: EdgeInsets.only(top: 1, bottom: 3),
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 4),
+                              padding: const EdgeInsets.all(2),
                               child: Text(
                                 " public",
-                              style: TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
                             ),
                             height: 25,
-                            width: 46,
+                            width: 54,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 color: Colors.deepPurpleAccent),

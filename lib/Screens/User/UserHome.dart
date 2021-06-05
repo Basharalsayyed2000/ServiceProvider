@@ -211,7 +211,16 @@ class _UserHomeState extends State<UserHome> {
                                 userAction: "Rejected", user: _userModel));
                       },
                     ),
-                    
+                     ListTile(
+                      leading: Icon(Icons.add_reaction_rounded),
+                      title: Text('public requests reaction'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, MyBooks.id,
+                            arguments: UserActionModel(
+                                userAction: "publicReaction", user: _userModel));
+                      },
+                    ),
                     const Divider(
                       height: 35,
                       thickness: 2,
