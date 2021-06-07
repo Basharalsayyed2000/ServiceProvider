@@ -72,7 +72,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                 ));
               }
             }
-            return Column(
+            return (_providers.isNotEmpty)? Column(
               children: [
                 Expanded(
                   child: ListView.builder(
@@ -122,6 +122,8 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                   ],
                 ),
               ],
+            ):Center(
+              child: Text("No Provider provide this service"),
             );
           } else {
             return Center(

@@ -46,12 +46,12 @@ class _PasswordDialog extends State<PasswordDialog> {
 
   Future<void> getUserName() async {
     Firestore.instance
-        .collection(KUserCollection)
+        .collection((isUser)?KUserCollection:KProviderCollection)
         .document(await _auth.getCurrentUserId())
         .get()
         .then((value) {
       setState(() {
-        myPassword = value.data[KUserPassword];
+        myPassword = value.data[(isUser)?KUserPassword:KProviderPassword];
       });
     });
   }
@@ -85,10 +85,15 @@ class _PasswordDialog extends State<PasswordDialog> {
                         return "The Password Is Incorrect";
                       } else {
                         changeEmail
-                            ? Navigator.of(context)
-                                .pushReplacementNamed(ChangeEmail.id)
-                            : Navigator.of(context)
-                                .pushReplacementNamed(ChangePassword.id);
+                            ? 
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChangeEmail(isUser:isUser,)),
+                           )
+                          : Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChangePassword(isUser:isUser,)),
+                          );
                       }
                     }
                   },

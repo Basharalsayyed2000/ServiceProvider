@@ -1,24 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
+import 'package:service_provider/Services/UserStore.dart';
 
 class ChangePassword extends StatefulWidget {
   static String id = "changePassword";
-
+  final bool isUser;
+  ChangePassword({this.isUser});
   @override
   State<StatefulWidget> createState() {
-    return _ChangePassword();
+    return _ChangePassword(
+      isUser: isUser,
+    );
   }
 }
 
 class _ChangePassword extends State<ChangePassword> {
+  final bool isUser;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   String newPasswd, confirmPasswd, userId;
-  //Auth _auth;
+  UserStore userStore = new UserStore();
+  _ChangePassword({this.isUser});
 
   @override
   void initState() {
@@ -101,27 +105,28 @@ class _ChangePassword extends State<ChangePassword> {
                         if (_globalKey.currentState.validate()) {
                           _globalKey.currentState.save();
                           try {
-                            if (confirmPasswd != "") if (newPasswd ==
-                                confirmPasswd) {
-                              FirebaseUser user =
-                                  await FirebaseAuth.instance.currentUser();
+                            if (confirmPasswd != "") {
+                              if (newPasswd == confirmPasswd) {
+                                FirebaseUser user =
+                                    await FirebaseAuth.instance.currentUser();
 
-                              user.updatePassword(newPasswd).then((_) async {
-                                await Firestore.instance
-                                    .collection(KUserCollection)
-                                    .document(userId)
-                                    .updateData({KUserPassword: newPasswd});
+                                user.updatePassword(newPasswd).then((_) async {
+                                  isUser
+                                      ? await userStore.updatePasswordUser(
+                                          userId, newPasswd)
+                                      : await userStore.updateProviderPassword(
+                                          userId, newPasswd);
 
-                                print("Successfully changed password");
-                              }).catchError((error) {
-                                print("Password can't be changed" +
-                                    error.toString());
-                              });
-
-                              // ignore: deprecated_member_use
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text("password was updated"),
-                              ));
+                                  print("Successfully changed password");
+                                  // ignore: deprecated_member_use
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text("password was updated"),
+                                  ));
+                                }).catchError((error) {
+                                  print("Password can't be changed" +
+                                      error.toString());
+                                });
+                              }
                             } else {
                               // ignore: deprecated_member_use
                               Scaffold.of(context).showSnackBar(SnackBar(

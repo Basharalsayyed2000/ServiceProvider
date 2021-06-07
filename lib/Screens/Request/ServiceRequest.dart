@@ -438,7 +438,7 @@ class _ServiceRequest extends State<ServiceRequest> {
             isActive: neededData.isRequestActive ,
             rImageUrl:_galleryUrl,
             isPublic: neededData.isRequestPublic,
-            serviceId: neededData.serviceRequestId
+            serviceId: neededData.serviceRequestId,
           );
 
           toggleProgressHUD(false, progress);
@@ -447,7 +447,6 @@ class _ServiceRequest extends State<ServiceRequest> {
         }
       } catch (ex) {
         toggleProgressHUD(true, progress);
-        // ignore: deprecated_member_use
         showDialog(
             context: context,
             builder: (context) {

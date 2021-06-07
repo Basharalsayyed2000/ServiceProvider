@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -7,6 +6,7 @@ import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Screens/User/UserSignUpScreen.dart';
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
+import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/auth.dart';
 
 // ignore: must_be_immutable
@@ -14,6 +14,7 @@ class UserLoginScreen extends StatelessWidget {
   static String id = 'UserLoginScreen';
   String _email, _password;
   final _auth = Auth();
+  UserStore userStore = new UserStore();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -124,12 +125,13 @@ class UserLoginScreen extends StatelessWidget {
                               _email.trim(), _password.trim());
                           String userId = _authresult.user.uid;
                           if (await _auth.checkUserExist(userId) == true) {
-                             await Firestore.instance
-                                .collection(KUserCollection)
-                                .document(userId)
-                                .updateData({KUserPassword: _password});
-                            Navigator.pushNamedAndRemoveUntil(context,
-                                UserHome.id, (Route<dynamic> route) => false,);
+                            await userStore.updatePasswordUser(
+                                userId, _password);
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              UserHome.id,
+                              (Route<dynamic> route) => false,
+                            );
                           } else {
                             // ignore: deprecated_member_use
                             Scaffold.of(context).showSnackBar(SnackBar(
@@ -192,5 +194,4 @@ class UserLoginScreen extends StatelessWidget {
       _progressHUD.dismiss();
     }
   }
-
 }

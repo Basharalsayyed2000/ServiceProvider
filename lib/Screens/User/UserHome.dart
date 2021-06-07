@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Service.dart';
-import 'package:service_provider/Models/UserAction.dart';
 import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
@@ -25,34 +24,14 @@ class _UserHomeState extends State<UserHome> {
   final auth = Auth();
   String userId;
   final _store = Store();
-  final _auth = Auth();
   final _userModel = UserModel();
 
   @override
   void initState() {
     getcurrentid();
-    // _getUserName();
     super.initState();
   }
 
-  // Future<void> _getUserName() async {
-  //   Firestore.instance
-  //       .collection(KUserCollection)
-  //       .document(await _auth.getCurrentUserId())
-  //       .get()
-  //       .then((value) {
-  //     setState(() {
-  //       _userModel.uName = value.data[KUserName];
-  //       _userModel.uEmail = value.data[KUserEmail];
-  //       _userModel.uPassword = value.data[KUserPassword];
-  //       _userModel.ubirthDate = value.data[KUserBirthDate];
-  //       _userModel.uAddDate = value.data[KUserAddDate];
-  //       _userModel.uId = value.data[KUserId];
-  //       _userModel.uphoneNumber = value.data[KUserPhoneNumber];
-  //       _userModel.isAdmin = value.data[KUserIsAdmin];
-  //     });
-  //   });
-  // }
 
   void getcurrentid() async {
     String _userId = (await FirebaseAuth.instance.currentUser()).uid;
@@ -63,11 +42,7 @@ class _UserHomeState extends State<UserHome> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   // ignore: unnecessary_statements
-    //   userId== ModalRoute.of(context).settings.arguments;
-    // });
-
+   
     return Scaffold(
       drawer: Drawer(
         child: StreamBuilder(
@@ -86,13 +61,11 @@ class _UserHomeState extends State<UserHome> {
                 _userModel.uName = userDocument[KUserName];
                 _userModel.uEmail = userDocument[KUserEmail];
                 _userModel.uPassword = userDocument[KUserPassword];
-                _userModel.ubirthDate = userDocument[KUserBirthDate];
                 _userModel.uAddDate = userDocument[KUserAddDate];
                 _userModel.uId = userDocument[KUserId];
-                _userModel.uphoneNumber = userDocument[KUserPhoneNumber];
                 _userModel.isAdmin = userDocument[KUserIsAdmin];
                 _userModel.uImageUrl = userDocument[KUserImageUrl];
-
+                _userModel.enableAcceptPublicRequest=userDocument[KUserEnableAcceptPublicRequest];
                 return ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
@@ -166,9 +139,10 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Sent request'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id,
-                            arguments: UserActionModel(
-                                userAction: "Sent", user: _userModel));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyBooks(userAction:"Sent",)),
+                          );
                       },
                     ),
                     ListTile(
@@ -176,9 +150,11 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Book later requests'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id,
-                            arguments: UserActionModel(
-                                userAction: "Book Later", user: _userModel));
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyBooks(userAction:"Book Later",)),
+                          );
+                        
                       },
                     ),
                     ListTile(
@@ -186,9 +162,10 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Inprogress requests'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id,
-                            arguments: UserActionModel(
-                                userAction: "Inprogress", user: _userModel));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyBooks(userAction:"Inprogress",)),
+                          );
                       },
                     ),
                     ListTile(
@@ -196,9 +173,11 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Completed requests'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id,
-                            arguments: UserActionModel(
-                                userAction: "Completed", user: _userModel));
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyBooks(userAction:"Completed",)),
+                          );
+      
                       },
                     ),
                     ListTile(
@@ -206,21 +185,25 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Rejected requests'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id,
-                            arguments: UserActionModel(
-                                userAction: "Rejected", user: _userModel));
+                           Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyBooks(userAction:"Rejected",)),
+                          );
+                       
                       },
                     ),
-                     ListTile(
+
+                     (_userModel.enableAcceptPublicRequest)?ListTile(
                       leading: Icon(Icons.add_reaction_rounded),
                       title: Text('public requests reaction'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyBooks.id,
-                            arguments: UserActionModel(
-                                userAction: "publicReaction", user: _userModel));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyBooks(userAction:"publicReaction",)),
+                          );
                       },
-                    ),
+                    ):Center(),
                     const Divider(
                       height: 35,
                       thickness: 2,
@@ -237,7 +220,10 @@ class _UserHomeState extends State<UserHome> {
                       title: Text('Setting'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.pushNamed(context, Settings.id);
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Settings(isUser:true,enableDirectAcceptRequest: _userModel.enableAcceptPublicRequest,uId: userId,)),
+                          );
                       },
                     ),
                     const Divider(
@@ -253,7 +239,7 @@ class _UserHomeState extends State<UserHome> {
                         Navigator.of(context).pop();
                         Navigator.pushReplacementNamed(
                             context, WelcomeScreen.id);
-                        _auth.signOut();
+                        auth.signOut();
                       },
                     ),
                     (userDocument[KUserIsAdmin] == true)

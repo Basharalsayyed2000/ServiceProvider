@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,10 @@ class _HomeProviderState extends State<HomeProvider> {
         backgroundColor: KprimaryColor,
       ),
       body: Container(
-        padding: EdgeInsets.only(top:20,bottom: 20),
+        padding: EdgeInsets.only(top: 20, bottom: 20),
         child: Column(children: [
           Padding(
-            padding: const EdgeInsets.only(left: 10,right: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -185,12 +186,14 @@ class _HomeProviderState extends State<HomeProvider> {
                                     userId: data[KRequestUserId],
                                     isAccepted: data[KRequestIsAccepted],
                                     isActive: data[KRequestIsActive],
+                                    locationId: data[KRequestLocationId],
                                     isComplete: data[KRequestIsCompleted],
                                     isProviderSeen:
                                         data[KRequestIsProviderSeen],
-                                    locationId: data[KRequestLocationId],
                                     isPublic: data[KRequestIsPublic],
                                     serviceId: data[KRequestServiceId],
+                                    publicId: data[KRequestPublicId],
+                                    actionDate: data[KRequestActionDate],
                                     rImageUrl: data[KRequestImageUrl] == null
                                         ? []
                                         : data[KRequestImageUrl]
@@ -230,15 +233,15 @@ class _HomeProviderState extends State<HomeProvider> {
                                                       return SlidableTile(
                                                         profile: document2[
                                                             KUserImageUrl],
-                                                        user: document2[
+                                                        userName: document2[
                                                             KUserName],
                                                         request: _requests
                                                             .elementAt(index),
                                                         status: "Idle",
                                                         hasAction: true,
                                                         forUser: false,
-                                                        providerId:pId,
-                                                       
+                                                        providerId: pId,
+                                                        enable: document2[KUserEnableAcceptPublicRequest],
                                                       );
                                                     } else {
                                                       return new CircularProgressIndicator();
@@ -307,15 +310,17 @@ class _HomeProviderState extends State<HomeProvider> {
                                   requestDate: data[KRequestDate],
                                   requestTime: data[KRequestTime],
                                   requestId: requestId,
-                                  locationId: data[KRequestLocationId],
                                   providerId: data[KRequestProviderId],
                                   userId: data[KRequestUserId],
                                   isAccepted: data[KRequestIsAccepted],
                                   isActive: data[KRequestIsActive],
-                                  isPublic: data[KRequestIsPublic],
-                                  serviceId: data[KRequestServiceId],
+                                  locationId: data[KRequestLocationId],
                                   isComplete: data[KRequestIsCompleted],
                                   isProviderSeen: data[KRequestIsProviderSeen],
+                                  isPublic: data[KRequestIsPublic],
+                                  serviceId: data[KRequestServiceId],
+                                  publicId: data[KRequestPublicId],
+                                  actionDate: data[KRequestActionDate],
                                   rImageUrl: data[KRequestImageUrl] == null
                                       ? []
                                       : data[KRequestImageUrl]
@@ -351,7 +356,8 @@ class _HomeProviderState extends State<HomeProvider> {
                                                 return SlidableTile(
                                                   profile:
                                                       document2[KUserImageUrl],
-                                                  user: document2[KUserName],
+                                                  userName:
+                                                      document2[KUserName],
                                                   request: _requests
                                                       .elementAt(index),
                                                   status: "Inprogress",
@@ -429,11 +435,14 @@ class _HomeProviderState extends State<HomeProvider> {
                                       userId: data[KRequestUserId],
                                       isAccepted: data[KRequestIsAccepted],
                                       isActive: data[KRequestIsActive],
-                                      isPublic: data[KRequestIsPublic],
-                                      serviceId: data[KRequestServiceId],
+                                      locationId: data[KRequestLocationId],
                                       isComplete: data[KRequestIsCompleted],
                                       isProviderSeen:
                                           data[KRequestIsProviderSeen],
+                                      isPublic: data[KRequestIsPublic],
+                                      serviceId: data[KRequestServiceId],
+                                      publicId: data[KRequestPublicId],
+                                      actionDate: data[KRequestActionDate],
                                       rImageUrl: data[KRequestImageUrl] == null
                                           ? []
                                           : data[KRequestImageUrl]
@@ -475,7 +484,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                                         return SlidableTile(
                                                           profile: document2[
                                                               KUserImageUrl],
-                                                          user: document2[
+                                                          userName: document2[
                                                               KUserName],
                                                           request: _requests
                                                               .elementAt(index),
@@ -499,7 +508,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                     )
                                   : Center(
                                       child: Text(
-                                        'There is no sent Request',
+                                        'There is no Completed Request',
                                         style: TextStyle(
                                             fontSize: 24,
                                             color: Colors.red,
@@ -509,7 +518,7 @@ class _HomeProviderState extends State<HomeProvider> {
                             } else {
                               Center(
                                 child: Text(
-                                  'There is no sent Request',
+                                  'There is no Completed Request',
                                   style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.red,

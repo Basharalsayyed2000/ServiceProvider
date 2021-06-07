@@ -111,8 +111,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                             if (_password == _confirmPassWord) {
                               await _auth.createUserWithEmailAndPassword(
                                   email: _email.trim(),
-                                  password: _password.trim()).then((_){
-                                   
+                                  password: _password.trim()).then((value){
                                   Navigator.pushReplacementNamed(context, UserVerifyScreen.id,arguments: UserModel(uName: _name,uEmail: _email.trim(),uPassword: _password.trim(),));
                                   });
                             } else {

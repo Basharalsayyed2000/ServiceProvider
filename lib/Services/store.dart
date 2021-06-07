@@ -25,7 +25,6 @@ class Store {
     String locId = "";
     await _firestore.collection(KLocationCollection).add({
       KLocationCountry: address.country,
-      KLocationPostalCode: address.postalCode,
       KLocationLatitude: address.latitude,
       KLocationlonggitude: address.longgitude,
       KLocationCity: address.city,
@@ -43,48 +42,26 @@ class Store {
       KRequestIsCompleted: request.isComplete,
       KRequestIsActive: request.isActive,
       KRequestIsAccepted: request.isAccepted,
+      KRequestIsProviderSeen:request.isProviderSeen,
+      KRequestIsPublic:request.isPublic,
       KRequestUserId: request.userId,
       KRequestProviderId: request.providerId,
+      KRequestServiceId:request.serviceId,
       KRequestTime: request.requestTime,
       KRequestDate: request.requestDate,
       KRequestAddDate: request.rAddDate,
-      KRequestImageUrl: request.rImageUrl
+      KRequestImageUrl: request.rImageUrl,
+      KRequestLocationId :request.locationId,
+      KRequestActionDate:request.actionDate,
+      KRequestPublicId:"",
+      KRequestId:""  
     }).then((value) {
-      // value.documentID;
-      
-      // _firestore.collection(KRequestCollection).document().updateData(data);
+      String publicId= value.documentID.substring(0,3) +request.rAddDate.substring(0,2)+request.requestTime.substring(14,16);
+      _firestore.collection(KRequestCollection).document(value.documentID).updateData({
+         KRequestId:value.documentID,
+         KRequestPublicId:publicId,
+      });
     });
-  }
-
-  //    updateRequest(RequestModel request,String requestId) async {
-  //   await _firestore.collection(KRequestCollection).document(requestId).updateData({
-  //     KRequestProblem: request.rProblem,
-  //     KRequestDescription: request.rDescription,
-  //     KRequestIsCompleted: request.isComplete,
-  //     KRequestIsActive: request.isActive,
-  //     KRequestIsAccepted:request.isAccepted,
-  //     KRequestUserId: request.userId,
-  //     KRequestProviderId: request.providerId,
-  //     KRequestTime: request.requestTime,
-  //     KRequestDate: request.requestDate,
-  //     KRequestAddDate:request.rAddDate,
-  //     KRequestImageUrl:request.rImageUrl,
-  //     KRequestIsProviderSeen:request.isProviderSeen
-  //   });
-  // }
-
-  updateUserName(String username, String userId) {
-    _firestore
-        .collection(KUserCollection)
-        .document(userId)
-        .updateData({KUserName: username});
-  }
-
-  updateProviderName(String username, String providerId) {
-    _firestore
-        .collection(KProviderCollection)
-        .document(providerId)
-        .updateData({KProviderName: username});
   }
 
   Stream<QuerySnapshot> loadRequest() {
@@ -155,6 +132,19 @@ class Store {
      // KRequestIsAccepted: true,
       KRequestIsProviderSeen: true,    
       KRequestProviderId:providerId,
+     });
+
+  }
+
+  acceptPublicJobEnable(String requestId, String providerId) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestIsAccepted: true,
+      KRequestIsProviderSeen: true,    
+      KRequestProviderId:providerId,
+      KRequestIsPublic:false
      });
 
   }

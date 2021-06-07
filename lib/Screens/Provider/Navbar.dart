@@ -28,7 +28,7 @@ class _NavbarState extends State<Navbar> {
     List<Widget> _screen = [
       HomeProvider(),
       ProviderProfilescreen(),
-      Settings(),
+      Settings(isUser: false,),
     ];
 
     void _onPageChanged(int index) {

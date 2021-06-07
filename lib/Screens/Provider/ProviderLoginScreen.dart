@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -6,8 +5,8 @@ import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
-
 import 'package:service_provider/Screens/commonScreens/ResetPassword.dart';
+import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/auth.dart';
 
 // ignore: must_be_immutable
@@ -15,7 +14,7 @@ class ProviderLoginScreen extends StatelessWidget {
   static String id = 'ProviderLoginScreen';
   // ignore: unused_field
   String _email, _password;
-
+  UserStore userStore=new UserStore();
   // ignore: unused_field
   final _auth = Auth();
   // ignore: unused_field
@@ -131,11 +130,8 @@ class ProviderLoginScreen extends StatelessWidget {
                           // ignore: unrelated_type_equality_checks
                           if (await _auth.checkProviderExist(userId) == true) {
                             // ignore: await_only_futures
-                            // await _userStore.updateProviderPassword( _password,userId);
-                            await Firestore.instance
-                                .collection(KProviderCollection)
-                                .document(userId)
-                                .updateData({KProviderPassword: _password});
+                            await userStore.updateProviderPassword( userId,_password);
+                          
                             Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 Navbar.id,

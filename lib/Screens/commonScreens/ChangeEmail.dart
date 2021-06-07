@@ -4,16 +4,21 @@ import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 
 class ChangeEmail extends StatefulWidget {
   static String id = "changeEmail";
-
+  final bool isUser;
+  ChangeEmail({this.isUser});
+  
   @override
   State<StatefulWidget> createState() {
-    return _ChangeEmail();
+    return _ChangeEmail(
+      isUser: (isUser!=null)?isUser:false,
+    );
   }
 
 }
 
 class _ChangeEmail extends State<ChangeEmail> {
-
+  final bool isUser;
+  _ChangeEmail({this.isUser});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

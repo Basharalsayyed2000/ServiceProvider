@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Request.dart';
-import 'package:service_provider/Models/UserAction.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/SlidableTile.dart';
-import 'package:service_provider/Screens/Request/RequestComponent.dart';
 import 'package:service_provider/Services/auth.dart';
 import 'package:service_provider/Services/store.dart';
 
 class MyBooks extends StatefulWidget {
   static String id = 'MyBooks';
-
+  final String userAction;
+  MyBooks({this.userAction});
   @override
-  _MyBooksState createState() => _MyBooksState();
+  _MyBooksState createState() => _MyBooksState(userAction: userAction);
 }
 
 class _MyBooksState extends State<MyBooks> {
   final _store = Store();
   final _auth = Auth();
   String _userId;
-  UserActionModel userAction;
+  final String userAction;
+  _MyBooksState({this.userAction});
   @override
   void initState() {
     super.initState();
@@ -35,23 +35,26 @@ class _MyBooksState extends State<MyBooks> {
 
   @override
   Widget build(BuildContext context) {
-    userAction = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: KprimaryColor,
-        title: (userAction.userAction == "Sent")
+        title: (userAction == "Sent")
             ? Text("My Sent Request")
-            : (userAction.userAction == "Book Later")
-                ? Text("Disactive Request")
-                : (userAction.userAction == "Inprogress")
+            : (userAction == "Book Later")
+                ? Text("Inactive Request")
+                : (userAction == "Inprogress")
                     ? Text("Inprogress requests")
-                    : (userAction.userAction == "Rejected")
+                    : (userAction == "Rejected")
                         ? Text("Rejected requests")
-                        : Text("requests"),
+                        : (userAction == "Completed")
+                            ? Text("Compeleted Request")
+                            : (userAction == "publicReaction")
+                                ? Text("provider reaction")
+                                : Text("Inprogress requests"),
         centerTitle: true,
         elevation: 0,
       ),
-      body: (userAction.userAction == "Sent")
+      body: (userAction == "Sent")
           ? StreamBuilder<QuerySnapshot>(
               stream: _store.loadRequest(),
               // ignore: missing_return
@@ -83,11 +86,13 @@ class _MyBooksState extends State<MyBooks> {
                           userId: _userId,
                           isAccepted: data[KRequestIsAccepted],
                           isActive: data[KRequestIsActive],
-                                  locationId: data[KRequestLocationId],
+                          locationId: data[KRequestLocationId],
                           isComplete: data[KRequestIsCompleted],
                           isProviderSeen: data[KRequestIsProviderSeen],
                           isPublic: data[KRequestIsPublic],
                           serviceId: data[KRequestServiceId],
+                          publicId: data[KRequestPublicId],
+                          actionDate: data[KRequestActionDate],
                           rImageUrl: data[KRequestImageUrl] == null
                               ? []
                               : data[KRequestImageUrl]
@@ -121,7 +126,7 @@ class _MyBooksState extends State<MyBooks> {
                                         var document2 = snapshot.data;
                                         return SlidableTile(
                                           profile: document2[KProviderImageUrl],
-                                          user: document2[KProviderName],
+                                          userName: document2[KProviderName],
                                           request: _requests.elementAt(index),
                                           status: "Idle",
                                           hasAction: true,
@@ -133,7 +138,7 @@ class _MyBooksState extends State<MyBooks> {
                                     })
                                 : SlidableTile(
                                     profile: null,
-                                    user: null,
+                                    userName: null,
                                     request: _requests.elementAt(index),
                                     status: "Idle",
                                     hasAction: true,
@@ -169,7 +174,7 @@ class _MyBooksState extends State<MyBooks> {
                   );
                 }
               })
-          : (userAction.userAction == "Book Later")
+          : (userAction == "Book Later")
               ? StreamBuilder<QuerySnapshot>(
                   stream: _store.loadRequest(),
                   // ignore: missing_return
@@ -201,11 +206,13 @@ class _MyBooksState extends State<MyBooks> {
                               userId: _userId,
                               isAccepted: data[KRequestIsAccepted],
                               isActive: data[KRequestIsActive],
-                                  locationId: data[KRequestLocationId],
+                              locationId: data[KRequestLocationId],
                               isComplete: data[KRequestIsCompleted],
+                              isProviderSeen: data[KRequestIsProviderSeen],
                               isPublic: data[KRequestIsPublic],
                               serviceId: data[KRequestServiceId],
-                              isProviderSeen: data[KRequestIsProviderSeen],
+                              publicId: data[KRequestPublicId],
+                              actionDate: data[KRequestActionDate],
                               rImageUrl: data[KRequestImageUrl] == null
                                   ? []
                                   : data[KRequestImageUrl]
@@ -242,7 +249,8 @@ class _MyBooksState extends State<MyBooks> {
                                             return SlidableTile(
                                               profile:
                                                   document2[KProviderImageUrl],
-                                              user: document2[KProviderName],
+                                              userName:
+                                                  document2[KProviderName],
                                               request:
                                                   _requests.elementAt(index),
                                               status: "Disactive",
@@ -255,7 +263,7 @@ class _MyBooksState extends State<MyBooks> {
                                         })
                                     : SlidableTile(
                                         profile: null,
-                                        user: null,
+                                        userName: null,
                                         request: _requests.elementAt(index),
                                         status: "Disactive",
                                         hasAction: true,
@@ -273,7 +281,7 @@ class _MyBooksState extends State<MyBooks> {
                             )
                           : Center(
                               child: Text(
-                                'There is no sent Request',
+                                'There is no InActive Request',
                                 style: TextStyle(
                                     fontSize: 24,
                                     color: Colors.red,
@@ -283,7 +291,7 @@ class _MyBooksState extends State<MyBooks> {
                     } else {
                       Center(
                         child: Text(
-                          'There is no sent Request',
+                          'There is no InActive Request',
                           style: TextStyle(
                               fontSize: 24,
                               color: Colors.red,
@@ -292,7 +300,7 @@ class _MyBooksState extends State<MyBooks> {
                       );
                     }
                   })
-              : (userAction.userAction == "Completed")
+              : (userAction == "Completed")
                   ? StreamBuilder<QuerySnapshot>(
                       stream: _store.loadRequest(),
                       // ignore: missing_return
@@ -323,13 +331,15 @@ class _MyBooksState extends State<MyBooks> {
                                   requestId: requestId,
                                   providerId: data[KRequestProviderId],
                                   userId: _userId,
-                                   locationId: data[KRequestLocationId],
                                   isAccepted: data[KRequestIsAccepted],
                                   isActive: data[KRequestIsActive],
-                                    isPublic: data[KRequestIsPublic],
-                              serviceId: data[KRequestServiceId],
+                                  locationId: data[KRequestLocationId],
                                   isComplete: data[KRequestIsCompleted],
                                   isProviderSeen: data[KRequestIsProviderSeen],
+                                  isPublic: data[KRequestIsPublic],
+                                  serviceId: data[KRequestServiceId],
+                                  publicId: data[KRequestPublicId],
+                                  actionDate: data[KRequestActionDate],
                                   rImageUrl: data[KRequestImageUrl] == null
                                       ? []
                                       : data[KRequestImageUrl]
@@ -364,7 +374,8 @@ class _MyBooksState extends State<MyBooks> {
                                               return SlidableTile(
                                                 profile: document2[
                                                     KProviderImageUrl],
-                                                user: document2[KProviderName],
+                                                userName:
+                                                    document2[KProviderName],
                                                 status: "complete",
                                                 hasAction: false,
                                                 forUser: true,
@@ -386,7 +397,7 @@ class _MyBooksState extends State<MyBooks> {
                                 )
                               : Center(
                                   child: Text(
-                                    'There is no sent Request',
+                                    'There is no Completed Request',
                                     style: TextStyle(
                                         fontSize: 24,
                                         color: Colors.red,
@@ -396,7 +407,7 @@ class _MyBooksState extends State<MyBooks> {
                         } else {
                           Center(
                             child: Text(
-                              'There is no sent Request',
+                              'There is no Completed Request',
                               style: TextStyle(
                                   fontSize: 24,
                                   color: Colors.red,
@@ -405,7 +416,7 @@ class _MyBooksState extends State<MyBooks> {
                           );
                         }
                       })
-                  : (userAction.userAction == "Inprogress")
+                  : (userAction == "Inprogress")
                       ? StreamBuilder<QuerySnapshot>(
                           stream: _store.loadRequest(),
                           // ignore: missing_return
@@ -435,16 +446,18 @@ class _MyBooksState extends State<MyBooks> {
                                       requestDate: data[KRequestDate],
                                       requestTime: data[KRequestTime],
                                       requestId: requestId,
-                                  locationId: data[KRequestLocationId],
                                       providerId: data[KRequestProviderId],
                                       userId: _userId,
                                       isAccepted: data[KRequestIsAccepted],
-                                        isPublic: data[KRequestIsPublic],
-                              serviceId: data[KRequestServiceId],
                                       isActive: data[KRequestIsActive],
+                                      locationId: data[KRequestLocationId],
                                       isComplete: data[KRequestIsCompleted],
                                       isProviderSeen:
                                           data[KRequestIsProviderSeen],
+                                      isPublic: data[KRequestIsPublic],
+                                      serviceId: data[KRequestServiceId],
+                                      publicId: data[KRequestPublicId],
+                                      actionDate: data[KRequestActionDate],
                                       rImageUrl: data[KRequestImageUrl] == null
                                           ? []
                                           : data[KRequestImageUrl]
@@ -483,7 +496,7 @@ class _MyBooksState extends State<MyBooks> {
                                                       return SlidableTile(
                                                         profile: document2[
                                                             KProviderImageUrl],
-                                                        user: document2[
+                                                        userName: document2[
                                                             KProviderName],
                                                         request: _requests
                                                             .elementAt(index),
@@ -506,7 +519,7 @@ class _MyBooksState extends State<MyBooks> {
                                     )
                                   : Center(
                                       child: Text(
-                                        'There is no sent Request',
+                                        'There is no Inprogress Request',
                                         style: TextStyle(
                                             fontSize: 24,
                                             color: Colors.red,
@@ -516,7 +529,7 @@ class _MyBooksState extends State<MyBooks> {
                             } else {
                               Center(
                                 child: Text(
-                                  'There is no sent Request',
+                                  'There is no Inprogress Request',
                                   style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.red,
@@ -525,123 +538,7 @@ class _MyBooksState extends State<MyBooks> {
                               );
                             }
                           })
-              : (userAction.userAction == "publicReaction")
-                ? StreamBuilder<QuerySnapshot>(
-                  stream: _store.loadRequest(),
-                  // ignore: missing_return
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
-                      return new Center(child: new CircularProgressIndicator());
-                    if (snapshot.hasData) {
-                      List<RequestModel> _requests = [];
-                      for (var doc in snapshot.data.documents) {
-                        var data = doc.data;
-                        String requestId = doc.documentID;
-                        if (data[KRequestUserId] == _userId) {
-                          //List<dynamic> requestUrl=[];
-                          //  if(!(data[KRequestImageUrl]==null)){
-                          //  requestUrl= List.of(data[KRequestImageUrl]);
-                          // }
-                          if (data[KRequestIsActive] &&
-                              !data[KRequestIsAccepted] &&
-                              !data[KRequestIsCompleted] &&
-                              data[KRequestIsProviderSeen]&&
-                              data[KRequestIsPublic]
-                              )
-                            _requests.add(RequestModel(
-                              rProblem: data[KRequestProblem],
-                              rDescription: data[KRequestDescription],
-                              rAddDate: data[KRequestAddDate],
-                              requestDate: data[KRequestDate],
-                              requestTime: data[KRequestTime],
-                              requestId: requestId,
-                              providerId: data[KRequestProviderId],
-                              userId: _userId,
-                              isAccepted: data[KRequestIsAccepted],
-                              isActive: data[KRequestIsActive],
-                                  locationId: data[KRequestLocationId],
-                              isComplete: data[KRequestIsCompleted],
-                              isPublic: data[KRequestIsPublic],
-                              serviceId: data[KRequestServiceId],
-                              isProviderSeen: data[KRequestIsProviderSeen],
-                              rImageUrl: data[KRequestImageUrl] == null
-                                  ? []
-                                  : data[KRequestImageUrl]
-                                      .map<String>((i) => i as String)
-                                      .toList(),
-                            ));
-                        }
-                      }
-
-                      return (_requests.isNotEmpty)
-                          ? ListView.separated(
-                              primary: false,
-                              itemBuilder: (context, index) => Container(
-                                //  color: Colors.grey[300],
-                                margin:
-                                    EdgeInsets.only(top: (index == 0) ? 8 : 0),
-                                child:StreamBuilder(
-                                        stream: Firestore.instance
-                                            .collection(KProviderCollection)
-                                            .document(_requests
-                                                .elementAt(index)
-                                                .providerId) //ID OF DOCUMENT
-                                            .snapshots(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting)
-                                            return new Center(
-                                                child:
-                                                    new CircularProgressIndicator());
-                                          if (snapshot.hasData) {
-                                            var document2 = snapshot.data;
-                                            return SlidableTile(
-                                              profile:
-                                                  document2[KProviderImageUrl],
-                                              user: document2[KProviderName],
-                                              request:
-                                                  _requests.elementAt(index),
-                                              status: "publicReaction",
-                                              hasAction: false,
-                                              forUser: true,
-                                            );
-                                          } else {
-                                            return new CircularProgressIndicator();
-                                          }
-                                        })
-                                 
-                              ),
-                              itemCount: _requests.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return Divider(
-                                  thickness: 1,
-                                  // height: 1,
-                                );
-                              },
-                            )
-                          : Center(
-                              child: Text(
-                                'There is no sent Request',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                    } else {
-                      Center(
-                        child: Text(
-                          'There is no sent Request',
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    }
-                  })   
-                      : (userAction.userAction == "Rejected")
+                      : (userAction == "publicReaction")
                           ? StreamBuilder<QuerySnapshot>(
                               stream: _store.loadRequest(),
                               // ignore: missing_return
@@ -663,7 +560,8 @@ class _MyBooksState extends State<MyBooks> {
                                       if (data[KRequestIsActive] &&
                                           !data[KRequestIsAccepted] &&
                                           !data[KRequestIsCompleted] &&
-                                          data[KRequestIsProviderSeen])
+                                          data[KRequestIsProviderSeen] &&
+                                          data[KRequestIsPublic])
                                         _requests.add(RequestModel(
                                           rProblem: data[KRequestProblem],
                                           rDescription:
@@ -676,11 +574,14 @@ class _MyBooksState extends State<MyBooks> {
                                           userId: _userId,
                                           isAccepted: data[KRequestIsAccepted],
                                           isActive: data[KRequestIsActive],
-                                          isPublic: data[KRequestIsPublic],
-                                          serviceId: data[KRequestServiceId],
+                                          locationId: data[KRequestLocationId],
                                           isComplete: data[KRequestIsCompleted],
                                           isProviderSeen:
                                               data[KRequestIsProviderSeen],
+                                          isPublic: data[KRequestIsPublic],
+                                          serviceId: data[KRequestServiceId],
+                                          publicId: data[KRequestPublicId],
+                                          actionDate: data[KRequestActionDate],
                                           rImageUrl:
                                               data[KRequestImageUrl] == null
                                                   ? []
@@ -697,7 +598,7 @@ class _MyBooksState extends State<MyBooks> {
                                           primary: false,
                                           itemBuilder: (context, index) =>
                                               Container(
-                                                  // color: Colors.orange[200],
+                                                  //  color: Colors.grey[300],
                                                   margin: EdgeInsets.only(
                                                       top:
                                                           (index == 0) ? 8 : 0),
@@ -724,13 +625,14 @@ class _MyBooksState extends State<MyBooks> {
                                                           return SlidableTile(
                                                             profile: document2[
                                                                 KProviderImageUrl],
-                                                            user: document2[
+                                                            userName: document2[
                                                                 KProviderName],
                                                             request: _requests
                                                                 .elementAt(
                                                                     index),
-                                                            status: "Rejected",
-                                                            hasAction: true,
+                                                            status:
+                                                                "publicReaction",
+                                                            hasAction: false,
                                                             forUser: true,
                                                           );
                                                         } else {
@@ -749,7 +651,7 @@ class _MyBooksState extends State<MyBooks> {
                                         )
                                       : Center(
                                           child: Text(
-                                            'There is no Rejected Request',
+                                            'There is no sent Request',
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 color: Colors.red,
@@ -759,7 +661,7 @@ class _MyBooksState extends State<MyBooks> {
                                 } else {
                                   Center(
                                     child: Text(
-                                      'There is no Rejected Request',
+                                      'There is no sent Request',
                                       style: TextStyle(
                                           fontSize: 24,
                                           color: Colors.red,
@@ -768,42 +670,154 @@ class _MyBooksState extends State<MyBooks> {
                                   );
                                 }
                               })
-                          : Center(
-                              child: Text('Loading'),
-                            ),
-    );
-  }
+                          : (userAction == "Rejected")
+                              ? StreamBuilder<QuerySnapshot>(
+                                  stream: _store.loadRequest(),
+                                  // ignore: missing_return
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting)
+                                      return new Center(
+                                          child:
+                                              new CircularProgressIndicator());
+                                    if (snapshot.hasData) {
+                                      List<RequestModel> _requests = [];
+                                      for (var doc in snapshot.data.documents) {
+                                        var data = doc.data;
+                                        String requestId = doc.documentID;
+                                        if (data[KRequestUserId] == _userId) {
+                                          //List<dynamic> requestUrl=[];
+                                          //  if(!(data[KRequestImageUrl]==null)){
+                                          //  requestUrl= List.of(data[KRequestImageUrl]);
+                                          // }
+                                          if (data[KRequestIsActive] &&
+                                              !data[KRequestIsAccepted] &&
+                                              !data[KRequestIsCompleted] &&
+                                              data[KRequestIsProviderSeen] &&
+                                              !data[KRequestIsPublic]
+                                              )
+                                            _requests.add(RequestModel(
+                                              rProblem: data[KRequestProblem],
+                                              rDescription:
+                                                  data[KRequestDescription],
+                                              rAddDate: data[KRequestAddDate],
+                                              requestDate: data[KRequestDate],
+                                              requestTime: data[KRequestTime],
+                                              requestId: requestId,
+                                              providerId:
+                                                  data[KRequestProviderId],
+                                              userId: _userId,
+                                              isAccepted:
+                                                  data[KRequestIsAccepted],
+                                              isActive: data[KRequestIsActive],
+                                              locationId:
+                                                  data[KRequestLocationId],
+                                              isComplete:
+                                                  data[KRequestIsCompleted],
+                                              isProviderSeen:
+                                                  data[KRequestIsProviderSeen],
+                                              isPublic: data[KRequestIsPublic],
+                                              serviceId:
+                                                  data[KRequestServiceId],
+                                              publicId: data[KRequestPublicId],
+                                              actionDate:
+                                                  data[KRequestActionDate],
+                                              rImageUrl:
+                                                  data[KRequestImageUrl] == null
+                                                      ? []
+                                                      : data[KRequestImageUrl]
+                                                          .map<String>((i) =>
+                                                              i as String)
+                                                          .toList(),
+                                            ));
+                                        }
+                                      }
 
-  Card buildCard(String title, String subtitle, RequestModel _request) {
-    return Card(
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, RequestComponent.id,
-            arguments: _request),
-        child: ListTile(
-            title: Text(title),
-            subtitle: Text(subtitle),
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('Assets/images/provider.jpg'),
-              radius: MediaQuery.of(context).size.height * 0.037,
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.phone),
-                PopupMenuButton<String>(
-                  onSelected: handleClick2,
-                  itemBuilder: (BuildContext context) {
-                    return {'Edit', 'Settings'}.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
-                  },
-                ),
-              ],
-            )),
-      ),
+                                      return (_requests.isNotEmpty)
+                                          ? ListView.separated(
+                                              primary: false,
+                                              itemBuilder: (context, index) =>
+                                                  Container(
+                                                      // color: Colors.orange[200],
+                                                      margin: EdgeInsets.only(
+                                                          top: (index == 0)
+                                                              ? 8
+                                                              : 0),
+                                                      child: StreamBuilder(
+                                                          stream: Firestore
+                                                              .instance
+                                                              .collection(
+                                                                  KProviderCollection)
+                                                              .document(_requests
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .providerId) //ID OF DOCUMENT
+                                                              .snapshots(),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .waiting)
+                                                              return new Center(
+                                                                  child:
+                                                                      new CircularProgressIndicator());
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              var document2 =
+                                                                  snapshot.data;
+                                                              return SlidableTile(
+                                                                profile: document2[
+                                                                    KProviderImageUrl],
+                                                                userName: document2[
+                                                                    KProviderName],
+                                                                request: _requests
+                                                                    .elementAt(
+                                                                        index),
+                                                                status:
+                                                                    "Rejected",
+                                                                hasAction: true,
+                                                                forUser: true,
+                                                              );
+                                                            } else {
+                                                              return new CircularProgressIndicator();
+                                                            }
+                                                          })),
+                                              itemCount: _requests.length,
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Divider(
+                                                  thickness: 1,
+                                                  // height: 1,
+                                                );
+                                              },
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                'There is no Rejected Request',
+                                                style: TextStyle(
+                                                    fontSize: 24,
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            );
+                                    } else {
+                                      Center(
+                                        child: Text(
+                                          'There is no Rejected Request',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      );
+                                    }
+                                  })
+                              : Center(
+                                  child: Text('Loading'),
+                                ),
     );
   }
 

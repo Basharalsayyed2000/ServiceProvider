@@ -32,6 +32,7 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
   getCurrentUser() async {
     user = await _auth.currentUser();
     user.sendEmailVerification();
+    
   }
 
   @override
@@ -59,19 +60,17 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
       timer.cancel();
       _addedDate = getDateNow();
       _user.addUser(
-        
-      UserModel(
-       uName: userModel.uName,
-       uAddDate: _addedDate,
-       uImageUrl: null,
-       ubirthDate: null,
-       uphoneNumber: null,
-       isAdmin: false,
-       uEmail: userModel.uEmail,
-       uId: user.uid,
-       uPassword: userModel.uPassword,
-       favorateProvider: []
-      ),
+        UserModel(
+        uName: userModel.uName,
+        uAddDate: _addedDate,
+        uImageUrl: null,
+        isAdmin: false,
+        uEmail: userModel.uEmail,
+        uId: user.uid,
+        uPassword: userModel.uPassword ,
+        enableAcceptPublicRequest:false,
+        favorateProvider: [],
+        ),
       user.uid);
                            
       Navigator.pushNamedAndRemoveUntil(context, UserHome.id, (Route<dynamic> route) => false);

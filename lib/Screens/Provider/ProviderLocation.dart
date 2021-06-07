@@ -216,7 +216,6 @@ class _ProviderLocation extends State<ProviderLocation> {
                               country: _country,
                               city: _city,
                               street: _detailsAddress,
-                              postalCode: _postalcode,
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
-import 'package:service_provider/Screens/Provider/AvailableJobs.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProfilePage.dart';
 import 'package:service_provider/Screens/Provider/ProviderLoginScreen.dart';
 import 'package:service_provider/Screens/Provider/ProviderSignUpScreen.dart';
 import 'package:service_provider/Screens/Provider/HomeProvider.dart';
-import 'package:service_provider/Screens/Provider/RecommendedJobs.dart';
 import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
 import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
-import 'package:service_provider/Screens/Request/RequestComponent.dart';
 import 'package:service_provider/Screens/User/MyFavorateProviders.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
@@ -51,7 +48,6 @@ class MyApp extends StatelessWidget {
         ServiceRequestLocation.id :(context)=>ServiceRequestLocation(),
         UserVerifyScreen.id: (context) => UserVerifyScreen(),
         ProviderVerifyScreen.id: (context) => ProviderVerifyScreen(),
-        RequestComponent.id: (context) => RequestComponent(),
         ServiceDetails.id: (context) => ServiceDetails(),
         ResetPassword.id: (context) => ResetPassword(),
         AdditionalInfo.id: (context) => AdditionalInfo(),
@@ -69,8 +65,6 @@ class MyApp extends StatelessWidget {
         UserLoginScreen.id: (context) => UserLoginScreen(),
         ProviderLoginScreen.id: (context) => ProviderLoginScreen(),
         ProviderSignUpScreen.id: (context) => ProviderSignUpScreen(),
-        RecommendedJobs.id: (context) => RecommendedJobs(),
-        AvailableRequests.id: (context) => AvailableRequests(),
         MyActivity.id: (context) => MyActivity(),
         HomeProvider.id: (context) => HomeProvider(),
         ChangeEmail.id: (context) => ChangeEmail(),

@@ -23,22 +23,26 @@ const KServiceAddDate = 'serviceAddDate';
 const KServicesImageUrl = 'servicesImageUrl';
 const KServicesStatus = 'ServicesStatus';
 
+
+
 //user Data
 const KUserCollection = 'Users';
 const KUserName = 'UserName';
 const KUserAddDate = 'UserAddDate';
 const KUserImageUrl = 'UserImageUrl';
-const KUserBirthDate='userBirthDate';
-const KUserPhoneNumber='UserPhoneNumber';
 const KUserIsAdmin='UserIsAdmin';
 const KUserEmail='UserEmail';
 const KUserPassword='UserPassword';
 const KUserId="UserId";
+const KUserEnableAcceptPublicRequest="UserEnableAcceptPublicRequest";
 const KFavorateProviderList="FavorateProviderList";
 
 
+//subCollection for user favorate
 const KFavorateProviderListCollection="FavorateProviderListCollection";
 const KFavorateProviderId="FavorateProviderId";
+
+
 
 //Provider
 const KProviderCollection = 'Providers';
@@ -79,6 +83,7 @@ const KLocationId='LocationId';
 //Request
 const KRequestCollection = 'Requests';
 const KRequestId = 'RequestId';
+const KRequestDescription='RequestDescription';
 const KRequestAddDate = 'RequestAddDate';
 const KRequestImageUrl = 'RequestImageUrl';
 const KRequestDate='RequestDate';
@@ -91,8 +96,9 @@ const KRequestUserId='RequestUserId';
 const KRequestProviderId='RequestProviderId';
 const KRequestLocationId='RequestLocationId';
 const KRequestProblem='RequestProblem';
-const KRequestDescription='RequestDescription';
 const KRequestServiceId='RequestServiceId';
 const KRequestIsPublic='RequestIsPublic';
+const KRequestActionDate='RequestActionDate';
+const KRequestPublicId='RequestPublicId';
 
 

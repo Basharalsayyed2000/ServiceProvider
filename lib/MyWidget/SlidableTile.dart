@@ -9,54 +9,58 @@ import 'package:service_provider/Services/store.dart';
 
 class SlidableTile extends StatefulWidget {
   final String profile;
-  final String user;
+  final String userName;
   final String status;
   final bool hasAction;
   final bool forUser;
   final RequestModel request;
   final String providerId;
-
+  final bool enable;
   SlidableTile({
     @required this.profile,
-    @required this.user,
+    @required this.userName,
     @required this.status,
     @required this.hasAction,
     @required this.forUser,
     @required this.request,
     this.providerId,
+    this.enable
   });
 
   @override
   State<StatefulWidget> createState() {
     return _SlidableTile(
       profile: profile,
-      user: user,
+      userName: userName,
       status: status,
       hasAction: hasAction,
       forUser: forUser,
       request: request,
       providerId: providerId,
+      enable: enable
     );
   }
 }
 
 class _SlidableTile extends State<SlidableTile> {
   final String profile;
-  final String user;
+  final String userName;
   final String status;
   final bool hasAction;
   final bool forUser;
   final RequestModel request;
   final String providerId;
+  final bool enable;
   Store store = new Store();
   _SlidableTile({
     @required this.profile,
-    @required this.user,
+    @required this.userName,
     @required this.status,
     @required this.hasAction,
     @required this.forUser,
     @required this.request,
     this.providerId,
+    this.enable,
   });
 
   @override
@@ -77,7 +81,11 @@ class _SlidableTile extends State<SlidableTile> {
                   arguments: NeededData(
                       requestModel: request,
                       pageType: status,
-                      forUser: this.forUser));
+                      forUser: this.forUser,
+                      providerId: providerId,
+                      username: userName,
+                      enable: enable
+                      ));
             },
           ),
         ],
@@ -159,10 +167,18 @@ class _SlidableTile extends State<SlidableTile> {
                       );
                     } else if (status == "Idle" &&
                         !forUser &&
-                        request.isPublic) {
+                        request.isPublic && enable) {
+                      store.acceptPublicJobEnable(request.requestId, providerId);
+                      Fluttertoast.showToast(
+                        msg: 'The job was accepted',
+                      );
+                    }
+                     else if (status == "Idle" &&
+                        !forUser &&
+                        request.isPublic && !enable) {
                       store.acceptPublicJob(request.requestId, providerId);
                       Fluttertoast.showToast(
-                        msg: 'you must wait $user to accept',
+                        msg: 'you must wait $userName to accept',
                       );
                     }
                   },
@@ -192,13 +208,14 @@ class _SlidableTile extends State<SlidableTile> {
             child: Row(
               children: [
                 Text(
-                  (request.rProblem.length > 10)
-                      ? "${request.rProblem.substring(0, 10)}   "
-                      : "${request.rProblem}   ",
+                  request.publicId,
                   style: TextStyle(
                       fontSize: 17,
                       color: KprimaryColorDark,
                       fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  width: 6,
                 ),
                 Container(
                   child: Row(
@@ -211,7 +228,7 @@ class _SlidableTile extends State<SlidableTile> {
                                 : (status == "complete")
                                     ? " completed "
                                     : (status == "Disactive")
-                                        ? " disactive "
+                                        ? " Inactive "
                                         : (status == "Rejected")
                                             ? " Rejected"
                                             : "activate",
@@ -222,9 +239,11 @@ class _SlidableTile extends State<SlidableTile> {
                   height: 25,
                   width: (status == "Inprogress" || status == "complete")
                       ? 85
-                      : (status == "Disactive" || status == "Rejected")
-                          ? 75
-                          : 40,
+                      : ( status == "Rejected")
+                      ? 75
+                      :(status == "Disactive" )
+                       ?65
+                        : 40,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: (status == "Idle")
@@ -277,8 +296,30 @@ class _SlidableTile extends State<SlidableTile> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 color: Colors.deepPurpleAccent),
-                          )
-                        : Container()
+                          ) : Container(),
+                          SizedBox(
+                            width: 3,
+                          ),
+                        (request.isPublic && !forUser // &&request.isProviderSeen
+                          && enable!=null)
+                        ? Container(
+                            // margin: EdgeInsets.only(top: 1, bottom: 3),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: Text(
+                                enable?" enable":"disable",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            height: 25,
+                            width: 58,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: enable ?Colors.green:Colors.red),
+                          ):Container(),
+                       
                 // (action == "cancle")
                 //     ? Icon(Icons.iso_outlined, color: KsecondaryColor)
                 //     : (action == "activate")
@@ -298,9 +339,9 @@ class _SlidableTile extends State<SlidableTile> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              (user != null)
+              (userName != null)
                   ? Text(
-                      (forUser) ? "to: $user" : "from: $user",
+                      (forUser) ? "to: $userName" : "from: $userName",
                       style: TextStyle(
                           color: KprimaryColorDark,
                           fontWeight: FontWeight.w500,

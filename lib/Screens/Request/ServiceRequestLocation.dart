@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,32 +24,34 @@ class ServiceRequestLocation extends StatefulWidget {
   static String id = "ServiceRequestLocation";
 
   final bool appBar;
-
+  final bool forRequest;
   String address;
 
-  ServiceRequestLocation({this.appBar, this.address});
+  ServiceRequestLocation({this.appBar, this.address,this.forRequest});
 
   @override
   State<StatefulWidget> createState() {
     return _ServiceRequestLocation(
-        appBar: (this.appBar == null) ? true : false);
+        appBar: (this.appBar == null) ? true : false,
+        forRequest:(forRequest!=null)?forRequest:false,
+        );
   }
 }
 
 class _ServiceRequestLocation extends State<ServiceRequestLocation> {
   static Position _currentPosition =
-      Position(latitude: 37.42796133580664, longitude: -122.085749655962);
+    Position(latitude: 37.42796133580664, longitude: -122.085749655962);
   // static String _currentAddress = "";
   static String _city = "";
   static String _country = "";
-  static String _postalcode = "";
   static String _detailsAddress = "";
   static bool mapToggle = false;
+  final bool forRequest;
   Store store = new Store();
   final bool appBar;
   double _latitude, _longitude;
-  UserStore user;
-  _ServiceRequestLocation({this.appBar});
+  UserStore user = new UserStore();
+  _ServiceRequestLocation({this.appBar,this.forRequest});
 
   static Placemark address;
   // ignore: unused_field
@@ -86,7 +87,6 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
       setState(() {
         _country = address.country;
         _city = address.locality;
-        _postalcode = address.postalCode;
         _detailsAddress = address.street;
         _latitude = latitude;
         _longitude = longitude;
@@ -200,10 +200,6 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text('PostalCode :$_postalcode'),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Text('details :$_detailsAddress'),
                     SizedBox(
                       height: 30,
@@ -217,32 +213,15 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                               country: _country,
                               city: _city,
                               street: _detailsAddress,
-                              postalCode: _postalcode,
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));
 
                             _requestModel.locationId = locId;
                             _requestModel.isProviderSeen=false;
-                            await Firestore.instance
-                                .collection(KRequestCollection)
-                                .add({
-                              KRequestProblem: _requestModel.rProblem,
-                              KRequestDescription: _requestModel.rDescription,
-                              KRequestIsCompleted: _requestModel.isComplete,
-                              KRequestIsActive: _requestModel.isActive,
-                              KRequestIsAccepted: _requestModel.isAccepted,
-                              KRequestUserId: _requestModel.userId,
-                              KRequestProviderId: _requestModel.providerId,
-                              KRequestTime: _requestModel.requestTime,
-                              KRequestDate: _requestModel.requestDate,
-                              KRequestAddDate: getDateNow().toString(),
-                              KRequestImageUrl: _requestModel.rImageUrl,
-                              KRequestLocationId:_requestModel.locationId,
-                              KRequestIsPublic:_requestModel.isPublic,
-                              KRequestServiceId:_requestModel.serviceId,
-                              KRequestIsProviderSeen:_requestModel.isProviderSeen,
-                            });
+                            _requestModel.actionDate=getDateNow();
+                            _requestModel.rAddDate=getDateNow();
+                           await store.addRequest(_requestModel);
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               UserHome.id,

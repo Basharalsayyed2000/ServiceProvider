@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/Services/store.dart';
+import 'package:service_provider/Services/UserStore.dart';
 
 import 'PasswordVerificationDialog.dart';
 
@@ -43,7 +43,7 @@ class _ProfileTextField extends State<ProfileTextField> {
   FocusNode focusNode;
   bool _edit = false;
 
-  final Store _store = Store();
+  final UserStore _store = UserStore();
 
   final TextEditingController controller;
   final String id;

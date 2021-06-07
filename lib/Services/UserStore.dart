@@ -11,30 +11,21 @@ class UserStore {
       KUserName: user.uName,
       KUserAddDate: user.uAddDate,
       KUserImageUrl: user.uImageUrl,
-      KUserBirthDate: user.ubirthDate,
-      KUserPhoneNumber: user.uphoneNumber,
       KUserIsAdmin: user.isAdmin,
       KUserEmail: user.uEmail,
       KUserPassword: user.uPassword,
       KUserId: user.uId,
+      KUserEnableAcceptPublicRequest:user.enableAcceptPublicRequest,
       KFavorateProviderList: user.favorateProvider
     });
   }
-
-  // updateUser(UserModel user, String uid) async {
-  //   await _firestore.collection(KUserCollection).document(uid).updateData({
-  //     KUserName: user.uName,
-  //     KUserAddDate: user.uAddDate,
-  //     KUserImageUrl: user.uImageUrl,
-  //     KUserBirthDate: user.ubirthDate,
-  //     KUserPhoneNumber: user.uphoneNumber,
-  //     KUserIsAdmin: user.isAdmin,
-  //     KUserEmail: user.uEmail,
-  //     KUserPassword: user.uPassword,
-  //     KUserId: user.uId,
-  //     KFavorateProviderList:user.favorateProvider
-  //   });
-  // }
+  
+  userUpdateEnableDirectAccept(bool value,String id) async {
+   await _firestore
+        .collection(KUserCollection)
+        .document(id)
+        .updateData({KUserEnableAcceptPublicRequest :value});
+  }
 
   updateFvorateUser(uid, List<String> list) async {
     await _firestore
@@ -65,9 +56,11 @@ class UserStore {
     await _firestore.collection(KUserCollection).document(uid).delete();
   }
 
-  Future<void> getDataUserById(uid) async {
-    var document = Firestore.instance.collection(KUserCollection).document(uid);
-    await document.get().then((value) {});
+  updatePasswordUser(String uid,String password) async {
+     await _firestore
+        .collection(KUserCollection)
+        .document(uid)
+        .updateData({KUserPassword: password});
   }
 
   addProvider(ProviderModel provider, String pid) async {
@@ -87,26 +80,6 @@ class UserStore {
     });
   }
 
-  // updateProvider(ProviderModel provider, String pid)async{
-  //   await _firestore.collection(KProviderCollection).document(pid).updateData(
-  //     {
-  //        KProviderName: provider.pName,
-  //     KProviderAddDate: provider.pAddDate,
-  //     KProviderImageUrl: provider.pImageUrl,
-  //     KProviderBirthDate: provider.pbirthDate,
-  //     KProviderPhoneNumber: provider.pphoneNumber,
-  //     KProviderIsAdmin: provider.isAdmin,
-  //     KProviderLocationId: provider.locationId,
-  //     KProviderDescription: provider.pProviderDescription,
-  //     KServiceId: provider.pProvideService,
-  //     KProviderEmail: provider.pEmail,
-  //     KProviderId: provider.pId,
-  //     KProviderPassword: provider.pPassword,
-  //     KMyFavorateList:provider.myFavorateList
-  //     }
-  //   );
-  // }
-
   Stream<QuerySnapshot> loadProvider() {
     return _firestore.collection(KProviderCollection).snapshots();
   }
@@ -118,7 +91,7 @@ class UserStore {
         .updateData({KMyFavorateList: myFavorateList});
   }
 
-  updateProviderPassword(String trim, String userId)async {
+  updateProviderPassword(String userId,String trim)async {
     await _firestore
         .collection(KProviderCollection)
         .document(userId)
@@ -131,4 +104,33 @@ class UserStore {
         .document(userId)
         .updateData({KUserImageUrl: imageUrl}); 
   }
+
+  updateUserName(String username, String userId) {
+    _firestore
+        .collection(KUserCollection)
+        .document(userId)
+        .updateData({KUserName: username});
+  }
+
+  updateProviderName(String username, String providerId) {
+    _firestore
+        .collection(KProviderCollection)
+        .document(providerId)
+        .updateData({KProviderName: username});
+  }
+  
+  updateUserEmail(String email, String userId) {
+    _firestore
+        .collection(KUserCollection)
+        .document(userId)
+        .updateData({KUserEmail: email});
+  }
+
+  updateProviderEmail(String email, String providerId) {
+    _firestore
+        .collection(KProviderCollection)
+        .document(providerId)
+        .updateData({KProviderEmail: email});
+  }
+
 }

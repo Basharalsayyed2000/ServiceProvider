@@ -4,13 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
-import 'package:service_provider/Models/UserAction.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
-import 'package:service_provider/Screens/Provider/HomeProvider.dart';
-import 'package:service_provider/Screens/User/MyBooks.dart';
-import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Services/store.dart';
 
 class JobDetails extends StatefulWidget {
@@ -277,98 +273,160 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
 
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    (!neededData.forUser)
-                        ? Expanded(
+            (!neededData.forUser)
+                ? Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          (!requestModel.isComplete)?Expanded(
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: _padding * 7),
                               child: CustomButton(
                                   color: Colors.green,
                                   onPressed: () async {
-                                    if(!requestModel.isAccepted){
-                                    await store
-                                        .acceptJob(requestModel.requestId);
-                                    Navigator.of(context).pop();
+                                    if (!requestModel.isProviderSeen &&
+                                        !requestModel.isPublic) {
+                                      await store
+                                          .acceptJob(requestModel.requestId);
+                                      Navigator.of(context).pop();
+                                    } else if (!requestModel.isProviderSeen &&
+                                        requestModel.isPublic &&
+                                        neededData.enable) {
+                                      await store.acceptPublicJobEnable(
+                                          requestModel.requestId,
+                                          neededData.providerId);
+                                      Navigator.of(context).pop();
+                                    } else if (!requestModel.isProviderSeen &&
+                                        requestModel.isPublic &&
+                                        !neededData.enable) {
+                                      await store.acceptPublicJob(
+                                          requestModel.requestId,
+                                          neededData.providerId);
+                                      Navigator.of(context).pop();
                                     }
-                                    else if(requestModel.isAccepted){
-                                      await store.endJob(requestModel.requestId);
-                                    Navigator.of(context).pop();
-                                    }
+                                    else if (requestModel.isProviderSeen &&requestModel.isAccepted) {
+                                            await store
+                                                .endJob(requestModel.requestId);
+                                            Navigator.of(context).pop();
+                                    } 
                                     Fluttertoast.showToast(
-                                      msg:(requestModel.isAccepted)?'The job was Completed':(!requestModel.isAccepted)? 'The job was Accepted':'',
+                                      msg: ((!requestModel.isProviderSeen &&
+                                                  !requestModel.isPublic) ||
+                                              (!requestModel.isProviderSeen &&
+                                                  requestModel.isPublic &&
+                                                  neededData.enable))
+                                          ? 'The job was Accepted'
+                                          : (!requestModel.isProviderSeen &&
+                                                  requestModel.isPublic &&
+                                                  !neededData.enable)
+                                              ? 'you must wait ${neededData.username} to accept'
+                                              :  (requestModel.isProviderSeen &&requestModel.isAccepted)
+                                              ? 'The job was Completed'
+                                              :'',
                                     );
                                   },
-                                  textValue:(requestModel.isAccepted)?"Complete":(!requestModel.isAccepted)? "Accept":""),
+                                  textValue: (!requestModel.isProviderSeen)
+                                      ? "Accept"
+                                      : (requestModel.isProviderSeen &&requestModel.isAccepted)
+                                          ? "Complete"
+                                      : ""),
                             ),
-                          )
-                        : Expanded(
-                            child: Text(""),
-                          ),
-                    (!requestModel.isProviderSeen && !requestModel.isPublic || neededData.forUser)
-                        ? Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: _padding * 7),
-                              child: CustomButton(
-                                  color: (requestModel.isActive)
-                                      ? Colors.red
-                                      : (!requestModel.isActive)
-                                          ? Colors.blue
+                          ): Center(child: Container(child: 
+                          Text("   this request are not rated yet", style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),),
+                          )),
+                          (!requestModel.isPublic && !requestModel.isProviderSeen)
+                              ? Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: _padding * 7),
+                                    child: CustomButton(
+                                        color: Colors.red,
+                                        onPressed: () async {
+                                          if (!requestModel.isProviderSeen) {
+                                            await store.rejectJob(
+                                                requestModel.requestId);
+                                            Navigator.of(context).pop();
+                                          }
+                                       
+                                          Fluttertoast.showToast(
+                                            msg: (!requestModel.isProviderSeen)
+                                                ? 'The job was rejected'
+                                                // : (!requestModel.isAccepted)
+                                                //     ? 'The job was Accepted'
+                                                : '',
+                                          );
+                                        },
+                                        textValue:
+                                            (!requestModel.isProviderSeen)
+                                                ? "reject"
+                                                // : (!requestModel.isAccepted)
+                                                //     ? "Accept"
+                                                : ""),
+                                  ),
+                                )
+                              : Expanded(child: Center())
+                        ],
+                      ),
+                    ),
+                  )
+                : (!requestModel.isProviderSeen ||
+                        (requestModel.isProviderSeen &&
+                            !requestModel.isAccepted))
+                    ? Expanded(
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: _padding * 7),
+                          child: CustomButton(
+                              color: (requestModel.isActive &&
+                                      !requestModel.isProviderSeen)
+                                  ? Colors.red
+                                  : (!requestModel.isActive)
+                                      ? Colors.blue
+                                      : (requestModel.isProviderSeen &&
+                                              !requestModel.isAccepted)
+                                          ? Colors.deepPurpleAccent
                                           : Colors.blueAccent,
-                                  onPressed: () async {
-                                    if (requestModel.isActive &&
-                                        neededData.forUser) {
-                                      await store
-                                          .cancleJob(requestModel.requestId);
-                                      Navigator.of(context).pop();
-                                    } else if (!requestModel.isActive &&
-                                        neededData.forUser) {
-                                      await store
-                                          .activateJob(requestModel.requestId);
-                                      Navigator.of(context).pop();
-                                    } else if (requestModel.isActive &&
-                                        !neededData.forUser) {
-                                      await store
-                                          .rejectJob(requestModel.requestId);
-                                      Navigator.of(context).pop();
-                                    }
+                              onPressed: () async {
+                                if (requestModel.isActive &&
+                                    !requestModel.isProviderSeen) {
+                                  await store.cancleJob(requestModel.requestId);
+                                  Navigator.of(context).pop();
+                                } else if (!requestModel.isActive) {
+                                  await store
+                                      .activateJob(requestModel.requestId);
+                                  Navigator.of(context).pop();
+                                } else if (requestModel.isProviderSeen &&
+                                    !requestModel.isAccepted) {
+                                  Navigator.of(context).pop();
+                                }
 
-                                    Fluttertoast.showToast(
-                                      msg: (requestModel.isActive &&
-                                              neededData.forUser)
-                                          ? 'The job was cancled'
-                                          : (!requestModel.isActive &&
-                                                  neededData.forUser)
-                                              ? 'The job was Activated'
-                                              : (requestModel.isActive &&
-                                                      !neededData.forUser)
-                                                  ? 'The job was rejected'
-                                                  : 'The job was cancled',
-                                    );
-                                  },
-                                  textValue: (requestModel.isActive &&
-                                          neededData.forUser)
-                                      ? 'cancle'
-                                      : (!requestModel.isActive &&
-                                              neededData.forUser)
-                                          ? 'Activate'
-                                          : (requestModel.isActive &&
-                                                  !neededData.forUser)
-                                              ? 'reject'
-                                              : 'The job was cancled'),
-                            ),
-                          )
-                        : Expanded(child: Text(""))
-                  ],
-                ),
-              ),
-            )
+                                Fluttertoast.showToast(
+                                  msg: (requestModel.isActive &&
+                                          !requestModel.isProviderSeen)
+                                      ? 'The job was cancled'
+                                      : (!requestModel.isActive)
+                                          ? 'The job was Activated'
+                                          : 'The job was cancled',
+                                );
+                              },
+                              textValue: (requestModel.isActive &&
+                                      !requestModel.isProviderSeen)
+                                  ? 'cancle'
+                                  : (!requestModel.isActive)
+                                      ? 'Activate'
+                                      : (requestModel.isProviderSeen &&
+                                              !requestModel.isAccepted)
+                                          ? 'forword'
+                                          : 'The job was cancled'),
+                        ),
+                      )
+                    : Expanded(child: Center())
 
             // (neededData.pageType == "Available")
             //     ? Expanded(

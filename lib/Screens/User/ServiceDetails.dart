@@ -144,7 +144,8 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        for (String imageurl in _provider.certificateImages)
+                                        for (String imageurl
+                                            in _provider.certificateImages)
                                           GalleryImages(
                                             assetImage: imageurl,
                                             isOnline: true,
@@ -168,7 +169,11 @@ class _ServiceDetails extends State<ServiceDetails> {
                                   Navigator.pushNamed(
                                       context, ServiceRequest.id,
                                       arguments: NeededData(
-                                          provider: _provider, isRequestActive: true,isRequestPublic: false,serviceRequestId: _provider.pProvideService));
+                                          provider: _provider,
+                                          isRequestActive: true,
+                                          isRequestPublic: false,
+                                          serviceRequestId:
+                                              _provider.pProvideService));
                                 },
                                 textValue: "Book Now",
                               ),
@@ -183,7 +188,10 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       context, ServiceRequest.id,
                                       arguments: NeededData(
                                           provider: _provider,
-                                           isRequestActive: false,isRequestPublic: false,serviceRequestId: _provider.pProvideService ));
+                                          isRequestActive: false,
+                                          isRequestPublic: false,
+                                          serviceRequestId:
+                                              _provider.pProvideService));
                                 },
                                 textValue: "Book Later",
                               ),
