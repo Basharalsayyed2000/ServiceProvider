@@ -323,7 +323,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
   }
 
   Future uploadGalleryImage(docId) async {
-    if(_gallery.isNotEmpty)
+    if(_gallery[false].isNotEmpty)
     for (var img in _gallery[false]) {
 
       print(img.path);
