@@ -54,7 +54,8 @@ class _MyFavorateProvidersState extends State<MyFavorateProviders> {
               providersId.add(providerId);
               //print(providerId);
             }
-            return ListView.builder(
+           
+            return  (providersId.isNotEmpty)? ListView.builder(
               primary: false,
               itemBuilder: (context, index) => Stack(
                 children: <Widget>[
@@ -78,7 +79,7 @@ class _MyFavorateProvidersState extends State<MyFavorateProviders> {
                 ],
               ),
               itemCount: providersId.length,
-            );
+            ):Center(child:Text("No Favorate Providers"));
           }),
     );
   }

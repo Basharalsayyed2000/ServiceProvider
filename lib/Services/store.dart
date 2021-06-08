@@ -53,6 +53,9 @@ class Store {
       KRequestImageUrl: request.rImageUrl,
       KRequestLocationId :request.locationId,
       KRequestActionDate:request.actionDate,
+      KRequestRatingComment:"",
+      KRequestRating:"",
+      KRequestRejectedProvider:[],
       KRequestPublicId:"",
       KRequestId:""  
     }).then((value) {
@@ -145,6 +148,16 @@ class Store {
       KRequestIsProviderSeen: true,    
       KRequestProviderId:providerId,
       KRequestIsPublic:false
+     });
+
+  }
+  addRating(String requestId,String ratingComment,int rating) async {
+    await _firestore
+        .collection(KRequestCollection)
+        .document(requestId)
+        .updateData({
+      KRequestRatingComment:ratingComment,
+      KRequestRating:rating,
      });
 
   }

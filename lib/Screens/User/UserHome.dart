@@ -193,7 +193,7 @@ class _UserHomeState extends State<UserHome> {
                       },
                     ),
 
-                     (_userModel.enableAcceptPublicRequest)?ListTile(
+                     (!_userModel.enableAcceptPublicRequest)?ListTile(
                       leading: Icon(Icons.add_reaction_rounded),
                       title: Text('public requests reaction'),
                       onTap: () {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/PasswordVerificationDialog.dart';
+import 'package:service_provider/Screens/Provider/History.dart';
 import 'package:service_provider/Services/UserStore.dart';
 
 
@@ -80,7 +81,7 @@ class _SettingsState extends State<Settings> {
            SizedBox(height: 10,),
             buildAccountOption(context,"Change Password"),
             buildAccountOption(context,"Change Email"),
-            buildAccountOption(context,"Privacy and Security"),
+            buildAccountOption(context,(isUser)?"Privacy and Security":"History"),
             SizedBox(height: 40,),
             Row(
               children: [
@@ -130,7 +131,7 @@ class _SettingsState extends State<Settings> {
   GestureDetector buildAccountOption(BuildContext context,String title){
     return GestureDetector(
       onTap: (){
-        DialogHelper.exit(context,(title=="Change Password")?false:true,isUser) ;
+        (title!="History")?DialogHelper.exit(context,(title=="Change Password")?false:true,isUser):Navigator.of(context).pushNamed(History.id);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 20),

@@ -6,8 +6,8 @@ import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/MyWidget/ProviderCardWidget.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
-import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Services/UserStore.dart';
 
 class RecommendedProviders extends StatefulWidget {
@@ -63,6 +63,10 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                   pImageUrl: data[KProviderImageUrl],
                   pId: data[KProviderId],
                   pProvideService: data[KServiceId],
+                  isAdmin: data[KProviderIsAdmin],
+                  isvarified: data[KProviderIsVerified],
+                  rate: data[KProviderTotalRate],
+                  numberOfRequestRated: data[KProviderNumberOfRatedRequest],
                   pProviderDescription: data[KProviderDescription],
                   certificateImages: List.from(data[KImageCartificateUrlList]),
                   locationId: data[KProviderLocationId],
@@ -72,59 +76,76 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                 ));
               }
             }
-            return (_providers.isNotEmpty)? Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    primary: false,
-                    itemBuilder: (context, index) => Stack(
-                      children: <Widget>[
-                        buildCard(
-                            '${_providers[index].pName}',
-                            '${service.sName}',
-                            '${_providers[index].pImageUrl}',
-                            _providers[index]),
+            return (_providers.isNotEmpty)
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            primary: false,
+                            itemBuilder: (context, index) => Stack(
+                              children: <Widget>[
+                                ProviderCard(
+                                  providerModel: _providers[index],
+                                  uId: uId,
+                                ),
+                              ],
+                            ),
+                            itemCount: _providers.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Divider(
+                                thickness: 1,
+                                // height: 1,
+                              );
+                            },
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin:
+                                  EdgeInsets.only(bottom: Kminimumpadding * 8),
+                              child: CustomButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, ServiceRequest.id,
+                                      arguments: NeededData(
+                                          serviceRequestId: service.sId,
+                                          isRequestActive: true,
+                                          isRequestPublic: true));
+                                },
+                                textValue: "public Now",
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Container(
+                              margin:
+                                  EdgeInsets.only(bottom: Kminimumpadding * 8),
+                              child: CustomButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, ServiceRequest.id,
+                                      arguments: NeededData(
+                                          serviceRequestId: service.sId,
+                                          isRequestActive: false,
+                                          isRequestPublic: true));
+                                },
+                                textValue: "public Later",
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    itemCount: _providers.length,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom:Kminimumpadding * 8),
-                      child: CustomButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                          context, ServiceRequest.id,
-                          arguments: NeededData(serviceRequestId: service.sId,isRequestActive: true,isRequestPublic: true)
-                          );
-                        },
-                        textValue: "public Now",
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                     Container(
-                      margin: EdgeInsets.only(bottom:Kminimumpadding * 8),
-                       child: CustomButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                          context, ServiceRequest.id,
-                          arguments: NeededData(serviceRequestId: service.sId,isRequestActive: false,isRequestPublic: true)
-                          );
-                        },
-                        textValue: "public Later",
-                    ),
-                     ),
-                  ],
-                ),
-              ],
-            ):Center(
-              child: Text("No Provider provide this service"),
-            );
+                  )
+                : Center(
+                    child: Text("No Provider provide this service"),
+                  );
           } else {
             return Center(
               child: Text('no provider provide this service'),
@@ -135,66 +156,66 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
     );
   }
 
-  Card buildCard(
-      String title, String subtitle, String imageurl, ProviderModel _provider) {
-    return Card(
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, ServiceDetails.id,
-            arguments: _provider),
-        child: ListTile(
-            title: Text(title),
-            // subtitle: Text(subtitle),
-            subtitle: Row(children: [
-              Icon(Icons.star, size: 30, color: Colors.yellow),
-              Icon(Icons.star, size: 30, color: Colors.yellow),
-              Icon(Icons.star, size: 30, color: Colors.yellow),
-              Icon(Icons.star, size: 30, color: Colors.yellow),
-              Icon(Icons.star, size: 30, color: Colors.yellow),
-            ]),
-            leading: CircleAvatar(
-              backgroundImage: imageurl == ''
-                  ? AssetImage('Assets/images/provider.jpg')
-                  : NetworkImage(imageurl),
-              radius: MediaQuery.of(context).size.height * 0.037,
-            ),
-            trailing: Column(
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                        icon: Icon(
-                          Icons.favorite,
-                          size: 32,
-                          color: (_provider.myFavorateList.contains(uId))
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        onPressed: () async {
-                          if (_provider.myFavorateList.contains(uId)) {
-                            setState(() {
-                              _provider.myFavorateList.remove(uId);
-                              //userFavorateProvider.remove(_provider.pId);
-                              _user.deleteFavorateProvider(_provider.pId, uId);
-                            });
-                          } else {
-                            setState(() {
-                              _provider.myFavorateList.add(uId);
-                              //userFavorateProvider.add(_provider.pId);
-                              _user.addFavorateProvider(_provider.pId, uId);
-                            });
-                          }
-                          await _user.updatefavorateList(
-                              _provider.myFavorateList, _provider.pId);
-                          // await _user.updateFvorateUser(uId, userFavorateProvider);
-                        }),
-                  ],
-                ),
-              ],
-            )),
-      ),
-    );
-  }
+  // Card buildCard(
+  //     String title, String subtitle, String imageurl, ProviderModel _provider) {
+  //   return Card(
+  //     child: GestureDetector(
+  //       onTap: () => Navigator.pushNamed(context, ServiceDetails.id,
+  //           arguments: _provider),
+  //       child: ListTile(
+  //           title: Text(title),
+  //           // subtitle: Text(subtitle),
+  //           subtitle: Row(children: [
+  //             Icon(Icons.star, size: 30, color: Colors.yellow),
+  //             Icon(Icons.star, size: 30, color: Colors.yellow),
+  //             Icon(Icons.star, size: 30, color: Colors.yellow),
+  //             Icon(Icons.star, size: 30, color: Colors.yellow),
+  //             Icon(Icons.star, size: 30, color: Colors.yellow),
+  //           ]),
+  //           leading: CircleAvatar(
+  //             backgroundImage: imageurl == ''
+  //                 ? AssetImage('Assets/images/provider.jpg')
+  //                 : NetworkImage(imageurl),
+  //             radius: MediaQuery.of(context).size.height * 0.037,
+  //           ),
+  //           trailing: Column(
+  //             children: [
+  //               Row(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   IconButton(
+  //                       icon: Icon(
+  //                         Icons.favorite,
+  //                         size: 32,
+  //                         color: (_provider.myFavorateList.contains(uId))
+  //                             ? Colors.red
+  //                             : Colors.grey,
+  //                       ),
+  //                       onPressed: () async {
+  //                         if (_provider.myFavorateList.contains(uId)) {
+  //                           setState(() {
+  //                             _provider.myFavorateList.remove(uId);
+  //                             //userFavorateProvider.remove(_provider.pId);
+  //                             _user.deleteFavorateProvider(_provider.pId, uId);
+  //                           });
+  //                         } else {
+  //                           setState(() {
+  //                             _provider.myFavorateList.add(uId);
+  //                             //userFavorateProvider.add(_provider.pId);
+  //                             _user.addFavorateProvider(_provider.pId, uId);
+  //                           });
+  //                         }
+  //                         await _user.updatefavorateList(
+  //                             _provider.myFavorateList, _provider.pId);
+  //                         // await _user.updateFvorateUser(uId, userFavorateProvider);
+  //                       }),
+  //                 ],
+  //               ),
+  //             ],
+  //           )),
+  //     ),
+  //   );
+  // }
 
   void handleClick2(String value) {
     switch (value) {

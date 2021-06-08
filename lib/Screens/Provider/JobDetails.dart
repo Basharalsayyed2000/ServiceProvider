@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -280,67 +281,90 @@ class _JobDetailsState extends State<JobDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          (!requestModel.isComplete)?Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: _padding * 7),
-                              child: CustomButton(
-                                  color: Colors.green,
-                                  onPressed: () async {
-                                    if (!requestModel.isProviderSeen &&
-                                        !requestModel.isPublic) {
-                                      await store
-                                          .acceptJob(requestModel.requestId);
-                                      Navigator.of(context).pop();
-                                    } else if (!requestModel.isProviderSeen &&
-                                        requestModel.isPublic &&
-                                        neededData.enable) {
-                                      await store.acceptPublicJobEnable(
-                                          requestModel.requestId,
-                                          neededData.providerId);
-                                      Navigator.of(context).pop();
-                                    } else if (!requestModel.isProviderSeen &&
-                                        requestModel.isPublic &&
-                                        !neededData.enable) {
-                                      await store.acceptPublicJob(
-                                          requestModel.requestId,
-                                          neededData.providerId);
-                                      Navigator.of(context).pop();
-                                    }
-                                    else if (requestModel.isProviderSeen &&requestModel.isAccepted) {
+                          (!requestModel.isComplete &&
+                                  !(requestModel.isProviderSeen &&
+                                      requestModel.isPublic))
+                              ? Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: _padding * 7),
+                                    child: CustomButton(
+                                        color: Colors.green,
+                                        onPressed: () async {
+                                          if (!requestModel.isProviderSeen &&
+                                              !requestModel.isPublic) {
+                                            await store.acceptJob(
+                                                requestModel.requestId);
+                                            Navigator.of(context).pop();
+                                          } else if (!requestModel
+                                                  .isProviderSeen &&
+                                              requestModel.isPublic &&
+                                              neededData.enable) {
+                                            await store.acceptPublicJobEnable(
+                                                requestModel.requestId,
+                                                neededData.providerId);
+                                            Navigator.of(context).pop();
+                                          } else if (!requestModel
+                                                  .isProviderSeen &&
+                                              requestModel.isPublic &&
+                                              !neededData.enable) {
+                                            await store.acceptPublicJob(
+                                                requestModel.requestId,
+                                                neededData.providerId);
+                                            Navigator.of(context).pop();
+                                          } else if (requestModel
+                                                  .isProviderSeen &&
+                                              requestModel.isAccepted) {
                                             await store
                                                 .endJob(requestModel.requestId);
                                             Navigator.of(context).pop();
-                                    } 
-                                    Fluttertoast.showToast(
-                                      msg: ((!requestModel.isProviderSeen &&
-                                                  !requestModel.isPublic) ||
-                                              (!requestModel.isProviderSeen &&
-                                                  requestModel.isPublic &&
-                                                  neededData.enable))
-                                          ? 'The job was Accepted'
-                                          : (!requestModel.isProviderSeen &&
-                                                  requestModel.isPublic &&
-                                                  !neededData.enable)
-                                              ? 'you must wait ${neededData.username} to accept'
-                                              :  (requestModel.isProviderSeen &&requestModel.isAccepted)
-                                              ? 'The job was Completed'
-                                              :'',
-                                    );
-                                  },
-                                  textValue: (!requestModel.isProviderSeen)
-                                      ? "Accept"
-                                      : (requestModel.isProviderSeen &&requestModel.isAccepted)
-                                          ? "Complete"
-                                      : ""),
-                            ),
-                          ): Center(child: Container(child: 
-                          Text("   this request are not rated yet", style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),),
-                          )),
-                          (!requestModel.isPublic && !requestModel.isProviderSeen)
+                                          }
+                                          Fluttertoast.showToast(
+                                            msg: ((!requestModel
+                                                            .isProviderSeen &&
+                                                        !requestModel
+                                                            .isPublic) ||
+                                                    (!requestModel
+                                                            .isProviderSeen &&
+                                                        requestModel.isPublic &&
+                                                        neededData.enable))
+                                                ? 'The job was Accepted'
+                                                : (!requestModel
+                                                            .isProviderSeen &&
+                                                        requestModel.isPublic &&
+                                                        !neededData.enable)
+                                                    ? 'you must wait ${neededData.username} to accept'
+                                                    : (requestModel
+                                                                .isProviderSeen &&
+                                                            requestModel
+                                                                .isAccepted)
+                                                        ? 'The job was Completed'
+                                                        : '',
+                                          );
+                                        },
+                                        textValue: (!requestModel
+                                                .isProviderSeen)
+                                            ? "Accept"
+                                            : (requestModel.isProviderSeen &&
+                                                    requestModel.isAccepted)
+                                                ? "Complete"
+                                                : ""),
+                                  ),
+                                )
+                              : Center(
+                                  child: Container(
+                                  child: Text(
+                                    (requestModel.isComplete)
+                                        ? "   this request are not rated yet"
+                                        : "      Wait ${neededData.username} to accept",
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          (!requestModel.isPublic &&
+                                  !requestModel.isProviderSeen)
                               ? Expanded(
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -353,7 +377,7 @@ class _JobDetailsState extends State<JobDetails> {
                                                 requestModel.requestId);
                                             Navigator.of(context).pop();
                                           }
-                                       
+
                                           Fluttertoast.showToast(
                                             msg: (!requestModel.isProviderSeen)
                                                 ? 'The job was rejected'
@@ -375,9 +399,11 @@ class _JobDetailsState extends State<JobDetails> {
                       ),
                     ),
                   )
-                : (!requestModel.isProviderSeen ||
-                        (requestModel.isProviderSeen &&
-                            !requestModel.isAccepted))
+                : (!(requestModel.isProviderSeen &&
+                        requestModel.isAccepted &&
+                        requestModel.isActive &&
+                        !requestModel.isComplete &&
+                        !requestModel.isPublic))
                     ? Expanded(
                         child: Container(
                           padding:
@@ -391,7 +417,9 @@ class _JobDetailsState extends State<JobDetails> {
                                       : (requestModel.isProviderSeen &&
                                               !requestModel.isAccepted)
                                           ? Colors.deepPurpleAccent
-                                          : Colors.blueAccent,
+                                          : (requestModel.isComplete)
+                                              ? Colors.orange
+                                              : Colors.blueAccent,
                               onPressed: () async {
                                 if (requestModel.isActive &&
                                     !requestModel.isProviderSeen) {
@@ -404,16 +432,21 @@ class _JobDetailsState extends State<JobDetails> {
                                 } else if (requestModel.isProviderSeen &&
                                     !requestModel.isAccepted) {
                                   Navigator.of(context).pop();
+                                } else if (requestModel.isProviderSeen &&
+                                    requestModel.isComplete) {
+                                  show();
                                 }
 
-                                Fluttertoast.showToast(
-                                  msg: (requestModel.isActive &&
-                                          !requestModel.isProviderSeen)
-                                      ? 'The job was cancled'
-                                      : (!requestModel.isActive)
-                                          ? 'The job was Activated'
-                                          : 'The job was cancled',
-                                );
+                                (!requestModel.isComplete)
+                                    ? Fluttertoast.showToast(
+                                        msg: (requestModel.isActive &&
+                                                !requestModel.isProviderSeen)
+                                            ? 'The job was cancled'
+                                            : (!requestModel.isActive)
+                                                ? 'The job was Activated'
+                                                : '',
+                                      )
+                                    : Center();
                               },
                               textValue: (requestModel.isActive &&
                                       !requestModel.isProviderSeen)
@@ -423,7 +456,10 @@ class _JobDetailsState extends State<JobDetails> {
                                       : (requestModel.isProviderSeen &&
                                               !requestModel.isAccepted)
                                           ? 'forword'
-                                          : 'The job was cancled'),
+                                          : (requestModel.isProviderSeen &&
+                                                  requestModel.isComplete)
+                                              ? 'Rating Us'
+                                              : 'The job was cancled'),
                         ),
                       )
                     : Expanded(child: Center())
@@ -504,5 +540,24 @@ class _JobDetailsState extends State<JobDetails> {
         ),
       ),
     );
+  }
+
+  void show() {
+    showDialog(
+       barrierDismissible: true,
+        context: context,
+        builder: (context) {
+          return RatingDialog(
+            title: 'Rating us',
+            message: 'We are glad to serve you!,Rating this service and tell others what you think.',
+            image: Image(image: AssetImage("Assets/images/Logo.png"),height: 100,),
+            initialRating: 2,
+            submitButton: 'Submit',
+            onSubmitted: (response) {
+              print('rating: ${response.rating}, comment: ${response.comment}');
+              
+            },
+          );
+        });
   }
 }

@@ -76,7 +76,10 @@ class UserStore {
       KServiceId: provider.pProvideService,
       KProviderEmail: provider.pEmail,
       KProviderId: provider.pId,
-      KProviderPassword: provider.pPassword
+      KProviderPassword: provider.pPassword,
+      KProviderTotalRate:"1",
+      KProviderNumberOfRatedRequest:"1",
+      KProviderIsVerified:false,
     });
   }
 

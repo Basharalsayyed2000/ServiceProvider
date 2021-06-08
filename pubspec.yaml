@@ -24,6 +24,7 @@ dependencies:
   crypt: ^4.0.1
   firebase_messaging:
   fluttertoast:
+  rating_dialog: ^2.0.0
   image_downloader:
   permission_handler: 
   intl: 

@@ -60,7 +60,10 @@ const KProviderPassword='ProviderPassword';
 const KProviderId="ProviderId";
 const KImageCartificateUrlList='ImageCartificateUrlList';
 const KMyFavorateList="MyFavorateList";
-const KProviderRate="ProviderRate";
+const KProviderTotalRate="ProviderTotalRate";
+const KProviderNumberOfRatedRequest="ProviderNumberOfRatedRequest";
+const KProviderIsVerified="ProviderIsVerified";
+
 
 
 
@@ -100,5 +103,8 @@ const KRequestServiceId='RequestServiceId';
 const KRequestIsPublic='RequestIsPublic';
 const KRequestActionDate='RequestActionDate';
 const KRequestPublicId='RequestPublicId';
+const KRequestRating='RequestRating';
+const KRequestRatingComment='RequestRatingComment';
+const KRequestRejectedProvider="RequestRejectedProvider";
 
 

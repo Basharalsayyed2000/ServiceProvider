@@ -54,8 +54,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                             child: CircleAvatar(
                               backgroundImage:
                                   NetworkImage('${_provider.pImageUrl}'),
-                              radius:
-                                  MediaQuery.of(context).size.height * 0.067,
+                              radius: MediaQuery.of(context).size.height * 0.06,
                             ),
                           ),
                           SizedBox(
@@ -86,12 +85,37 @@ class _ServiceDetails extends State<ServiceDetails> {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "By: ${_provider.pName}",
-                                  style: TextStyle(
-                                    height: 1.3,
-                                    fontSize: 12,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "By: ${_provider.pName}",
+                                      style: TextStyle(
+                                        height: 1.3,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    (_provider.isvarified)
+                                        ? Icon(
+                                            Icons.verified_outlined,
+                                            color: Colors.blue,
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.yellow,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      "${_provider.rate}",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: KprimaryColorDark),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -106,27 +130,34 @@ class _ServiceDetails extends State<ServiceDetails> {
                       endIndent: 5,
                     ),
                     Container(
-                      padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
+                      padding: EdgeInsets.only(bottom: Kminimumpadding * 2),
                       child: Text(
-                        "Certificate",
+                        "Description",
                         style: TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.only(
-                          top: Kminimumpadding * 1,
-                          bottom: Kminimumpadding * 1),
-                      child: Text(
-                        '${_provider.pProviderDescription}',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500),
+                    SingleChildScrollView(
+                        child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey[200],
+                            
+                            ),
+                        height: MediaQuery.of(context).size.height * 0.20,
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.only(
+                            top: Kminimumpadding * 1,
+                            bottom: Kminimumpadding * 1),
+                        child: Text(
+                          '${_provider.pProviderDescription}',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(bottom: Kminimumpadding * 5),
+                      padding: EdgeInsets.only(top: Kminimumpadding * 3),
                       child: Text(
                         "Service Gallery",
                         style: TextStyle(

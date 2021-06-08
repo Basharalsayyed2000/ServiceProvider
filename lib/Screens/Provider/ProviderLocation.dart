@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,7 +47,7 @@ class _ProviderLocation extends State<ProviderLocation> {
   Store store = new Store();
   final bool appBar;
   double _latitude, _longitude;
-  UserStore user;
+  UserStore user =new UserStore();
   _ProviderLocation({this.appBar});
 
   static Placemark address;
@@ -219,29 +218,9 @@ class _ProviderLocation extends State<ProviderLocation> {
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));
-
-                            print(locId);
-                            await Firestore.instance
-                                .collection(KProviderCollection)
-                                .document(_provider.pId)
-                                .setData({
-                              KProviderName: _provider.pName,
-                              KProviderEmail: _provider.pEmail,
-                              KProviderPassword: _provider.pPassword,
-                              KProviderAddDate: _provider.pAddDate,
-                              KProviderImageUrl: _provider.pImageUrl,
-                              KProviderBirthDate: _provider.pbirthDate,
-                              KProviderPhoneNumber: _provider.pphoneNumber,
-                              KProviderLocationId: locId,
-                              KProviderDescription:
-                                  _provider.pProviderDescription,
-                              KServiceId: _provider.pProvideService,
-                              KProviderIsAdmin: _provider.isAdmin,
-                              KProviderId: _provider.pId,
-                              KImageCartificateUrlList:
-                                  _provider.certificateImages,
-                              KMyFavorateList:_provider.myFavorateList    
-                            });
+                            _provider.locationId= locId;    
+                            _provider.myFavorateList=[];
+                            user.addProvider(_provider, _provider.pId);
                             Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 Navbar.id,

@@ -191,7 +191,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                         ),
                       ),
                       
-                      GalleryImages(gallery: _gallery),
+                    //  GalleryImages(gallery: _gallery),
 
                       Container(
                         padding: EdgeInsets.only(top: 4),

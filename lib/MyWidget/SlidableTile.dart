@@ -208,14 +208,14 @@ class _SlidableTile extends State<SlidableTile> {
             child: Row(
               children: [
                 Text(
-                  request.publicId,
+                  "ID: "+request.publicId,
                   style: TextStyle(
                       fontSize: 17,
                       color: KprimaryColorDark,
                       fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
-                  width: 6,
+                  width: 3,
                 ),
                 Container(
                   child: Row(
@@ -231,7 +231,9 @@ class _SlidableTile extends State<SlidableTile> {
                                         ? " Inactive "
                                         : (status == "Rejected")
                                             ? " Rejected"
-                                            : "activate",
+                                            : (status == "WaitAccept")
+                                            ? " Waiting"
+                                            : "activate", 
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -241,7 +243,7 @@ class _SlidableTile extends State<SlidableTile> {
                       ? 85
                       : ( status == "Rejected")
                       ? 75
-                      :(status == "Disactive" )
+                      :(status == "Disactive" || status=="WaitAccept")
                        ?65
                         : 40,
                   decoration: BoxDecoration(
@@ -256,10 +258,12 @@ class _SlidableTile extends State<SlidableTile> {
                                       ? Colors.green
                                       : (status == "Rejected")
                                           ? Colors.red
+                                           : (status == "WaitAccept")
+                                          ? Colors.brown
                                           : Colors.deepPurpleAccent),
                 ),
                 SizedBox(
-                  width: 4,
+                  width: 2,
                 ),
                 (!request.isPublic && !request.isProviderSeen)
                     ? Container(
@@ -278,7 +282,7 @@ class _SlidableTile extends State<SlidableTile> {
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.blue[400]),
                       )
-                    : (request.isPublic && !forUser // &&request.isProviderSeen
+                    : ((request.isPublic && !forUser &&!request.isProviderSeen) // &&request.isProviderSeen
                         )
                         ? Container(
                             // margin: EdgeInsets.only(top: 1, bottom: 3),
@@ -314,7 +318,7 @@ class _SlidableTile extends State<SlidableTile> {
                               ),
                             ),
                             height: 25,
-                            width: 58,
+                            width: 56,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 color: enable ?Colors.green:Colors.red),

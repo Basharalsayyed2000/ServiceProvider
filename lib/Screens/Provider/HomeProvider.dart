@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ class _HomeProviderState extends State<HomeProvider> {
   String pId;
   String pageType;
   Store store;
+  bool fore = true;
   @override
   void initState() {
     getcurrentid();
@@ -106,21 +106,21 @@ class _HomeProviderState extends State<HomeProvider> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      pageType = "Completed";
+                      pageType = "WaitAccept";
                     });
                   },
                   child: Column(
                     children: [
                       Text(
-                        "Completed",
+                        "Wait Accept",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: (pageType == "Completed")
+                            color: (pageType == "WaitAccept")
                                 ? Colors.black
                                 : Colors.grey),
                       ),
-                      if (pageType == "Completed")
+                      if (pageType == "WaitAccept")
                         Container(
                           margin: EdgeInsets.only(top: 3),
                           height: 2,
@@ -241,7 +241,8 @@ class _HomeProviderState extends State<HomeProvider> {
                                                         hasAction: true,
                                                         forUser: false,
                                                         providerId: pId,
-                                                        enable: document2[KUserEnableAcceptPublicRequest],
+                                                        enable: document2[
+                                                            KUserEnableAcceptPublicRequest],
                                                       );
                                                     } else {
                                                       return new CircularProgressIndicator();
@@ -399,7 +400,7 @@ class _HomeProviderState extends State<HomeProvider> {
                           );
                         }
                       })
-                  : (pageType == "Completed")
+                  : (pageType == "WaitAccept")
                       ? StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance
                               .collection(KRequestCollection)
@@ -421,9 +422,11 @@ class _HomeProviderState extends State<HomeProvider> {
                                   //  requestUrl= List.of(data[KRequestImageUrl]);
                                   // }
                                   if (data[KRequestIsActive] &&
-                                      data[KRequestIsAccepted] &&
-                                      data[KRequestIsCompleted] &&
-                                      data[KRequestIsProviderSeen])
+                                      !data[KRequestIsAccepted] &&
+                                      !data[KRequestIsCompleted] &&
+                                      data[KRequestIsProviderSeen]&&
+                                      data[KRequestIsPublic]
+                                      )
                                     _requests.add(RequestModel(
                                       rProblem: data[KRequestProblem],
                                       rDescription: data[KRequestDescription],
@@ -488,7 +491,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                                               KUserName],
                                                           request: _requests
                                                               .elementAt(index),
-                                                          status: "complete",
+                                                          status: "WaitAccept",
                                                           hasAction: false,
                                                           forUser: false,
                                                         );
@@ -508,7 +511,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                     )
                                   : Center(
                                       child: Text(
-                                        'There is no Completed Request',
+                                        'No Requests wait user Accept',
                                         style: TextStyle(
                                             fontSize: 24,
                                             color: Colors.red,
@@ -518,7 +521,7 @@ class _HomeProviderState extends State<HomeProvider> {
                             } else {
                               Center(
                                 child: Text(
-                                  'There is no Completed Request',
+                                  'No Requests wait user Accept',
                                   style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.red,

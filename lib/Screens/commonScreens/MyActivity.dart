@@ -74,7 +74,7 @@ class _MyActivity extends State<MyActivity> {
         title: Text("My Activity"),
         centerTitle: true,
       ),
-      body:(loading==true)?
+      body:(loading==true && total!=0)?
        Padding(
         padding: EdgeInsets.all(8.0),
         child: Center(
@@ -124,8 +124,9 @@ class _MyActivity extends State<MyActivity> {
             ],
           ),
         ),
-      ):
-      Center(child: CircularProgressIndicator()),
+      ):(total==0)?
+      Center(child:Text("No Activity"))
+      :Center(child: CircularProgressIndicator()),
     );
   }
 
