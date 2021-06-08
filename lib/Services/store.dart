@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/Models/Service.dart';
@@ -33,6 +34,45 @@ class Store {
       locId = value.documentID;
     });
     return locId;
+  }
+
+  updateListGallery(List gallery, String pid){
+    _firestore.collection(KProviderCollection).document(pid).updateData({
+      KImageCartificateUrlList: gallery,
+    });
+  }
+
+  List cache = [];
+  Future uploadGalleryImage(Map<bool,List>gallery, List galleryUrl) async {
+    if(gallery[false].isNotEmpty)
+      for (var img in gallery[false]) {
+
+        if(!cache.contains(img)){
+          print(img.path);
+
+          cache.add(img);
+
+          FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://service-provider-ef677.appspot.com');
+
+          String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+
+          StorageReference ref = storage.ref().child('CertificateImage/$imageFileName');
+
+          StorageUploadTask storageUploadTask = ref.putFile(img);
+          
+          
+          StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+
+          await taskSnapshot.ref.getDownloadURL().then((url) {
+            galleryUrl.add(url);
+            cache.removeAt(0);
+          });
+        }
+
+        //_userStore.addGallaryCollection(url, docId);
+
+
+      }
   }
 
   addRequest(RequestModel request) {
