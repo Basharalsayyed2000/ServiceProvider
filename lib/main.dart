@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
 import 'package:service_provider/Screens/Provider/History.dart';
@@ -40,6 +41,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return MaterialApp(
+      theme: ThemeData(
+        highlightColor: KprimaryColor,
+        accentColor: KprimaryColor
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {

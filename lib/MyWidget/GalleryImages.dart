@@ -35,6 +35,8 @@ class _GalleryImages extends State<GalleryImages>{
   
   bool _edit = false;
 
+  ScrollController _scrollController = new ScrollController();
+
   final _store = Store();
 
   _GalleryImages({@required this.gallery, this.userid, this.autoUpdate, this.edit});
@@ -55,100 +57,111 @@ class _GalleryImages extends State<GalleryImages>{
       margin: EdgeInsets.only( bottom: MediaQuery.of(context).size.height / 55, left: 10),
       child: SizedBox(
         height: MediaQuery.of(context).size.width / 3.4,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: (_edit) ? gallery[true].length + gallery[false].length + 1 : gallery[true].length,
-          itemBuilder: (context, index) {
-            print(index);
-            
-            return GestureDetector(
-              //if(_edit)
-              onTap: (){ 
-                if( _edit && index == 0)
-                  pickGalleryImage();
-                else
-                  if(_edit)
-                    if(index < gallery[false].length+1){
-                      if(gallery[false].length > 0)
-                        DialogHelper.exitFile(context, gallery[false].reversed.elementAt(index - 1));
-                      else
-                        if (gallery[true].length > 0)
-                          DialogHelper.exit(context, gallery[true].reversed.elementAt(index - 1), true);
-                    }else{
-                      if(gallery[false].length > 0){
-                        if (gallery[true].length > 0)
-                          DialogHelper.exit(context, gallery[true].reversed.elementAt(index - gallery[false].length - 1), true);
-                      }else{
-                        if (gallery[true].length > 0)
-                          DialogHelper.exit(context, gallery[true].reversed.elementAt(index-1), true);
-                      }
-                    }
-                  else{
-                    if(index < gallery[true].length+1)
-                      if(gallery[true].length > 0)
-                        DialogHelper.exit(context, gallery[true].reversed.elementAt(index), true);
-                  }
-                    
-
-                  // DialogHelper.exitFile(context, gallery[index - 1])
-                  // :DialogHelper.exitFile(context, gallery[index]);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 1.5
-                    ),
-                  ],
-                ),
-                width: MediaQuery.of(context).size.width / 2.6,
-                margin: EdgeInsets.only( left: 2, top: 2, right: 13, bottom: 2),
-                child: (_edit && index == 0)
-                ? Icon(Icons.add, size: 60, color: KprimaryColor)
-                : Stack(
-                  alignment: Alignment.center,
-                    children: [
-
-
-                      // if(gallery[true].length == 0)
-                      //   Container(child: Image.file(File("/data/user/0/com.example.service_provider/cache/image_picker4307476145657976484.jpg")),),
-
-                      if (!_edit && index < gallery[true].length && gallery[true].length > 0)
-                        Image.network(gallery[true].reversed.elementAt(index)),
-
-                      // if (!_edit && index < gallery[true].length && gallery[true].length < 0 && gallery[false].length > 0)
-                      //   Image.file(gallery[false].reversed.elementAt(index)),
-
-                      // if (!_edit && index > gallery[true].length && gallery[true].length > 0 && gallery[false].length > 0)    
-                      //   Image.file(gallery[false].reversed.elementAt(index - gallery[true].length)),
-                      
-                      // if (!_edit && index > gallery[true].length && gallery[true].length <= 0 && gallery[false].length > 0)    
-                      //   Image.file(gallery[false].reversed.elementAt(index)),
-
-
-                      if (_edit && index <= gallery[false].length && gallery[false].length > 0)
-                        Image.file(gallery[false].reversed.elementAt(index-1)),
-
-                      if (_edit && index < gallery[false].length && gallery[false].length < 0 && gallery[true].length > 0)
-                        Image.network(gallery[true].reversed.elementAt(index)),
-
-                      if (_edit && index > gallery[false].length && gallery[false].length > 0 && gallery[true].length > 0)    
-                        Image.network(gallery[true].reversed.elementAt(index - gallery[false].length - 1)),
-                      
-                      if (_edit && index > gallery[false].length && gallery[false].length <= 0 && gallery[true].length > 0)    
-                        Image.network(gallery[true].reversed.elementAt(index-1)),
-                        
+        child: Scrollbar(
+          controller: _scrollController,
+          isAlwaysShown: false,
+          radius: Radius.circular(5),
+          thickness: 7,
+          interactive: true,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: ListView.builder(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: (_edit) ? gallery[true].length + gallery[false].length + 1 : gallery[true].length,
+              itemBuilder: (context, index) {
+                print(index);
+                
+                return GestureDetector(
+                  //if(_edit)
+                  onTap: (){ 
+                    if( _edit && index == 0)
+                      pickGalleryImage();
+                    else
                       if(_edit)
-                        _createOverlayEntry(index),
-                          //color: Colors.white,
-                    ],
+                        if(index < gallery[false].length+1){
+                          if(gallery[false].length > 0)
+                            DialogHelper.exitFile(context, gallery[false].reversed.elementAt(index - 1));
+                          else
+                            if (gallery[true].length > 0)
+                              DialogHelper.exit(context, gallery[true].reversed.elementAt(index - 1), true);
+                        }else{
+                          if(gallery[false].length > 0){
+                            if (gallery[true].length > 0)
+                              DialogHelper.exit(context, gallery[true].reversed.elementAt(index - gallery[false].length - 1), true);
+                          }else{
+                            if (gallery[true].length > 0)
+                              DialogHelper.exit(context, gallery[true].reversed.elementAt(index-1), true);
+                          }
+                        }
+                      else{
+                        if(index < gallery[true].length+1)
+                          if(gallery[true].length > 0)
+                            DialogHelper.exit(context, gallery[true].reversed.elementAt(index), true);
+                      }
+                        
+
+                      // DialogHelper.exitFile(context, gallery[index - 1])
+                      // :DialogHelper.exitFile(context, gallery[index]);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          spreadRadius: 1.5
+                        ),
+                      ],
+                    ),
+                    width: MediaQuery.of(context).size.width / 2.6,
+                    margin: EdgeInsets.only( left: 2, top: 2, right: 13, bottom: 2),
+                    child: (_edit && index == 0)
+                    ? Icon(Icons.add, size: 60, color: KprimaryColor)
+                    : Stack(
+                      alignment: Alignment.center,
+                        children: [
+
+
+                          // if(gallery[true].length == 0)
+                          //   Container(child: Image.file(File("/data/user/0/com.example.service_provider/cache/image_picker4307476145657976484.jpg")),),
+
+                          if (!_edit && index < gallery[true].length && gallery[true].length > 0)
+                            Image.network(gallery[true].reversed.elementAt(index)),
+
+                          // if (!_edit && index < gallery[true].length && gallery[true].length < 0 && gallery[false].length > 0)
+                          //   Image.file(gallery[false].reversed.elementAt(index)),
+
+                          // if (!_edit && index > gallery[true].length && gallery[true].length > 0 && gallery[false].length > 0)    
+                          //   Image.file(gallery[false].reversed.elementAt(index - gallery[true].length)),
+                          
+                          // if (!_edit && index > gallery[true].length && gallery[true].length <= 0 && gallery[false].length > 0)    
+                          //   Image.file(gallery[false].reversed.elementAt(index)),
+
+
+                          if (_edit && index <= gallery[false].length && gallery[false].length > 0)
+                            Image.file(gallery[false].reversed.elementAt(index-1)),
+
+                          if (_edit && index < gallery[false].length && gallery[false].length < 0 && gallery[true].length > 0)
+                            Image.network(gallery[true].reversed.elementAt(index)),
+
+                          if (_edit && index > gallery[false].length && gallery[false].length > 0 && gallery[true].length > 0)    
+                            Image.network(gallery[true].reversed.elementAt(index - gallery[false].length - 1)),
+                          
+                          if (_edit && index > gallery[false].length && gallery[false].length <= 0 && gallery[true].length > 0)    
+                            Image.network(gallery[true].reversed.elementAt(index-1)),
+                            
+                          if(_edit)
+                            _createOverlayEntry(index),
+                              //color: Colors.white,
+                        ],
+                      ),
                   ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

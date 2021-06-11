@@ -19,7 +19,6 @@ class ProviderProfilescreen extends StatefulWidget {
 }
 
 class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
-
   PickedFile imageFile;
   final _auth = Auth();
   UserStore user;
@@ -29,7 +28,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   String _userId;
   String imageUrl;
   var providerDocument;
-  String serviceProviderId="";
+  String serviceProviderId = "";
   // ignore: unused_field
   String _providerType = "Electrician";
   // ignore: unused_field
@@ -38,16 +37,17 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   //String _description = "I am a Electrician graduate at the Beirut Arabic University in Beirut.";
   //String _gallery = "Electrician";
 
-
   TextEditingController _username;
-  var _gallery = <bool,List>{};
+  var _gallery = <bool, List>{};
   TextEditingController _accountType;
-  // ignore: unused_field
-  TextEditingController _email;
-  // ignore: unused_field
-  TextEditingController _phoneNb;
-  // ignore: unused_field
-  TextEditingController _password;
+
+  // TextEditingController _email;
+
+  // TextEditingController _phoneNb;
+
+  // TextEditingController _password;
+
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
@@ -67,8 +67,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
   }
 
   @override
-  Widget build(BuildContext context){
-    
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -80,9 +79,16 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
             onSelected: (choice) {
               // ignore: unnecessary_statements
               (choice == "My Activity")
-                ? Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity(isUser: false,serviceid: serviceProviderId,)),)
-                // ignore: unnecessary_statements
-                : null;
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyActivity(
+                                isUser: false,
+                                serviceid: serviceProviderId,
+                              )),
+                    )
+                  // ignore: unnecessary_statements
+                  : null;
               if (choice == "Logout") {
                 Navigator.pushReplacementNamed(context, WelcomeScreen.id);
                 _auth.signOut();
@@ -100,240 +106,313 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
         ],
       ),
       body: StreamBuilder(
-        stream: Firestore.instance
-          .collection(KProviderCollection)
-          .document(_userId)
-          .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
-          if(!snapshot.hasData){
-            return Center(child: Column( mainAxisAlignment: MainAxisAlignment.center, children: [CircularProgressIndicator(backgroundColor: KsecondaryColor), Container(margin: EdgeInsets.only(top:MediaQuery.of(context).size.height/25), child:Text("Please Wait"))]));
-          } else {
-            var providerDocument = snapshot.data;
-            
-            if (providerDocument[KServiceId] != null)
-            serviceProviderId=providerDocument[KServiceId];
-          
-            if (providerDocument[KProviderImageUrl] != null)
-              imageUrl = providerDocument[KProviderImageUrl];
-            //if(providerDocument[KProviderType] != null)
-            //  _accountType = TextEditingController(text: "${providerDocument[KProviderType]}");
+          stream: Firestore.instance
+              .collection(KProviderCollection)
+              .document(_userId)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Center(child: CircularProgressIndicator());
+            if (!snapshot.hasData) {
+              return Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    CircularProgressIndicator(backgroundColor: KsecondaryColor),
+                    Container(
+                        margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 25),
+                        child: Text("Please Wait"))
+                  ]));
+            } else {
+              var providerDocument = snapshot.data;
+
+              if (providerDocument[KServiceId] != null)
+                serviceProviderId = providerDocument[KServiceId];
+
+              if (providerDocument[KProviderImageUrl] != null)
+                imageUrl = providerDocument[KProviderImageUrl];
+              //if(providerDocument[KProviderType] != null)
+              //  _accountType = TextEditingController(text: "${providerDocument[KProviderType]}");
               _accountType = TextEditingController(text: "Provider");
-            if (providerDocument[KProviderName] != null)
-              _username =TextEditingController(text: "${providerDocument[KProviderName]}");
-            
-            if (providerDocument[KImageCartificateUrlList] != null){
-              _gallery[true].clear();
-              providerDocument[KImageCartificateUrlList].forEach((value){
-                _gallery[true].add(value);
-                print("total:${_gallery.length}\t true:${_gallery[true].length} \t false:${_gallery[false].length}");
-              });
-            }
+              if (providerDocument[KProviderName] != null)
+                _username = TextEditingController(
+                    text: "${providerDocument[KProviderName]}");
 
-            // if (providerDocument[KProviderEmail] != null)
-            //   _email =TextEditingController(text: "${providerDocument[KProviderEmail]}");
+              if (providerDocument[KImageCartificateUrlList] != null) {
+                _gallery[true].clear();
+                providerDocument[KImageCartificateUrlList].forEach((value) {
+                  _gallery[true].add(value);
+                  print(
+                      "total:${_gallery.length}\t true:${_gallery[true].length} \t false:${_gallery[false].length}");
+                });
+              }
 
-            // if (providerDocument[KProviderPhoneNumber] != null)
-            //   _phoneNb =TextEditingController(text: "${providerDocument[KProviderPhoneNumber]}");
+              // if (providerDocument[KProviderEmail] != null)
+              //   _email =TextEditingController(text: "${providerDocument[KProviderEmail]}");
 
-            // if (providerDocument[KProviderPassword] != null)
-            //   _password = TextEditingController(text: "${providerDocument[KProviderPassword]}");
+              // if (providerDocument[KProviderPhoneNumber] != null)
+              //   _phoneNb =TextEditingController(text: "${providerDocument[KProviderPhoneNumber]}");
 
-            if (providerDocument[KProviderDescription] != null) {
-              _description = providerDocument[KProviderDescription];
-            }
+              // if (providerDocument[KProviderPassword] != null)
+              //   _password = TextEditingController(text: "${providerDocument[KProviderPassword]}");
 
-            return ProgressHUD(
-              child: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
-                child: ListView(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            KprimaryColor.withOpacity(0.87),
-                            KprimaryColor,
-                            KsecondaryColor.withOpacity(.82)
-                            // Color.fromRGBO(6, 87, 91, 1).withOpacity(.7),
-                            // Color.fromRGBO(102, 165, 173, 1),
-                          ]
-                        )
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.0485,
-                          ),
-                          Center(
-                            child: Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(80.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 3,
-                                      color: Colors.black.withOpacity(.3),
-                                      blurRadius: 3
-                                    )
-                                  ]
+              if (providerDocument[KProviderDescription] != null) {
+                _description = providerDocument[KProviderDescription];
+              }
+              if (providerDocument[KProviderLocationId] != null)
+              return StreamBuilder(
+                  stream: Firestore.instance
+                      .collection(KLocationCollection)
+                      .document(providerDocument[KProviderLocationId])
+                      .snapshots(),
+                  builder: (context, snapshotL) {
+                    if (snapshotL.connectionState == ConnectionState.waiting)
+                      return Center(child: CircularProgressIndicator());
+                    if (!snapshotL.hasData){
+                      return Center(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                            CircularProgressIndicator(
+                                backgroundColor: KsecondaryColor),
+                            Container(
+                                margin: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height / 25),
+                                child: Text("Please Wait"))
+                          ]));
+                    }else {
+                      var locationDocument = snapshotL.data;
+
+                      _address.clear();
+
+                      if (locationDocument[KLocationCountry] != null)
+                        _address.add(locationDocument[KLocationCountry]);
+
+                      if (locationDocument[KLocationCity] != null)
+                        _address.add(locationDocument[KLocationCity]);
+
+                      if (locationDocument[KLocationStreet] != null)
+                        _address.add(locationDocument[KLocationStreet]);
+
+                      return ProgressHUD(
+                        child: GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                            child: ListView(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                        KprimaryColor.withOpacity(0.87),
+                                        KprimaryColor,
+                                        KsecondaryColor.withOpacity(.82)
+                                        // Color.fromRGBO(6, 87, 91, 1).withOpacity(.7),
+                                        // Color.fromRGBO(102, 165, 173, 1),
+                                      ])),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height * 0.0435,
+                                      ),
+                                      Center(
+                                          child: Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(80.0),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      spreadRadius: 3,
+                                                      color: Colors.black
+                                                          .withOpacity(.3),
+                                                      blurRadius: 3)
+                                                ]),
+                                            child: CircleAvatar(
+                                                radius: 70,
+                                                backgroundColor: KprimaryColor,
+                                                backgroundImage: imageUrl == ""
+                                                    ? AssetImage(
+                                                            "Assets/images/noprofile.png")
+                                                        as ImageProvider
+                                                    : NetworkImage(imageUrl)
+                                                //: FileImage(File(_imageFile.path)),
+                                                ),
+                                          ),
+                                          Positioned(
+                                            bottom: 20.0,
+                                            right: 20.0,
+                                            child: InkWell(
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    builder: ((builder) =>
+                                                        bottomsheet(context)),
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  Icons.camera_alt,
+                                                  color: KprimaryColorDark
+                                                      .withOpacity(.89),
+                                                  size: 28.0,
+                                                )),
+                                          )
+                                        ],
+                                      )),
+
+                                      Container(
+                                          padding: EdgeInsets.only(top: 5),
+                                          margin: EdgeInsets.only(left: 35),
+                                          child: ProfileTextField(
+                                            isUser: false,
+                                            isusername: true,
+                                            edit: true,
+                                            controller: _username,
+                                            id: _userId,
+                                          )
+                                          // Text(
+                                          //   '${providerDocument[KUserName]}',
+                                          //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                          // ),
+                                          ),
+
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          "${_address[0]}, ${_address[1]}",
+                                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: KprimaryColorDark)
+                                        ),
+                                      ),
+
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          "⭐⭐⭐⭐🌟",
+                                          style: TextStyle(fontSize: 14, color: KprimaryColorDark)
+                                        ),
+                                      ),
+
+                                      // Container(
+                                      //   child: Text(
+                                      //     "${_address[2]}",
+                                      //     style: TextStyle(fontSize: 14, color: KprimaryColorDark)
+                                      //   )
+                                      // )
+
+                                      // SizedBox(
+                                      //   height: MediaQuery.of(context).size.height * 0.0185,
+                                      // ),
+                                    ],
+                                  ),
                                 ),
-                                child: CircleAvatar(
-                                  radius: 80,
-                                  backgroundColor: KprimaryColor,
-                                  backgroundImage: imageUrl == "" ? 
-                                    AssetImage("Assets/images/noprofile.png") as ImageProvider
-                                      : 
-                                    NetworkImage(imageUrl)
-                                  //: FileImage(File(_imageFile.path)),
+
+                                Container(
+                                    margin: EdgeInsets.only(top: 15, bottom: 5),
+                                    child: ProfileTextField(
+                                      controller: _accountType,
+                                      prefix: "Account Type",
+                                    )),
+
+                                Divider(
+                                  color: KprimaryColorDark,
+                                  height: 1,
+                                  thickness: 1.5,
+                                  indent: 10,
+                                  endIndent: 10,
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 20.0,
-                                right: 20.0,
-                                child: InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: ((builder) => bottomsheet(context)),
-                                    );
-                                  },
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: KprimaryColorDark.withOpacity(.89),
-                                    size: 28.0,
-                                  )
-                                ),
-                              )
-                            ],
-                          )),
 
-                          Container(
-                            padding: EdgeInsets.only(top: 5),
-                            margin: EdgeInsets.only(left: 35),
-                            child: ProfileTextField(
-                              isUser: false,
-                              isusername: true,
-                              edit: true,
-                              controller: _username,
-                              id: _userId,
-                            )
-                            // Text(
-                            //   '${providerDocument[KUserName]}',
-                            //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                            // ),
-                          ),
-
-                          
-
-                          // SizedBox(
-                          //   height: MediaQuery.of(context).size.height * 0.0185,
-                          // ),
-                        ],
-                      ),
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.only(top: 15, bottom: 5),
-                      child: ProfileTextField(
-                        controller: _accountType,
-                        prefix: "Account Type",
-                      )
-                    ),
-
-                    Divider(
-                      color: KprimaryColorDark,
-                      height: 1,
-                      thickness: 1.5,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-
-
-                    /*Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: ProfileTextField(
-                        controller: _email,
-                        prefix: "E-mail",
-                        id: _userId,
-                      ),
-                    ),
-
-                    Divider(
-                      color: KprimaryColorDark,
-                      height: 1,
-                      thickness: 1.5,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: ProfileTextField(
-                        controller: _phoneNb,
-                        prefix: "Phone-number",
-                      ),
-                    ),
-
-                    Divider(
-                      color: KprimaryColorDark,
-                      height: 1,
-                      thickness: 1.5,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: ProfileTextField(
-                        controller: _password,
-                        prefix: "Password",
-                        isPassword: true,
-                      ),
-                    ),*/
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height/5.5,
-                      child: Container(
-                        padding: EdgeInsets.all(18),
-                        child: ListView(
-                          children: [
-                            Text(
-                              _description,
-                              style: Theme.of(context).textTheme.subtitle1
-                            ),
-                          ],
+                                /*Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: ProfileTextField(
+                          controller: _email,
+                          prefix: "E-mail",
+                          id: _userId,
                         ),
                       ),
-                    ),
 
-                    GalleryImages(gallery: _gallery, edit: true, userid: _userId, autoUpdate: true),
-                    // Divider(
-                    //   color: KprimaryColorDark,
-                    //   height: 1,
-                    //   thickness: 1.5,
-                    //   indent: 10,
-                    //   endIndent: 10,
-                    // ),
+                      Divider(
+                        color: KprimaryColorDark,
+                        height: 1,
+                        thickness: 1.5,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
 
-                  ],
-                )
-              ),
-            );
-          }
-        }
-      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: ProfileTextField(
+                          controller: _phoneNb,
+                          prefix: "Phone-number",
+                        ),
+                      ),
+
+                      Divider(
+                        color: KprimaryColorDark,
+                        height: 1,
+                        thickness: 1.5,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: ProfileTextField(
+                          controller: _password,
+                          prefix: "Password",
+                          isPassword: true,
+                        ),
+                      ),*/
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 5.5,
+                                  child: Container(
+                                      padding: EdgeInsets.all(18),
+                                      child: Scrollbar(
+                                        controller: _scrollController,
+                                        isAlwaysShown: true,
+                                        radius: Radius.circular(30),
+                                        interactive: true,
+                                        child: ListView(
+                                          controller: _scrollController,
+                                          children: [
+                                            Text(_description,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1),
+                                          ],
+                                        ),
+                                      )),
+                                ),
+
+                                GalleryImages(
+                                    gallery: _gallery,
+                                    edit: true,
+                                    userid: _userId,
+                                    autoUpdate: true),
+                                // Divider(
+                                //   color: KprimaryColorDark,
+                                //   height: 1,
+                                //   thickness: 1.5,
+                                //   indent: 10,
+                                //   endIndent: 10,
+                                // ),
+                              ],
+                            )),
+                      );
+                    }
+                  });
+            }
+          }),
     );
-
   }
 
   Widget bottomsheet(BuildContext context) {
-
     return Container(
       height: 100,
       width: 200,
@@ -388,7 +467,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
       setState(() {
         imageFile = pickedFile;
       });
-      
+
       print(pickedFile.path);
 
       // final progress = ProgressHUD.of(context);
@@ -411,7 +490,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
             .updateData({KUserImageUrl: imageUrl});
       });
 
-     // toggleProgressHUD(false, progress);
+      // toggleProgressHUD(false, progress);
     } catch (e) {
       setState(() {
         _pickImageError = e;
@@ -438,5 +517,4 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
       }
     });
   }
-
 }

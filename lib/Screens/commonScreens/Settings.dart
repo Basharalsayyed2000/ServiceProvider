@@ -94,6 +94,7 @@ class _SettingsState extends State<Settings> {
             ),
              Divider(height: 20,thickness: 1,),
              SizedBox(height: 10,),
+            //  buildAccountOption(context, title),
              buildNotificationOption("direct Accept Request",enableDirectAcceptRequest,onChangeFunction1),
              buildNotificationOption("Default",valNotify2,onChangeFunction2),
              buildNotificationOption("Default",valNotify3,onChangeFunction3)
