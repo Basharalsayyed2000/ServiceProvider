@@ -360,7 +360,7 @@ class _SlidableTile extends State<SlidableTile> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: Text(
-                                  enable ? " enable" : "disable",
+                                  !enable?? "await",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),

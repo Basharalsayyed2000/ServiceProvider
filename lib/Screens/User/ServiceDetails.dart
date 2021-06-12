@@ -154,7 +154,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                       ]),
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: Kminimumpadding * 3),
+                      padding: EdgeInsets.only(top: Kminimumpadding * 7, bottom: 30),
                       child: Text(
                         "Service Gallery",
                         style: TextStyle(

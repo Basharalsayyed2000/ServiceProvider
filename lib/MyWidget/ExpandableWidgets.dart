@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-
+ 
 class ExpandableParent extends StatefulWidget{
-
-  final String? title;
-
-  final List<Widget>? children;
-
+ 
+  final String title;
+ 
+  final List<Widget> children;
+ 
   ExpandableParent({this.title, this.children});
-
+ 
   @override
   State<StatefulWidget> createState(){
     return _ExpandableParent(title: title, children: children);
   }
-
+ 
 }
-
+ 
 class _ExpandableParent extends State<ExpandableParent>{
-  
+ 
   bool open = false;
-
-  final String? title;
-
-  final List<Widget>? children;
-
+ 
+  final String title;
+ 
+  final List<Widget> children;
+ 
   var length;
-
+ 
   _ExpandableParent({this.title, this.children});
-
+ 
   @override
   Widget build(BuildContext context){
-    length = (children!.length < 1)? 1 : children!.length+1;
+    length = (children.length < 1)? 1 : children.length+1;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -53,10 +53,10 @@ class _ExpandableParent extends State<ExpandableParent>{
                     endIndent: 15,
                     thickness: 1.5,
                   );
-                
+ 
                 return Divider(
                   height: 8,
-                  
+ 
                   thickness: 1,
                 );
               },
@@ -81,7 +81,7 @@ class _ExpandableParent extends State<ExpandableParent>{
                     )
                   );
                 }else{
-                  return children![index - 1];
+                  return children[index - 1];
                 }
               }
             ),
@@ -90,40 +90,40 @@ class _ExpandableParent extends State<ExpandableParent>{
       ),
     );
   }
-
+ 
   void toggleOpen(){
     setState(() {
       open = !open;
     });
   }
-
+ 
 }
-
+ 
 class ExpandableTile extends StatefulWidget{
-
-  final Widget? leading;
-  final Widget? subtitle;
-
+ 
+  final Widget leading;
+  final Widget subtitle;
+ 
   final Function onTap;
-
-  ExpandableTile({this.leading, this.subtitle, required this.onTap});
-
+ 
+  ExpandableTile({this.leading, this.subtitle, @required this.onTap});
+ 
   @override
   State<StatefulWidget> createState() {
     return _ExpansionTile(leading: leading, subtitle: subtitle, onTap: onTap);
   }
-
+ 
 }
-
+ 
 class _ExpansionTile extends State<ExpandableTile>{
-  
-  final Widget? leading;
-  final Widget? subtitle;
-
+ 
+  final Widget leading;
+  final Widget subtitle;
+ 
   final Function onTap;
-
-  _ExpansionTile({this.leading, this.subtitle, required this.onTap});
-
+ 
+  _ExpansionTile({this.leading, this.subtitle, @required this.onTap});
+ 
   @override
   Widget build(BuildContext context) {
     if(subtitle != null)
@@ -135,7 +135,7 @@ class _ExpansionTile extends State<ExpandableTile>{
           onTap: ()=>onTap(),
         ),
       );
-    
+ 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 7.5),
       child: ListTile(
@@ -143,7 +143,7 @@ class _ExpansionTile extends State<ExpandableTile>{
         onTap: ()=>onTap(),
       ),
     );
-
+ 
   }
-
+ 
 }

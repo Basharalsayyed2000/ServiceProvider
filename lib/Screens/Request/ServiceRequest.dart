@@ -57,7 +57,7 @@ class _ServiceRequest extends State<ServiceRequest> {
     NeededData neededData = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Service Provider"),
+        title: Text("Request"),
         backgroundColor: KprimaryColor,
         centerTitle: true,
       ),
@@ -108,6 +108,8 @@ class _ServiceRequest extends State<ServiceRequest> {
                   child: CustomTextField(
                     labelText: "Description",
                     hintText: "Describe your current situation.",
+                    minLines: 2,
+                    maxLines: 5,
                     onClicked: (value) {
                       rDescription = value;
                     },
@@ -126,10 +128,10 @@ class _ServiceRequest extends State<ServiceRequest> {
                 SizedBox(
                   height: 15,
                 ),
-                GalleryImage(
+                GalleryImages(
                   gallery: gallery,
                   edit: true, 
-                  ),
+                ),
                 // Container(
                 //   margin: EdgeInsets.only(
                 //       bottom: MediaQuery.of(context).size.height / 55),

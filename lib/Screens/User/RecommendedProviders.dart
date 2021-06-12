@@ -106,8 +106,8 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              margin:
-                                  EdgeInsets.only(bottom: Kminimumpadding * 8),
+                              margin: EdgeInsets.only(bottom: Kminimumpadding * 8),
+                              width: 250,
                               child: CustomButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
@@ -117,27 +117,27 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                           isRequestActive: true,
                                           isRequestPublic: true));
                                 },
-                                textValue: "public Now",
+                                textValue: "Request All",
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              margin:
-                                  EdgeInsets.only(bottom: Kminimumpadding * 8),
-                              child: CustomButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, ServiceRequest.id,
-                                      arguments: NeededData(
-                                          serviceRequestId: service.sId,
-                                          isRequestActive: false,
-                                          isRequestPublic: true));
-                                },
-                                textValue: "public Later",
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: 20,
+                            // ),
+                            // Container(
+                            //   margin:
+                            //       EdgeInsets.only(bottom: Kminimumpadding * 8),
+                            //   child: CustomButton(
+                            //     onPressed: () {
+                            //       Navigator.pushNamed(
+                            //           context, ServiceRequest.id,
+                            //           arguments: NeededData(
+                            //               serviceRequestId: service.sId,
+                            //               isRequestActive: false,
+                            //               isRequestPublic: true));
+                            //     },
+                            //     textValue: "public Later",
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],

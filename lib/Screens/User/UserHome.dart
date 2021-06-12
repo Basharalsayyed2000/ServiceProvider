@@ -116,14 +116,14 @@ class _UserHomeState extends State<UserHome> {
                         Navigator.pushNamed(context, UserProfilescreen.id);
                       },
                     ),
-                    ListTile(
-                      leading: Icon(Icons.favorite_rounded),
-                      title: Text('MyFavorate Providers'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.pushNamed(context, MyFavorateProviders.id);
-                      },
-                    ),
+                    // ListTile(
+                    //   leading: Icon(Icons.favorite_rounded),
+                    //   title: Text('My Favorate Providers'),
+                    //   onTap: () {
+                    //     Navigator.of(context).pop();
+                    //     Navigator.pushNamed(context, MyFavorateProviders.id);
+                    //   },
+                    // ),
                     const Divider(
                       height: 35,
                       thickness: 2,
@@ -195,7 +195,7 @@ class _UserHomeState extends State<UserHome> {
 
                      (!_userModel.enableAcceptPublicRequest)?ListTile(
                       leading: Icon(Icons.add_reaction_rounded),
-                      title: Text('public requests reaction'),
+                      title: Text('Public requests permission'),
                       onTap: () {
                         Navigator.of(context).pop();
                           Navigator.push(
@@ -211,8 +211,8 @@ class _UserHomeState extends State<UserHome> {
                       endIndent: 5,
                     ),
                     ListTile(
-                      leading: Icon(Icons.notifications_on),
-                      title: Text('Notification'),
+                      leading: Icon(Icons.search),
+                      title: Text('Search'),
                       onTap: () => {Navigator.of(context).pop()},
                     ),
                     ListTile(
