@@ -135,5 +135,22 @@ class UserStore {
         .document(providerId)
         .updateData({KProviderEmail: email});
   }
-
+ updateProviderRating(String providerId,String lastrate,int current,String total) async {
+   var newrate;
+   var t=double.parse(total);
+   var r=double.parse(lastrate);
+   t=t+1;
+   r=r+current;
+   newrate=r/t;
+   print("last no of rating $total");
+   print("provider rating $lastrate");
+   print("request rating $current");
+   await _firestore
+        .collection(KProviderCollection)
+        .document(providerId)
+        .updateData({
+          KProviderTotalRate: newrate.toString(),
+          KProviderNumberOfRatedRequest:t.toString(),
+          }); 
+ }
 }

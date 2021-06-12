@@ -8,6 +8,7 @@ import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/store.dart';
 
 class JobDetails extends StatefulWidget {
@@ -20,7 +21,8 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   double _padding;
   NeededData neededData;
-  Store store = Store();
+  Store store = new Store();
+  UserStore user=new UserStore();
   RequestModel requestModel;
   @override
   Widget build(BuildContext context) {
@@ -403,7 +405,7 @@ class _JobDetailsState extends State<JobDetails> {
                         requestModel.isAccepted &&
                         requestModel.isActive &&
                         !requestModel.isComplete &&
-                        !requestModel.isPublic))
+                        !requestModel.isPublic ))
                     ? Expanded(
                         child: Container(
                           padding:
@@ -433,9 +435,15 @@ class _JobDetailsState extends State<JobDetails> {
                                     !requestModel.isAccepted) {
                                   Navigator.of(context).pop();
                                 } else if (requestModel.isProviderSeen &&
-                                    requestModel.isComplete) {
-                                  show();
+                                    requestModel.isComplete && requestModel.rating=="") {
+                                  show(requestModel.requestId);
                                 }
+                                else if (requestModel.isProviderSeen &&
+                                    requestModel.isComplete && requestModel.rating!="") {
+                                 // show(requestModel.requestId);
+                                 print(requestModel.rating);
+                                }
+
 
                                 (!requestModel.isComplete)
                                     ? Fluttertoast.showToast(
@@ -457,8 +465,11 @@ class _JobDetailsState extends State<JobDetails> {
                                               !requestModel.isAccepted)
                                           ? 'forword'
                                           : (requestModel.isProviderSeen &&
-                                                  requestModel.isComplete)
+                                                  requestModel.isComplete && requestModel.rating=="")
                                               ? 'Rating Us'
+                                            : (requestModel.isProviderSeen &&
+                                                  requestModel.isComplete && requestModel.rating!="")
+                                              ? 'View your Rate'   
                                               : 'The job was cancled'),
                         ),
                       )
@@ -542,20 +553,25 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  void show() {
+  void show(String requestId) {
     showDialog(
-       barrierDismissible: true,
+        barrierDismissible: true,
         context: context,
         builder: (context) {
           return RatingDialog(
             title: 'Rating us',
-            message: 'We are glad to serve you!,Rating this service and tell others what you think.',
-            image: Image(image: AssetImage("Assets/images/Logo.png"),height: 100,),
+            message:
+                'We are glad to serve you!,Rating this service and tell others what you think.',
+            image: Image(
+              image: AssetImage("Assets/images/Logo.png"),
+              height: 100,
+            ),
             initialRating: 2,
             submitButton: 'Submit',
             onSubmitted: (response) {
               print('rating: ${response.rating}, comment: ${response.comment}');
-              
+              store.addRating(requestId, response.comment, response.rating.toString());
+              user.updateProviderRating(neededData.requestModel.providerId,neededData.providerTotalRate,response.rating,neededData.providerNumberRate);
             },
           );
         });

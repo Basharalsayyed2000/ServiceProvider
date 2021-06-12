@@ -131,6 +131,8 @@ class _MyBooksState extends State<MyBooks> {
                                           status: "Idle",
                                           hasAction: true,
                                           forUser: true,
+                                          providerLocationId:
+                                              document2[KProviderLocationId],
                                         );
                                       } else {
                                         return new CircularProgressIndicator();
@@ -256,6 +258,8 @@ class _MyBooksState extends State<MyBooks> {
                                               status: "Disactive",
                                               hasAction: true,
                                               forUser: true,
+                                              providerLocationId: document2[
+                                                  KProviderLocationId],
                                             );
                                           } else {
                                             return new CircularProgressIndicator();
@@ -339,6 +343,8 @@ class _MyBooksState extends State<MyBooks> {
                                   isPublic: data[KRequestIsPublic],
                                   serviceId: data[KRequestServiceId],
                                   publicId: data[KRequestPublicId],
+                                  rating: data[KRequestRating],
+                                  commentRating: data[KRequestRatingComment],
                                   actionDate: data[KRequestActionDate],
                                   rImageUrl: data[KRequestImageUrl] == null
                                       ? []
@@ -379,8 +385,12 @@ class _MyBooksState extends State<MyBooks> {
                                                 status: "complete",
                                                 hasAction: false,
                                                 forUser: true,
+                                                providerLocationId: document2[
+                                                    KProviderLocationId],
                                                 request:
                                                     _requests.elementAt(index),
+                                                providerTotalRate:document2[KProviderTotalRate],
+                                                providerNumberOfRating:document2[KProviderNumberOfRatedRequest]    
                                               );
                                             } else {
                                               return new CircularProgressIndicator();
@@ -503,6 +513,9 @@ class _MyBooksState extends State<MyBooks> {
                                                         status: "Inprogress",
                                                         hasAction: false,
                                                         forUser: true,
+                                                        providerLocationId:
+                                                            document2[
+                                                                KProviderLocationId],
                                                       );
                                                     } else {
                                                       return new CircularProgressIndicator();
@@ -634,6 +647,9 @@ class _MyBooksState extends State<MyBooks> {
                                                                 "publicReaction",
                                                             hasAction: false,
                                                             forUser: true,
+                                                            providerLocationId:
+                                                                document2[
+                                                                    KProviderLocationId],
                                                           );
                                                         } else {
                                                           return new CircularProgressIndicator();
@@ -694,8 +710,7 @@ class _MyBooksState extends State<MyBooks> {
                                               !data[KRequestIsAccepted] &&
                                               !data[KRequestIsCompleted] &&
                                               data[KRequestIsProviderSeen] &&
-                                              !data[KRequestIsPublic]
-                                              )
+                                              !data[KRequestIsPublic])
                                             _requests.add(RequestModel(
                                               rProblem: data[KRequestProblem],
                                               rDescription:
@@ -778,6 +793,9 @@ class _MyBooksState extends State<MyBooks> {
                                                                     "Rejected",
                                                                 hasAction: true,
                                                                 forUser: true,
+                                                                providerLocationId:
+                                                                    document2[
+                                                                        KProviderLocationId],
                                                               );
                                                             } else {
                                                               return new CircularProgressIndicator();

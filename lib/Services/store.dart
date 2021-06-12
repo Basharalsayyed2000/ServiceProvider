@@ -191,7 +191,8 @@ class Store {
      });
 
   }
-  addRating(String requestId,String ratingComment,int rating) async {
+  addRating(String requestId,String ratingComment,String rating) async {
+    
     await _firestore
         .collection(KRequestCollection)
         .document(requestId)
@@ -201,4 +202,6 @@ class Store {
      });
 
   }
+
+  
 }

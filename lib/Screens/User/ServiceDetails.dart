@@ -96,7 +96,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                     ),
                                     (_provider.isvarified)
                                         ? Icon(
-                                            Icons.verified_outlined,
+                                            Icons.verified,
                                             color: Colors.blue,
                                           )
                                         : Container(),
@@ -137,24 +137,21 @@ class _ServiceDetails extends State<ServiceDetails> {
                             fontSize: 19, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    SingleChildScrollView(
-                        child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey[200],
-                            
-                            ),
-                        height: MediaQuery.of(context).size.height * 0.20,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(
-                            top: Kminimumpadding * 1,
-                            bottom: Kminimumpadding * 1),
-                        child: Text(
-                          '${_provider.pProviderDescription}',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.20,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView(children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: Kminimumpadding * 1,
+                              bottom: Kminimumpadding * 1),
+                          child: Text(
+                            '${_provider.pProviderDescription}',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
                         ),
-                      ),
+                      ]),
                     ),
                     Container(
                       padding: EdgeInsets.only(top: Kminimumpadding * 3),

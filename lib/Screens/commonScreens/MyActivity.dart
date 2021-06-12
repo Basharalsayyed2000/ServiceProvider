@@ -124,7 +124,9 @@ class _MyActivity extends State<MyActivity> {
             ],
           ),
         ),
-      ):(total==0)?
+      ):(loading==false)?
+     Center(child: CircularProgressIndicator())
+      :(total==0)?
       Center(child:Text("No Activity"))
       :Center(child: CircularProgressIndicator()),
     );

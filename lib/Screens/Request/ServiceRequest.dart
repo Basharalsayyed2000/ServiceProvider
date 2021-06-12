@@ -1,15 +1,12 @@
-import 'dart:io';
-
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/GalleryImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
 import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
@@ -26,7 +23,7 @@ class ServiceRequest extends StatefulWidget {
 class _ServiceRequest extends State<ServiceRequest> {
   final _auth = Auth();
   // ignore: deprecated_member_use
-  List<File> _gallery = new List<File>();
+  //List<File> _gallery = new List<File>();
   List<String> _galleryUrl = [];
 
   FontWeight _weightT;
@@ -38,9 +35,13 @@ class _ServiceRequest extends State<ServiceRequest> {
   DateTime _time;
   RequestModel request;
   String rProblem, rDescription, rDate, rTime, _userId;
+  var gallery = <bool,List>{};
+  
   @override
   void initState() {
     super.initState();
+    gallery[true]=[];
+    gallery[false]=[];
     _getUserId();
   }
 
@@ -125,39 +126,43 @@ class _ServiceRequest extends State<ServiceRequest> {
                 SizedBox(
                   height: 15,
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height / 55),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.width / 3.4,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _gallery.length + 1,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => (index == 0) ? pickGalleryImage() : null,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.0),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.grey, spreadRadius: 1.5),
-                              ],
-                            ),
-                            width: MediaQuery.of(context).size.width / 2.6,
-                            margin: EdgeInsets.only(
-                                left: 2, top: 2, right: 13, bottom: 2),
-                            child: (index == 0)
-                                ? Icon(Icons.add,
-                                    size: 60, color: KprimaryColor)
-                                : Image.file(_gallery[index - 1]),
-                          ),
-                        );
-                      },
-                    ),
+                GalleryImage(
+                  gallery: gallery,
+                  edit: true, 
                   ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(
+                //       bottom: MediaQuery.of(context).size.height / 55),
+                //   child: SizedBox(
+                //     height: MediaQuery.of(context).size.width / 3.4,
+                //     child: ListView.builder(
+                //       scrollDirection: Axis.horizontal,
+                //       itemCount: _gallery.length + 1,
+                //       itemBuilder: (context, index) {
+                //         return GestureDetector(
+                //           onTap: () => (index == 0) ? pickGalleryImage() : null,
+                //           child: Container(
+                //             decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(5.0),
+                //               color: Colors.white,
+                //               boxShadow: [
+                //                 BoxShadow(
+                //                     color: Colors.grey, spreadRadius: 1.5),
+                //               ],
+                //             ),
+                //             width: MediaQuery.of(context).size.width / 2.6,
+                //             margin: EdgeInsets.only(
+                //                 left: 2, top: 2, right: 13, bottom: 2),
+                //             child: (index == 0)
+                //                 ? Icon(Icons.add,
+                //                     size: 60, color: KprimaryColor)
+                //                 : Image.file(_gallery[index - 1]),
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
                 Container(
                   padding: EdgeInsets.only(top: Kminimumpadding * 2),
                   child: Builder(
@@ -348,7 +353,7 @@ class _ServiceRequest extends State<ServiceRequest> {
   // }
 
   Future uploadGalleryImage() async {
-    for (var img in _gallery) {
+    for (var img in gallery[false]) {
       FirebaseStorage storage = FirebaseStorage(
           storageBucket: 'gs://service-provider-ef677.appspot.com');
       String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
@@ -361,27 +366,29 @@ class _ServiceRequest extends State<ServiceRequest> {
 
       //_userStore.addGallaryCollection(url, docId);
 
-      _galleryUrl.add(url);
+      gallery[true].add(url);
+      print("size is ${gallery[true].length}");
+
     }
   }
 
-  void pickGalleryImage() async {
-    await Permission.photos.request();
-    var _permessionStatus = await Permission.photos.status;
-    if (_permessionStatus.isGranted) {
-      // ignore: deprecated_member_use
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  // void pickGalleryImage() async {
+  //   await Permission.photos.request();
+  //   var _permessionStatus = await Permission.photos.status;
+  //   if (_permessionStatus.isGranted) {
+  //     // ignore: deprecated_member_use
+  //     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-      setState(() {
-        _gallery.add(image);
+  //     setState(() {
+  //       gallery[false].add(image);
 
-        print("HERE ------------------------------" +
-            image.path +
-            " " +
-            _gallery.length.toString());
-      });
-    }
-  }
+  //       print("HERE ------------------------------" +
+  //           image.path +
+  //           " " +
+  //           _gallery.length.toString());
+  //     });
+  //   }
+  // }
 
   void capsolateData(context, NeededData neededData) async {
     if (_date == null) {
@@ -420,12 +427,16 @@ class _ServiceRequest extends State<ServiceRequest> {
       final progress = ProgressHUD.of(context);
       toggleProgressHUD(true, progress);
       try {
-        if (_gallery.isNotEmpty) {
+        if (gallery[false].isNotEmpty) {
           await uploadGalleryImage();
         }
         
         if (_globalKey.currentState.validate()) {
           _globalKey.currentState.save();
+           
+          for(var i in gallery[true]){
+            _galleryUrl.add(i);
+          } 
           RequestModel _request = RequestModel(
             rDescription: rDescription,
             requestDate: rDate,
@@ -436,7 +447,7 @@ class _ServiceRequest extends State<ServiceRequest> {
             isAccepted: false,
             isComplete: false,
             isActive: neededData.isRequestActive ,
-            rImageUrl:_galleryUrl,
+            rImageUrl: _galleryUrl,
             isPublic: neededData.isRequestPublic,
             serviceId: neededData.serviceRequestId,
           );

@@ -4,7 +4,7 @@ import 'package:service_provider/Models/provider.dart';
 class NeededData{
   ProviderModel provider;
   bool isRequestActive,isRequestPublic,forUser,enable;
-  String pageType,serviceRequestId,providerId,username;
+  String pageType,serviceRequestId,providerId,username,providerTotalRate,providerNumberRate;
   RequestModel requestModel;
 
   NeededData({
@@ -17,6 +17,8 @@ class NeededData{
     this.serviceRequestId,
     this.providerId,
     this.username,
-    this.enable
+    this.enable,
+    this.providerTotalRate,
+    this.providerNumberRate
   });
 }
