@@ -83,7 +83,6 @@ class Store {
       KRequestIsActive: request.isActive,
       KRequestIsAccepted: request.isAccepted,
       KRequestIsProviderSeen:request.isProviderSeen,
-      KRequestIsPublic:request.isPublic,
       KRequestUserId: request.userId,
       KRequestProviderId: request.providerId,
       KRequestServiceId:request.serviceId,
@@ -95,11 +94,11 @@ class Store {
       KRequestActionDate:request.actionDate,
       KRequestRatingComment:"",
       KRequestRating:"",
-      KRequestRejectedProvider:[],
       KRequestPublicId:"",
-      KRequestId:""  
+      KRequestId:"",
+      KReqeustProviderRecommendedTime:"",  
     }).then((value) {
-      String publicId= value.documentID.substring(0,3) +request.rAddDate.substring(0,2)+request.requestTime.substring(14,16);
+      String publicId= value.documentID.substring(0,3) +request.locationId.substring(0,2)+request.requestTime.substring(14,16);
       _firestore.collection(KRequestCollection).document(value.documentID).updateData({
          KRequestId:value.documentID,
          KRequestPublicId:publicId,
@@ -111,13 +110,7 @@ class Store {
     return _firestore.collection(KRequestCollection).snapshots();
   }
 
-  searchByName(String searchField) {
-    return Firestore.instance
-        .collection(KProviderCollection)
-        .where('SearchKey',
-            isEqualTo: searchField.substring(0, 1).toUpperCase())
-        .getDocuments();
-  }
+
 
   acceptJob(String requestId) async {
     await _firestore
@@ -166,32 +159,8 @@ class Store {
     });
   }
 
-  acceptPublicJob(String requestId, String providerId) async {
- 
-    await _firestore
-        .collection(KRequestCollection)
-        .document(requestId)
-        .updateData({
-     // KRequestIsAccepted: true,
-      KRequestIsProviderSeen: true,    
-      KRequestProviderId:providerId,
-     });
 
-  }
-
-  acceptPublicJobEnable(String requestId, String providerId) async {
-    await _firestore
-        .collection(KRequestCollection)
-        .document(requestId)
-        .updateData({
-      KRequestIsAccepted: true,
-      KRequestIsProviderSeen: true,    
-      KRequestProviderId:providerId,
-      KRequestIsPublic:false
-     });
-
-  }
-  addRating(String requestId,String ratingComment,String rating) async {
+  addRating(String requestId,String ratingComment,int rating) async {
     
     await _firestore
         .collection(KRequestCollection)

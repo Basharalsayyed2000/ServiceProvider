@@ -19,22 +19,21 @@ class SlidableTile extends StatefulWidget {
   final String providerId;
   final bool enable;
   final String providerLocationId;
-  final String providerTotalRate;
-  final String providerNumberOfRating;
+  final double providerTotalRate;
+  final int providerNumberOfRating;
 
-  SlidableTile({
-    @required this.profile,
-    @required this.userName,
-    @required this.status,
-    @required this.hasAction,
-    @required this.forUser,
-    @required this.request,
-    this.providerId,
-    this.enable,
-    this.providerLocationId,
-    this.providerNumberOfRating,
-    this.providerTotalRate
-  });
+  SlidableTile(
+      {@required this.profile,
+      @required this.userName,
+      @required this.status,
+      @required this.hasAction,
+      @required this.forUser,
+      @required this.request,
+      this.providerId,
+      this.enable,
+      this.providerLocationId,
+      this.providerNumberOfRating,
+      this.providerTotalRate});
 
   @override
   State<StatefulWidget> createState() {
@@ -48,9 +47,8 @@ class SlidableTile extends StatefulWidget {
         providerId: providerId,
         enable: enable,
         providerLocationId: providerLocationId,
-        providerNumberOfRating: providerTotalRate,
-        providerTotalRate: providerTotalRate
-        );
+        providerNumberOfRating: providerNumberOfRating,
+        providerTotalRate: providerTotalRate);
   }
 }
 
@@ -66,8 +64,8 @@ class _SlidableTile extends State<SlidableTile> {
   bool load = false;
   final String providerLocationId;
   double distance;
-  final String providerTotalRate;
-  final String providerNumberOfRating;
+  final double providerTotalRate;
+  final int providerNumberOfRating;
   Store store = new Store();
   _SlidableTile(
       {@required this.profile,
@@ -80,15 +78,13 @@ class _SlidableTile extends State<SlidableTile> {
       this.enable,
       this.providerLocationId,
       this.providerNumberOfRating,
-      this.providerTotalRate
-      });
+      this.providerTotalRate});
 
   @override
   void initState() {
     if ((providerLocationId != null)) {
       getDistance(request.locationId, providerLocationId).then((value) {
         distance = value;
-        print("$distance");
       });
     }
     super.initState();
@@ -96,7 +92,7 @@ class _SlidableTile extends State<SlidableTile> {
 
   @override
   Widget build(BuildContext context) {
-    return (load || providerLocationId==null)
+    return (load || providerLocationId == null)
         ? Container(
             child: Slidable(
               actionPane: SlidableScrollActionPane(),
@@ -111,15 +107,15 @@ class _SlidableTile extends State<SlidableTile> {
                   onTap: () {
                     Navigator.pushNamed(context, JobDetails.id,
                         arguments: NeededData(
-                            requestModel: request,
-                            pageType: status,
-                            forUser: this.forUser,
-                            providerId: providerId,
-                            username: userName,
-                            enable: enable,
-                            providerTotalRate: providerTotalRate,
-                            providerNumberRate: providerNumberOfRating,
-                            ));
+                          requestModel: request,
+                          pageType: status,
+                          forUser: this.forUser,
+                          providerId: providerId,
+                          username: userName,
+                          enable: enable,
+                          providerTotalRate: providerTotalRate,
+                          providerNumberRate: providerNumberOfRating,
+                        ));
                   },
                 ),
               ],
@@ -137,9 +133,7 @@ class _SlidableTile extends State<SlidableTile> {
                                     'activate',
                                     style: TextStyle(color: Colors.white),
                                   )
-                                : (status == "Idle" &&
-                                        !forUser &&
-                                        !request.isPublic)
+                                : (status == "Idle" && !forUser)
                                     ? Text(
                                         'reject',
                                         style: TextStyle(color: Colors.white),
@@ -156,31 +150,20 @@ class _SlidableTile extends State<SlidableTile> {
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               )
-                                            : (status == "Idle" &&
-                                                    !forUser &&
-                                                    request.isPublic)
-                                                ? Text(
-                                                    'Accept',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )
-                                                : Text(
-                                                    'empty',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                        color:
-                            (status == "Idle" && request.isPublic && !forUser)
+                                            : Text(
+                                                'empty',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                        color: (status == "Disactive")
+                            ? Colors.blue
+                            : (status == "Inprogress" && !forUser)
                                 ? Colors.green
-                                : (status == "Disactive")
-                                    ? Colors.blue
-                                    : (status == "Inprogress" && !forUser)
-                                        ? Colors.green
-                                        : (status == "Rejected" && forUser)
-                                            ? Colors.deepPurpleAccent
-                                            : (status == "Idle")
-                                                ? Colors.red
-                                                : Colors.grey,
+                                : (status == "Rejected" && forUser)
+                                    ? Colors.deepPurpleAccent
+                                    : (status == "Idle")
+                                        ? Colors.red
+                                        : Colors.grey,
                         onTap: () {
                           if (status == "Idle" && forUser) {
                             store.cancleJob(request.requestId);
@@ -192,9 +175,7 @@ class _SlidableTile extends State<SlidableTile> {
                             Fluttertoast.showToast(
                               msg: 'The job was activated',
                             );
-                          } else if (status == "Idle" &&
-                              !forUser &&
-                              !request.isPublic) {
+                          } else if (status == "Idle" && !forUser) {
                             store.rejectJob(request.requestId);
                             Fluttertoast.showToast(
                               msg: 'The job was Rejected',
@@ -203,24 +184,6 @@ class _SlidableTile extends State<SlidableTile> {
                             store.endJob(request.requestId);
                             Fluttertoast.showToast(
                               msg: 'The job was Completed',
-                            );
-                          } else if (status == "Idle" &&
-                              !forUser &&
-                              request.isPublic &&
-                              enable) {
-                            store.acceptPublicJobEnable(
-                                request.requestId, providerId);
-                            Fluttertoast.showToast(
-                              msg: 'The job was accepted',
-                            );
-                          } else if (status == "Idle" &&
-                              !forUser &&
-                              request.isPublic &&
-                              !enable) {
-                            store.acceptPublicJob(
-                                request.requestId, providerId);
-                            Fluttertoast.showToast(
-                              msg: 'you must wait $userName to accept',
                             );
                           }
                         },
@@ -257,7 +220,7 @@ class _SlidableTile extends State<SlidableTile> {
                             fontWeight: FontWeight.w600),
                       ),
                       SizedBox(
-                        width: 3,
+                        width: 10,
                       ),
                       Container(
                         child: Row(
@@ -273,9 +236,7 @@ class _SlidableTile extends State<SlidableTile> {
                                               ? " Inactive "
                                               : (status == "Rejected")
                                                   ? " Rejected"
-                                                  : (status == "WaitAccept")
-                                                      ? " Waiting"
-                                                      : "activate",
+                                                  : "activate",
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
@@ -285,8 +246,7 @@ class _SlidableTile extends State<SlidableTile> {
                             ? 85
                             : (status == "Rejected")
                                 ? 75
-                                : (status == "Disactive" ||
-                                        status == "WaitAccept")
+                                : (status == "Disactive")
                                     ? 65
                                     : 40,
                         decoration: BoxDecoration(
@@ -301,134 +261,24 @@ class _SlidableTile extends State<SlidableTile> {
                                             ? Colors.green
                                             : (status == "Rejected")
                                                 ? Colors.red
-                                                : (status == "WaitAccept")
-                                                    ? Colors.brown
-                                                    : Colors.deepPurpleAccent),
+                                                : Colors.deepPurpleAccent),
                       ),
                       SizedBox(
                         width: 2,
                       ),
-                      (!request.isPublic && !request.isProviderSeen)
-                          ? Container(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text(
-                                  " private",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              height: 25,
-                              width: 56,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.blue[400]),
-                            )
-                          : ((request.isPublic &&
-                                  !forUser &&
-                                  !request
-                                      .isProviderSeen) // &&request.isProviderSeen
-                              )
-                              ? Container(
-                                  // margin: EdgeInsets.only(top: 1, bottom: 3),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text(
-                                      " public",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  height: 25,
-                                  width: 54,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.deepPurpleAccent),
-                                )
-                              : Container(),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      (request.isPublic &&
-                              !forUser // &&request.isProviderSeen
-                              &&
-                              enable != null)
-                          ? Container(
-                              // margin: EdgeInsets.only(top: 1, bottom: 3),
-                              child: Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: Text(
-                                  !enable?? "await",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              height: 25,
-                              width: 56,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: enable ? Colors.green : Colors.red),
-                            )
-                          : Container(),
-
-                      // (action == "cancle")
-                      //     ? Icon(Icons.iso_outlined, color: KsecondaryColor)
-                      //     : (action == "activate")
-                      //         ? Icon(Icons.domain_verification,
-                      //             color: KsecondaryColor)
-                      //         : (action == "Inprogress")
-                      //             ? Icon(Icons.domain_verification,
-                      //                 color: KsecondaryColor)
-                      //             : (action == "Completed")
-                      //                 ? Icon(Icons.domain_verification,
-                      //                     color: KsecondaryColor)
-                      //                 : Icon(Icons.domain_verification,
-                      //                     color: KsecondaryColor),
                     ],
                   ),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    (userName != null)
-                        ? Text(
-                            (forUser) ? "to: $userName" : "from: $userName",
-                            style: TextStyle(
-                                color: KprimaryColorDark,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        : Row(
-                            children: [
-                              Text(
-                                "to:  ",
-                                style: TextStyle(
-                                    color: KprimaryColorDark,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14),
-                              ),
-                              Container(
-                                // margin: EdgeInsets.only(top: 1, bottom: 3),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    " public",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                height: 25,
-                                width: 46,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.deepPurpleAccent),
-                              ),
-                            ],
-                          ),
+                    Text(
+                      (forUser) ? "to: $userName" : "from: $userName",
+                      style: TextStyle(
+                          color: KprimaryColorDark,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
                     Container(
                       margin: EdgeInsets.only(top: 4),
                       child: Row(
@@ -471,9 +321,7 @@ class _SlidableTile extends State<SlidableTile> {
                               ],
                             ),
                           )
-                        : Container(
-                       
-                        )
+                        : Container()
                   ],
                 ),
                 onTap: () {

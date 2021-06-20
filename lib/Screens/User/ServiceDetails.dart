@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
@@ -9,17 +8,25 @@ import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 
 class ServiceDetails extends StatefulWidget {
   static String id = "serviceDetails";
+  final ProviderModel providerModel;
+  ServiceDetails({
+    this.providerModel
+  });
   @override
   State<StatefulWidget> createState() {
-    return _ServiceDetails();
+    return _ServiceDetails(
+        providerModel:providerModel
+    );
   }
 }
 
 class _ServiceDetails extends State<ServiceDetails> {
-  ProviderModel _provider;
+  final ProviderModel providerModel;
+  _ServiceDetails({
+    this.providerModel
+  });
   @override
   Widget build(BuildContext context) {
-    _provider = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Service Details"),
@@ -29,14 +36,14 @@ class _ServiceDetails extends State<ServiceDetails> {
       body: StreamBuilder(
           stream: Firestore.instance
               .collection(KServicesCollection)
-              .document(_provider.pProvideService)
+              .document(providerModel.pProvideService)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("Loading");
             } else {
               var userDocument = snapshot.data;
-              List<String> urlList = _provider.certificateImages;
+              List<String> urlList = providerModel.certificateImages;
               print(urlList.length);
               return Container(
                 margin: EdgeInsets.only(
@@ -53,7 +60,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                 right: Kminimumpadding * 4),
                             child: CircleAvatar(
                               backgroundImage:
-                                  NetworkImage('${_provider.pImageUrl}'),
+                                  NetworkImage('${providerModel.pImageUrl}'),
                               radius: MediaQuery.of(context).size.height * 0.06,
                             ),
                           ),
@@ -77,7 +84,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                 Container(
                                   padding: EdgeInsets.only(top: 3, bottom: 3),
                                   child: Text(
-                                    "${_provider.pEmail}",
+                                    "${providerModel.pEmail}",
                                     style: TextStyle(
                                       color: Colors.blueGrey,
                                       fontWeight: FontWeight.w500,
@@ -88,13 +95,13 @@ class _ServiceDetails extends State<ServiceDetails> {
                                 Row(
                                   children: [
                                     Text(
-                                      "By: ${_provider.pName}",
+                                      "By: ${providerModel.pName}",
                                       style: TextStyle(
                                         height: 1.3,
                                         fontSize: 12,
                                       ),
                                     ),
-                                    (_provider.isvarified)
+                                    (providerModel.isvarified)
                                         ? Icon(
                                             Icons.verified,
                                             color: Colors.blue,
@@ -110,7 +117,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       size: 20,
                                     ),
                                     Text(
-                                      "${_provider.rate}",
+                                      "${providerModel.rate}",
                                       style: TextStyle(
                                           fontSize: 13,
                                           color: KprimaryColorDark),
@@ -146,7 +153,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                               top: Kminimumpadding * 1,
                               bottom: Kminimumpadding * 1),
                           child: Text(
-                            '${_provider.pProviderDescription}',
+                            '${providerModel.pProviderDescription}',
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w500),
                           ),
@@ -167,13 +174,13 @@ class _ServiceDetails extends State<ServiceDetails> {
                         child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              (_provider.certificateImages.isNotEmpty)
+                              (providerModel.certificateImages.isNotEmpty)
                                   ? Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         for (String imageurl
-                                            in _provider.certificateImages)
+                                            in providerModel.certificateImages)
                                           GalleryImages(
                                             assetImage: imageurl,
                                             isOnline: true,
@@ -194,14 +201,15 @@ class _ServiceDetails extends State<ServiceDetails> {
                               margin: EdgeInsets.all(Kminimumpadding * 1.5),
                               child: CustomButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, ServiceRequest.id,
-                                      arguments: NeededData(
-                                          provider: _provider,
-                                          isRequestActive: true,
-                                          isRequestPublic: false,
-                                          serviceRequestId:
-                                              _provider.pProvideService));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ServiceRequest(
+                                          isActive: true,
+                                          providerModel: providerModel,
+                                          )
+                                        ),
+                                  );
                                 },
                                 textValue: "Book Now",
                               ),
@@ -212,14 +220,15 @@ class _ServiceDetails extends State<ServiceDetails> {
                               margin: EdgeInsets.all(Kminimumpadding * 1.5),
                               child: CustomButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, ServiceRequest.id,
-                                      arguments: NeededData(
-                                          provider: _provider,
-                                          isRequestActive: false,
-                                          isRequestPublic: false,
-                                          serviceRequestId:
-                                              _provider.pProvideService));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ServiceRequest(
+                                          isActive: false,
+                                          providerModel: providerModel,
+                                          )
+                                        ),
+                                  );
                                 },
                                 textValue: "Book Later",
                               ),

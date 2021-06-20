@@ -3,8 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:intl/intl.dart';
-import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
+import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
@@ -14,16 +14,23 @@ import 'package:service_provider/Services/auth.dart';
 
 class ServiceRequest extends StatefulWidget {
   static String id = "serviceRequestScreen";
+  final bool isActive;
+  final ProviderModel providerModel;
+  ServiceRequest({
+    this.isActive,
+    this.providerModel
+  });
   @override
   State<StatefulWidget> createState() {
-    return _ServiceRequest();
+    return _ServiceRequest(
+       isActive: isActive,
+       providerModel: providerModel
+    );
   }
 }
 
 class _ServiceRequest extends State<ServiceRequest> {
   final _auth = Auth();
-  // ignore: deprecated_member_use
-  //List<File> _gallery = new List<File>();
   List<String> _galleryUrl = [];
 
   FontWeight _weightT;
@@ -36,7 +43,13 @@ class _ServiceRequest extends State<ServiceRequest> {
   RequestModel request;
   String rProblem, rDescription, rDate, rTime, _userId;
   var gallery = <bool,List>{};
-  
+
+  final bool isActive;
+  final ProviderModel providerModel;
+  _ServiceRequest({
+    this.isActive,
+    this.providerModel
+  });
   @override
   void initState() {
     super.initState();
@@ -54,7 +67,6 @@ class _ServiceRequest extends State<ServiceRequest> {
 
   @override
   Widget build(BuildContext context) {
-    NeededData neededData = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Request"),
@@ -128,49 +140,17 @@ class _ServiceRequest extends State<ServiceRequest> {
                 SizedBox(
                   height: 15,
                 ),
-                GalleryImages(
+                GalleryImage(
                   gallery: gallery,
                   edit: true, 
                 ),
-                // Container(
-                //   margin: EdgeInsets.only(
-                //       bottom: MediaQuery.of(context).size.height / 55),
-                //   child: SizedBox(
-                //     height: MediaQuery.of(context).size.width / 3.4,
-                //     child: ListView.builder(
-                //       scrollDirection: Axis.horizontal,
-                //       itemCount: _gallery.length + 1,
-                //       itemBuilder: (context, index) {
-                //         return GestureDetector(
-                //           onTap: () => (index == 0) ? pickGalleryImage() : null,
-                //           child: Container(
-                //             decoration: BoxDecoration(
-                //               borderRadius: BorderRadius.circular(5.0),
-                //               color: Colors.white,
-                //               boxShadow: [
-                //                 BoxShadow(
-                //                     color: Colors.grey, spreadRadius: 1.5),
-                //               ],
-                //             ),
-                //             width: MediaQuery.of(context).size.width / 2.6,
-                //             margin: EdgeInsets.only(
-                //                 left: 2, top: 2, right: 13, bottom: 2),
-                //             child: (index == 0)
-                //                 ? Icon(Icons.add,
-                //                     size: 60, color: KprimaryColor)
-                //                 : Image.file(_gallery[index - 1]),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
+             
                 Container(
                   padding: EdgeInsets.only(top: Kminimumpadding * 2),
                   child: Builder(
                     builder: (context) => CustomButton(
                       onPressed: () async {
-                        capsolateData(context, neededData);
+                        capsolateData(context);
                       },
                       textValue: 'Continue',
                     ),
@@ -392,7 +372,7 @@ class _ServiceRequest extends State<ServiceRequest> {
   //   }
   // }
 
-  void capsolateData(context, NeededData neededData) async {
+  void capsolateData(context) async {
     if (_date == null) {
       showDialog(
           context: context,
@@ -445,13 +425,12 @@ class _ServiceRequest extends State<ServiceRequest> {
             requestTime: rTime,
             rProblem: rProblem,
             userId: _userId,
-            providerId:(neededData.isRequestPublic)? "":neededData.provider.pId,
+            providerId:providerModel.pId,
             isAccepted: false,
             isComplete: false,
-            isActive: neededData.isRequestActive ,
+            isActive: isActive ,
             rImageUrl: _galleryUrl,
-            isPublic: neededData.isRequestPublic,
-            serviceId: neededData.serviceRequestId,
+            serviceId: providerModel.pProvideService,
           );
 
           toggleProgressHUD(false, progress);

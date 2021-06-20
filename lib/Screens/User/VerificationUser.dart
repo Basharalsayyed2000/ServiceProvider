@@ -66,9 +66,10 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
         uImageUrl: null,
         isAdmin: false,
         uEmail: userModel.uEmail,
+        ucountry: userModel.ucountry,
         uId: user.uid,
         uPassword: userModel.uPassword ,
-        enableAcceptPublicRequest:false,
+        showOnlyProviderInMyCountry:false,
         favorateProvider: [],
         ),
       user.uid);

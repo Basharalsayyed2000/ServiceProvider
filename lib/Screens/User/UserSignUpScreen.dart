@@ -1,3 +1,4 @@
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class UserSignUpScreen extends StatefulWidget {
 }
 
 class _UserSignUpScreen extends State<UserSignUpScreen> {
-  String _email, _password, _name, _confirmPassWord;
+  String _email, _password, _name, _confirmPassWord,country;
   final _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
@@ -43,7 +44,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
               children: <Widget>[
                 getImage(),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0055),
                   child: Focus(
                     child: CustomTextField(
                       labelText: "Full Name",
@@ -56,7 +57,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0055),
                   child: CustomTextField(
                     labelText: "Email",
                     hintText: "example@yourmail.com",
@@ -69,7 +70,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
+                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0055),
                   child: Focus(
                     child: CustomTextField(
                       obscureText: true,
@@ -83,7 +84,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.0085),
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.0055),
                   child: Focus(
                     child: CustomTextField(
                       obscureText: true,
@@ -94,6 +95,55 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                         _confirmPassWord = value;
                       },
                     ),
+                  ),
+                ),
+                Center(
+                  child: CountryListPick(
+                    appBar: AppBar(
+                      backgroundColor: KprimaryColor,
+                      title: Text('Pick your country'),
+                    ),
+                    // if you need custome picker use this
+                    pickerBuilder: (context, CountryCode countryCode) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("Country :",style: TextStyle(fontSize: 20,color: Colors.black),),
+                           SizedBox(
+                            width: 12,
+                          ),
+                          Image.asset(
+                            countryCode.flagUri,
+                            package: 'country_list_pick',
+                            height: 30,
+                            width: 30,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(countryCode.name,style: TextStyle(fontSize: 15,color: Colors.black),),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(Icons.arrow_drop_down,size:20,color: Colors.black,),
+                        ],
+                      );
+                    },
+                    theme: CountryTheme(
+                      isShowFlag: true,
+                      isShowTitle: true,
+                      isShowCode: true,
+                      isDownIcon: true,
+                      showEnglishName: true,
+                    ),
+                    // or
+                    // initialSelection: 'US'
+                    onChanged: (CountryCode code) {
+                      print(code.name);
+                      country=code.name;
+                    },
+                    useSafeArea: false,
+                    useUiOverlay: true,
                   ),
                 ),
                 Container(
@@ -112,7 +162,7 @@ class _UserSignUpScreen extends State<UserSignUpScreen> {
                               await _auth.createUserWithEmailAndPassword(
                                   email: _email.trim(),
                                   password: _password.trim()).then((value){
-                                  Navigator.pushReplacementNamed(context, UserVerifyScreen.id,arguments: UserModel(uName: _name,uEmail: _email.trim(),uPassword: _password.trim(),));
+                                  Navigator.pushReplacementNamed(context, UserVerifyScreen.id,arguments: UserModel(uName: _name,uEmail: _email.trim(),uPassword: _password.trim(),ucountry:country));
                                   });
                             } else {
                               showDialog(

@@ -1,6 +1,9 @@
+
 class ProviderModel{
-String pName, pAddDate,pImageUrl, pbirthDate, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId,rate,numberOfRequestRated;
-bool isAdmin,isvarified;
+String pName, pAddDate,pImageUrl, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId,country;
+int price,numberOfRequestRated;
+double rate;
+bool isAdmin,isvarified,isMale;
 List<String> certificateImages,myFavorateList;
 ProviderModel(
       {
@@ -8,7 +11,6 @@ ProviderModel(
       this.pAddDate,
       this.pImageUrl,
       this.pphoneNumber,
-      this.pbirthDate,
       this.isAdmin,
       this.pProvideService,
       this.pProviderDescription,
@@ -20,6 +22,9 @@ ProviderModel(
       this.myFavorateList,
       this.rate,
       this.isvarified,
-      this.numberOfRequestRated
+      this.numberOfRequestRated,
+      this.isMale,
+      this.price,
+      this.country
       });
 }

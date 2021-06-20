@@ -1,6 +1,6 @@
 class UserModel{
-  String uName, uImageUrl, uAddDate,uEmail,uPassword,uId;
-  bool isAdmin,enableAcceptPublicRequest;
+  String uName, uImageUrl, uAddDate,uEmail,uPassword,uId,ucountry;
+  bool isAdmin,showOnlyProviderInMyCountry;
   List<String> favorateProvider;
   UserModel(
       {this.uName,
@@ -11,7 +11,8 @@ class UserModel{
       this.uPassword,
       this.uId,
       this.favorateProvider,
-      this.enableAcceptPublicRequest
+      this.showOnlyProviderInMyCountry,
+      this.ucountry
       }
       );
 }

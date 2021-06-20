@@ -284,8 +284,7 @@ class _JobDetailsState extends State<JobDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           (!requestModel.isComplete &&
-                                  !(requestModel.isProviderSeen &&
-                                      requestModel.isPublic))
+                                  !(requestModel.isProviderSeen))
                               ? Expanded(
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -293,26 +292,10 @@ class _JobDetailsState extends State<JobDetails> {
                                     child: CustomButton(
                                         color: Colors.green,
                                         onPressed: () async {
-                                          if (!requestModel.isProviderSeen &&
-                                              !requestModel.isPublic) {
+                                          if (!requestModel.isProviderSeen
+                                             ) {
                                             await store.acceptJob(
                                                 requestModel.requestId);
-                                            Navigator.of(context).pop();
-                                          } else if (!requestModel
-                                                  .isProviderSeen &&
-                                              requestModel.isPublic &&
-                                              neededData.enable) {
-                                            await store.acceptPublicJobEnable(
-                                                requestModel.requestId,
-                                                neededData.providerId);
-                                            Navigator.of(context).pop();
-                                          } else if (!requestModel
-                                                  .isProviderSeen &&
-                                              requestModel.isPublic &&
-                                              !neededData.enable) {
-                                            await store.acceptPublicJob(
-                                                requestModel.requestId,
-                                                neededData.providerId);
                                             Navigator.of(context).pop();
                                           } else if (requestModel
                                                   .isProviderSeen &&
@@ -323,17 +306,16 @@ class _JobDetailsState extends State<JobDetails> {
                                           }
                                           Fluttertoast.showToast(
                                             msg: ((!requestModel
-                                                            .isProviderSeen &&
-                                                        !requestModel
-                                                            .isPublic) ||
+                                                            .isProviderSeen 
+                                                      ) ||
                                                     (!requestModel
                                                             .isProviderSeen &&
-                                                        requestModel.isPublic &&
+                                                      
                                                         neededData.enable))
                                                 ? 'The job was Accepted'
                                                 : (!requestModel
                                                             .isProviderSeen &&
-                                                        requestModel.isPublic &&
+                                                       
                                                         !neededData.enable)
                                                     ? 'you must wait ${neededData.username} to accept'
                                                     : (requestModel
@@ -365,7 +347,7 @@ class _JobDetailsState extends State<JobDetails> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 )),
-                          (!requestModel.isPublic &&
+                          (
                                   !requestModel.isProviderSeen)
                               ? Expanded(
                                   child: Container(
@@ -404,8 +386,7 @@ class _JobDetailsState extends State<JobDetails> {
                 : (!(requestModel.isProviderSeen &&
                         requestModel.isAccepted &&
                         requestModel.isActive &&
-                        !requestModel.isComplete &&
-                        !requestModel.isPublic ))
+                        !requestModel.isComplete))
                     ? Expanded(
                         child: Container(
                           padding:
@@ -435,11 +416,11 @@ class _JobDetailsState extends State<JobDetails> {
                                     !requestModel.isAccepted) {
                                   Navigator.of(context).pop();
                                 } else if (requestModel.isProviderSeen &&
-                                    requestModel.isComplete && requestModel.rating=="") {
+                                    requestModel.isComplete) {
                                   show(requestModel.requestId);
                                 }
                                 else if (requestModel.isProviderSeen &&
-                                    requestModel.isComplete && requestModel.rating!="") {
+                                    requestModel.isComplete) {
                                  // show(requestModel.requestId);
                                  print(requestModel.rating);
                                 }
@@ -465,10 +446,10 @@ class _JobDetailsState extends State<JobDetails> {
                                               !requestModel.isAccepted)
                                           ? 'forword'
                                           : (requestModel.isProviderSeen &&
-                                                  requestModel.isComplete && requestModel.rating=="")
+                                                  requestModel.isComplete)
                                               ? 'Rating Us'
                                             : (requestModel.isProviderSeen &&
-                                                  requestModel.isComplete && requestModel.rating!="")
+                                                  requestModel.isComplete )
                                               ? 'View your Rate'   
                                               : 'The job was cancled'),
                         ),
@@ -570,7 +551,7 @@ class _JobDetailsState extends State<JobDetails> {
             submitButton: 'Submit',
             onSubmitted: (response) {
               print('rating: ${response.rating}, comment: ${response.comment}');
-              store.addRating(requestId, response.comment, response.rating.toString());
+              store.addRating(requestId, response.comment, response.rating);
               user.updateProviderRating(neededData.requestModel.providerId,neededData.providerTotalRate,response.rating,neededData.providerNumberRate);
             },
           );

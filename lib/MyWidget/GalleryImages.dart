@@ -8,25 +8,25 @@ import 'package:service_provider/Services/store.dart';
 
 import 'ImageDialog.dart';
 
-class GalleryImages extends StatefulWidget{
+class GalleryImage extends StatefulWidget{
 
   final bool edit;
   final bool autoUpdate;
   final Map<bool,List> gallery;
   final String userid;
 
-  GalleryImages({@required this.gallery, this.userid, this.autoUpdate, this.edit});
+  GalleryImage({@required this.gallery, this.userid, this.autoUpdate, this.edit});
 
   static List<File> finalGallery;
 
   @override
   State<StatefulWidget> createState(){
-    return _GalleryImages(gallery: gallery, userid: userid, autoUpdate: (autoUpdate != null)? autoUpdate : false, edit: (edit != null)? edit : false);
+    return _GalleryImage(gallery: gallery, userid: userid, autoUpdate: (autoUpdate != null)? autoUpdate : false, edit: (edit != null)? edit : false);
   }
 
 }
 
-class _GalleryImages extends State<GalleryImages>{
+class _GalleryImage extends State<GalleryImage>{
 
   final Map<bool,List> gallery;
   final bool edit;
@@ -39,7 +39,7 @@ class _GalleryImages extends State<GalleryImages>{
 
   final _store = Store();
 
-  _GalleryImages({@required this.gallery, this.userid, this.autoUpdate, this.edit});
+  _GalleryImage({@required this.gallery, this.userid, this.autoUpdate, this.edit});
 
   @override
   void initState() {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +8,6 @@ import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Services/UserStore.dart';
@@ -216,11 +216,16 @@ class _ServiceRequestLocation extends State<ServiceRequestLocation> {
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));
+                            DateTime currentPhoneDate = DateTime.now(); 
+
+                            Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate); 
+
 
                             _requestModel.locationId = locId;
                             _requestModel.isProviderSeen=false;
-                            _requestModel.actionDate=getDateNow();
-                            _requestModel.rAddDate=getDateNow();
+                            _requestModel.actionDate=myTimeStamp;
+                            _requestModel.rAddDate=myTimeStamp;
+                            
                            await store.addRequest(_requestModel);
                             Navigator.pushNamedAndRemoveUntil(
                               context,

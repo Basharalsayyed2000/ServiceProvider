@@ -68,7 +68,7 @@ class _HistoryState extends State<History> {
                       locationId: data[KRequestLocationId],
                       isComplete: data[KRequestIsCompleted],
                       isProviderSeen: data[KRequestIsProviderSeen],
-                      isPublic: data[KRequestIsPublic],
+                     
                       serviceId: data[KRequestServiceId],
                       publicId: data[KRequestPublicId],
                       actionDate: data[KRequestActionDate],

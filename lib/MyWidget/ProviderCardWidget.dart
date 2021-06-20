@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/MapDialog.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/store.dart';
@@ -8,11 +10,17 @@ import 'package:service_provider/Services/store.dart';
 class ProviderCard extends StatefulWidget {
   final ProviderModel providerModel;
   final String uId;
-  ProviderCard({this.providerModel, this.uId});
+  final AddressModel address;
+  final List<String> userFavorateProviderList;
+  ProviderCard({this.providerModel, this.uId, this.address,this.userFavorateProviderList});
 
   @override
   State<StatefulWidget> createState() {
-    return _ProviderCard(providerModel: providerModel, uId: uId);
+    return _ProviderCard(
+        providerModel: providerModel,
+        uId: uId, 
+        address: address,
+        userFavorateProviderList: userFavorateProviderList);
   }
 }
 
@@ -21,7 +29,16 @@ class _ProviderCard extends State<ProviderCard> {
   Store store = new Store();
   final String uId;
   UserStore userStore = new UserStore();
-  _ProviderCard({this.providerModel, this.uId});
+  final AddressModel address;
+  final List<String> userFavorateProviderList;
+
+  _ProviderCard({this.providerModel, this.uId, this.address,this.userFavorateProviderList});
+   
+  @override
+  void initState() {
+     
+    super.initState();
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +59,29 @@ class _ProviderCard extends State<ProviderCard> {
           margin: EdgeInsets.only(top: 10, bottom: 3),
           child: Row(
             children: [
-              (providerModel.isvarified)?Icon(
-                Icons.verified_outlined,
-                color: Colors.blue,
-              ):Container(),
+              (providerModel.isvarified)
+                  ? Icon(
+                      Icons.verified_outlined,
+                      color: Colors.blue,
+                    )
+                  : Container(),
               Text(
-                " " + providerModel.pName,
+                (providerModel.isvarified)
+                    ? " " + providerModel.pName
+                    : providerModel.pName,
                 style: TextStyle(
                     fontSize: 17,
                     color: KprimaryColorDark,
                     fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                width: 2,
+              ),
+              Icon(
+                (providerModel.isMale)
+                    ? Icons.male_rounded
+                    : Icons.female_rounded,
+                color: KsecondaryColor,
               ),
             ],
           ),
@@ -59,12 +89,31 @@ class _ProviderCard extends State<ProviderCard> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "${providerModel.pEmail}",
-              style: TextStyle(
-                  color: KprimaryColorDark,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
+            Container(
+              margin: EdgeInsets.only(top: 4),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: Icon(
+                      Icons.location_on,
+                      color: KsecondaryColor,
+                      size: 16,
+                    ),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return MapDialog();
+                          });
+                    },
+                  ),
+                  Text(
+                    "\t ${address.country} , ${address.city}",
+                    style: TextStyle(
+                        color: KprimaryColorDark, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
             Container(
               margin: EdgeInsets.only(top: 4),
@@ -77,6 +126,21 @@ class _ProviderCard extends State<ProviderCard> {
                   ),
                   Text(
                     "${providerModel.rate}",
+                    style: TextStyle(fontSize: 13, color: KprimaryColorDark),
+                  ),
+                  SizedBox(
+                    width: 9,
+                  ),
+                  Icon(
+                    Icons.money_rounded,
+                    color: Colors.green,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Text(
+                    "${providerModel.price}\$",
                     style: TextStyle(fontSize: 13, color: KprimaryColorDark),
                   ),
                 ],
@@ -97,23 +161,30 @@ class _ProviderCard extends State<ProviderCard> {
               if (providerModel.myFavorateList.contains(uId)) {
                 setState(() {
                   providerModel.myFavorateList.remove(uId);
-                  //userFavorateProvider.remove(_provider.pId);
+                  userFavorateProviderList.remove(providerModel.pId);
                   userStore.deleteFavorateProvider(providerModel.pId, uId);
                 });
               } else {
                 setState(() {
                   providerModel.myFavorateList.add(uId);
-                  //userFavorateProvider.add(_provider.pId);
+                  userFavorateProviderList.add(providerModel.pId);
                   userStore.addFavorateProvider(providerModel.pId, uId);
                 });
               }
               await userStore.updatefavorateList(
                   providerModel.myFavorateList, providerModel.pId);
-              // await _user.updateFvorateUser(uId, userFavorateProvider);
+              await userStore.updateFvorateUser(uId, userFavorateProviderList);
             }),
+
         onTap: () {
-          Navigator.pushNamed(context, ServiceDetails.id,
-              arguments: providerModel);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ServiceDetails(
+                      providerModel:providerModel,  
+                    )
+                ),
+          );
         },
       ),
     );

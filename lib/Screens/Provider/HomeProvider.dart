@@ -165,8 +165,8 @@ class _HomeProviderState extends State<HomeProvider> {
                               var data = doc.data;
                               String requestId = doc.documentID;
                               if (data[KRequestProviderId] == pId ||
-                                  providerDocument[KServiceId] ==
-                                      data[KRequestServiceId]) {
+                              (providerDocument[KServiceId] ==
+                                      data[KRequestServiceId] )) {
                                 //List<dynamic> requestUrl=[];
                                 //  if(!(data[KRequestImageUrl]==null)){
                                 //  requestUrl= List.of(data[KRequestImageUrl]);
@@ -190,7 +190,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                     isComplete: data[KRequestIsCompleted],
                                     isProviderSeen:
                                         data[KRequestIsProviderSeen],
-                                    isPublic: data[KRequestIsPublic],
+                                  
                                     serviceId: data[KRequestServiceId],
                                     publicId: data[KRequestPublicId],
                                     actionDate: data[KRequestActionDate],
@@ -242,7 +242,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                                         forUser: false,
                                                         providerId: pId,
                                                         enable: document2[
-                                                            KUserEnableAcceptPublicRequest],
+                                                            KUserShowOnlyMyCountryProvider],
                                                         providerLocationId:
                                                             providerDocument[
                                                                 KProviderLocationId],
@@ -322,7 +322,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                         isComplete: data[KRequestIsCompleted],
                                         isProviderSeen:
                                             data[KRequestIsProviderSeen],
-                                        isPublic: data[KRequestIsPublic],
+                                     
                                         serviceId: data[KRequestServiceId],
                                         publicId: data[KRequestPublicId],
                                         actionDate: data[KRequestActionDate],
@@ -440,8 +440,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                         if (data[KRequestIsActive] &&
                                             !data[KRequestIsAccepted] &&
                                             !data[KRequestIsCompleted] &&
-                                            data[KRequestIsProviderSeen] &&
-                                            data[KRequestIsPublic])
+                                            data[KRequestIsProviderSeen])
                                           _requests.add(RequestModel(
                                             rProblem: data[KRequestProblem],
                                             rDescription:
@@ -462,7 +461,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                                 data[KRequestIsCompleted],
                                             isProviderSeen:
                                                 data[KRequestIsProviderSeen],
-                                            isPublic: data[KRequestIsPublic],
+                                          
                                             serviceId: data[KRequestServiceId],
                                             publicId: data[KRequestPublicId],
                                             actionDate:

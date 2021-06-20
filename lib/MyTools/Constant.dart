@@ -34,7 +34,8 @@ const KUserIsAdmin='UserIsAdmin';
 const KUserEmail='UserEmail';
 const KUserPassword='UserPassword';
 const KUserId="UserId";
-const KUserEnableAcceptPublicRequest="UserEnableAcceptPublicRequest";
+const KUserCountry="UserCountry";
+const KUserShowOnlyMyCountryProvider="UserShowOnlyMyCountryProvider";
 const KFavorateProviderList="FavorateProviderList";
 
 
@@ -49,7 +50,6 @@ const KProviderCollection = 'Providers';
 const KProviderName = 'ProviderName';
 const KProviderAddDate = 'ProviderAddDate';
 const KProviderImageUrl = 'ProviderImageUrl';
-const KProviderBirthDate='ProviderBirthDate';
 const KProviderPhoneNumber='ProviderPhoneNumber';
 const KProviderIsAdmin='ProviderIsAdmin';
 const KProviderDescription='ProviderDescription';
@@ -63,13 +63,10 @@ const KMyFavorateList="MyFavorateList";
 const KProviderTotalRate="ProviderTotalRate";
 const KProviderNumberOfRatedRequest="ProviderNumberOfRatedRequest";
 const KProviderIsVerified="ProviderIsVerified";
-
-
-
-
-//ignord
-const KImageCartificateCollection="ImageCartificate";
-const KImageCartificateUrl = 'ImageCartificateUrl';
+const KProviderIsMale="ProviderIsMale";
+const KProviderPrice="ProviderPrice";
+const KproviderCountry="providerCountry";
+const KProviderSearchKey="ProviderSearchKey";
 
 
 //Address data
@@ -77,7 +74,6 @@ const KLocationCollection = 'Location';
 const KLocationStreet = 'LocationStreet';
 const KLocationCountry = 'LocationCountry';
 const KLocationCity = 'LocationCity';
-const KLocationPostalCode = 'LocationPostCode';
 const KLocationLatitude = 'LocationLatitude';
 const KLocationlonggitude='Locationlonggitude';
 const KLocationId='LocationId';
@@ -100,11 +96,9 @@ const KRequestProviderId='RequestProviderId';
 const KRequestLocationId='RequestLocationId';
 const KRequestProblem='RequestProblem';
 const KRequestServiceId='RequestServiceId';
-const KRequestIsPublic='RequestIsPublic';
 const KRequestActionDate='RequestActionDate';
 const KRequestPublicId='RequestPublicId';
 const KRequestRating='RequestRating';
 const KRequestRatingComment='RequestRatingComment';
-const KRequestRejectedProvider="RequestRejectedProvider";
-
+const KReqeustProviderRecommendedTime="ReqeustProviderRecommendedTime";
 

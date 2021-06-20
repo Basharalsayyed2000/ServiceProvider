@@ -110,6 +110,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
               .collection(KProviderCollection)
               .document(_userId)
               .snapshots(),
+          // ignore: missing_return
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(child: CircularProgressIndicator());
@@ -390,7 +391,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                                       )),
                                 ),
 
-                                GalleryImages(
+                                GalleryImage(
                                     gallery: _gallery,
                                     edit: true,
                                     userid: _userId,

@@ -17,7 +17,8 @@ class MyActivity extends StatefulWidget {
 
 class _MyActivity extends State<MyActivity> {
   String userId;
-  double rejectedCount=0, disactiveCount=0, inprogressCount=0, completeCount=0, idleCount=0,total=0,idleCountPublic=0,waitUserAccept=0,providerReaction=0;
+  double rejectedCount=0, disactiveCount=0, inprogressCount=0, completeCount=0, idleCount=0,total=0;
+  //,waitUserAccept=0,providerReaction=0;
   bool loading=false;
   final bool isUser;
   final String serviceid;
@@ -47,11 +48,11 @@ class _MyActivity extends State<MyActivity> {
     setState(() {
       pieData = [
       Task("Completed ", completeCount, Colors.green), 
-      (isUser)?Task("disActive ", disactiveCount, Colors.grey):Task("public Idle",idleCountPublic,Colors.purple),
-      (isUser)?Task("Rejected ", rejectedCount, Colors.red):Task("Wait accept",waitUserAccept,Colors.brown),
+      (isUser)?Task("disActive ", disactiveCount, Colors.grey):Task("",0,Colors.white),
+      (isUser)?Task("Rejected ", rejectedCount, Colors.red):Task("",0,Colors.white),
       Task((isUser)?"Idle ":"private Idle ", idleCount, Colors.yellow),
       Task("Inprogress ", inprogressCount, Colors.orange),
-      (isUser)?Task("prvdr Reaction", providerReaction, Colors.brown):Task("",0,Colors.white),
+    //  (isUser)?Task("prvdr Reaction", providerReaction, Colors.brown):Task("",0,Colors.white),
     ];
     });
   
@@ -119,7 +120,7 @@ class _MyActivity extends State<MyActivity> {
                 ),
               ),
               Container(
-                child: Text("Total Requests :$total"),
+                child: Text("Total Requests :$total",style: TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -127,7 +128,7 @@ class _MyActivity extends State<MyActivity> {
       ):(loading==false)?
      Center(child: CircularProgressIndicator())
       :(total==0)?
-      Center(child:Text("No Activity"))
+      Center(child:Text("No Activity",style: TextStyle(color: Colors.red,fontSize: 25,fontWeight: FontWeight.bold),),)
       :Center(child: CircularProgressIndicator()),
     );
   }
@@ -138,7 +139,7 @@ class _MyActivity extends State<MyActivity> {
         .getDocuments()
         .then((QuerySnapshot querySnapshot) async {
       querySnapshot.documents.forEach((doc) {
-        if (userId == ((isUser)?doc[KRequestUserId]:doc[KRequestProviderId]) || ((!isUser)?doc[KRequestServiceId]==serviceid:false)) {
+        if (userId == ((isUser)?doc[KRequestUserId]:doc[KRequestProviderId])) {
           if(!doc[KRequestIsActive]){
             setState(() {
               (isUser)? disactiveCount++:disactiveCount=0;
@@ -147,11 +148,7 @@ class _MyActivity extends State<MyActivity> {
           }
           else if(doc[KRequestIsActive]&& !doc[KRequestIsProviderSeen] ){
              setState(() {
-              (isUser)?idleCount++
-              :(doc[KRequestIsPublic])?
-               idleCountPublic++
-              : idleCount++;
-
+              (isUser)?idleCount++ :idleCount++ ;
               total++;
             });
           }
@@ -167,17 +164,18 @@ class _MyActivity extends State<MyActivity> {
                total++;
             });
           }
-           else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& !doc[KRequestIsAccepted] && !doc[KRequestIsPublic]){
+           else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& !doc[KRequestIsAccepted] ){
               setState(() {
               (isUser)?rejectedCount++:rejectedCount=0;
               (isUser)? total++:total=total;
             });
-          }   else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& !doc[KRequestIsAccepted] && doc[KRequestIsPublic]){
-              setState(() {
-              (!isUser)?waitUserAccept++:providerReaction++;
-               total++;
-            });
-          }
+          }  
+          //  else if(doc[KRequestIsActive]&& doc[KRequestIsProviderSeen] && !doc[KRequestIsCompleted]&& !doc[KRequestIsAccepted]){
+          //     setState(() {
+          //     (!isUser)?waitUserAccept++:providerReaction++;
+          //      total++;
+          //   });
+          // }
         }
       });
     });

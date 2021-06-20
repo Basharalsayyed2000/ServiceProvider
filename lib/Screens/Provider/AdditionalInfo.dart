@@ -32,7 +32,7 @@ class AdditionalInfo extends StatefulWidget {
 class _AdditionalInfo extends State<AdditionalInfo> {
   File _image;
   // ignore: deprecated_member_use
-  Map<bool, List> _gallery = <bool, List>{};
+  var gallery = <bool, List>{};
   List<String> _galleryUrl = [];
   String _imageUrl;
   List<String> _servicesName = [""];
@@ -49,13 +49,21 @@ class _AdditionalInfo extends State<AdditionalInfo> {
   String _sId = "";
   Color _colorDt;
   FontWeight _weightDt;
-
+  bool select;
   // ignore: unused_field
   Color _colorT;
   DateTime _date;
+  var list = new List<int>.generate(1000, (i){
+    return i*5;
+  });
+  int price;
   @override
   void initState() {
+    gallery[true] = [];
+    gallery[false] = [];
     _currentItemSelected = _servicesName[0];
+    select = true;
+    price=5;
     super.initState();
   }
 
@@ -70,9 +78,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
         stream: _userStore.loadService(),
         // ignore: missing_return
         builder: (context, snapshot) {
-
           if (snapshot.hasData) {
-
             List<ServiceModel> _services = [];
             List<String> _servicesName = [""];
             String sid;
@@ -130,7 +136,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           ),
                         ),
                       ),
-
+                   
                       Container(
                         margin: EdgeInsets.only(
                             right: MediaQuery.of(context).size.width / 4 * 2,
@@ -162,6 +168,60 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                             }),
                       ),
                       Container(
+                          // margin: const EdgeInsets.fromLTRB(50, 15, 50, 00),
+                          child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('male'),
+                            leading: Radio(
+                              value: true,
+                              groupValue: select,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  select = value;
+                                  // print(select);
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('female'),
+                            leading: Radio(
+                              value: false,
+                              groupValue: select,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  select = value;
+                                  // print(select);
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      )),
+                      Row(
+                        children: <Widget>[
+                          Text("Price :"),
+                          SizedBox(width: 10,),
+                          DropdownButton<int>(
+                            hint: Text("Pick"),
+                            value: price,
+                            items: list.map((int value) {
+                              return new DropdownMenuItem<int>(
+                                value: value,
+                                child: new Text(value.toString()),
+                              );
+                            }).toList(),
+                            onChanged: (newVal) {
+                              setState(() {
+                                price = newVal;
+                              });
+                            }),
+                            SizedBox(width: 20,),
+                          Text("$price  \$"),  
+                        ],
+                      ),
+                      Container(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height / 20),
                         child: CustomTextField(
@@ -173,13 +233,8 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           },
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.only(
-                            top: Kminimumpadding * 1.35,
-                            bottom: Kminimumpadding * 1.35),
-                        height: 70,
-                        child: getDateFormPicker(),
-                      ),
+
+                    
                       Container(
                         child: CustomTextField(
                           onClicked: (value) {
@@ -190,9 +245,10 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           labelText: 'Phone Number',
                         ),
                       ),
-                      
-                    //  GalleryImages(gallery: _gallery),
-
+                      GalleryImage(
+                        gallery: gallery,
+                        edit: true,
+                      ),
                       Container(
                         padding: EdgeInsets.only(top: 4),
                         // ignore: deprecated_member_use
@@ -294,9 +350,10 @@ class _AdditionalInfo extends State<AdditionalInfo> {
 
           _provider.pProvideService = _serviceId;
           _provider.pAddDate = getDateNow();
-          _provider.pbirthDate = _birthDate;
           _provider.pphoneNumber = _phoneNumber;
           _provider.certificateImages = _galleryUrl;
+          _provider.isMale = select;
+          _provider.price=price;
           toggleProgressHUD(false, progress);
           Navigator.pushReplacementNamed(context, ProviderLocation.id,
               arguments: _provider);
@@ -323,25 +380,24 @@ class _AdditionalInfo extends State<AdditionalInfo> {
   }
 
   Future uploadGalleryImage(docId) async {
-    if(_gallery[false].isNotEmpty)
-    for (var img in _gallery[false]) {
+    if (gallery[false].isNotEmpty)
+      for (var img in gallery[false]) {
+        print(img.path);
 
-      print(img.path);
+        FirebaseStorage storage = FirebaseStorage(
+            storageBucket: 'gs://service-provider-ef677.appspot.com');
+        String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
+        StorageReference ref =
+            storage.ref().child('CertificateImage/$imageFileName');
+        StorageUploadTask storageUploadTask = ref.putFile(img);
+        StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
 
-      FirebaseStorage storage = FirebaseStorage(
-          storageBucket: 'gs://service-provider-ef677.appspot.com');
-      String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-      StorageReference ref =
-          storage.ref().child('CertificateImage/$imageFileName');
-      StorageUploadTask storageUploadTask = ref.putFile(img);
-      StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+        String url = await taskSnapshot.ref.getDownloadURL();
 
-      String url = await taskSnapshot.ref.getDownloadURL();
+        //_userStore.addGallaryCollection(url, docId);
 
-      //_userStore.addGallaryCollection(url, docId);
-
-      _galleryUrl.add(url);
-    }
+        _galleryUrl.add(url);
+      }
   }
 
   void getServiceId() async {}
@@ -358,8 +414,6 @@ class _AdditionalInfo extends State<AdditionalInfo> {
       });
     }
   }
-
-  
 
   void toggleProgressHUD(_loading, _progressHUD) {
     setState(() {
@@ -421,5 +475,4 @@ class _AdditionalInfo extends State<AdditionalInfo> {
       ),
     );
   }
-
 }

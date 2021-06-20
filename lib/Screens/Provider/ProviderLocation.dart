@@ -218,7 +218,8 @@ class _ProviderLocation extends State<ProviderLocation> {
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));
-                            _provider.locationId= locId;    
+                            _provider.locationId= locId; 
+                            _provider.country=_country;   
                             _provider.myFavorateList=[];
                             user.addProvider(_provider, _provider.pId);
                             Navigator.pushNamedAndRemoveUntil(

@@ -15,16 +15,17 @@ class UserStore {
       KUserEmail: user.uEmail,
       KUserPassword: user.uPassword,
       KUserId: user.uId,
-      KUserEnableAcceptPublicRequest:user.enableAcceptPublicRequest,
+      KUserShowOnlyMyCountryProvider: user.showOnlyProviderInMyCountry,
+      KUserCountry:user.ucountry,
       KFavorateProviderList: user.favorateProvider
     });
   }
-  
-  userUpdateEnableDirectAccept(bool value,String id) async {
-   await _firestore
+
+  userUpdateShowOnlyMyCountryProviders(bool value, String id) async {
+    await _firestore
         .collection(KUserCollection)
         .document(id)
-        .updateData({KUserEnableAcceptPublicRequest :value});
+        .updateData({KUserShowOnlyMyCountryProvider: value});
   }
 
   updateFvorateUser(uid, List<String> list) async {
@@ -56,8 +57,8 @@ class UserStore {
     await _firestore.collection(KUserCollection).document(uid).delete();
   }
 
-  updatePasswordUser(String uid,String password) async {
-     await _firestore
+  updatePasswordUser(String uid, String password) async {
+    await _firestore
         .collection(KUserCollection)
         .document(uid)
         .updateData({KUserPassword: password});
@@ -68,7 +69,6 @@ class UserStore {
       KProviderName: provider.pName,
       KProviderAddDate: provider.pAddDate,
       KProviderImageUrl: provider.pImageUrl,
-      KProviderBirthDate: provider.pbirthDate,
       KProviderPhoneNumber: provider.pphoneNumber,
       KProviderIsAdmin: provider.isAdmin,
       KProviderLocationId: provider.locationId,
@@ -77,14 +77,56 @@ class UserStore {
       KProviderEmail: provider.pEmail,
       KProviderId: provider.pId,
       KProviderPassword: provider.pPassword,
-      KProviderTotalRate:"1",
-      KProviderNumberOfRatedRequest:"1",
-      KProviderIsVerified:false,
+      KProviderTotalRate: 1.0,
+      KProviderNumberOfRatedRequest: 1,
+      KProviderIsVerified: false,
+      KProviderIsMale: provider.isMale,
+      KImageCartificateUrlList: provider.certificateImages,
+      KProviderPrice: provider.price,
+      KproviderCountry: provider.country
     });
   }
 
-  Stream<QuerySnapshot> loadProvider() {
-    return _firestore.collection(KProviderCollection).snapshots();
+  Stream<QuerySnapshot> loadProvider(String field, bool isdescending,String onlyMyCountry) {
+    if(onlyMyCountry==""){
+      if (field == "") {
+        return _firestore.collection(KProviderCollection).snapshots();
+      } else if (field == KProviderIsVerified) {
+        return _firestore
+            .collection(KProviderCollection)
+            .where(KProviderIsVerified, isEqualTo: true )
+            .snapshots();
+      } else if (field == KProviderIsMale) {
+        return _firestore
+            .collection(KProviderCollection)
+            .where(KProviderIsMale, isEqualTo: !isdescending)
+            .snapshots();
+      }
+      else{
+         return _firestore.collection(KProviderCollection).orderBy(field,descending: !isdescending).snapshots();
+      } 
+    }else{
+      if (field == "") {
+        return _firestore.collection(KProviderCollection).where(KproviderCountry,isEqualTo :onlyMyCountry ).snapshots();
+      } else if (field == KProviderIsVerified) {
+        return _firestore
+            .collection(KProviderCollection)
+            .where(KProviderIsVerified, isEqualTo: true )
+            .where(KproviderCountry,isEqualTo :onlyMyCountry )
+            .snapshots();
+      } else if (field == KProviderIsMale) {
+        return _firestore
+            .collection(KProviderCollection)
+            .where(KProviderIsMale, isEqualTo: !isdescending)
+            .where(KproviderCountry,isEqualTo :onlyMyCountry )
+            .snapshots();
+      } 
+      else{
+         return _firestore.collection(KProviderCollection).orderBy(field,descending: !isdescending).where(KproviderCountry,isEqualTo :onlyMyCountry).snapshots();
+
+      }
+
+    }
   }
 
   updatefavorateList(List<String> myFavorateList, String pId) async {
@@ -94,18 +136,18 @@ class UserStore {
         .updateData({KMyFavorateList: myFavorateList});
   }
 
-  updateProviderPassword(String userId,String trim)async {
+  updateProviderPassword(String userId, String trim) async {
     await _firestore
         .collection(KProviderCollection)
         .document(userId)
-        .updateData({KProviderPassword: trim}); 
+        .updateData({KProviderPassword: trim});
   }
 
-  void updateUserProfile(String imageUrl, String userId) async{
+  void updateUserProfile(String imageUrl, String userId) async {
     await _firestore
         .collection(KUserCollection)
         .document(userId)
-        .updateData({KUserImageUrl: imageUrl}); 
+        .updateData({KUserImageUrl: imageUrl});
   }
 
   updateUserName(String username, String userId) {
@@ -121,7 +163,7 @@ class UserStore {
         .document(providerId)
         .updateData({KProviderName: username});
   }
-  
+
   updateUserEmail(String email, String userId) {
     _firestore
         .collection(KUserCollection)
@@ -135,22 +177,32 @@ class UserStore {
         .document(providerId)
         .updateData({KProviderEmail: email});
   }
- updateProviderRating(String providerId,String lastrate,int current,String total) async {
-   var newrate;
-   var t=double.parse(total);
-   var r=double.parse(lastrate);
-   t=t+1;
-   r=r+current;
-   newrate=r/t;
-   print("last no of rating $total");
-   print("provider rating $lastrate");
-   print("request rating $current");
-   await _firestore
+
+  updateProviderRating(
+      String providerId, double lastrate, int current, int total) async {
+    var newrate;
+
+    total = total + 1;
+    lastrate = lastrate + current;
+    newrate = lastrate / total;
+    print("last no of rating $total");
+    print("provider rating $lastrate");
+    print("request rating $current");
+    await _firestore
         .collection(KProviderCollection)
         .document(providerId)
         .updateData({
-          KProviderTotalRate: newrate.toString(),
-          KProviderNumberOfRatedRequest:t.toString(),
-          }); 
- }
+      KProviderTotalRate: newrate,
+      KProviderNumberOfRatedRequest: total,
+    });
+  }
+
+    searchByName(String searchField)  {
+    return  _firestore
+        .collection(KProviderCollection)
+        .where(KProviderSearchKey,
+            isEqualTo: searchField.substring(0, 1).toUpperCase())
+        .getDocuments();
+  }
+
 }
