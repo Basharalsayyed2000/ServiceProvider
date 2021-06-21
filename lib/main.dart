@@ -13,6 +13,7 @@ import 'package:service_provider/Screens/Provider/VerificationProvider.dart';
 import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
 import 'package:service_provider/Screens/User/MyBooks.dart';
 import 'package:service_provider/Screens/User/MyFavorateProviders.dart';
+import 'package:service_provider/Screens/User/RecommendedProviderMap.dart';
 import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
           accentColor: KprimaryColor
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: SearchPage.id,
+        initialRoute: SplashScreen.id,
         routes: {
           MyFavorateProviders.id: (context) => MyFavorateProviders(),
           JobDetails.id: (context) => JobDetails(),
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
           Navbar.id : (context)=>Navbar(),
           Settings.id:(context)=>Settings(),
           History.id:(context)=>History(),
+          RecommendedProvidersMap.id:(context)=>RecommendedProvidersMap(),
 
 
           Testing.id:(context)=>Testing(),

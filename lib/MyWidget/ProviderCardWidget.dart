@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
@@ -100,10 +101,29 @@ class _ProviderCard extends State<ProviderCard> {
                       size: 16,
                     ),
                     onTap: () {
+                      Set<Marker> _markers = {};
+                        _markers.add(Marker(
+                          markerId: MarkerId(
+                              providerModel.pId),
+                          position: LatLng(address.latitude,
+                              address.longgitude),
+                          icon: BitmapDescriptor
+                              .defaultMarkerWithHue(200),
+                          infoWindow: InfoWindow(
+                              title: 
+                                  providerModel.pName,
+                              snippet: "⭐" +
+                                  providerModel
+                                      .rate
+                                      .toString(),   
+                              onTap: () {
+                              },        
+                            ), 
+                        ));
                       showDialog(
                           context: context,
                           builder: (context) {
-                            return MapDialog();
+                            return MapDialog(hasAppBar: false,edit: false,markers: _markers,);
                           });
                     },
                   ),

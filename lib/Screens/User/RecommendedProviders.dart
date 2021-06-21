@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:service_provider/Models/Address.dart';
-import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/ProviderCardWidget.dart';
-import 'package:service_provider/Screens/Request/ServiceRequest.dart';
+import 'package:service_provider/Screens/User/RecommendedProviderMap.dart';
+import 'package:service_provider/Screens/User/ServiceDetails.dart';
 import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/auth.dart';
 
@@ -15,8 +16,12 @@ class RecommendedProviders extends StatefulWidget {
   final String serviceId;
   final List<String> userFavorateProviders;
   final bool showOnlyMyCountry;
-  final String myCountry;  
-  RecommendedProviders({this.serviceId, this.userFavorateProviders,this.showOnlyMyCountry,this.myCountry});
+  final String myCountry;
+  RecommendedProviders(
+      {this.serviceId,
+      this.userFavorateProviders,
+      this.showOnlyMyCountry,
+      this.myCountry});
   @override
   _RecommendedProvidersState createState() => _RecommendedProvidersState(
       serviceId: serviceId,
@@ -30,14 +35,18 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
   final String serviceId;
   Auth auth = new Auth();
   final List<String> userFavorateProviders;
-  final bool showOnlyMyCountry;  
-  final String myCountry;  
-
+  final bool showOnlyMyCountry;
+  final String myCountry;
+  Set<Marker> _markers = {};
   final _user = UserStore();
   String uId, _value, _acsValue;
   bool hasSort, isGender, hasData;
   List<ProviderModel> _providers = [new ProviderModel()];
-  _RecommendedProvidersState({this.serviceId, this.userFavorateProviders,this.showOnlyMyCountry,this.myCountry});
+  _RecommendedProvidersState(
+      {this.serviceId,
+      this.userFavorateProviders,
+      this.showOnlyMyCountry,
+      this.myCountry});
 
   @override
   void initState() {
@@ -154,8 +163,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                           ? KProviderIsMale
                                           : "",
               (_acsValue == null || _acsValue == "Ascending") ? true : false,
-              (showOnlyMyCountry)?myCountry:""
-              ),
+              (showOnlyMyCountry) ? myCountry : ""),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
               return new Center(child: new CircularProgressIndicator());
@@ -190,7 +198,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                   ));
                 }
               }
-           
+
               return (_providers.isNotEmpty)
                   ? Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -228,6 +236,37 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                         city: document2[KLocationCity],
                                         street: document2[KLocationStreet],
                                       );
+                                      _markers.add(Marker(
+                                        markerId: MarkerId(
+                                            _providers.elementAt(index).pId),
+                                        position: LatLng(addressModel.latitude,
+                                            addressModel.longgitude),
+                                        icon: BitmapDescriptor
+                                            .defaultMarkerWithHue(200),
+                                        infoWindow: InfoWindow(
+                                            title: _providers
+                                                .elementAt(index)
+                                                .pName,
+                                            snippet: "⭐" +
+                                                _providers
+                                                    .elementAt(index)
+                                                    .rate
+                                                    .toString(),
+                                                    
+                                            onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ServiceDetails(
+                                                      providerModel: _providers
+                                                          .elementAt(index),
+                                                    )),
+                                          );
+                                        },        
+                                                    ),
+                                        
+                                      ));
                                       return ProviderCard(
                                         providerModel: _providers[index],
                                         uId: uId,
@@ -257,14 +296,18 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                 width: 250,
                                 child: CustomButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, ServiceRequest.id,
-                                        arguments: NeededData(
-                                            serviceRequestId: serviceId,
-                                            isRequestActive: true,
-                                            isRequestPublic: true));
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RecommendedProvidersMap(
+                                                  edit: false,
+                                                  appBar: true,
+                                                  serviceId: serviceId,
+                                                  markers: _markers)),
+                                    );
                                   },
-                                  textValue: "Request All",
+                                  textValue: "Request By Map",
                                 ),
                               ),
                             ],
@@ -273,7 +316,10 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                       ),
                     )
                   : Center(
-                      child: Text("No Provider",style: TextStyle(fontSize: 20,color: Colors.red),),
+                      child: Text(
+                        "No Provider",
+                        style: TextStyle(fontSize: 20, color: Colors.red),
+                      ),
                     );
             } else {
               return Center(
@@ -283,6 +329,4 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
           },
         ));
   }
-
-  
 }

@@ -366,9 +366,7 @@ class _UserHomeState extends State<UserHome> {
                           itemCount: _services.length,
                         );
                       } else {
-                        return Center(
-                          child: Text('Loading'),
-                        );
+                          return new Center(child: new CircularProgressIndicator());
                       }
                     },
                   ),

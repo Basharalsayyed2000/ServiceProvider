@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:service_provider/Screens/Request/ServiceRequestLocation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:service_provider/Screens/User/RecommendedProviderMap.dart';
 
 class MapDialog extends StatelessWidget{
 
-  final List<Placemark> placemarks;
-  final int nbPlacemarks;
-  final bool readOnly;
-
-  MapDialog({this.placemarks, this.nbPlacemarks, this.readOnly});
+  final bool edit;
+  final bool hasAppBar;
+  final Set<Marker> markers; 
+  MapDialog({this.edit,this.markers,this.hasAppBar});
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +20,13 @@ class MapDialog extends StatelessWidget{
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: ServiceRequestLocation(
-
+          child: RecommendedProvidersMap(
+             edit: edit,
+             appBar: hasAppBar,
+             markers: markers,
           ),
         )
     );
   }
-
-}
-
-class MapDialogHelper{
-  static exit(context, nbPlacemarks, placemarks, readonly) => showDialog(context: context, builder: (context) => MapDialog(placemarks: placemarks, readOnly: (readonly == null)? false : readonly));
 
 }
