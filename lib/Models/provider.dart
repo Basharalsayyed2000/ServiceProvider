@@ -1,8 +1,11 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ProviderModel{
-String pName, pAddDate,pImageUrl, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId,country;
+String pName,pImageUrl, pphoneNumber,pProvideService,pProviderDescription,pEmail,pPassword,pId,locationId,country;
 int price,numberOfRequestRated;
 double rate;
+Timestamp pAddDate;
 bool isAdmin,isvarified,isMale;
 List<String> certificateImages,myFavorateList;
 ProviderModel(

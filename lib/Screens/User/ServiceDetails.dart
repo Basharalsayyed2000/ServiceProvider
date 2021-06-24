@@ -1,29 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
+import 'package:service_provider/Screens/User/UserHome.dart';
+import 'package:service_provider/Services/store.dart';
 
 class ServiceDetails extends StatefulWidget {
   static String id = "serviceDetails";
   final ProviderModel providerModel;
+  final bool fromForword;
+  final String rid;
   ServiceDetails({
-    this.providerModel
+    this.providerModel,
+    this.fromForword,
+    this.rid,
   });
   @override
   State<StatefulWidget> createState() {
     return _ServiceDetails(
-        providerModel:providerModel
+        providerModel:providerModel,
+        fromForword:fromForword,
+        rid: rid
     );
   }
 }
 
 class _ServiceDetails extends State<ServiceDetails> {
   final ProviderModel providerModel;
+  final bool fromForword;
+    final String rid;
+  Store store=new Store();
   _ServiceDetails({
-    this.providerModel
+    this.providerModel,
+    this.fromForword,
+    this.rid
   });
   @override
   Widget build(BuildContext context) {
@@ -191,7 +205,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                             ]),
                       ),
                     ),
-                    Container(
+                    (!fromForword)?Container(
                       padding: EdgeInsets.only(top: Kminimumpadding * 4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -236,6 +250,29 @@ class _ServiceDetails extends State<ServiceDetails> {
                           )
                         ],
                       ),
+                    ):Container(
+                       padding: EdgeInsets.only(top: Kminimumpadding * 4),
+                       child:   Expanded(
+                            child: Container(
+                              margin: EdgeInsets.all(Kminimumpadding * 1.5),
+                              child: CustomButton(
+                                onPressed: () {
+                                 store.changeProvider(providerModel.pId,rid);
+                                 Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    UserHome.id,
+                                    (Route<dynamic> route) => false,
+                                  );
+
+                                  // toggleProgressHUD(false, progress);
+                                  Fluttertoast.showToast(
+                                    msg: 'Forword Succesfully',
+                                  );
+                                },
+                                textValue: "Select",
+                              ),
+                            ),
+                          ),
                     ),
                   ],
                 ),

@@ -164,9 +164,7 @@ class _HomeProviderState extends State<HomeProvider> {
                             for (var doc in snapshot.data.documents) {
                               var data = doc.data;
                               String requestId = doc.documentID;
-                              if (data[KRequestProviderId] == pId ||
-                              (providerDocument[KServiceId] ==
-                                      data[KRequestServiceId] )) {
+                              if (data[KRequestProviderId] == pId ) {
                                 //List<dynamic> requestUrl=[];
                                 //  if(!(data[KRequestImageUrl]==null)){
                                 //  requestUrl= List.of(data[KRequestImageUrl]);

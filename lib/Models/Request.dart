@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestModel{
 String providerId, userId,rDescription,requestDate,requestTime,requestId,rProblem,locationId,serviceId,publicId,commentRating,providerRecommendedTime;
-double rating;
+int rating;
 Timestamp rAddDate,actionDate;
 bool isActive,isComplete,isAccepted,isProviderSeen;
 List<String> rImageUrl;

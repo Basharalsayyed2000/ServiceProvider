@@ -17,16 +17,19 @@ class RecommendedProviders extends StatefulWidget {
   final List<String> userFavorateProviders;
   final bool showOnlyMyCountry;
   final String myCountry;
+  final String rid;
   RecommendedProviders(
       {this.serviceId,
       this.userFavorateProviders,
       this.showOnlyMyCountry,
+      this.rid,
       this.myCountry});
   @override
   _RecommendedProvidersState createState() => _RecommendedProvidersState(
       serviceId: serviceId,
       showOnlyMyCountry: showOnlyMyCountry,
       myCountry: myCountry,
+      rid:rid,
       userFavorateProviders:
           (userFavorateProviders == null) ? [] : userFavorateProviders);
 }
@@ -40,12 +43,14 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
   Set<Marker> _markers = {};
   final _user = UserStore();
   String uId, _value, _acsValue;
+  final String rid;
   bool hasSort, isGender, hasData;
   List<ProviderModel> _providers = [new ProviderModel()];
   _RecommendedProvidersState(
       {this.serviceId,
       this.userFavorateProviders,
       this.showOnlyMyCountry,
+      this.rid,
       this.myCountry});
 
   @override
@@ -261,6 +266,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                                     ServiceDetails(
                                                       providerModel: _providers
                                                           .elementAt(index),
+                                                         
                                                     )),
                                           );
                                         },        
@@ -273,6 +279,8 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                         address: addressModel,
                                         userFavorateProviderList:
                                             userFavorateProviders,
+                                            fromSearch: false,
+                                         rid: rid,   
                                       );
                                     }
                                   }),

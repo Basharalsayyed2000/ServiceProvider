@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/Models/Request.dart';
+import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/SlidableTile.dart';
 import 'package:service_provider/Services/auth.dart';
@@ -9,17 +10,19 @@ import 'package:service_provider/Services/store.dart';
 class MyBooks extends StatefulWidget {
   static String id = 'MyBooks';
   final String userAction;
-  MyBooks({this.userAction});
+  final UserModel userModel;
+  MyBooks({this.userAction,this.userModel});
   @override
-  _MyBooksState createState() => _MyBooksState(userAction: userAction);
+  _MyBooksState createState() => _MyBooksState(userAction: userAction,userModel: userModel);
 }
 
 class _MyBooksState extends State<MyBooks> {
   final _store = Store();
   final _auth = Auth();
   String _userId;
+  final UserModel userModel;
   final String userAction;
-  _MyBooksState({this.userAction});
+  _MyBooksState({this.userAction,this.userModel});
   @override
   void initState() {
     super.initState();
@@ -48,8 +51,8 @@ class _MyBooksState extends State<MyBooks> {
                         ? Text("Rejected requests")
                         : (userAction == "Completed")
                             ? Text("Compeleted Request")
-                            // : (userAction == "publicReaction")
-                            //     ? Text("provider reaction")
+                            : (userAction == "suggestion")
+                                ? Text("requests time suggestion")
                             : Text("Inprogress requests"),
         centerTitle: true,
         elevation: 0,
@@ -345,7 +348,7 @@ class _MyBooksState extends State<MyBooks> {
                                                   userName:
                                                       document2[KProviderName],
                                                   status: "complete",
-                                                  hasAction: false,
+                                                  hasAction: true,
                                                   forUser: true,
                                                   providerLocationId: document2[
                                                       KProviderLocationId],
@@ -732,6 +735,7 @@ class _MyBooksState extends State<MyBooks> {
                                                             status: "Rejected",
                                                             hasAction: true,
                                                             forUser: true,
+                                                            userModel: this.userModel,
                                                             providerLocationId:
                                                                 document2[
                                                                     KProviderLocationId],

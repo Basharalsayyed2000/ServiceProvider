@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -218,6 +219,11 @@ class _ProviderLocation extends State<ProviderLocation> {
                               latitude: _latitude,
                               longgitude: _longitude,
                             ));
+                            DateTime currentPhoneDate = DateTime.now(); 
+
+                            Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
+                           _provider.pAddDate=myTimeStamp;
+
                             _provider.locationId= locId; 
                             _provider.country=_country;   
                             _provider.myFavorateList=[];

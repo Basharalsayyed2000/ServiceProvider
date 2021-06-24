@@ -93,7 +93,7 @@ class Store {
       KRequestLocationId :request.locationId,
       KRequestActionDate:request.actionDate,
       KRequestRatingComment:"",
-      KRequestRating:"",
+      KRequestRating:0,
       KRequestPublicId:"",
       KRequestId:"",
       KReqeustProviderRecommendedTime:"",  
@@ -170,6 +170,16 @@ class Store {
       KRequestRating:rating,
      });
 
+  }
+
+   changeProvider(String pId,String rid) async {
+     await _firestore
+        .collection(KRequestCollection)
+        .document(rid)
+        .updateData({
+      KRequestProviderId:pId,
+      KRequestIsProviderSeen:false,
+     });
   }
 
   

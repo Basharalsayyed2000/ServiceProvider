@@ -417,7 +417,7 @@ class _JobDetailsState extends State<JobDetails> {
                                   Navigator.of(context).pop();
                                 } else if (requestModel.isProviderSeen &&
                                     requestModel.isComplete) {
-                                  show(requestModel.requestId);
+                                  showRatingDialog(requestModel.requestId);
                                 }
                                 else if (requestModel.isProviderSeen &&
                                     requestModel.isComplete) {
@@ -534,7 +534,7 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  void show(String requestId) {
+  void showRatingDialog(String requestId) {
     showDialog(
         barrierDismissible: true,
         context: context,
@@ -558,3 +558,4 @@ class _JobDetailsState extends State<JobDetails> {
         });
   }
 }
+

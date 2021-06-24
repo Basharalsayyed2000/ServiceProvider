@@ -12,7 +12,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:service_provider/Models/Service.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
-import 'package:service_provider/MyTools/Function.dart';
 import 'package:service_provider/MyWidget/GalleryImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/MyWidget/MyCustomTextField.dart';
@@ -349,7 +348,6 @@ class _AdditionalInfo extends State<AdditionalInfo> {
           _provider.pProviderDescription = _description;
 
           _provider.pProvideService = _serviceId;
-          _provider.pAddDate = getDateNow();
           _provider.pphoneNumber = _phoneNumber;
           _provider.certificateImages = _galleryUrl;
           _provider.isMale = select;

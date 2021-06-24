@@ -12,8 +12,10 @@ class ProviderCard extends StatefulWidget {
   final ProviderModel providerModel;
   final String uId;
   final AddressModel address;
+  final bool fromSearch;
+  final String rid;
   final List<String> userFavorateProviderList;
-  ProviderCard({this.providerModel, this.uId, this.address,this.userFavorateProviderList});
+  ProviderCard({this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,7 +23,10 @@ class ProviderCard extends StatefulWidget {
         providerModel: providerModel,
         uId: uId, 
         address: address,
-        userFavorateProviderList: userFavorateProviderList);
+        userFavorateProviderList: userFavorateProviderList,
+        fromSearch:fromSearch,
+        rid: rid
+        );
   }
 }
 
@@ -32,8 +37,9 @@ class _ProviderCard extends State<ProviderCard> {
   UserStore userStore = new UserStore();
   final AddressModel address;
   final List<String> userFavorateProviderList;
-
-  _ProviderCard({this.providerModel, this.uId, this.address,this.userFavorateProviderList});
+  final bool fromSearch;
+  final String rid;
+  _ProviderCard({this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
    
   @override
   void initState() {
@@ -90,7 +96,7 @@ class _ProviderCard extends State<ProviderCard> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            (!fromSearch)?Container(
               margin: EdgeInsets.only(top: 4),
               child: Row(
                 children: [
@@ -134,7 +140,7 @@ class _ProviderCard extends State<ProviderCard> {
                   ),
                 ],
               ),
-            ),
+            ):Container(),
             Container(
               margin: EdgeInsets.only(top: 4),
               child: Row(
@@ -202,6 +208,8 @@ class _ProviderCard extends State<ProviderCard> {
             MaterialPageRoute(
                 builder: (context) => ServiceDetails(
                       providerModel:providerModel,  
+                       rid: rid,
+                      fromForword: true,
                     )
                 ),
           );

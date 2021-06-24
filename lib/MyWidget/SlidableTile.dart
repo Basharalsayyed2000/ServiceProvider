@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
+import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
+import 'package:service_provider/Screens/User/RecommendedProviders.dart';
+import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/store.dart';
 import 'dart:math' show cos, sqrt, asin;
 
@@ -20,8 +24,8 @@ class SlidableTile extends StatefulWidget {
   final bool enable;
   final String providerLocationId;
   final double providerTotalRate;
-  final int providerNumberOfRating;
-
+  final int providerNumberOfRating; 
+  final UserModel userModel;
   SlidableTile(
       {@required this.profile,
       @required this.userName,
@@ -33,6 +37,7 @@ class SlidableTile extends StatefulWidget {
       this.enable,
       this.providerLocationId,
       this.providerNumberOfRating,
+      this.userModel,
       this.providerTotalRate});
 
   @override
@@ -48,6 +53,7 @@ class SlidableTile extends StatefulWidget {
         enable: enable,
         providerLocationId: providerLocationId,
         providerNumberOfRating: providerNumberOfRating,
+        userModel: userModel,
         providerTotalRate: providerTotalRate);
   }
 }
@@ -67,6 +73,8 @@ class _SlidableTile extends State<SlidableTile> {
   final double providerTotalRate;
   final int providerNumberOfRating;
   Store store = new Store();
+  final UserModel userModel;
+  UserStore userStore = UserStore();
   _SlidableTile(
       {@required this.profile,
       @required this.userName,
@@ -78,7 +86,8 @@ class _SlidableTile extends State<SlidableTile> {
       this.enable,
       this.providerLocationId,
       this.providerNumberOfRating,
-      this.providerTotalRate});
+      this.providerTotalRate,
+      this.userModel});
 
   @override
   void initState() {
@@ -88,6 +97,85 @@ class _SlidableTile extends State<SlidableTile> {
       });
     }
     super.initState();
+  }
+
+  void showRatingDialod(String requestId) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) {
+          return RatingDialog(
+            title: 'Rating us',
+            message:
+                'We are glad to serve you!,Rating this service and tell others what you think.',
+            image: Image(
+              image: AssetImage("Assets/images/Logo.png"),
+              height: 100,
+            ),
+            initialRating: 2,
+            submitButton: 'Submit',
+            onSubmitted: (response) {
+              print('rating: ${response.rating}, comment: ${response.comment}');
+              store.addRating(requestId, response.comment, response.rating);
+              userStore.updateProviderRating(request.providerId,
+                  providerTotalRate, response.rating, providerNumberOfRating);
+            },
+          );
+        });
+  }
+
+  void viewRate(String requestId) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:<Widget>[
+                 Text("Thank You For Rating"),
+                 SizedBox(
+                   height:30
+                 ),
+                 Text("Your Comment",style: TextStyle(fontSize: 18,color: Colors.red,),), 
+                 
+                 SizedBox(
+                   height:20
+                 ),
+                 Text(request.commentRating,style: TextStyle(fontSize: 15,),), 
+                SizedBox(
+                   height:20
+                 ),
+                  Text("Your Rate",style: TextStyle(fontSize: 18,color: Colors.red,),), 
+                SizedBox(
+                   height:15
+                 ),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     Icon(Icons.star,color:(request.rating>=1)?Colors.yellow:Colors.grey ,),
+                     Icon(Icons.star,color:(request.rating>=2)?Colors.yellow:Colors.grey ,),
+                     Icon(Icons.star,color: (request.rating>=3)?Colors.yellow:Colors.grey ,),
+                     Icon(Icons.star,color: (request.rating>=4)?Colors.yellow:Colors.grey ,),
+                     Icon(Icons.star,color:(request.rating==5)?Colors.yellow:Colors.grey ,),
+                   ],
+                 ),
+                ],
+              ),  
+                actions: [
+                // ignore: deprecated_member_use
+                FlatButton(         
+                  textColor: Colors.black,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },       
+                  child: Text('Ok'),
+                ),
+               
+              ],
+            );
+        }
+    );
   }
 
   @override
@@ -150,11 +238,29 @@ class _SlidableTile extends State<SlidableTile> {
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               )
-                                            : Text(
-                                                'empty',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
+                                            : (status == "complete" &&
+                                                    forUser &&
+                                                    request.rating == 0)
+                                                ? Text(
+                                                    'rate us',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )
+                                                : (status == "complete" &&
+                                                        forUser &&
+                                                        request.rating != 0)
+                                                    ? Text(
+                                                        'view rate',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )
+                                                    : Text(
+                                                        'empty',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
                         color: (status == "Disactive")
                             ? Colors.blue
                             : (status == "Inprogress" && !forUser)
@@ -163,7 +269,9 @@ class _SlidableTile extends State<SlidableTile> {
                                     ? Colors.deepPurpleAccent
                                     : (status == "Idle")
                                         ? Colors.red
-                                        : Colors.grey,
+                                        : (status == "complete" && forUser)
+                                            ? Colors.pink
+                                            : Colors.grey,
                         onTap: () {
                           if (status == "Idle" && forUser) {
                             store.cancleJob(request.requestId);
@@ -185,6 +293,27 @@ class _SlidableTile extends State<SlidableTile> {
                             Fluttertoast.showToast(
                               msg: 'The job was Completed',
                             );
+                          } else if (status == "complete" && forUser) {
+                            if (request.rating == 0) {
+                              showRatingDialod(request.requestId);
+                            } else {
+                              viewRate(request.requestId);
+                            }
+                          } else if (status == "Rejected" && forUser) {
+                               Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RecommendedProviders(
+                                          serviceId: request.serviceId,
+                                          userFavorateProviders:
+                                              this.userModel.favorateProvider,
+                                          myCountry: userModel.ucountry,
+                                          showOnlyMyCountry: userModel
+                                              .showOnlyProviderInMyCountry,
+                                              rid: request.requestId,
+                                              
+                                        )),
+                              );
                           }
                         },
                       )
