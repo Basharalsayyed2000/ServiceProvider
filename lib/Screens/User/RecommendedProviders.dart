@@ -107,20 +107,20 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                       icon: Icon(Icons.sort),
                       value: _value,
                       items: <DropdownMenuItem<String>>[
-                        new DropdownMenuItem(
-                          child: new Text('Gender'),
+                        DropdownMenuItem(
+                          child: Text('Gender'),
                           value: 'Gender',
                         ),
-                        new DropdownMenuItem(
-                            child: new Text('Rating'), value: 'Rating'),
-                        new DropdownMenuItem(
-                            child: new Text('Added Date'), value: 'Added Date'),
-                        new DropdownMenuItem(
-                            child: new Text('A -> z'), value: 'A -> z'),
-                        new DropdownMenuItem(
-                            child: new Text('Verified'), value: 'Verified'),
-                        new DropdownMenuItem(
-                            child: new Text('Price'), value: 'Price'),
+                        DropdownMenuItem(
+                            child: Text('Rating'), value: 'Rating'),
+                        DropdownMenuItem(
+                            child: Text('Added Date'), value: 'Added Date'),
+                        DropdownMenuItem(
+                            child: Text('A -> z'), value: 'A -> z'),
+                        DropdownMenuItem(
+                            child: Text('Verified'), value: 'Verified'),
+                        DropdownMenuItem(
+                            child: Text('Price'), value: 'Price'),
                       ],
                       onChanged: (String value) {
                         print(value);
@@ -262,12 +262,13 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ServiceDetails(
-                                                      providerModel: _providers
-                                                          .elementAt(index),
-                                                         
-                                                    )),
+                                              builder: (context) =>
+                                                  ServiceDetails(
+                                                    providerModel: _providers
+                                                      .elementAt(index),
+                                                      
+                                                  )
+                                            ),
                                           );
                                         },        
                                                     ),

@@ -151,7 +151,7 @@ class _ProviderCard extends State<ProviderCard> {
                     size: 20,
                   ),
                   Text(
-                    "${providerModel.rate}",
+                    "${(providerModel.rate.toString().length > 3)? providerModel.rate.toString().substring(0, 4) : providerModel.rate}",
                     style: TextStyle(fontSize: 13, color: KprimaryColorDark),
                   ),
                   SizedBox(

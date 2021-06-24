@@ -125,7 +125,7 @@ class _SearchPageState extends State<SearchPage> {
           centerTitle: true,
           backgroundColor: KprimaryColor,
         ),
-        body: ListView(children: <Widget>[
+        body: Column(children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
@@ -139,22 +139,51 @@ class _SearchPageState extends State<SearchPage> {
                       borderRadius: BorderRadius.circular(4.0))),
             ),
           ),
-          SizedBox(height: 10.0),
-          (tempSearchStore.isNotEmpty)?GridView.count(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              crossAxisCount: 1,
-              crossAxisSpacing: 2.0,
-              mainAxisSpacing: 2.0,
-              primary: false,
-              shrinkWrap: true,
-              children: tempSearchStore.map((ProviderModel element) {
-                return ProviderCard(
-                  providerModel: element,
-                  fromSearch: true,
-                  uId: uid,
-                  userFavorateProviderList: userFavorateProviders,
+          SizedBox(height: 12.0),
+          // (tempSearchStore.isNotEmpty)?GridView.count(
+          //     padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          //     crossAxisCount: 1,
+          //     crossAxisSpacing: 2.0,
+          //     mainAxisSpacing: 2.0,
+          //     primary: false,
+          //     shrinkWrap: true,
+          //     // childAspectRatio: 1,
+          //     children: tempSearchStore.map((ProviderModel element) {
+          //       return ProviderCard(
+          //         providerModel: element,
+          //         fromSearch: true,
+          //         uId: uid,
+          //         userFavorateProviderList: userFavorateProviders,
+          //       );
+          //     }).toList()):Container()
+
+
+          (tempSearchStore.isNotEmpty)?Expanded(
+            child: ListView.separated(
+              itemCount: tempSearchStore.length,
+              itemBuilder: (context, index){
+                return Container(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: ProviderCard(
+                    providerModel: tempSearchStore[index],
+                    fromSearch: true,
+                    uId: uid,
+                    userFavorateProviderList: userFavorateProviders,
+                  ),
                 );
-              }).toList()):Container()
+              },
+
+              separatorBuilder: (context, index){
+                return Divider(
+                  color: KprimaryColorDark,
+                  indent: 10,
+                  endIndent: 10,
+                  height: 15,
+                );
+              },
+            ),
+          ):Container(child: Text("EMPTY"),)
+
         ])
         );
   }
