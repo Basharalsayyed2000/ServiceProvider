@@ -102,6 +102,7 @@ class _SettingsState extends State<Settings> {
 
            SizedBox(height: 20,),
 
+            if(!isUser)
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
