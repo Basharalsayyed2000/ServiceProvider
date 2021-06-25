@@ -7,6 +7,7 @@ import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/Models/user.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/CustomRatingDialog.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/User/RecommendedProviders.dart';
 import 'package:service_provider/Services/UserStore.dart';
@@ -27,26 +28,26 @@ class SlidableTile extends StatefulWidget {
   final int providerNumberOfRating;
   final UserModel userModel;
   final String providerPFP;
-  SlidableTile(
-      {@required this.profile,
-      @required this.userName,
-      @required this.status,
-      @required this.hasAction,
-      @required this.forUser,
-      @required this.request,
-      this.providerId,
-      this.enable,
-      this.providerLocationId,
-      this.providerNumberOfRating,
-      this.userModel,
-      this.providerTotalRate,
-      this.providerPFP,
-    });
+  SlidableTile({
+    @required this.profile,
+    @required this.userName,
+    @required this.status,
+    @required this.hasAction,
+    @required this.forUser,
+    @required this.request,
+    this.providerId,
+    this.enable,
+    this.providerLocationId,
+    this.providerNumberOfRating,
+    this.userModel,
+    this.providerTotalRate,
+    this.providerPFP,
+  });
 
   @override
   State<StatefulWidget> createState() {
     return _SlidableTile(
-        providerPFP: providerPFP,
+        providerPFP: (providerPFP) ?? providerPFP,
         profile: profile,
         userName: userName,
         status: status,
@@ -80,21 +81,21 @@ class _SlidableTile extends State<SlidableTile> {
   final UserModel userModel;
   UserStore userStore = UserStore();
   final String providerPFP;
-  _SlidableTile(
-      {@required this.profile,
-      @required this.userName,
-      @required this.status,
-      @required this.hasAction,
-      @required this.forUser,
-      @required this.request,
-      this.providerId,
-      this.enable,
-      this.providerLocationId,
-      this.providerNumberOfRating,
-      this.providerTotalRate,
-      this.userModel,
-      this.providerPFP,
-    });
+  _SlidableTile({
+    @required this.profile,
+    @required this.userName,
+    @required this.status,
+    @required this.hasAction,
+    @required this.forUser,
+    @required this.request,
+    this.providerId,
+    this.enable,
+    this.providerLocationId,
+    this.providerNumberOfRating,
+    this.providerTotalRate,
+    this.userModel,
+    this.providerPFP,
+  });
 
   @override
   void initState() {
@@ -111,13 +112,13 @@ class _SlidableTile extends State<SlidableTile> {
         barrierDismissible: true,
         context: context,
         builder: (context) {
-          return RatingDialog(
+          return CustomRatingDialog(
             title: 'Rating us',
             message:
                 'We are glad to serve you!,Rating this service and tell others what you think.',
-            image: Image(
-              image: NetworkImage(providerPFP),
-              height: 100,
+            image: CircleAvatar(
+              radius: 80,
+              backgroundImage: NetworkImage(providerPFP),
             ),
             initialRating: 2,
             submitButton: 'Submit',
@@ -296,20 +297,20 @@ class _SlidableTile extends State<SlidableTile> {
                                                                 Colors.white),
                                                       )
                                                     : (status == "complete" &&
-                                                        !forUser &&
-                                                        request.rating != 0)
-                                                    ? Text(
-                                                        'view rate',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      )
-                                                    : Text(
-                                                        'empty',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                                            !forUser &&
+                                                            request.rating != 0)
+                                                        ? Text(
+                                                            'view rate',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          )
+                                                        : Text(
+                                                            'empty',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
                         color: (status == "Disactive")
                             ? Colors.blue
                             : (status == "Inprogress" && !forUser)
@@ -348,10 +349,11 @@ class _SlidableTile extends State<SlidableTile> {
                             } else {
                               viewRate(request.requestId);
                             }
-                          } else if (status == "complete" && !forUser && request.rating!=0) {
-                              viewRate(request.requestId);
-                          }
-                           else if (status == "Rejected" && forUser) {
+                          } else if (status == "complete" &&
+                              !forUser &&
+                              request.rating != 0) {
+                            viewRate(request.requestId);
+                          } else if (status == "Rejected" && forUser) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(

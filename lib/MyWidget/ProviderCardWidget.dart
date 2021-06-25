@@ -42,11 +42,13 @@ class _ProviderCard extends State<ProviderCard> {
   final List<String> userFavorateProviderList;
   final bool fromSearch;
   final String rid;
+  double ratecalc;
   _ProviderCard({this.fromForword,this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
    
   @override
   void initState() {
-     
+   
+    ratecalc=this.providerModel.rate/this.providerModel.numberOfRequestRated;
     super.initState();
   } 
 
@@ -122,7 +124,7 @@ class _ProviderCard extends State<ProviderCard> {
                               title: 
                                   providerModel.pName,
                               snippet: "⭐" +
-                                  "${(providerModel.rate.toString().length > 3)? providerModel.rate.toString().substring(0, 4) : providerModel.rate}",   
+                                  "${(ratecalc.toString().length > 3)? ratecalc.toString().substring(0, 4) : ratecalc}",   
                               onTap: () {
                               },        
                             ), 
@@ -152,7 +154,7 @@ class _ProviderCard extends State<ProviderCard> {
                     size: 20,
                   ),
                   Text(
-                    "${(providerModel.rate.toString().length > 3)? providerModel.rate.toString().substring(0, 4) : providerModel.rate}",
+                    "${(ratecalc.toString().length > 3)? ratecalc.toString().substring(0, 4) : ratecalc}",
                     style: TextStyle(fontSize: 13, color: KprimaryColorDark),
                   ),
                   SizedBox(
@@ -211,6 +213,7 @@ class _ProviderCard extends State<ProviderCard> {
                       providerModel:providerModel,  
                        rid: rid,
                       fromForword: fromForword,
+                      fromSearch: fromSearch,
                       address: address,
                     )
                 ),

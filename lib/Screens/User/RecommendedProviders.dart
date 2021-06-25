@@ -274,6 +274,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                                         fromForword:
                                                             fromForword,
                                                         rid: rid,
+                                                        fromSearch: false,
                                                       )),
                                             );
                                           },
