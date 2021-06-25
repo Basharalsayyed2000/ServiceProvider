@@ -17,12 +17,14 @@ class ServiceDetails extends StatefulWidget {
   final AddressModel address;
   final ProviderModel providerModel;
   final bool fromForword;
+  final bool fromSearch;
   final String rid;
   ServiceDetails({
     this.providerModel,
     this.fromForword,
     this.rid,
     this.address,
+    this.fromSearch
   });
   @override
   State<StatefulWidget> createState() {
@@ -30,6 +32,7 @@ class ServiceDetails extends StatefulWidget {
         providerModel:providerModel,
         fromForword:fromForword,
         rid: rid,
+        fromSearch: fromSearch,
         address: address,
     );
   }
@@ -39,15 +42,24 @@ class _ServiceDetails extends State<ServiceDetails> {
   final ProviderModel providerModel;
   final bool fromForword;
   final String rid;
-    final AddressModel address;
+  final bool fromSearch;
+  final AddressModel address;
   TextEditingController _priceController;
   Store store=new Store();
+  double ratecalc;
   _ServiceDetails({
     this.providerModel,
     this.fromForword,
     this.rid,
+    this.fromSearch,
     this.address,
   });
+  @override
+  void initState() {
+        ratecalc=this.providerModel.rate/this.providerModel.numberOfRequestRated;
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +100,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                             ),
                           ),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width / 2.4,
+                            width: MediaQuery.of(context).size.width / 1.9,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -101,7 +113,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         height: 1.3,
-                                        fontSize: 19,
+                                        fontSize: 17,
                                       ),
                                     ),
                                     providerModel.isMale?Icon(Icons.male, color: Colors.blueAccent,):Icon(Icons.female, color: Colors.purpleAccent),
@@ -111,21 +123,24 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       EdgeInsets.only(top: Kminimumpadding * 4),
                                 ),
                                 Container(
-                                  padding: EdgeInsets.only(top: 3, bottom: 3),
+                                  padding: EdgeInsets.only(top: 3, bottom: 5),
                                   child: Text(
                                     "${providerModel.pEmail}",
                                     style: TextStyle(
                                       color: Colors.blueGrey,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 10,
+                                      fontSize: 13,
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "Contact: ${providerModel.pphoneNumber}",
-                                  style: TextStyle(
-                                    height: 1.3,
-                                    fontSize: 12,
+                                Container(
+                                 padding: EdgeInsets.only( bottom: 3),                              
+                                  child: Text(
+                                    "${providerModel.pphoneNumber}",
+                                    style: TextStyle(
+                                      height: 1.3,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -136,7 +151,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       size: 20,
                                     ),
                                     Text(
-                                      "${providerModel.rate.toString().substring(0,3)}",
+                                      "${ratecalc.toString().substring(0,3)}",
                                       style: TextStyle(
                                           fontSize: 13,
                                           color: KprimaryColorDark),
@@ -150,7 +165,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                       ),
                     ),
                     Divider(
-                      height: 35,
+                      height: 30,
                       thickness: 2,
                       indent: 5,
                       endIndent: 5,
@@ -219,7 +234,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                           ),
                           color: KprimaryColor,
                           onPressed: (){
-                            showDialog(context: context, builder: (context){
+                           (!fromSearch)? showDialog(context: context, builder: (context){
                               return MapDialog(
                                 markers: {
                                   Marker(
@@ -239,7 +254,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                   )
                                 },
                               );
-                            });
+                            }):Column();
                           },
                         ),
                       ),

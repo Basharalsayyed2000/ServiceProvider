@@ -356,6 +356,7 @@ class _MyBooksState extends State<MyBooks> {
                                                       .elementAt(index),
                                                   providerTotalRate: document2[
                                                       KProviderTotalRate],
+                                                  providerPFP: document2[KProviderImageUrl],
                                                   providerNumberOfRating: document2[
                                                       KProviderNumberOfRatedRequest]);
                                             } else {

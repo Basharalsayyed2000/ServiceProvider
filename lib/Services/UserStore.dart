@@ -83,7 +83,8 @@ class UserStore {
       KProviderIsMale: provider.isMale,
       KImageCartificateUrlList: provider.certificateImages,
       KProviderPrice: provider.price,
-      KproviderCountry: provider.country
+      KproviderCountry: provider.country,
+      KProviderSearchKey:provider.pName.toUpperCase().substring(0,1),
     });
   }
 
@@ -180,19 +181,14 @@ class UserStore {
 
   updateProviderRating(
       String providerId, double lastrate, int current, int total) async {
-    var newrate;
-
     total = total + 1;
     lastrate = lastrate + current;
-    newrate = lastrate / total;
-    print("last no of rating $total");
-    print("provider rating $lastrate");
-    print("request rating $current");
+ 
     await _firestore
         .collection(KProviderCollection)
         .document(providerId)
         .updateData({
-      KProviderTotalRate: newrate,
+      KProviderTotalRate: lastrate,
       KProviderNumberOfRatedRequest: total,
     });
   }
