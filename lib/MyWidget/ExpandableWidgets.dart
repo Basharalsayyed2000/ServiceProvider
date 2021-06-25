@@ -31,63 +31,89 @@ class _ExpandableParent extends State<ExpandableParent>{
   @override
   Widget build(BuildContext context){
     length = (children.length < 1)? 1 : children.length+1;
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("ExpanstionParent"),
-          centerTitle: true,
-        ),
-        body: Container(
-          margin: EdgeInsets.symmetric(vertical: (open)? 10 : 1),
-          child: Card(
-            elevation: 0.5,
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: (!open)?1 : length,
-              separatorBuilder: (context, index){
-                print(index);
-                if(index > 0 && index < length)
-                  return Divider(
-                    height: 0,
-                    indent: 15,
-                    endIndent: 15,
-                    thickness: 1.5,
-                  );
- 
-                return Divider(
-                  height: 8,
- 
-                  thickness: 1,
-                );
-              },
-              itemBuilder: (context, index){
-                if(index == 0){
-                  return ListTile(
-                    leading: Text(
-                      "$title",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    trailing: Transform.rotate(
-                      angle: (open == true)? 270 * math.pi / 180 : 180 * math.pi / 180,
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios, size: 20,),
-                        onPressed: () {
-                          toggleOpen();
-                        }
-                      ),
-                    )
-                  );
-                }else{
-                  return children[index - 1];
-                }
-              }
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: (open)? 10 : 1),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: (open)?[
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 0.0), //(x,y)
+              blurRadius: 0.2,
             ),
-          )
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.0), //(x,y)
+              blurRadius: 0.2,
+            ),
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(1.0, 0.0), //(x,y)
+              blurRadius: 0.2,
+            ),
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(1.0, 1.0), //(x,y)
+              blurRadius: 0.2,
+            ),
+          ]:
+          [],
+          
+          // border: Border(bottom: BorderSide(color: Colors.blueGrey)),
+          color: Colors.white
         ),
-      ),
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: (!open)?1 : length,
+          separatorBuilder: (context, index){
+            print(index);
+            if(index > 0 && index < length)
+              return Divider(
+                height: 0,
+                indent: 15,
+                endIndent: 15,
+                thickness: 1.5,
+              );
+
+            return Divider(
+              height: 8,
+
+              thickness: 1,
+            );
+          },
+          itemBuilder: (context, index){
+            if(index == 0){
+              return ListTile(
+                onTap: (){
+                  toggleOpen();
+                },
+                leading: Text(
+                  "$title",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+                trailing: Transform.rotate(
+                  angle: (open == true)? 270 * math.pi / 180 : 180 * math.pi / 180,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back_ios, size: 20,),
+                    onPressed: () {
+                      toggleOpen();
+                    }
+                  ),
+                )
+              );
+            }else{
+              return Container(
+                child: children[index - 1]
+              );
+            }
+          }
+        ),
+      ) 
+      
     );
   }
  

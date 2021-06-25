@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/ExpandableWidgets.dart';
 import 'package:service_provider/MyWidget/PasswordVerificationDialog.dart';
 import 'package:service_provider/Services/UserStore.dart';
 
@@ -78,8 +79,68 @@ class _SettingsState extends State<Settings> {
            ),
            Divider(height: 20,thickness: 1,),
            SizedBox(height: 10,),
-            buildAccountOption(context,"Change Password"),
-            buildAccountOption(context,"Change Email"),
+           ExpandableParent(
+             title: "Security",
+             children: [
+              buildAccountOption(context,"Change Email"),
+              buildAccountOption(context,"Change Password"),
+
+              ExpandableTile(
+                leading: Text("Change Email",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
+                onTap: (){
+                  DialogHelper.exit(context,true,false);
+                }
+              ),
+              ExpandableTile(
+                leading: Text("Change Password",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
+                onTap: (){
+                  DialogHelper.exit(context,false,false);
+                }
+              )
+             ],
+           ),
+
+           SizedBox(height: 20,),
+
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(0.0, 0.0), //(x,y)
+                    blurRadius: 0.2,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(0.0, 1.0), //(x,y)
+                    blurRadius: 0.2,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(1.0, 0.0), //(x,y)
+                    blurRadius: 0.2,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(1.0, 1.0), //(x,y)
+                    blurRadius: 0.2,
+                  ),
+                ]
+              ),
+              child: ExpandableParent(
+                title: "Details",
+                children: [
+                  ExpandableTile(
+                    leading: Text("Change Description",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
+                    onTap: (){}
+                  ),
+                ],
+              ),
+            ),
+
+           SizedBox(height: 20,),
+            
             buildAccountOption(context,(isUser)?"Privacy and Security":""),
             SizedBox(height: 40,),
             Row(
@@ -139,7 +200,7 @@ class _SettingsState extends State<Settings> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
-            Icon(Icons.arrow_forward_ios,color: Colors.grey,)
+            if(title != "Change Password" && title != "Change Email")Icon(Icons.arrow_forward_ios,color: Colors.grey,)
           ],
         ),
       ),
