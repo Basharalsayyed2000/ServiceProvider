@@ -5,6 +5,7 @@ import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
+import 'package:service_provider/MyWidget/ProfileTextFields.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Services/store.dart';
@@ -32,7 +33,8 @@ class ServiceDetails extends StatefulWidget {
 class _ServiceDetails extends State<ServiceDetails> {
   final ProviderModel providerModel;
   final bool fromForword;
-    final String rid;
+  final String rid;
+  TextEditingController _priceController;
   Store store=new Store();
   _ServiceDetails({
     this.providerModel,
@@ -84,13 +86,19 @@ class _ServiceDetails extends State<ServiceDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  child: Text(
-                                    "${userDocument[KServiceName]}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.3,
-                                      fontSize: 19,
+                                  child: Row(
+                                    children: [
+                                      providerModel.isvarified? Icon(Icons.verified_rounded, color: Colors.blue,size: 22,):SizedBox(),
+                                      Text(
+                                      "${providerModel.pName}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.3,
+                                        fontSize: 19,
+                                      ),
                                     ),
+                                    providerModel.isMale?Icon(Icons.male, color: Colors.blueAccent,):Icon(Icons.female, color: Colors.purpleAccent),
+                                    ],
                                   ),
                                   padding:
                                       EdgeInsets.only(top: Kminimumpadding * 4),
@@ -106,22 +114,12 @@ class _ServiceDetails extends State<ServiceDetails> {
                                     ),
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "By: ${providerModel.pName}",
-                                      style: TextStyle(
-                                        height: 1.3,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    (providerModel.isvarified)
-                                        ? Icon(
-                                            Icons.verified,
-                                            color: Colors.blue,
-                                          )
-                                        : Container(),
-                                  ],
+                                Text(
+                                  "Contact: ${providerModel.pphoneNumber}",
+                                  style: TextStyle(
+                                    height: 1.3,
+                                    fontSize: 12,
+                                  ),
                                 ),
                                 Row(
                                   children: [
@@ -131,7 +129,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       size: 20,
                                     ),
                                     Text(
-                                      "${providerModel.rate}",
+                                      "${providerModel.rate.toString().substring(0,4)}",
                                       style: TextStyle(
                                           fontSize: 13,
                                           color: KprimaryColorDark),
@@ -144,11 +142,36 @@ class _ServiceDetails extends State<ServiceDetails> {
                         ],
                       ),
                     ),
-                    const Divider(
+                    Divider(
                       height: 35,
                       thickness: 2,
                       indent: 5,
                       endIndent: 5,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          child: Text(
+                            "Price: ",
+                            style: TextStyle(
+                              fontSize: 19, 
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "${providerModel.price}\$",
+                            style: TextStyle(
+                              fontSize: 16, 
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12,
                     ),
                     Container(
                       padding: EdgeInsets.only(bottom: Kminimumpadding * 2),
@@ -159,7 +182,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.20,
+                      height: MediaQuery.of(context).size.height * 0.17,
                       width: MediaQuery.of(context).size.width,
                       child: ListView(children: [
                         Container(
@@ -174,8 +197,28 @@ class _ServiceDetails extends State<ServiceDetails> {
                         ),
                       ]),
                     ),
+                    
+                    Center(
+                      child: Container(
+                        // margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/4),
+                        height: 30,
+                        width: /*(MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)? MediaQuery.of(context).size.width/5 :*/ MediaQuery.of(context).size.width/2,
+                        child: RaisedButton(
+                          child: Text(
+                            "View Location",
+                            style: TextStyle(
+                              color: Colors.white
+                            ),
+                          ),
+                          color: KprimaryColor,
+                          onPressed: (){
+
+                          },
+                        ),
+                      ),
+                    ),
                     Container(
-                      padding: EdgeInsets.only(top: Kminimumpadding * 7, bottom: 30),
+                      padding: EdgeInsets.only(top: Kminimumpadding * 3.5, bottom: 15),
                       child: Text(
                         "Service Gallery",
                         style: TextStyle(

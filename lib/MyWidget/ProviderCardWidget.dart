@@ -88,7 +88,7 @@ class _ProviderCard extends State<ProviderCard> {
                 (providerModel.isMale)
                     ? Icons.male_rounded
                     : Icons.female_rounded,
-                color: KsecondaryColor,
+                color: (providerModel.isMale)? Colors.blueAccent : Colors.purpleAccent,
               ),
             ],
           ),
