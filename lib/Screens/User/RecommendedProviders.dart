@@ -266,6 +266,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       ServiceDetails(
+                                                        address: addressModel,
                                                         providerModel:
                                                             _providers
                                                                 .elementAt(

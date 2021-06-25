@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:service_provider/Models/Address.dart';
 import 'package:service_provider/Models/provider.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
+import 'package:service_provider/MyWidget/MapDialog.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
-import 'package:service_provider/MyWidget/ProfileTextFields.dart';
 import 'package:service_provider/Screens/Request/ServiceRequest.dart';
 import 'package:service_provider/Screens/User/UserHome.dart';
 import 'package:service_provider/Services/store.dart';
 
 class ServiceDetails extends StatefulWidget {
   static String id = "serviceDetails";
+  final AddressModel address;
   final ProviderModel providerModel;
   final bool fromForword;
   final String rid;
@@ -19,13 +22,15 @@ class ServiceDetails extends StatefulWidget {
     this.providerModel,
     this.fromForword,
     this.rid,
+    this.address,
   });
   @override
   State<StatefulWidget> createState() {
     return _ServiceDetails(
         providerModel:providerModel,
         fromForword:fromForword,
-        rid: rid
+        rid: rid,
+        address: address,
     );
   }
 }
@@ -34,12 +39,14 @@ class _ServiceDetails extends State<ServiceDetails> {
   final ProviderModel providerModel;
   final bool fromForword;
   final String rid;
+    final AddressModel address;
   TextEditingController _priceController;
   Store store=new Store();
   _ServiceDetails({
     this.providerModel,
     this.fromForword,
-    this.rid
+    this.rid,
+    this.address,
   });
   @override
   Widget build(BuildContext context) {
@@ -129,7 +136,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                                       size: 20,
                                     ),
                                     Text(
-                                      "${providerModel.rate.toString().substring(0,4)}",
+                                      "${providerModel.rate.toString().substring(0,3)}",
                                       style: TextStyle(
                                           fontSize: 13,
                                           color: KprimaryColorDark),
@@ -212,7 +219,27 @@ class _ServiceDetails extends State<ServiceDetails> {
                           ),
                           color: KprimaryColor,
                           onPressed: (){
-
+                            showDialog(context: context, builder: (context){
+                              return MapDialog(
+                                markers: {
+                                  Marker(
+                                    markerId: MarkerId(
+                                        providerModel.pId),
+                                    position: LatLng(address.latitude,
+                                        address.longgitude),
+                                    icon: BitmapDescriptor
+                                        .defaultMarkerWithHue(200),
+                                    infoWindow: InfoWindow(
+                                      title: providerModel.pName,
+                                      snippet: "⭐" +
+                                          "${(providerModel.rate.toString().length > 3)? providerModel.rate.toString().substring(0, 4) : providerModel.rate}",   
+                                      onTap: () {
+                                      },        
+                                    ), 
+                                  )
+                                },
+                              );
+                            });
                           },
                         ),
                       ),

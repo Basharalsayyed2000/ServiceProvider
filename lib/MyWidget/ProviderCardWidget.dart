@@ -122,9 +122,7 @@ class _ProviderCard extends State<ProviderCard> {
                               title: 
                                   providerModel.pName,
                               snippet: "⭐" +
-                                  providerModel
-                                      .rate
-                                      .toString(),   
+                                  "${(providerModel.rate.toString().length > 3)? providerModel.rate.toString().substring(0, 4) : providerModel.rate}",   
                               onTap: () {
                               },        
                             ), 
@@ -213,6 +211,7 @@ class _ProviderCard extends State<ProviderCard> {
                       providerModel:providerModel,  
                        rid: rid,
                       fromForword: fromForword,
+                      address: address,
                     )
                 ),
           );

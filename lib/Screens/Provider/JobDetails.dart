@@ -48,7 +48,7 @@ class _JobDetailsState extends State<JobDetails> {
                         bottomRight: Radius.circular(20)),
                     color: KprimaryColor),
                 padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                child: Column(
+                child: ListView(
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 5),
@@ -390,6 +390,7 @@ class _JobDetailsState extends State<JobDetails> {
         context: context,
         builder: (context) {
           return RatingDialog(
+            ratingColor: KsecondaryColor,
             title: 'Rating us',
             message:
                 'We are glad to serve you!,Rating this service and tell others what you think.',

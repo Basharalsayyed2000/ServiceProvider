@@ -294,7 +294,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                                       Container(
                                         margin: EdgeInsets.only(bottom: 5),
                                         child: Text(
-                                          "⭐⭐⭐⭐🌟",
+                                          "⭐${providerDocument[KProviderTotalRate].toString().substring(0,3)}",
                                           style: TextStyle(fontSize: 14, color: KprimaryColorDark)
                                         ),
                                       ),

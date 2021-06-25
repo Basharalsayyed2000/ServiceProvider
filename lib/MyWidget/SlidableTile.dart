@@ -26,6 +26,7 @@ class SlidableTile extends StatefulWidget {
   final double providerTotalRate;
   final int providerNumberOfRating;
   final UserModel userModel;
+  final String providerPFP;
   SlidableTile(
       {@required this.profile,
       @required this.userName,
@@ -38,11 +39,14 @@ class SlidableTile extends StatefulWidget {
       this.providerLocationId,
       this.providerNumberOfRating,
       this.userModel,
-      this.providerTotalRate});
+      this.providerTotalRate,
+      this.providerPFP,
+    });
 
   @override
   State<StatefulWidget> createState() {
     return _SlidableTile(
+        providerPFP: providerPFP,
         profile: profile,
         userName: userName,
         status: status,
@@ -75,6 +79,7 @@ class _SlidableTile extends State<SlidableTile> {
   Store store = new Store();
   final UserModel userModel;
   UserStore userStore = UserStore();
+  final String providerPFP;
   _SlidableTile(
       {@required this.profile,
       @required this.userName,
@@ -87,7 +92,9 @@ class _SlidableTile extends State<SlidableTile> {
       this.providerLocationId,
       this.providerNumberOfRating,
       this.providerTotalRate,
-      this.userModel});
+      this.userModel,
+      this.providerPFP,
+    });
 
   @override
   void initState() {
@@ -109,7 +116,7 @@ class _SlidableTile extends State<SlidableTile> {
             message:
                 'We are glad to serve you!,Rating this service and tell others what you think.',
             image: Image(
-              image: AssetImage("Assets/images/Logo.png"),
+              image: NetworkImage(providerPFP),
               height: 100,
             ),
             initialRating: 2,

@@ -145,7 +145,7 @@ class _HomeProviderState extends State<HomeProvider> {
                 if (snapshot.connectionState == ConnectionState.waiting)
                   return new Center(child: new CircularProgressIndicator());
                 if (!snapshot.hasData) {
-                  return Text("Loading");
+                  return Center(child: Text("Loading"));
                 }
                 var providerDocument = snapshot.data;
                 return (pageType == "Available")
@@ -260,23 +260,27 @@ class _HomeProviderState extends State<HomeProvider> {
                                       },
                                     ),
                                   )
-                                : Center(
-                                    child: Text(
-                                      'There is no Available Job',
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          color: Colors.orange,
-                                          fontWeight: FontWeight.bold),
+                                : Expanded(
+                                    child: Center(
+                                      child: Text(
+                                        'There is no Available Job',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   );
                           } else {
-                            Center(
-                              child: Text(
-                                'There is no Available Job',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  'There is no Available Job',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.orange,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             );
                           }
@@ -397,23 +401,27 @@ class _HomeProviderState extends State<HomeProvider> {
                                           },
                                         ),
                                       )
-                                    : Center(
-                                        child: Text(
-                                          'There is no job Inprogress',
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.bold),
+                                    : Expanded(
+                                      child: Center(
+                                          child: Text(
+                                            'There is no job Inprogress',
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                color: Colors.orange,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
-                                      );
+                                    );
                               } else {
-                                Center(
-                                  child: Text(
-                                    'There is no job Inprogress',
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      'There is no job Inprogress',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 );
                               }
