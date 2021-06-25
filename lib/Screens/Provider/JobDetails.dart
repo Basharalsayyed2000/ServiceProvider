@@ -22,7 +22,7 @@ class _JobDetailsState extends State<JobDetails> {
   double _padding;
   NeededData neededData;
   Store store = new Store();
-  UserStore user=new UserStore();
+  UserStore user = new UserStore();
   RequestModel requestModel;
   @override
   Widget build(BuildContext context) {
@@ -275,7 +275,6 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ),
             ),
-
             (!neededData.forUser)
                 ? Expanded(
                     flex: 2,
@@ -292,8 +291,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     child: CustomButton(
                                         color: Colors.green,
                                         onPressed: () async {
-                                          if (!requestModel.isProviderSeen
-                                             ) {
+                                          if (!requestModel.isProviderSeen) {
                                             await store.acceptJob(
                                                 requestModel.requestId);
                                             Navigator.of(context).pop();
@@ -306,16 +304,13 @@ class _JobDetailsState extends State<JobDetails> {
                                           }
                                           Fluttertoast.showToast(
                                             msg: ((!requestModel
-                                                            .isProviderSeen 
-                                                      ) ||
+                                                        .isProviderSeen) ||
                                                     (!requestModel
                                                             .isProviderSeen &&
-                                                      
                                                         neededData.enable))
                                                 ? 'The job was Accepted'
                                                 : (!requestModel
                                                             .isProviderSeen &&
-                                                       
                                                         !neededData.enable)
                                                     ? 'you must wait ${neededData.username} to accept'
                                                     : (requestModel
@@ -347,8 +342,7 @@ class _JobDetailsState extends State<JobDetails> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 )),
-                          (
-                                  !requestModel.isProviderSeen)
+                          (!requestModel.isProviderSeen)
                               ? Expanded(
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -383,151 +377,7 @@ class _JobDetailsState extends State<JobDetails> {
                       ),
                     ),
                   )
-                : (!(requestModel.isProviderSeen &&
-                        requestModel.isAccepted &&
-                        requestModel.isActive &&
-                        !requestModel.isComplete))
-                    ? Expanded(
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: _padding * 7),
-                          child: CustomButton(
-                              color: (requestModel.isActive &&
-                                      !requestModel.isProviderSeen)
-                                  ? Colors.red
-                                  : (!requestModel.isActive)
-                                      ? Colors.blue
-                                      : (requestModel.isProviderSeen &&
-                                              !requestModel.isAccepted)
-                                          ? Colors.deepPurpleAccent
-                                          : (requestModel.isComplete)
-                                              ? Colors.orange
-                                              : Colors.blueAccent,
-                              onPressed: () async {
-                                if (requestModel.isActive &&
-                                    !requestModel.isProviderSeen) {
-                                  await store.cancleJob(requestModel.requestId);
-                                  Navigator.of(context).pop();
-                                } else if (!requestModel.isActive) {
-                                  await store
-                                      .activateJob(requestModel.requestId);
-                                  Navigator.of(context).pop();
-                                } else if (requestModel.isProviderSeen &&
-                                    !requestModel.isAccepted) {
-                                  Navigator.of(context).pop();
-                                } else if (requestModel.isProviderSeen &&
-                                    requestModel.isComplete) {
-                                  showRatingDialog(requestModel.requestId);
-                                }
-                                else if (requestModel.isProviderSeen &&
-                                    requestModel.isComplete) {
-                                 // show(requestModel.requestId);
-                                 print(requestModel.rating);
-                                }
-
-
-                                (!requestModel.isComplete)
-                                    ? Fluttertoast.showToast(
-                                        msg: (requestModel.isActive &&
-                                                !requestModel.isProviderSeen)
-                                            ? 'The job was cancled'
-                                            : (!requestModel.isActive)
-                                                ? 'The job was Activated'
-                                                : '',
-                                      )
-                                    : Center();
-                              },
-                              textValue: (requestModel.isActive &&
-                                      !requestModel.isProviderSeen)
-                                  ? 'cancle'
-                                  : (!requestModel.isActive)
-                                      ? 'Activate'
-                                      : (requestModel.isProviderSeen &&
-                                              !requestModel.isAccepted)
-                                          ? 'forword'
-                                          : (requestModel.isProviderSeen &&
-                                                  requestModel.isComplete)
-                                              ? 'Rating Us'
-                                            : (requestModel.isProviderSeen &&
-                                                  requestModel.isComplete )
-                                              ? 'View your Rate'   
-                                              : 'The job was cancled'),
-                        ),
-                      )
-                    : Expanded(child: Center())
-
-            // (neededData.pageType == "Available")
-            //     ? Expanded(
-            //         flex: 2,
-            //         child: Container(
-            //           child: Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               Expanded(
-            //                 child: Container(
-            //                   padding: EdgeInsets.symmetric(
-            //                       horizontal: _padding * 7),
-            //                   child: CustomButton(
-            //                       onPressed: () async {
-            //                         await store.acceptJob(
-            //                             neededData.requestModel.requestId);
-            //                         Navigator.of(context)
-            //                             .pushReplacementNamed(HomeProvider.id);
-            //                         Fluttertoast.showToast(
-            //                           msg: 'The job was Accepted',
-            //                         );
-            //                       },
-            //                       textValue: "Accept"),
-            //                 ),
-            //               ),
-            //               Expanded(
-            //                 child: Container(
-            //                   padding: EdgeInsets.symmetric(
-            //                       horizontal: _padding * 7),
-            //                   child: CustomButton(
-            //                       onPressed: () async {
-            //                         neededData.requestModel.isAccepted = false;
-            //                         neededData.requestModel.isProviderSeen =
-            //                             true;
-            //                         await store.rejectJob(
-            //                             neededData.requestModel.requestId);
-            //                         Navigator.of(context)
-            //                             .pushReplacementNamed(HomeProvider.id);
-            //                         Fluttertoast.showToast(
-            //                           msg: 'The job was Rejected',
-            //                         );
-            //                       },
-            //                       textValue: "Reject"),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       )
-            //     : (neededData.pageType == "Inprogress")
-            //         ? Expanded(
-            //             child: Container(
-            //               padding:
-            //                   EdgeInsets.symmetric(horizontal: _padding * 7),
-            //               child: CustomButton(
-            //                   onPressed: () async {
-            //                     neededData.requestModel.isComplete = true;
-            //                     await store
-            //                         .endJob(neededData.requestModel.requestId);
-            //                     Navigator.of(context)
-            //                         .pushReplacementNamed(HomeProvider.id);
-            //                     Fluttertoast.showToast(
-            //                       msg: 'The job was completed',
-            //                     );
-            //                   },
-            //                   textValue: "Complete"),
-            //             ),
-            //           )
-            //         : Expanded(
-            //             child: Container(
-            //               child: Text("This job was complete"),
-            //             ),
-            //           ),
+                : Expanded(child: Center())
           ],
         ),
       ),
@@ -552,10 +402,13 @@ class _JobDetailsState extends State<JobDetails> {
             onSubmitted: (response) {
               print('rating: ${response.rating}, comment: ${response.comment}');
               store.addRating(requestId, response.comment, response.rating);
-              user.updateProviderRating(neededData.requestModel.providerId,neededData.providerTotalRate,response.rating,neededData.providerNumberRate);
+              user.updateProviderRating(
+                  neededData.requestModel.providerId,
+                  neededData.providerTotalRate,
+                  response.rating,
+                  neededData.providerNumberRate);
             },
           );
         });
   }
 }
-

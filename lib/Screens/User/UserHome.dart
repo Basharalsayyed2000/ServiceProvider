@@ -163,7 +163,7 @@ class _UserHomeState extends State<UserHome> {
                     ),
                     ListTile(
                       leading: Icon(Icons.watch_later),
-                      title: Text('Book later requests'),
+                      title: Text('Inactive Requests'),
                       onTap: () {
                         Navigator.of(context).pop();
                         Navigator.push(
@@ -214,20 +214,6 @@ class _UserHomeState extends State<UserHome> {
                               builder: (context) => MyBooks(
                                     userAction: "Rejected",
                                     userModel: _userModel,
-                                  )),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.add_reaction_rounded),
-                      title: Text('provider time suggestion'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyBooks(
-                                    userAction: "suggestion",
                                   )),
                         );
                       },
@@ -343,6 +329,7 @@ class _UserHomeState extends State<UserHome> {
                                           myCountry: _userModel.ucountry,
                                           showOnlyMyCountry: _userModel
                                               .showOnlyProviderInMyCountry,
+                                          fromForword: false,
                                         )),
                               );
                             },

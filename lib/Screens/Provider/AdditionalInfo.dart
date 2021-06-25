@@ -135,10 +135,19 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                           ),
                         ),
                       ),
-                   
+                      SizedBox(height: 10,),
+                      Row(
+                        children:[
+                   Text("Select Type:",style: TextStyle(
+                     fontWeight: FontWeight.bold,
+                     fontSize: 17,
+                   ),),
                       Container(
+                        width: 200,
                         margin: EdgeInsets.only(
-                            right: MediaQuery.of(context).size.width / 4 * 2,
+                          left: MediaQuery.of(context).size.height / 32 ,
+                          bottom: MediaQuery.of(context).size.height / 25 ,
+                            //right: MediaQuery.of(context).size.width / 4 * 2,
                             top: MediaQuery.of(context).size.height / 20),
                         padding: EdgeInsets.only(left: 15),
                         height: 50,
@@ -149,6 +158,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                               BoxShadow(color: KprimaryColor, spreadRadius: 1.5)
                             ]),
                         child: DropdownButtonFormField(
+                          
                             isExpanded: false,
                             dropdownColor: KprimaryColor,
                             style: TextStyle(
@@ -165,43 +175,93 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                                 _currentItemSelected = dropDownItem;
                               });
                             }),
-                      ),
-                      Container(
-                          // margin: const EdgeInsets.fromLTRB(50, 15, 50, 00),
-                          child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            title: const Text('male'),
-                            leading: Radio(
-                              value: true,
-                              groupValue: select,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  select = value;
-                                  // print(select);
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('female'),
-                            leading: Radio(
-                              value: false,
-                              groupValue: select,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  select = value;
-                                  // print(select);
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      )),
+                      )]),
+                      Row(children: [
+                        Container(
+                          width: 90,
+                          child:Text("Gender:",style: TextStyle(
+                     fontWeight: FontWeight.bold,
+                     fontSize: 17,
+                   ),
+                          textAlign: TextAlign.left,),
+                        ),
+                        SizedBox(width: 30,),
+                        GestureDetector(
+                        child: CircleAvatar(
+                            backgroundColor: (select)?KaccentColor:Colors.white,
+                            child: Icon(Icons.tag_faces,color: Colors.grey
+                          )),
+                         onTap: (){
+                           setState(() {
+                           select=true;                            
+                           });
+                         }, 
+                        ),
+                        SizedBox(width: 10,),
+                        Container(
+                          width: 60,
+
+                          child: Text("Male",textAlign: TextAlign.left,),
+                        ),
+                        
+                        GestureDetector(
+                         child: CircleAvatar(
+                            backgroundColor:(!select)? KaccentColor:Colors.white,
+                            child: Icon(Icons.face,color: Colors.grey
+                          )),
+                          onTap: (){
+                           setState(() {
+                           select=false;                            
+                           });
+                          },
+                        ),
+                        SizedBox(width: 10,),
+                        Container(
+                          width: 60,
+
+                          child: Text("Female",textAlign: TextAlign.left,),
+                        )
+                      ],),
+                      // Container(
+                      //     // margin: const EdgeInsets.fromLTRB(50, 15, 50, 00),
+                      //     child: Column(
+                      //   children: <Widget>[
+                      //     ListTile(
+                      //       title: const Text('male'),
+                      //       leading: Radio(
+                      //         value: true,
+                      //         groupValue: select,
+                      //         onChanged: (bool value) {
+                      //           setState(() {
+                      //             select = value;
+                      //             // print(select);
+                      //           });
+                      //         },
+                      //       ),
+                      //     ),
+                      //     ListTile(
+                      //       title: const Text('female'),
+                      //       leading: Radio(
+                      //         value: false,
+                      //         groupValue: select,
+                      //         onChanged: (bool value) {
+                      //           setState(() {
+                      //             select = value;
+                      //             // print(select);
+                      //           });
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ],
+                      // )),
+                      SizedBox(height: 30,),
                       Row(
                         children: <Widget>[
-                          Text("Price :"),
-                          SizedBox(width: 10,),
+                          Text("Price :",style: TextStyle(
+                     fontWeight: FontWeight.bold,
+                     fontSize: 17,
+                   )),
+                          SizedBox(width: 80,),
                           DropdownButton<int>(
                             hint: Text("Pick"),
                             value: price,
@@ -216,13 +276,19 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                                 price = newVal;
                               });
                             }),
-                            SizedBox(width: 20,),
+                            SizedBox(width: 50,),
                           Text("$price  \$"),  
                         ],
                       ),
+                      SizedBox(height: 30,),
+
+                       Text("Description:",style: TextStyle(
+                     fontWeight: FontWeight.bold,
+                     fontSize: 17,
+                   )),
                       Container(
                         padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 20),
+                            top: MediaQuery.of(context).size.height / 50),
                         child: CustomTextField(
                           minLines: 5,
                           maxLength: 200,
@@ -233,7 +299,7 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                         ),
                       ),
 
-                    
+                   
                       Container(
                         child: CustomTextField(
                           onClicked: (value) {

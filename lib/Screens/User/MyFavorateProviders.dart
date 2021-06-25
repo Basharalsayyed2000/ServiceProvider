@@ -149,6 +149,8 @@ class _MyFavorateProvidersState extends State<MyFavorateProviders> {
                                         address: addressModel,
                                         userFavorateProviderList:
                                             userFavorateProviderList,
+                                        fromSearch: false, 
+                                        fromForword: false,   
                                       );
                                     }
                                       },

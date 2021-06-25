@@ -18,18 +18,21 @@ class RecommendedProviders extends StatefulWidget {
   final bool showOnlyMyCountry;
   final String myCountry;
   final String rid;
+  final bool fromForword;
   RecommendedProviders(
       {this.serviceId,
       this.userFavorateProviders,
       this.showOnlyMyCountry,
       this.rid,
+      this.fromForword,
       this.myCountry});
   @override
   _RecommendedProvidersState createState() => _RecommendedProvidersState(
       serviceId: serviceId,
       showOnlyMyCountry: showOnlyMyCountry,
       myCountry: myCountry,
-      rid:rid,
+      rid: rid,
+      fromForword: fromForword,
       userFavorateProviders:
           (userFavorateProviders == null) ? [] : userFavorateProviders);
 }
@@ -42,6 +45,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
   final String myCountry;
   Set<Marker> _markers = {};
   final _user = UserStore();
+  final bool fromForword;
   String uId, _value, _acsValue;
   final String rid;
   bool hasSort, isGender, hasData;
@@ -51,6 +55,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
       this.userFavorateProviders,
       this.showOnlyMyCountry,
       this.rid,
+      this.fromForword,
       this.myCountry});
 
   @override
@@ -119,8 +124,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                             child: Text('A -> z'), value: 'A -> z'),
                         DropdownMenuItem(
                             child: Text('Verified'), value: 'Verified'),
-                        DropdownMenuItem(
-                            child: Text('Price'), value: 'Price'),
+                        DropdownMenuItem(child: Text('Price'), value: 'Price'),
                       ],
                       onChanged: (String value) {
                         print(value);
@@ -249,30 +253,30 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                         icon: BitmapDescriptor
                                             .defaultMarkerWithHue(200),
                                         infoWindow: InfoWindow(
-                                            title: _providers
-                                                .elementAt(index)
-                                                .pName,
-                                            snippet: "⭐" +
-                                                _providers
-                                                    .elementAt(index)
-                                                    .rate
-                                                    .toString(),
-                                                    
-                                            onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ServiceDetails(
-                                                    providerModel: _providers
-                                                      .elementAt(index),
-                                                      
-                                                  )
-                                            ),
-                                          );
-                                        },        
-                                                    ),
-                                        
+                                          title:
+                                              _providers.elementAt(index).pName,
+                                          snippet: "⭐" +
+                                              _providers
+                                                  .elementAt(index)
+                                                  .rate
+                                                  .toString(),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ServiceDetails(
+                                                        providerModel:
+                                                            _providers
+                                                                .elementAt(
+                                                                    index),
+                                                        fromForword:
+                                                            fromForword,
+                                                        rid: rid,
+                                                      )),
+                                            );
+                                          },
+                                        ),
                                       ));
                                       return ProviderCard(
                                         providerModel: _providers[index],
@@ -280,8 +284,9 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                         address: addressModel,
                                         userFavorateProviderList:
                                             userFavorateProviders,
-                                            fromSearch: false,
-                                         rid: rid,   
+                                        fromSearch: false,
+                                        rid: rid,
+                                        fromForword: fromForword,
                                       );
                                     }
                                   }),

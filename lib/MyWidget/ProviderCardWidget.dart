@@ -14,8 +14,9 @@ class ProviderCard extends StatefulWidget {
   final AddressModel address;
   final bool fromSearch;
   final String rid;
+  final bool fromForword;
   final List<String> userFavorateProviderList;
-  ProviderCard({this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
+  ProviderCard({this.fromForword,this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,7 +26,8 @@ class ProviderCard extends StatefulWidget {
         address: address,
         userFavorateProviderList: userFavorateProviderList,
         fromSearch:fromSearch,
-        rid: rid
+        rid: rid,
+        fromForword: fromForword
         );
   }
 }
@@ -34,12 +36,13 @@ class _ProviderCard extends State<ProviderCard> {
   final ProviderModel providerModel;
   Store store = new Store();
   final String uId;
+  final bool fromForword;
   UserStore userStore = new UserStore();
   final AddressModel address;
   final List<String> userFavorateProviderList;
   final bool fromSearch;
   final String rid;
-  _ProviderCard({this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
+  _ProviderCard({this.fromForword,this.rid,this.providerModel, this.uId, this.address,this.userFavorateProviderList,this.fromSearch});
    
   @override
   void initState() {
@@ -209,7 +212,7 @@ class _ProviderCard extends State<ProviderCard> {
                 builder: (context) => ServiceDetails(
                       providerModel:providerModel,  
                        rid: rid,
-                      fromForword: true,
+                      fromForword: fromForword,
                     )
                 ),
           );

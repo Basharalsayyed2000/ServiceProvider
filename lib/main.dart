@@ -42,16 +42,13 @@ main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-        child: MaterialApp(
+      child: MaterialApp(
         theme: ThemeData(
-          highlightColor: KprimaryColor,
-          accentColor: KprimaryColor
-        ),
+            highlightColor: KprimaryColor, accentColor: KprimaryColor),
         debugShowCheckedModeBanner: false,
         initialRoute: SplashScreen.id,
         routes: {
@@ -60,7 +57,7 @@ class MyApp extends StatelessWidget {
           SplashScreen.id: (context) => SplashScreen(),
           WelcomeScreen.id: (context) => WelcomeScreen(),
           SearchPage.id: (context) => SearchPage(),
-          ServiceRequestLocation.id :(context)=>ServiceRequestLocation(),
+          ServiceRequestLocation.id: (context) => ServiceRequestLocation(),
           UserVerifyScreen.id: (context) => UserVerifyScreen(),
           ProviderVerifyScreen.id: (context) => ProviderVerifyScreen(),
           ServiceDetails.id: (context) => ServiceDetails(),
@@ -84,13 +81,11 @@ class MyApp extends StatelessWidget {
           HomeProvider.id: (context) => HomeProvider(),
           ChangeEmail.id: (context) => ChangeEmail(),
           ChangePassword.id: (context) => ChangePassword(),
-          Navbar.id : (context)=>Navbar(),
-          Settings.id:(context)=>Settings(),
-          History.id:(context)=>History(),
-          RecommendedProvidersMap.id:(context)=>RecommendedProvidersMap(),
-
-
-          Testing.id:(context)=>Testing(),
+          Navbar.id: (context) => Navbar(),
+          Settings.id: (context) => Settings(),
+          History.id: (context) => History(),
+          RecommendedProvidersMap.id: (context) => RecommendedProvidersMap(),
+          Testing.id: (context) => Testing(),
         },
       ),
     );

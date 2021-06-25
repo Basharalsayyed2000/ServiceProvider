@@ -106,21 +106,21 @@ class _HomeProviderState extends State<HomeProvider> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      pageType = "WaitAccept";
+                      pageType = "complete";
                     });
                   },
                   child: Column(
                     children: [
                       Text(
-                        "Wait Accept",
+                        "Completed",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: (pageType == "WaitAccept")
+                            color: (pageType == "complete")
                                 ? Colors.black
                                 : Colors.grey),
                       ),
-                      if (pageType == "WaitAccept")
+                      if (pageType == "complete")
                         Container(
                           margin: EdgeInsets.only(top: 3),
                           height: 2,
@@ -149,7 +149,7 @@ class _HomeProviderState extends State<HomeProvider> {
                 }
                 var providerDocument = snapshot.data;
                 return (pageType == "Available")
-                    ?  StreamBuilder<QuerySnapshot>(
+                    ? StreamBuilder<QuerySnapshot>(
                         stream: Firestore.instance
                             .collection(KRequestCollection)
                             .snapshots(),
@@ -164,7 +164,7 @@ class _HomeProviderState extends State<HomeProvider> {
                             for (var doc in snapshot.data.documents) {
                               var data = doc.data;
                               String requestId = doc.documentID;
-                              if (data[KRequestProviderId] == pId ) {
+                              if (data[KRequestProviderId] == pId) {
                                 //List<dynamic> requestUrl=[];
                                 //  if(!(data[KRequestImageUrl]==null)){
                                 //  requestUrl= List.of(data[KRequestImageUrl]);
@@ -182,13 +182,14 @@ class _HomeProviderState extends State<HomeProvider> {
                                     requestId: requestId,
                                     providerId: data[KRequestProviderId],
                                     userId: data[KRequestUserId],
+                                    rating: data[KRequestRating],
+                                    commentRating: data[KRequestRatingComment],
                                     isAccepted: data[KRequestIsAccepted],
                                     isActive: data[KRequestIsActive],
                                     locationId: data[KRequestLocationId],
                                     isComplete: data[KRequestIsCompleted],
                                     isProviderSeen:
                                         data[KRequestIsProviderSeen],
-                                  
                                     serviceId: data[KRequestServiceId],
                                     publicId: data[KRequestPublicId],
                                     actionDate: data[KRequestActionDate],
@@ -317,10 +318,11 @@ class _HomeProviderState extends State<HomeProvider> {
                                         isAccepted: data[KRequestIsAccepted],
                                         isActive: data[KRequestIsActive],
                                         locationId: data[KRequestLocationId],
+                                      rating: data[KRequestRating],
+                                             commentRating: data[KRequestRatingComment],                              
                                         isComplete: data[KRequestIsCompleted],
                                         isProviderSeen:
                                             data[KRequestIsProviderSeen],
-                                     
                                         serviceId: data[KRequestServiceId],
                                         publicId: data[KRequestPublicId],
                                         actionDate: data[KRequestActionDate],
@@ -376,7 +378,9 @@ class _HomeProviderState extends State<HomeProvider> {
                                                                 "Inprogress",
                                                             hasAction: true,
                                                             forUser: false,
-                                                            providerLocationId: providerDocument[KProviderLocationId],
+                                                            providerLocationId:
+                                                                providerDocument[
+                                                                    KProviderLocationId],
                                                           );
                                                         } else {
                                                           return new CircularProgressIndicator();
@@ -414,7 +418,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                 );
                               }
                             })
-                        : (pageType == "WaitAccept")
+                        : (pageType == "complete")
                             ? StreamBuilder<QuerySnapshot>(
                                 stream: Firestore.instance
                                     .collection(KRequestCollection)
@@ -436,8 +440,8 @@ class _HomeProviderState extends State<HomeProvider> {
                                         //  requestUrl= List.of(data[KRequestImageUrl]);
                                         // }
                                         if (data[KRequestIsActive] &&
-                                            !data[KRequestIsAccepted] &&
-                                            !data[KRequestIsCompleted] &&
+                                            data[KRequestIsAccepted] &&
+                                            data[KRequestIsCompleted] &&
                                             data[KRequestIsProviderSeen])
                                           _requests.add(RequestModel(
                                             rProblem: data[KRequestProblem],
@@ -459,7 +463,8 @@ class _HomeProviderState extends State<HomeProvider> {
                                                 data[KRequestIsCompleted],
                                             isProviderSeen:
                                                 data[KRequestIsProviderSeen],
-                                          
+                                             rating: data[KRequestRating],
+                                             commentRating: data[KRequestRatingComment],   
                                             serviceId: data[KRequestServiceId],
                                             publicId: data[KRequestPublicId],
                                             actionDate:
@@ -519,11 +524,14 @@ class _HomeProviderState extends State<HomeProvider> {
                                                                     .elementAt(
                                                                         index),
                                                                 status:
-                                                                    "WaitAccept",
-                                                                hasAction:
-                                                                    false,
+                                                                    "complete",
+                                                                hasAction: (_requests
+                                                                    .elementAt(
+                                                                        index).rating==0)?false:true,
                                                                 forUser: false,
-                                                                providerLocationId: providerDocument[KProviderLocationId],
+                                                                providerLocationId:
+                                                                    providerDocument[
+                                                                        KProviderLocationId],
                                                               );
                                                             } else {
                                                               return new CircularProgressIndicator();
@@ -542,7 +550,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                           )
                                         : Center(
                                             child: Text(
-                                              'No Requests wait user Accept',
+                                              'No Requests completed request',
                                               style: TextStyle(
                                                   fontSize: 24,
                                                   color: Colors.red,
@@ -552,7 +560,7 @@ class _HomeProviderState extends State<HomeProvider> {
                                   } else {
                                     Center(
                                       child: Text(
-                                        'No Requests wait user Accept',
+                                        'No Requests completed request',
                                         style: TextStyle(
                                             fontSize: 24,
                                             color: Colors.red,

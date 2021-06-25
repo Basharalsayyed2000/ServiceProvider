@@ -140,69 +140,35 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           SizedBox(height: 12.0),
-          // (tempSearchStore.isNotEmpty)?GridView.count(
-          //     padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          //     crossAxisCount: 1,
-          //     crossAxisSpacing: 2.0,
-          //     mainAxisSpacing: 2.0,
-          //     primary: false,
-          //     shrinkWrap: true,
-          //     // childAspectRatio: 1,
-          //     children: tempSearchStore.map((ProviderModel element) {
-          //       return ProviderCard(
-          //         providerModel: element,
-          //         fromSearch: true,
-          //         uId: uid,
-          //         userFavorateProviderList: userFavorateProviders,
-          //       );
-          //     }).toList()):Container()
-
-
-          (tempSearchStore.isNotEmpty)?Expanded(
-            child: ListView.separated(
-              itemCount: tempSearchStore.length,
-              itemBuilder: (context, index){
-                return Container(
-                  padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: ProviderCard(
-                    providerModel: tempSearchStore[index],
-                    fromSearch: true,
-                    uId: uid,
-                    userFavorateProviderList: userFavorateProviders,
+          (tempSearchStore.isNotEmpty)
+              ? Expanded(
+                  child: ListView.separated(
+                    itemCount: tempSearchStore.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: ProviderCard(
+                          providerModel: tempSearchStore[index],
+                          fromSearch: true,
+                          uId: uid,
+                          fromForword: false,
+                          userFavorateProviderList: userFavorateProviders,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        color: KprimaryColorDark,
+                        indent: 10,
+                        endIndent: 10,
+                        height: 15,
+                      );
+                    },
                   ),
-                );
-              },
-
-              separatorBuilder: (context, index){
-                return Divider(
-                  color: KprimaryColorDark,
-                  indent: 10,
-                  endIndent: 10,
-                  height: 15,
-                );
-              },
-            ),
-          ):Container(child: Text("EMPTY"),)
-
-        ])
-        );
+                )
+              : Container(
+                  child: Text("EMPTY"),
+                )
+        ]));
   }
 }
-
-// Widget buildResultCard(ProviderModel data) {
-//   return Card(
-//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-//     elevation: 2.0,
-//     child: Container(
-//       child: Center(
-//         child: Text(data.pName,
-//         textAlign: TextAlign.center,
-//         style: TextStyle(
-//           color: Colors.black,
-//           fontSize: 20.0,
-//         ),
-//         )
-//       )
-//     )
-//   );
-// }
