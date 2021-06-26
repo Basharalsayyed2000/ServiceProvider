@@ -127,6 +127,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                   ]));
             } else {
               var providerDocument = snapshot.data;
+              double calcrate=providerDocument[KProviderTotalRate]/providerDocument[KProviderNumberOfRatedRequest];
 
               if (providerDocument[KServiceId] != null)
                 serviceProviderId = providerDocument[KServiceId];
@@ -184,7 +185,6 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                           ]));
                     }else {
                       var locationDocument = snapshotL.data;
-
                       _address.clear();
 
                       if (locationDocument[KLocationCountry] != null)
@@ -295,7 +295,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                                       Container(
                                         margin: EdgeInsets.only(bottom: 5),
                                         child: Text(
-                                          "⭐${providerDocument[KProviderTotalRate].toString().substring(0,3)}",
+                                          "⭐${calcrate.toString().substring(0,3)}",
                                           style: TextStyle(fontSize: 14, color: KprimaryColorDark)
                                         ),
                                       ),
