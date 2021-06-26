@@ -36,6 +36,12 @@ class Store {
     return locId;
   }
 
+  updateDescription(String description, String pid){
+    _firestore.collection(KProviderCollection).document(pid).updateData({
+      KProviderDescription: description,
+    });
+  }
+
   updateListGallery(List gallery, String pid){
     _firestore.collection(KProviderCollection).document(pid).updateData({
       KImageCartificateUrlList: gallery,
