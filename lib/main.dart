@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/Screens/Admin/AdminHome.dart';
 import 'package:service_provider/Screens/Provider/AdditionalInfo.dart';
-import 'package:service_provider/Screens/Provider/History.dart';
 import 'package:service_provider/Screens/Provider/JobDetails.dart';
 import 'package:service_provider/Screens/Provider/Navbar.dart';
 import 'package:service_provider/Screens/Provider/ProfilePage.dart';
@@ -83,7 +82,6 @@ class MyApp extends StatelessWidget {
           ChangePassword.id: (context) => ChangePassword(),
           Navbar.id: (context) => Navbar(),
           Settings.id: (context) => Settings(),
-          History.id: (context) => History(),
           RecommendedProvidersMap.id: (context) => RecommendedProvidersMap(),
           Testing.id: (context) => Testing(),
         },

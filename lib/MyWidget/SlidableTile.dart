@@ -238,13 +238,12 @@ class _SlidableTile extends State<SlidableTile> {
                           providerTotalRate: providerTotalRate,
                           providerNumberRate: providerNumberOfRating,
                         ));
-                    if (status == "complete" && forUser) {
-                      if (request.rating == 0) {
+                    if (status == "complete" &&forUser  &&request.rating == 0) {
                         showRatingDialod(request.requestId);
-                      } else {
+                    }else if(status == "complete"  &&request.rating != 0){
                         viewRate(request.requestId);
-                      }
                     }
+                    
                   },
                 ),
               ],

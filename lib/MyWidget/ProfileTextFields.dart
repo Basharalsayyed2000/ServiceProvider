@@ -13,6 +13,7 @@ class ProfileTextField extends StatefulWidget {
   final bool isusername;
   final bool isPassword;
   final bool edit;
+  final bool isverified;
 
   @override
   ProfileTextField(
@@ -23,7 +24,9 @@ class ProfileTextField extends StatefulWidget {
       this.prefix,
       this.isusername,
       this.edit,
-      this.isPassword});
+      this.isPassword,
+      this.isverified
+      });
 
   @override
   State<StatefulWidget> createState() {
@@ -35,6 +38,7 @@ class ProfileTextField extends StatefulWidget {
         prefix: prefix,
         isusername: (isusername == null) ? false : isusername,
         edit: (this.edit == null) ? false : this.edit,
+        isverified: (this.isverified == null) ? false : this.isverified,  
         isPassword: (this.isPassword == null) ? false : this.isPassword);
   }
 }
@@ -53,6 +57,7 @@ class _ProfileTextField extends State<ProfileTextField> {
   final bool isusername;
   final bool isPassword;
   final bool edit;
+  final bool isverified;
 
   @override
   _ProfileTextField(
@@ -63,7 +68,8 @@ class _ProfileTextField extends State<ProfileTextField> {
       this.prefix,
       this.isusername,
       this.edit,
-      this.isPassword});
+      this.isPassword,
+      this.isverified});
 
   @override
   void initState() {
@@ -85,7 +91,7 @@ class _ProfileTextField extends State<ProfileTextField> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (!isUser)
+                    if (!isUser && isverified)
                       Expanded(
                           flex: 1,
                           child: Icon(

@@ -245,6 +245,9 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                         city: document2[KLocationCity],
                                         street: document2[KLocationStreet],
                                       );
+                                      double cal=_providers
+                                                  .elementAt(index)
+                                                  .rate/_providers.elementAt(index).numberOfRequestRated;
                                       _markers.add(Marker(
                                         markerId: MarkerId(
                                             _providers.elementAt(index).pId),
@@ -256,10 +259,7 @@ class _RecommendedProvidersState extends State<RecommendedProviders> {
                                           title:
                                               _providers.elementAt(index).pName,
                                           snippet: "⭐" +
-                                              _providers
-                                                  .elementAt(index)
-                                                  .rate
-                                                  .toString(),
+                                                  cal.toString().substring(0,3),
                                           onTap: () {
                                             Navigator.push(
                                               context,

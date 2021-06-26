@@ -82,7 +82,7 @@ class _ProviderCard extends State<ProviderCard> {
                     ? " " + providerModel.pName
                     : providerModel.pName,
                 style: TextStyle(
-                    fontSize: 17,
+                    fontSize:(fromSearch)? 14:17,
                     color: KprimaryColorDark,
                     fontWeight: FontWeight.w600),
               ),

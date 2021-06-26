@@ -276,6 +276,7 @@ class _ProviderProfilescreenState extends State<ProviderProfilescreen> {
                                             edit: true,
                                             controller: _username,
                                             id: _userId,
+                                            isverified:providerDocument[KProviderIsVerified] ,
                                           )
                                           // Text(
                                           //   '${providerDocument[KUserName]}',

@@ -158,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                     },
                     separatorBuilder: (context, index) {
                       return Divider(
-                        color: KprimaryColorDark,
+                        color: Colors.black,
                         indent: 10,
                         endIndent: 10,
                         height: 15,

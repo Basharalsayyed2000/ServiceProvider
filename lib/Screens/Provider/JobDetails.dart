@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:service_provider/Models/NeededData.dart';
 import 'package:service_provider/Models/Request.dart';
 import 'package:service_provider/MyTools/Constant.dart';
 import 'package:service_provider/MyWidget/GalleryDialogImages.dart';
+import 'package:service_provider/MyWidget/MapDialog.dart';
 import 'package:service_provider/MyWidget/MyCustomButton.dart';
 import 'package:service_provider/Services/UserStore.dart';
 import 'package:service_provider/Services/store.dart';
@@ -224,6 +226,41 @@ class _JobDetailsState extends State<JobDetails> {
                                             fontSize: 16,
                                             color: KprimaryColorDark),
                                       ),
+                                   SizedBox(height: 6,),
+  
+                                    // ignore: deprecated_member_use
+                                    GestureDetector(
+                                      child:Row(
+                                        children: [
+                                          Icon(Icons.location_pin,color: Colors.white,size: 17,),
+                                          SizedBox(width: 3,),
+                                          Text("view location",style: TextStyle(color: Colors.white),),
+                                        ],
+                                      ),
+                                      //color: Colors.white,
+                                      onTap: () {
+                                        showDialog(context: context, builder: (context){
+                                           Set<Marker> _markers = {};
+                                          _markers.add(Marker(
+                                            markerId: MarkerId(
+                                                requestModel.requestId),
+                                            position: LatLng(document[KLocationLatitude],
+                                                document[KLocationlonggitude]),
+                                            icon: BitmapDescriptor
+                                                .defaultMarkerWithHue(200),
+                                            infoWindow: InfoWindow(
+                                                title: 
+                                                  document[KLocationCity],
+                                                snippet: "⭐" +
+                                                    "${document[KLocationStreet]}",   
+                                                onTap: () {
+                                                },        
+                                              ), 
+                                          ));
+                                         return MapDialog(hasAppBar: false,edit: false,markers: _markers );
+                                        });
+                                      },
+                                    ),
                                     ],
                                   );
                                 }),
@@ -275,75 +312,15 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ),
             ),
-            (!neededData.forUser)
+             
+             (!neededData.forUser)
                 ? Expanded(
                     flex: 2,
                     child: Container(
-                      child: Row(
+                      child: (!requestModel.isProviderSeen)? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          (!requestModel.isComplete &&
-                                  !(requestModel.isProviderSeen))
-                              ? Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: _padding * 7),
-                                    child: CustomButton(
-                                        color: Colors.green,
-                                        onPressed: () async {
-                                          if (!requestModel.isProviderSeen) {
-                                            await store.acceptJob(
-                                                requestModel.requestId);
-                                            Navigator.of(context).pop();
-                                          } else if (requestModel
-                                                  .isProviderSeen &&
-                                              requestModel.isAccepted) {
-                                            await store
-                                                .endJob(requestModel.requestId);
-                                            Navigator.of(context).pop();
-                                          }
-                                          Fluttertoast.showToast(
-                                            msg: ((!requestModel
-                                                        .isProviderSeen) ||
-                                                    (!requestModel
-                                                            .isProviderSeen &&
-                                                        neededData.enable))
-                                                ? 'The job was Accepted'
-                                                : (!requestModel
-                                                            .isProviderSeen &&
-                                                        !neededData.enable)
-                                                    ? 'you must wait ${neededData.username} to accept'
-                                                    : (requestModel
-                                                                .isProviderSeen &&
-                                                            requestModel
-                                                                .isAccepted)
-                                                        ? 'The job was Completed'
-                                                        : '',
-                                          );
-                                        },
-                                        textValue: (!requestModel
-                                                .isProviderSeen)
-                                            ? "Accept"
-                                            : (requestModel.isProviderSeen &&
-                                                    requestModel.isAccepted)
-                                                ? "Complete"
-                                                : ""),
-                                  ),
-                                )
-                              : Center(
-                                  child: Container(
-                                  child: Text(
-                                    (requestModel.isComplete)
-                                        ? "   this request are not rated yet"
-                                        : "      Wait ${neededData.username} to accept",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )),
-                          (!requestModel.isProviderSeen)
-                              ? Expanded(
+                        children: [ 
+                          Expanded(
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: _padding * 7),
@@ -359,25 +336,170 @@ class _JobDetailsState extends State<JobDetails> {
                                           Fluttertoast.showToast(
                                             msg: (!requestModel.isProviderSeen)
                                                 ? 'The job was rejected'
-                                                // : (!requestModel.isAccepted)
-                                                //     ? 'The job was Accepted'
                                                 : '',
                                           );
                                         },
                                         textValue:
                                             (!requestModel.isProviderSeen)
                                                 ? "reject"
-                                                // : (!requestModel.isAccepted)
-                                                //     ? "Accept"
                                                 : ""),
+                                        
                                   ),
-                                )
-                              : Expanded(child: Center())
-                        ],
-                      ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: _padding * 7),
+                                    child: CustomButton(
+                                        color: Colors.green,
+                                        onPressed: () async {
+                                          if (!requestModel.isProviderSeen) {
+                                            await store.acceptJob(
+                                                requestModel.requestId);
+                                            Navigator.of(context).pop();
+                                          }
+
+                                          Fluttertoast.showToast(
+                                            msg: (!requestModel.isProviderSeen)
+                                                ? 'The job was Accepted'
+                                                : '',
+                                          );
+                                        },
+                                        textValue:
+                                            (!requestModel.isProviderSeen)
+                                                ? "Accept"
+                                                : ""),
+                                        
+                                  ),
+                                ) 
+                          ],
+                      ):(requestModel.isAccepted && !requestModel.isComplete)?
+                           Center(
+                            child: Container(
+                            child: Text(
+                           "         This request inprogress",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ))
+                          :(requestModel.isComplete && requestModel.rating==0)?
+                             Center(
+                            child: Container(
+                            child: Text(
+                           "      This request are not rated",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )):Center(),
                     ),
                   )
-                : Expanded(child: Center())
+                : Expanded(child: Center()),
+
+
+
+
+
+
+
+
+            // (!neededData.forUser)
+            //     ? Expanded(
+            //         flex: 2,
+            //         child: Container(
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               (!requestModel.isComplete &&
+            //                       !(requestModel.isProviderSeen))
+            //                   ? Expanded(
+            //                       child: Container(
+            //                         padding: EdgeInsets.symmetric(
+            //                             horizontal: _padding * 7),
+            //                         child: CustomButton(
+            //                             color: Colors.green,
+            //                             onPressed: () async {
+            //                               if (!requestModel.isProviderSeen) {
+            //                                 await store.acceptJob(
+            //                                     requestModel.requestId);
+            //                                 Navigator.of(context).pop();
+            //                               } 
+            //                               Fluttertoast.showToast(
+            //                                 msg: ((!requestModel
+            //                                             .isProviderSeen) ||
+            //                                         (!requestModel
+            //                                                 .isProviderSeen &&
+            //                                             neededData.enable))
+            //                                     ? 'The job was Accepted'
+            //                                     : (!requestModel
+            //                                                 .isProviderSeen &&
+            //                                             !neededData.enable)
+            //                                         ? 'you must wait ${neededData.username} to accept'
+            //                                         : (requestModel
+            //                                                     .isProviderSeen &&
+            //                                                 requestModel
+            //                                                     .isAccepted)
+            //                                             ? 'The job was Completed'
+            //                                             : '',
+            //                               );
+            //                             },
+            //                             textValue: (!requestModel
+            //                                     .isProviderSeen)
+            //                                 ? "Accept"
+            //                                 : (requestModel.isProviderSeen &&
+            //                                         requestModel.isAccepted)
+            //                                     ? "Complete"
+            //                                     : ""),
+            //                       ),
+            //                     )
+            //                   : Center(
+            //                       child: Container(
+            //                       child: Text(
+            //                         (requestModel.isComplete)
+            //                             ? "   this request are not rated yet"
+            //                             : "      Wait ${neededData.username} to accept",
+            //                         style: TextStyle(
+            //                             fontSize: 24,
+            //                             color: Colors.red,
+            //                             fontWeight: FontWeight.bold),
+            //                       ),
+            //                     )),
+            //               (!requestModel.isProviderSeen)
+            //                   ? Expanded(
+            //                       child: Container(
+            //                         padding: EdgeInsets.symmetric(
+            //                             horizontal: _padding * 7),
+            //                         child: CustomButton(
+            //                             color: Colors.red,
+            //                             onPressed: () async {
+            //                               if (!requestModel.isProviderSeen) {
+            //                                 await store.rejectJob(
+            //                                     requestModel.requestId);
+            //                                 Navigator.of(context).pop();
+            //                               }
+
+            //                               Fluttertoast.showToast(
+            //                                 msg: (!requestModel.isProviderSeen)
+            //                                     ? 'The job was rejected'
+            //                                     : '',
+            //                               );
+            //                             },
+            //                             textValue:
+            //                                 (!requestModel.isProviderSeen)
+            //                                     ? "reject"
+            //                                     : ""),
+                                        
+            //                       ),
+            //                     )
+            //                   : Expanded(child: Center())
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //     : Expanded(child: Center())
           ],
         ),
       ),
