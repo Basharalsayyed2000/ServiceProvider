@@ -282,10 +282,12 @@ class _AdditionalInfo extends State<AdditionalInfo> {
                       ),
                       SizedBox(height: 30,),
 
-                       Text("Description:",style: TextStyle(
-                     fontWeight: FontWeight.bold,
-                     fontSize: 17,
-                   )),
+                      Text("Description:",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        )
+                      ),
                       Container(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height / 50),

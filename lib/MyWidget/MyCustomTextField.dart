@@ -89,6 +89,8 @@ class _CustomTextField extends State<CustomTextField> {
   final int maxLines;
   final int maxLength;
 
+  final TextStyle textStyle = TextStyle(fontSize: 20, color: KprimaryColorDark);
+
   bool _passwordVisible = false;
   bool _isObscure;
 
@@ -130,6 +132,8 @@ class _CustomTextField extends State<CustomTextField> {
         return "Phone Number is empty !";
       case "New Password":
         return "password can't be empty !";
+      case "":
+        return "It Can't Be Left Empty";
     }
   }
 
@@ -157,6 +161,7 @@ class _CustomTextField extends State<CustomTextField> {
           },
 
           child: TextFormField(
+            style: textStyle,
             autofocus: false,
             obscureText: _isObscure,
             enabled: this.enabled,
@@ -250,6 +255,7 @@ class _CustomTextField extends State<CustomTextField> {
             },
 
             child: TextFormField(
+              style: textStyle,
               autofocus: false,
 
               enabled: this.enabled,
@@ -310,6 +316,7 @@ class _CustomTextField extends State<CustomTextField> {
             },
 
             child: TextFormField(
+              style: textStyle,
               keyboardType: this.keyboardType,
 
               autofocus: false,

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:service_provider/MyTools/Constant.dart';
+import 'package:service_provider/MyWidget/DescriptionDialog.dart';
 import 'package:service_provider/MyWidget/ExpandableWidgets.dart';
 import 'package:service_provider/MyWidget/PasswordVerificationDialog.dart';
 import 'package:service_provider/Services/UserStore.dart';
@@ -82,8 +85,6 @@ class _SettingsState extends State<Settings> {
            ExpandableParent(
              title: "Security",
              children: [
-              buildAccountOption(context,"Change Email"),
-              buildAccountOption(context,"Change Password"),
 
               ExpandableTile(
                 leading: Text("Change Email",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
@@ -100,7 +101,8 @@ class _SettingsState extends State<Settings> {
              ],
            ),
 
-           SizedBox(height: 20,),
+            if(!isUser)
+            SizedBox(height: 20,),
 
             if(!isUser)
             Container(
@@ -134,15 +136,21 @@ class _SettingsState extends State<Settings> {
                 children: [
                   ExpandableTile(
                     leading: Text("Change Description",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
-                    onTap: (){}
+                    onTap: (){
+                      showDialog(
+                        context: context, 
+                        builder: (context){
+                          return Container(
+                            child: DescriptionDialog(pid: ""),
+                          );
+                        }
+                      );
+                    }
                   ),
                 ],
               ),
             ),
 
-           SizedBox(height: 20,),
-            
-            buildAccountOption(context,(isUser)?"Privacy and Security":""),
             SizedBox(height: 40,),
             Row(
               children: [
@@ -154,11 +162,20 @@ class _SettingsState extends State<Settings> {
               ],
             ),
              Divider(height: 20,thickness: 1,),
+             
              SizedBox(height: 10,),
-            //  buildAccountOption(context, title),
-             buildNotificationOption("Show mycountry Only",showProvidersOfMyCountry,onChangeFunction1),
-             buildNotificationOption("Default",valNotify2,onChangeFunction2),
-             buildNotificationOption("Default",valNotify3,onChangeFunction3)
+
+             (isUser)?
+              buildNotificationOption("Show My Country Only",showProvidersOfMyCountry,onChangeFunction1)
+              :ExpandableTile(
+                leading: Text("Change Location",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
+                onTap: (){
+
+                },
+              ),
+
+            //  buildNotificationOption("Default",valNotify2,onChangeFunction2),
+            //  buildNotificationOption("Default",valNotify3,onChangeFunction3)
 
           ],
         ),
@@ -173,7 +190,7 @@ class _SettingsState extends State<Settings> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.grey),),
+            Text(title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.black87),),
             Transform.scale(
               scale: 0.7,
               child: CupertinoSwitch(
