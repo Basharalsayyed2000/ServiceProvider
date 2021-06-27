@@ -262,7 +262,7 @@ class _ServiceDetails extends State<ServiceDetails> {
                     Container(
                       padding: EdgeInsets.only(top: Kminimumpadding * 3.5, bottom: 15),
                       child: Text(
-                        "Service Gallery",
+                        "Certificate images",
                         style: TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w500),
                       ),
